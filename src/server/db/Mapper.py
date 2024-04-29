@@ -28,5 +28,6 @@ class Mapper (AbstractContextManager, ABC):
         """Verbindung trennen, vorübergehend"""
 
     @abstractmethod 
-    
-    
+    def find_all(self):
+
+        pass
