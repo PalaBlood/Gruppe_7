@@ -25,9 +25,33 @@ class Mapper (AbstractContextManager, ABC):
 
         self._cursor.close()
 
-        """Verbindung trennen, vorübergehend"""
+        """Verbindung mit der Datenbank trennen"""
+
+
+        """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.
+        Hier dienen sie als gemeinsame Schnittstelle für alle Mapperklassen und geben gleichzeitig vor, dass alle Subklassen folgende Methoden bereitstellen müssen"""
 
     @abstractmethod 
     def find_all(self):
+
+        pass
+
+    @abstractmethod
+    def find_by_id(self, id):
+
+        pass
+
+    @abstractmethod
+    def insert(self, object):
+
+        pass
+    
+    @abstractmethod
+    def update(self, object):
+
+        pass
+    
+    @abstractmethod
+    def delete(self, object):
 
         pass
