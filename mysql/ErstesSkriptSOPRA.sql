@@ -1,3 +1,13 @@
+CREATE TABLE Quantity (
+    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    value FLOAT
+);
+
+CREATE TABLE Unitofmeasurement (
+    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    designation VARCHAR(255)
+);
+
 CREATE TABLE Groceries (
 	
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -42,14 +52,6 @@ CREATE TABLE Fridge (
     groceries_list VARCHAR(255) -- Liste als string
 );
 
-CREATE TABLE Quantity (
-    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value FLOAT
-);
 
-CREATE TABLE Unitofmeasurement (
-    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    designation VARCHAR(255)
-);
 
 
