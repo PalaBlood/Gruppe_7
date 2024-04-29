@@ -1,3 +1,7 @@
+--Autor: Tom Schönfeld, wichtig --> es handelt sich hierbei nur um einen ersten Entwurf, die Datenbank wird noch um Tabellen erweitert/gekürzt sowie weitere Attribute könnten noch zu den einzelnen Tabbeln hinzukommen
+
+
+
 CREATE TABLE Quantity (
     ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     value FLOAT
