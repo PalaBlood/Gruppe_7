@@ -14,7 +14,7 @@ from UnitOfMeasurement import UnitOfMeasurement
  - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen?
  """
 
-class Lebensmitteleintrag(BusinessObject):
+class FootEntry(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__groceries = None
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     kilogramm.set_id(2)
     kilogramm.set_designation("Kilogramm")
     
-    eintrag1 = Lebensmitteleintrag()
+    eintrag1 = FootEntry()
     eintrag1.set_id(3)
     eintrag1.set_grocerie(gurke)
     eintrag1.set_unit_of_measurement(kilogramm)

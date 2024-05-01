@@ -1,7 +1,6 @@
 from BusinessObject import BusinessObject
 from User import User 
-from Quantity import Quantity
-from Lebensmitteleintrag import Lebensmitteleintrag
+from FoodEntry import FootEntry
 
 """Ein Rezept hat: 
 -einen Titel
@@ -56,7 +55,7 @@ class Recipe(BusinessObject):
         """Auslesen der Lebensmitteleinträge"""
         return self.__content
     
-    def add_entry(self, entry=Lebensmitteleintrag):
+    def add_entry(self, entry=FootEntry):
         """Hinzufügen eines Lebensmitteleintrags"""
         self.__content.append(entry)
     
@@ -67,7 +66,7 @@ if __name__ == "__main__":
     
     rezept = Recipe()
     
-    eintrag = Lebensmitteleintrag()
+    eintrag = FootEntry()
     
     rezept.add_entry(eintrag)
     
