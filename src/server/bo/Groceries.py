@@ -6,7 +6,7 @@ class Groceries(BusinessObject):
         super().__init__()
         pass
 
-tomato = Groceries()
+
 
 
 
