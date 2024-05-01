@@ -54,6 +54,10 @@ class FootEntry(BusinessObject):
         return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
     
     
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
+    
     
 if __name__ == "__main__":
     

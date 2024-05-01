@@ -12,6 +12,14 @@ class UnitOfMeasurement(BusinessObject):
     def set_designation(self, designation):
         """Bezeichnung setzen"""
         self.__designation = designation
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
 
-"""-Wir könnten im Hintergrund alles in Gramm,ML oder Stück berechnen lassen
-   - Am einfachsten wäre es, die Maßeinheiten selbst vorzugeben und der User wählt eine davon aus (jedoch vielleicht nicht die Aufgabenstellung)"""
+"""Wir könnten im Hintergrund alles in Gramm,ML oder Stück berechnen lassen
+-Am einfachsten wäre es, die Maßeinheiten selbst vorzugeben und der User wählt eine davon aus (jedoch vielleicht nicht die Aufgabenstellung)
+"""
+   
+    
+

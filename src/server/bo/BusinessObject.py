@@ -21,3 +21,8 @@ class BusinessObject(ABC):
     def set_id(self,value):
         """Setzen der ID."""
         self._id = value
+        
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 

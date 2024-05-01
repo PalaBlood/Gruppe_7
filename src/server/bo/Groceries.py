@@ -14,6 +14,11 @@ class Groceries(BusinessObject):
         """Bezeichnung setzen"""
         self.__name = name
     
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
+    
         
 
 

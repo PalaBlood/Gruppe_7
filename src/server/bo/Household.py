@@ -1,13 +1,19 @@
 from BusinessObject import BusinessObject
 from User import User
 
+
+"""
+An Löschweitergabe denken (falls wir das Löschen eines Haushalts implementieren müssen)
+In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in diesen gelöscht werden 
+"""
+
 class Household(BusinessObject): 
     def __init__(self):
         super().__init__()
         self.__members = []
         
     
-    def get_members(self):
+    def get_members(self): 
         """User im Haushalt auslesen"""
         return self.__members
     
@@ -26,6 +32,11 @@ class Household(BusinessObject):
             print(f"User mit ID {user.get_id()} wurde aus dem Haushalt entfernt")
         else:
             print("User ist nicht im Haushalt registriert") 
+    
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
 
 
 

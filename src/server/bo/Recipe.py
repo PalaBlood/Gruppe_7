@@ -13,6 +13,8 @@ Noch zu erledigen:
 
 -creator bestimmen
 -"Schnittstelle" für den vergleich zu den Verfügbaren Lebensmitteln erzeugen (whs.über die Mapper?)
+- Rezept löschen
+
 
 Sonstitges: 
 Grundsätzlich funktioniert alles mit der Klasse "Lebensmitteleintrag", jedoch gibt es da noch ein paar Punkte, die wir ausprobieren müssen 
@@ -58,6 +60,10 @@ class Recipe(BusinessObject):
     def add_entry(self, entry=FootEntry):
         """Hinzufügen eines Lebensmitteleintrags"""
         self.__content.append(entry)
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
     
     
 
