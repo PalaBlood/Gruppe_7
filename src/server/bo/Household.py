@@ -1,6 +1,6 @@
-from server.bo import BusinessObject as bo
+from BusinessObject import BusinessObject 
 
-class Household(bo.BusinessObject): 
+class Household(BusinessObject): 
     def __init__(self) -> None:
         super().__init__()
         pass

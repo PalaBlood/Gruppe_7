@@ -1,7 +1,7 @@
-from server.bo import BusinessObject as bo
+from BusinessObject import BusinessObject 
 
 
-class Groceries(bo.BusinessObject):
+class Groceries(BusinessObject):
     def __init__(self) -> None:
         super().__init__()
         pass

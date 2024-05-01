@@ -1,6 +1,6 @@
-from server.bo import BusinessObject as bo
+from BusinessObject import BusinessObject 
 
-class UnitOfMesurement(bo.BusinessObject):
+class UnitOfMesurement(BusinessObject):
     def __init__(self) -> None:
         super().__init__()
         pass

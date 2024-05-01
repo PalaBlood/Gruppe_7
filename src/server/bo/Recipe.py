@@ -1,5 +1,5 @@
-from server.bo import BusinessObject as bo
-class Recipe(bo.BusinessObject): 
+from BusinessObject import BusinessObject 
+class Recipe(BusinessObject): 
     def __init__(self) -> None:
         super().__init__()
         pass
