@@ -11,6 +11,7 @@ class Household(BusinessObject):
         """User im Haushalt auslesen"""
         return self.__members
     
+    
     def add_member(self, user = User):
         """Hinzufügen eines Users"""
         if user.get_id() in self.__members:
@@ -24,10 +25,7 @@ class Household(BusinessObject):
             self.__members.remove(user.get_id())
             print(f"User mit ID {user.get_id()} wurde aus dem Haushalt entfernt")
         else:
-            print("User ist nicht im Haushalt registriert")
-            
-    
-    
+            print("User ist nicht im Haushalt registriert") 
 
 
 
@@ -47,7 +45,7 @@ if __name__ == "__main__":
     haushalt.remove_member(user1)
     print(haushalt.get_members())
     
-    #Hier war scheinbar ein Profi am Werk
+   
     
     
     

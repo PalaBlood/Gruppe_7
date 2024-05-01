@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+"""Es gibt eine Einfache möglichkeit, immer automatisch einen Key zu erzeugen sobald eine Intanz von BO bzw einer Tochterklasse 
+erstellt wird. Ich weiß nicht, ob das das DBM später automatisch übernimmt. Falls nicht müssen wir das hier implementieren.
+Damit würden wir dafür sorgen, dass jede Klasse automatisch einen einzigartigen Key erhält"""
 
 class BusinessObject(ABC):
     """Gemeinsame Basisklasse aller in diesem Projekt für die Umsetzung des Fachkonzepts relevanten Klassen.
