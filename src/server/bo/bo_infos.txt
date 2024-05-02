@@ -1,0 +1,11 @@
+- Einige Methoden der Klassen werden eigentlich in der Admin Klasse implementiert. Ich habs
+  aber erstaml so rein, bis ich das komplett verstanden habe. So kann ichs auch leichter testen 
+
+- Die Klasse Quantity macht irgendwie null Sinn ohne gehts bis jetzt perfekt. Lasst das erstmal steichen
+
+- "if not is none" evt verwenden bei abfragen (Video Thies 20.05 min. 25)
+
+
+
+
+
