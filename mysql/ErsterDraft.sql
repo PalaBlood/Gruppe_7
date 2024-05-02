@@ -3,12 +3,6 @@ CREATE DATABASE IF NOT EXISTS Sopra;
 
 USE Sopra;
 
-DROP TABLE IF EXISTS `Quantity`;
-CREATE TABLE Quantity (
-    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value FLOAT
-);
-
 DROP TABLE IF EXISTS `Unitofmeasurement`;
 CREATE TABLE Unitofmeasurement (
     ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -21,9 +15,8 @@ CREATE TABLE Groceries (
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
     Unitofmeasurement_ID INT,
-    quantity_ID INT,
+    Quantity INT,
     FOREIGN KEY (Unitofmeasurement_ID) REFERENCES Unitofmeasurement(ID),
-    FOREIGN KEY (quantity_ID) REFERENCES Quantity(ID)
 );
 
 DROP TABLE IF EXISTS `Recipe`;
