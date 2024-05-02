@@ -15,7 +15,7 @@ CREATE TABLE Groceries (
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
     Unitofmeasurement_ID INT,
-    Quantity INT,
+    Quantity FLOAT,
     FOREIGN KEY (Unitofmeasurement_ID) REFERENCES Unitofmeasurement(ID),
 );
 
