@@ -1,16 +1,27 @@
-from BusinessObject import BusinessObject
+from BusinessObject import BusinessObject 
 
 
 class Groceries(BusinessObject):
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
-        pass
+        self.__name = ""
+    
+    def get_name(self):
+        """Bezeichnung auslesen"""
+        return self.__name()
+    
+    def set_name(self, name):
+        """Bezeichnung setzen"""
+        self.__name = name
+    
+    
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        pass 
+    
+        
 
-tomato = Groceries()
 
 
 
-if __name__ == "__main__":
-    tomato.set_id(1)
 
-    print(tomato.get_id())
