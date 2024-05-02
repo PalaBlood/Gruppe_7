@@ -4,11 +4,22 @@ import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
 
+"""
+Die Mapper dienen dazu, dass wir aus den Tupeln (Relationen) der Datenbank Intanzen erzeugen können
+und umgekehrt.
+
+Jede Mapper Klasse erbt von Mapper.py. Hier sind die Grundlegenden Methoden drin, die jede andere Mapper 
+Klasse mindestens benötigen wird. 
+
+Ebenfalls wird hier die Verbindung zum Server erstellt, an der sich alle anderen Mapper Klassen bedienen können
+(in unserem Fall grad nur Lokal)
+"""
+
 class Mapper (AbstractContextManager, ABC):
 
     def __init__(self):
 
-        self._cursor = None
+        self._cursor = None #cursor: Wir laden nur den Teil der Relation, den wir benötigen 
 
 
     def __enter__(self):
@@ -21,11 +32,11 @@ class Mapper (AbstractContextManager, ABC):
         
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
-
+    def __exit__(self, exc_type, exc_val, exc_tb): #Verschiedene Abschlussarten 
+        """Verbindung mit der Datenbank trennen"""
         self._cursor.close()
 
-        """Verbindung mit der Datenbank trennen"""
+       
 
 
     """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.

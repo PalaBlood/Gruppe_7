@@ -30,7 +30,7 @@ class User(BusinessObject):
     
     
     
-    """Wir benötigen die Methode, damit wir das Obejekt in ein dict umwandeln.
+    """Wir benötigen die Methode, damit wir das Objekt in ein dict umwandeln.
     Da JSONs und Pyhton dicts gleich aufgebaut sind, können wir so Objekte verpacken und 
     versenden (oder entgegennehmen)"""
     @staticmethod

@@ -42,18 +42,18 @@ class Household(BusinessObject):
 
 if __name__ == "__main__": 
     
-    user1 = User()
-    user2 = User()
+    user1 = User() #Erstelle User
+    user2 = User() 
     user1.set_id(1)
     user2.set_id(223)
     
     
-    haushalt = Household()
-    haushalt.add_member(user1)
+    haushalt = Household() #Erstelle Haushalt
+    haushalt.add_member(user1) #User hinzufügen
     haushalt.add_member(user2)
     print(haushalt.get_members())
     
-    haushalt.remove_member(user1)
+    haushalt.remove_member(user1) #User entfernen
     print(haushalt.get_members())
     
    

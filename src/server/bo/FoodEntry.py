@@ -3,15 +3,14 @@ from Groceries import Groceries
 from UnitOfMeasurement import UnitOfMeasurement
 
 """Meine Überlegung ist, dass wir einen doch Lebensmitteleintrag als Intanz benötigen. Ein Rezept beinhaltet 
- dann Lebesnmitteleinträge genauso wie der Kühlschrank.
+ dann Lebensmitteleinträge, genauso wie der Kühlschrank.
  
  Der Kühlschrankinhalt oder ein Rezept bestehen also aus mehreren Lebensmitteleinträgen. Diese können erstellt, editiert und gelöscht werden.  
  
  Folgende offenen Fragen:
- - Wie können Lebensmitteleinträge verglichen werden (Lebensmittel, Menge und die Maßeinheit jeweils separat)
- - Wie können unterschiedliche Maßeinheiten verglichen werden?
+ - Wie können Lebensmitteleinträge verglichen werden? - Lebensmittel(Über ID), Menge(easy) und die Maßeinheit(Umrechnen) jeweils separat
  - Geht es auch ohne die Klasse Lebensmitteleintrag?
- - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen?
+ - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen? - hab Quantity als Klasse mal wegelassen. 
  """
 
 class FootEntry(BusinessObject):
@@ -61,15 +60,15 @@ class FootEntry(BusinessObject):
     
 if __name__ == "__main__":
     
-    gurke = Groceries()
+    gurke = Groceries() #Intanz erstellen vom Lebensmittel
     gurke.set_id(1)
     gurke.set_name("Gurke")
     
-    kilogramm = UnitOfMeasurement()
+    kilogramm = UnitOfMeasurement() #Intanz einer Maßeinheit erstellen
     kilogramm.set_id(2)
     kilogramm.set_designation("Kilogramm")
     
-    eintrag1 = FootEntry()
+    eintrag1 = FootEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben 
     eintrag1.set_id(3)
     eintrag1.set_grocerie(gurke)
     eintrag1.set_unit_of_measurement(kilogramm)
@@ -78,7 +77,9 @@ if __name__ == "__main__":
     
     print(eintrag1)
     	
-    #Da war ein Profi am Werk
+    """Aktuell arbeite ich bei den Instanzen von Groceries und uom mit deren IDs, weshalb bei der Ausführung
+    dessen ID angezeigt wird. Sobald wir mit der Adminklasse arbeiten, können wir die ID als Refernz nehmen, aber 
+    als Ausgabe dessen Bezeichnung"""
     
     
     
