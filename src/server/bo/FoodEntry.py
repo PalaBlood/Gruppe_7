@@ -21,7 +21,7 @@ class FootEntry(BusinessObject):
         self.__unit_of_measurement = None
 
     
-    def set_grocerie(self, groceries=Groceries):
+    def set_groceries(self, groceries=Groceries):
         """Eintrag des Lebensmittel anhand seiner ID""" 
         self.__groceries = groceries.get_id()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden. 
     
@@ -55,14 +55,18 @@ class FootEntry(BusinessObject):
     
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = FootEntry()
+        obj.set_id(dictionary["id"])
+        obj.set_groceries(dictionary["groceries"])
+        obj.set_unit_of_measurement["unit of measurement"]
+        
     
     
 if __name__ == "__main__":
     
     gurke = Groceries() #Intanz erstellen vom Lebensmittel
     gurke.set_id(1)
-    gurke.set_name("Gurke")
+    gurke.set_designation("Gurke")
     
     kilogramm = UnitOfMeasurement() #Intanz einer Maßeinheit erstellen
     kilogramm.set_id(2)
@@ -70,7 +74,7 @@ if __name__ == "__main__":
     
     eintrag1 = FootEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben 
     eintrag1.set_id(3)
-    eintrag1.set_grocerie(gurke)
+    eintrag1.set_groceries(gurke)
     eintrag1.set_unit_of_measurement(kilogramm)
     eintrag1.set_quanity(200)
     
