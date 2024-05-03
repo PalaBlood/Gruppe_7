@@ -1,4 +1,4 @@
-from BusinessObject import BusinessObject
+
 
 """Klasse für diverse Converter von Maßeinheiten, sodass eine Klasse UnitofMeasurement trivial wird und als Attribut eines Lebensmittels aufgeführt wird.
    Wir haben uns für diese Implementierung umentschieden"""
