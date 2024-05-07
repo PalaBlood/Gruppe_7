@@ -11,4 +11,5 @@ from .bo.Fridge import Fridge
 class HalilsTaverneAdministration (object):
 
     def __init__(self):
-        pass
+            print("test")
+        
