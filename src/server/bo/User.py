@@ -5,6 +5,8 @@ class User(BusinessObject):
         super().__init__()
         self.__nickname = "" #Der Nickname des Users
         self.__google_id = None #Google ID zur Authentifizierung
+        self.__first_name = "" #Vorname des Users
+        self.__last_name = "" #Nchname des Users
     
     def get_google_id(self):
         """Google ID Auslesen"""
@@ -21,6 +23,20 @@ class User(BusinessObject):
     def get_nickname(self):
         """nickname auslesen"""
         return self.__nickname
+    
+    def set_first_name(self, first_name):
+        self.__first_name = first_name
+
+    def get_first_name(self):
+        """first name auslesen"""
+        return self.__first_name
+
+    def set_last_name(self, last_name):
+        self.__last_name = last_name
+
+    def get_last_name(self):
+        """first name auslesen"""
+        return self.__last_name
     
     def delete_user(self): 
         """Hier müssen wir eine "Löschweitergabe implementieren (siehe Thies Videomitschnitt 20.05 min. 12.00)
