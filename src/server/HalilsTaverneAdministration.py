@@ -4,9 +4,12 @@ und dem Business Object Layer
 
 Ausführbefehle (create, delete usw.) aller Art werden hier untergebracht. """
 
+
 from .bo.User import User
 from .bo.Recipe import Recipe
 from .bo.Fridge import Fridge
+
+from .db.UserMapper import UserMapper
 
 class HalilsTaverneAdministration (object):
 
@@ -26,6 +29,31 @@ class HalilsTaverneAdministration (object):
 
           with UserMapper() as mapper:
                 return mapper.insert(user)
+          
+    #müssen noch richtig implementiert werden
+    def set_nickname(self, nick_name):
+        pass
+
+    def get_first_name(self, last_name):
+        pass
+
+    def get_last_name(self, last_name):
+        pass
+
+    def get_google_id(self, id):
+        pass #da noch unsicher wie zu implementieren
+
+    def get_all_users(self):
+        with UserMapper() as mapper:
+            return mapper.find_all()
+
+    def save_user(self, user):
+        with UserMapper() as mapper:
+            mapper.update(user)
+
+    def delete_user(self, user):
+        with UserMapper() as mapper:
+            mapper.delete(user)
           
 
 
