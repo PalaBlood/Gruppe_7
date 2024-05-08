@@ -51,6 +51,15 @@ class Recipe(BusinessObject):
             Verfügung stellen. Somit wäre eine beliebige Eingabe sowieso ausgeschlossen"""
         else:
             print("Fehler: Die Anzahl der Personen muss eine Ganzzahl sein.")
+
+
+    def set_creator(self, creator=User()):
+        self.__creator = creator
+
+    def get_creator(self):
+        return self.__creator
+
+
     
     
     def get_content(self):
