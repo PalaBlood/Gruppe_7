@@ -1,6 +1,9 @@
 from server.db.Mapper import Mapper
 from server.bo.Recipe import Recipe
-
+"""
+Der Mapper ist noch in bearbeitung, orientiert euch nicht daran, ich bin 
+mir noch unsicher, ob das so funktionieren wird!!
+"""
 class RecipeMapper(Mapper):
     def __init__(self):
         super().__init__()
