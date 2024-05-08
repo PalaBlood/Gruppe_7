@@ -1,4 +1,4 @@
-from bo.User import User
+from User import User
 from Mapper import Mapper
 
 
