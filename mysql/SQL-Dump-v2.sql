@@ -22,17 +22,15 @@ CREATE TABLE Groceries (
 
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
-    Unitofmeasurement_ID INT,
-    Quantity FLOAT,
-    FOREIGN KEY (Unitofmeasurement_ID) REFERENCES Unitofmeasurement(ID)
+    Quantity FLOAT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Groceries (designation, Unitofmeasurement_ID, Quantity) VALUES
-('Apples', 1, 2.5),
-('Milk', 3, 1),
-('Flour', 3, 0.5),
-('Sugar', 2, 500);
+INSERT INTO Groceries (designation, Quantity) VALUES
+('Apples', 2.5),
+('Milk',  1),
+('Flour',  0.5),
+('Sugar',  500);
 
 
 
@@ -99,17 +97,15 @@ DROP TABLE IF EXISTS `ShoppingList`;
 CREATE TABLE ShoppingList (
     shopping_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ingredient VARCHAR(255),
-    quantity_needed FLOAT,
-    Unitofmeasurement_ID INT,
-    FOREIGN KEY (Unitofmeasurement_ID) REFERENCES Unitofmeasurement(ID)
+    quantity_needed FLOAT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO ShoppingList(ingredient, quantity_needed, Unitofmeasurement_ID) VALUES
-('Flour', 0.5, 9)
+INSERT INTO ShoppingList(ingredient, quantity_needed) VALUES
+('Flour', 0.5);
 
 
-DROP TABLE IF EXISTS 'FoodEntry';
+DROP TABLE IF EXISTS `FoodEntry`;
 CREATE TABLE FoodEntry (
     FoodEntry_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Quantity FLOAT,
@@ -118,5 +114,9 @@ CREATE TABLE FoodEntry (
     FOREIGN KEY(Groceries_ID) REFERENCES Groceries(Groceries_ID),
     FOREIGN KEY(Fridge_ID) REFERENCES Fridge(Fridge_ID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO FoodEntry(Quantity) VALUES
+('200')
 
 

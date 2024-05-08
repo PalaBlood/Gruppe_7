@@ -15,6 +15,7 @@ Ebenfalls wird hier die Verbindung zum Server erstellt, an der sich alle anderen
 (in unserem Fall grad nur Lokal)
 """
 
+
 class Mapper (AbstractContextManager, ABC):
 
     def __init__(self):
@@ -24,20 +25,16 @@ class Mapper (AbstractContextManager, ABC):
 
     def __enter__(self):
 
-        """Erstmal nur lokale verbindung --> User, Password, Host sowie Database individuell. Cloud Szenario wird später implementiert"""
 
-        self._cursor = connector.connect(user="root", password="mypassword", 
+        self._cursor = connector.connect(user="root", password="9902", 
                                       host="localhost", 
-                                      database="mydatabase")
+                                      database="sopra")
         
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb): #Verschiedene Abschlussarten 
         """Verbindung mit der Datenbank trennen"""
         self._cursor.close()
-
-       
-
 
     """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.
     Hier dienen sie als gemeinsame Schnittstelle für alle Mapperklassen und geben gleichzeitig vor, dass alle Subklassen folgende Methoden bereitstellen müssen"""
@@ -66,3 +63,9 @@ class Mapper (AbstractContextManager, ABC):
     def delete(self, object):
 
         pass
+
+
+
+
+
+
