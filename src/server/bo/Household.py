@@ -1,5 +1,5 @@
 from BusinessObject import BusinessObject
-from User import User
+from src.server.db.User import User
 
 
 """

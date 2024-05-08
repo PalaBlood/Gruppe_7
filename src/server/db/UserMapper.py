@@ -1,5 +1,6 @@
-from User import User
 from Mapper import Mapper
+from bo.User import User
+
 
 
 class UserMapper (Mapper):
@@ -15,7 +16,7 @@ class UserMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (user_id,nick_name,google_id,Name,last_name) in tuples:
-            user = User()
+            user = ()
             user.set_User_id(user_id)
             user.set_first_name(Name)
             user.set_last_name(last_name)

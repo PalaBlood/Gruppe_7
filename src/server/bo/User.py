@@ -1,4 +1,4 @@
-from BusinessObject import BusinessObject 
+from BusinessObject import BusinessObject
 
 class User(BusinessObject): 
     def __init__(self):
