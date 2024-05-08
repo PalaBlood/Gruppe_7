@@ -5,4 +5,8 @@
 
 - "if not is none" evt verwenden bei abfragen (Video Thies 20.05 min. 25)
 
+<<<<<<< HEAD
+=======
+Test
+>>>>>>> main
 

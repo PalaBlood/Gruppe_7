@@ -1,5 +1,5 @@
 from BusinessObject import BusinessObject
-from User import User
+from src.server.db.User import User
 
 
 """
@@ -36,7 +36,8 @@ class Household(BusinessObject):
     
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = Household()
+        obj.set_id(dictionary["id"])
 
 
 
