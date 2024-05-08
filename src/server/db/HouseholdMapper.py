@@ -67,15 +67,15 @@ class HouseholdMapper(Mapper):
         else:
             return None
 
-        """for (id, members) in tuples:
-            household = Household()
-            household._Household__members = members.split(",") if members else []
-            result.append(household)
+        #for (id, members) in tuples:
+        #   household = Household()
+        #   household._Household__members = members.split(",") if members else []
+        #   result.append(household)
 
-        self._cnx.commit()
-        cursor.close()
+        #self._cnx.commit()
+        #cursor.close()
 
-        return result""" #Gibt Liste von mehreren Haushalten zurück, ich weiß nicht welches wir brauchen, mit tuples = cursor.fetchall()
+        #return result -Gibt Liste von mehreren Haushalten zurück, ich weiß nicht welches wir brauchen, mit tuples = cursor.fetchall()
 
     def insert(self, household):
         
