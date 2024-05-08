@@ -10,25 +10,25 @@ In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in
 class Household(BusinessObject): 
     def __init__(self):
         super().__init__()
-        self.__members = []
+        self.__users = []
         
     
-    def get_members(self): 
+    def get_users(self): 
         """User im Haushalt auslesen"""
-        return self.__members
+        return self.__users
     
     
-    def add_member(self, user = User):
+    def add_user(self, user = User):
         """Hinzufügen eines Users"""
-        if user.get_id() in self.__members:
+        if user.get_id() in self.__users:
             print("User ist bereits im Haushalt angemeldet")
         else:
-            self.__members.append(user.get_id())
+            self.__users.append(user.get_id())
             
-    def remove_member(self, user=User):
+    def remove_user(self, user=User):
         """Entfernen eines Users"""
-        if user.get_id() in self.get_members():
-            self.__members.remove(user.get_id())
+        if user.get_id() in self.get_users():
+            self.__users.remove(user.get_id())
             print(f"User mit ID {user.get_id()} wurde aus dem Haushalt entfernt")
         else:
             print("User ist nicht im Haushalt registriert") 
@@ -49,12 +49,12 @@ if __name__ == "__main__":
     
     
     haushalt = Household() #Erstelle Haushalt
-    haushalt.add_member(user1) #User hinzufügen
-    haushalt.add_member(user2)
-    print(haushalt.get_members())
+    haushalt.add_user(user1) #User hinzufügen
+    haushalt.add_user(user2)
+    print(haushalt.get_users())
     
-    haushalt.remove_member(user1) #User entfernen
-    print(haushalt.get_members())
+    haushalt.remove_user(user1) #User entfernen
+    print(haushalt.get_users())
     
    
     
