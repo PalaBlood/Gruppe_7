@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS Sopra;
 
 USE Sopra;
 
-DROP TABLE IF EXISTS `Unitofmeasurement`;
+/*DROP TABLE IF EXISTS `Unitofmeasurement`;
 CREATE TABLE Unitofmeasurement (
     ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255)
@@ -15,7 +15,7 @@ INSERT INTO Unitofmeasurement (designation) VALUES
 ('Gram'),
 ('Liter'),
 ('Milliliter');
-
+*/
 
 DROP TABLE IF EXISTS `Groceries`;
 CREATE TABLE Groceries (
@@ -107,5 +107,16 @@ CREATE TABLE ShoppingList (
 
 INSERT INTO ShoppingList(ingredient, quantity_needed, Unitofmeasurement_ID) VALUES
 ('Flour', 0.5, 9)
+
+
+DROP TABLE IF EXISTS 'FoodEntry';
+CREATE TABLE FoodEntry (
+    FoodEntry_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Quantity FLOAT,
+    Groceries_ID INT,
+    Fridge_ID INT,
+    FOREIGN KEY(Groceries_ID) REFERENCES Groceries(Groceries_ID),
+    FOREIGN KEY(Fridge_ID) REFERENCES Fridge(Fridge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
