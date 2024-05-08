@@ -13,7 +13,7 @@ class RecipeMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT * FROM Recipe")
         tuples = cursor.fetchall()
-        cursor.close()
+
 
         for (id, title, number_of_persons, creator) in tuples:
             recipe = Recipe()
@@ -28,6 +28,9 @@ class RecipeMapper(Mapper):
                 recipe.add_entry(food_entry)
 
             result.append(recipe)
+
+        self._cnx.commit()
+        cursor.close()
 
         return result
 
