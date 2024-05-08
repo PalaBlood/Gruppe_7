@@ -51,14 +51,29 @@ class FootEntry(BusinessObject):
     def __str__(self) -> str:
         """Beschreibung des Eintrags"""
         return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
-    
-    
+
+
+
+
+
+#Ansatz, wie man die Einträge vergleichen könnte
+#Jedoch müssten wir dann trz noch schauen, wie wir es mit der Maßeinheit machen
+    """def equals(self, other_food_entry):
+        if not isinstance(other_food_entry, FoodEntry):
+            return False
+        return (self.__groceries == other_food_entry.get_groceries() and
+                self.__quantity == other_food_entry.get_quantity() and
+                self.__unit_of_measurement == other_food_entry.get_unit_of_measurement())"""
+
+
     @staticmethod
     def form_dict(dictionary=dict()):
         obj = FootEntry()
         obj.set_id(dictionary["id"])
         obj.set_groceries(dictionary["groceries"])
         obj.set_unit_of_measurement["unit of measurement"]
+
+
         
     
     

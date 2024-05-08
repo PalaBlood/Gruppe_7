@@ -36,5 +36,7 @@ class RecipeMapper(Mapper):
 
     def find_food_entries_for_recipe(self, recipe_id):
         # Implementiere Logik zum Laden von Lebensmitteleinträgen für ein bestimmtes Rezept
+        #Hier könnte man eine Logik implementieren, die alle FoodEntry aus einer anderen Relation raussucht und hier einspeichert
+        #Die Funktion könnte dann unter anderem bei "find_all" aufgerufen werden, um alle FoodEntrys des jeweiligen Rezeptes zu laden.
         pass
 
