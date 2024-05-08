@@ -36,7 +36,8 @@ class Household(BusinessObject):
     
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = Household()
+        obj.set_id(dictionary["id"])
 
 
 

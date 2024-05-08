@@ -51,6 +51,15 @@ class Recipe(BusinessObject):
             Verfügung stellen. Somit wäre eine beliebige Eingabe sowieso ausgeschlossen"""
         else:
             print("Fehler: Die Anzahl der Personen muss eine Ganzzahl sein.")
+
+
+    def set_creator(self, creator=User()):
+        self.__creator = creator
+
+    def get_creator(self):
+        return self.__creator
+
+
     
     
     def get_content(self):
@@ -61,9 +70,15 @@ class Recipe(BusinessObject):
         """Hinzufügen eines Lebensmitteleintrags"""
         self.__content.append(entry)
     
+    
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = Recipe()
+        obj.set_id(dictionary["id"])
+        obj.set_title(dictionary["title"])
+        obj.set_number_of_persons(dictionary["number of persons"])
+        obj.add_entry(dictionary["food entry"])
+
     
     
 
