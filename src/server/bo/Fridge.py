@@ -1,6 +1,6 @@
-from BusinessObject import BusinessObject
-from Groceries import Groceries
-from Quantity import Quantity
+from server.bo import BusinessObject
+from server.bo.Groceries import Groceries
+from server.bo.Quantity import Quantity
 
 
 """Müssen uns aufjedenfall übelegen welche Methoden Fridge beinhalten soll. Schaut aufjedenfall nochmal drüber."""

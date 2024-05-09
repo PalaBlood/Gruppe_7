@@ -1,5 +1,5 @@
-from BusinessObject import BusinessObject
-from User import User
+from server.bo import BusinessObject
+from server.bo.User import User
 
 
 """

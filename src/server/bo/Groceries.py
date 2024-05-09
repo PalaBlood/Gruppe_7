@@ -1,4 +1,4 @@
-from BusinessObject import BusinessObject 
+from server.bo import BusinessObject 
 
 
 
@@ -6,79 +6,72 @@ from BusinessObject import BusinessObject
 Hab ausversehen den Fridge Code Teilweise hier reingepackt, aber ich weiß noch nicht welche Methoden jetzt
 letzendlich von welcher Klasse ausgeführt werden sollen, die sollten wir uns anschauen und aufteilen/verschieben etc..."""
 
+from enum import Enum
+from server.bo import BusinessObject
+
+class UnitOfMeasurement(Enum): 
+    """Müssen wir uns aufjedenfall nochmal anschauen!!!!!! In diesem speziellen Fall wird die Enum-Klasse verwendet, 
+    um die Maßeinheiten für die Lebensmittel zu definieren, damit Sie nicht jedes Mal dieselben Werte manuell eingeben müssen. 
+    Sie können dann einfach die entsprechende Maßeinheit aus der Enumeration auswählen."""
+    
+    """Enumeration zur Darstellung von Maßeinheiten."""
+    
+    PIECE = "Stück" #Hier kommen die Maßeinheiten rein die wir wollen, weiß nicht ob UnitOfMeasurement deswegen wegfällt oder wir es dort reinschreiben müssen
+    GRAM = "Gramm"
+    LITRE = "Liter"
+
 class Groceries(BusinessObject):
+    
+    """Klasse zur Repräsentation von Lebensmitteln (Groceries)."""
+
     def __init__(self):
+        
+        """Konstruktor."""
+        
         super().__init__()
-        self.__groceries_list = []
-        
-        """Erstellt leere Liste für Lebensmittel im Kühlschrank."""
-    
-    def get_groceries(self):
-        
-        """Gibt die Lebensmittel im Kühlschrank zurück."""
-        
-        return self.__groceries_list
-    
-    def add_groceries(self, groceries, quantity):
-        
-        """Fügt Lebensmittel mit einer bestimmten Menge zum Kühlschrank hinzu."""
-        
-        self.__groceries_list.append({'groceries': groceries, 'quantity': quantity})
+        self.__designation = ""  # Bezeichnung des Lebensmittels
+        self.__unit_of_measurement = None  # Maßeinheit des Lebensmittels
 
-    def remove_groceries(self, groceries, quantity):
+    def get_designation(self) -> str:
         
-        """Entfernt eine bestimmte Menge von Lebensmitteln aus dem Kühlschrank."""
+        """Gibt die Bezeichnung des Lebensmittels zurück."""
         
-        for item in self.__groceries_list:
-            if item['groceries'] == groceries:
-                if item['quantity'] >= quantity:
-                    item['quantity'] -= quantity
-                    if item['quantity'] == 0:
-                        self.__groceries_list.remove(item)
-                    return
-                else:
-                    print("Nicht genug Lebensmittel im Kühlschrank.")
-                    return
-        print("Lebensmittel nicht im Kühlschrank gefunden.")
+        return self.__designation
 
-    def update_groceries_quantity(self, groceries, new_quantity):
-       
-        """Aktualisiert die Menge eines bestimmten Lebensmittels im Kühlschrank."""
-       
-        for item in self.__groceries_list:
-            if item['groceries'] == groceries:
-                item['quantity'] = new_quantity
-                return
-        print("Lebensmittel nicht im Kühlschrank gefunden.")
-    
-    def find_groceries(self, groceries):
+    def set_designation(self, designation: str):
         
-        """Sucht nach einem bestimmten Lebensmittel im Kühlschrank."""
+        """Setzt die Bezeichnung des Lebensmittels."""
         
-        for item in self.__groceries_list:
-            if item['groceries'] == groceries:
-                return item
-        print("Lebensmittel nicht im Kühlschrank gefunden.")
-        return None
-    
-    def clear_fridge(self):
+        self.__designation = designation
+
+    def get_unit_of_measurement(self) -> UnitOfMeasurement:
         
-        """Löscht alle Lebensmittel im Kühlschrank."""
+        """Gibt die Maßeinheit des Lebensmittels zurück."""
         
-        self.__groceries_list = []
+        return self.__unit_of_measurement
 
-if __name__ == "__main__":
-    groceries = Groceries()  # Ein neues Lebensmittel-Objekt wird erstellt
+    def set_unit_of_measurement(self, unit_of_measurement: UnitOfMeasurement):
+        
+        """Setzt die Maßeinheit des Lebensmittels."""
+        
+        self.__unit_of_measurement = unit_of_measurement
 
-    # Beispiel: Lebensmittel werden hinzugefügt
-    groceries.add_groceries('Milch', 2)
-    groceries.add_groceries('Eier', 6)
+    def __str__(self) -> str:
+        
+        """Erzeugt eine textuelle Darstellung des Lebensmittels."""
+        
+        return "Groceries: {}, {}".format(self.get_designation(), self.get_unit_of_measurement().value)
 
-    # Beispiel: Lebensmittel werden entfernt
-    groceries.remove_groceries('Milch', 1)
-
-    # Beispiel: Wörterbuch der Lebensmittel wird ausgegeben
-    print(groceries.get_groceries())
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        
+        """Umwandelt ein Python dict() in ein Groceries-Objekt."""
+        
+        obj = Groceries()
+        obj.set_id(dictionary["id"])  # Teil von BusinessObject
+        obj.set_designation(dictionary["designation"])
+        obj.set_unit_of_measurement(UnitOfMeasurement(dictionary["unit_of_measurement"]))
+        return obj
     
     #def get_name(self):
     #    """Bezeichnung auslesen"""
