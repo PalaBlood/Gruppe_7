@@ -1,6 +1,6 @@
-from BusinessObject import BusinessObject
-from Groceries import Groceries
-from UnitOfMeasurement import UnitOfMeasurement
+from server.bo import BusinessObject
+from server.bo.Groceries import Groceries
+from server.bo.UnitOfMeasurement import UnitOfMeasurement
 
 """Meine Überlegung ist, dass wir einen doch Lebensmitteleintrag als Intanz benötigen. Ein Rezept beinhaltet 
  dann Lebensmitteleinträge, genauso wie der Kühlschrank.
