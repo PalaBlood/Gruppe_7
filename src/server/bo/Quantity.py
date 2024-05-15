@@ -1,4 +1,4 @@
-#from server.bo import BusinessObject 
+from BusinessObject import BusinessObject 
 """Imports muss jeder für sich anpassen."""
 
 """Aktuell sehe ich keinen Sinn für die Klasse - Sie ist in der DB immer Maximal ein Attribut und

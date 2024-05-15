@@ -1,3 +1,5 @@
+from Mapper import Mapper
+from User import User
 """Imports muss jeder für sich anpassen."""
 
 class UserMapper (Mapper):

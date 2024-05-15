@@ -1,3 +1,5 @@
+from BusinessObject import BusinessObject
+from User import User
 """Imports muss jeder für sich anpassen."""
 
 """

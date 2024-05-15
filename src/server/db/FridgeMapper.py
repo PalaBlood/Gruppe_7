@@ -1,5 +1,7 @@
-#from server.bo.Fridge import Fridge
-#from server.db.Mapper import Mapper
+from Fridge import Fridge
+from Groceries import Groceries
+from Mapper import Mapper
+
 """Imports muss jeder für sich anpassen."""
 
 

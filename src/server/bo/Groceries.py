@@ -1,4 +1,6 @@
-#from server.bo import BusinessObject 
+from enum import Enum
+from BusinessObject import BusinessObject 
+from UnitOfMeasurement import UnitOfMeasurement
 """Imports muss jeder für sich anpassen."""
 
 
@@ -6,8 +8,6 @@
 Hab ausversehen den Fridge Code Teilweise hier reingepackt, aber ich weiß noch nicht welche Methoden jetzt
 letzendlich von welcher Klasse ausgeführt werden sollen, die sollten wir uns anschauen und aufteilen/verschieben etc..."""
 
-from enum import Enum
-from server.bo import BusinessObject
 
 class UnitOfMeasurement(Enum): 
     """Müssen wir uns aufjedenfall nochmal anschauen!!!!!! In diesem speziellen Fall wird die Enum-Klasse verwendet, 

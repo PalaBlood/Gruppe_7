@@ -1,5 +1,5 @@
-#from server.bo.Household import Household
-#from server.db.Mapper import Mapper
+from Household import Household
+from Mapper import Mapper
 """Imports muss jeder für sich anpassen."""
 
 """Schaut aufjedenfall drüber. Die Dokumentation ist zum Teil aus dem Bankbeispiel und GPT erklärt usw.
