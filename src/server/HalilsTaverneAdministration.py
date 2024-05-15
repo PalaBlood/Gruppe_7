@@ -4,12 +4,11 @@ und dem Business Object Layer
 
 Ausführbefehle (create, delete usw.) aller Art werden hier untergebracht. """
 
-
-from .bo.User import User
-from .bo.Recipe import Recipe
-from .bo.Fridge import Fridge
-
-from .db.UserMapper import UserMapper
+"""Imports muss jeder für sich anpassen."""
+from server.bo.User import User
+from server.bo.Recipe import Recipe
+from server.bo.Fridge import Fridge
+from server.db.UserMapper import UserMapper
 
 class HalilsTaverneAdministration (object):
 

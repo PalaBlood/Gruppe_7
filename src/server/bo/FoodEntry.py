@@ -1,6 +1,7 @@
 from BusinessObject import BusinessObject
 from Groceries import Groceries
 from UnitOfMeasurement import UnitOfMeasurement
+"""Imports muss jeder für sich anpassen."""
 
 """Meine Überlegung ist, dass wir einen doch Lebensmitteleintrag als Intanz benötigen. Ein Rezept beinhaltet 
  dann Lebensmitteleinträge, genauso wie der Kühlschrank.
