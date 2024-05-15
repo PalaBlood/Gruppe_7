@@ -1,5 +1,3 @@
-from bo.User import User
-from Mapper import Mapper
 
 
 class UserMapper (Mapper):
