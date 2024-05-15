@@ -1,5 +1,3 @@
-#from server.bo import BusinessObject
-#from server.bo.User import User
 """Imports muss jeder für sich anpassen."""
 
 """
