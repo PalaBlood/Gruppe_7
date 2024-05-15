@@ -1,4 +1,4 @@
-from Household import Household
+from server.bo.Household import Household
 from Mapper import Mapper
 """Imports muss jeder für sich anpassen."""
 

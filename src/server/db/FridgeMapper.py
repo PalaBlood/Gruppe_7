@@ -1,5 +1,5 @@
-from Fridge import Fridge
-from Groceries import Groceries
+from server.bo.Fridge import Fridge
+from server.bo.Groceries import Groceries
 from Mapper import Mapper
 
 """Imports muss jeder für sich anpassen."""

@@ -1,4 +1,4 @@
-from Groceries import Groceries
+from server.bo.Groceries import Groceries
 from Mapper import Mapper
 """Imports muss jeder für sich anpassen."""
 
