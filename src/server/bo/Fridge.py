@@ -1,7 +1,7 @@
-from server.bo import BusinessObject
-from server.bo.Groceries import Groceries
-from server.bo.Quantity import Quantity
-
+#from server.bo import BusinessObject
+#from server.bo.Groceries import Groceries
+#from server.bo.Quantity import Quantity
+"""Imports muss jeder für sich anpassen."""
 
 """Müssen uns aufjedenfall übelegen welche Methoden Fridge beinhalten soll. Schaut aufjedenfall nochmal drüber."""
 

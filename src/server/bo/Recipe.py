@@ -1,6 +1,6 @@
-from server.bo import BusinessObject
-from server.bo.User import User 
-from server.bo.FoodEntry import FootEntry
+from BusinessObject import BusinessObject
+from User import User 
+from FoodEntry import FootEntry
 
 """Ein Rezept hat: 
 -einen Titel

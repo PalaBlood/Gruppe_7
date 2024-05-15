@@ -1,5 +1,5 @@
-from server.bo import BusinessObject 
-
+#from server.bo import BusinessObject 
+"""Imports muss jeder für sich anpassen."""
 
 
 """Müssen uns aufjedenfall die Methoden überlegen die wir implementieren wollen.

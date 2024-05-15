@@ -1,6 +1,6 @@
-from server.bo.Groceries import Groceries
-from server.db.Mapper import Mapper
-
+#from server.bo.Groceries import Groceries
+#from server.db.Mapper import Mapper
+"""Imports muss jeder für sich anpassen."""
 
 class GroceriesMapper(Mapper):
     

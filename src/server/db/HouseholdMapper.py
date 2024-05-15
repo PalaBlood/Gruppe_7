@@ -1,6 +1,6 @@
-from server.bo.Household import Household
-from server.db.Mapper import Mapper
-
+#from server.bo.Household import Household
+#from server.db.Mapper import Mapper
+"""Imports muss jeder für sich anpassen."""
 
 """Schaut aufjedenfall drüber. Die Dokumentation ist zum Teil aus dem Bankbeispiel und GPT erklärt usw.
 Falls wir diese umschreiben wollen sollten wir dies auch nicht vergessen. Ich weiß nicht ob wir am Ende im Code

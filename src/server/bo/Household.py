@@ -1,6 +1,6 @@
-from server.bo import BusinessObject
-from server.bo.User import User
-
+#from server.bo import BusinessObject
+#from server.bo.User import User
+"""Imports muss jeder für sich anpassen."""
 
 """
 An Löschweitergabe denken (falls wir das Löschen eines Haushalts implementieren müssen)
