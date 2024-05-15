@@ -4,9 +4,6 @@ from UnitOfMeasurement import UnitOfMeasurement
 """Imports muss jeder für sich anpassen."""
 
 
-"""Müssen uns aufjedenfall die Methoden überlegen die wir implementieren wollen.
-Hab ausversehen den Fridge Code Teilweise hier reingepackt, aber ich weiß noch nicht welche Methoden jetzt
-letzendlich von welcher Klasse ausgeführt werden sollen, die sollten wir uns anschauen und aufteilen/verschieben etc..."""
 
 
 class UnitOfMeasurement(Enum): 

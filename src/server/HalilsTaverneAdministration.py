@@ -30,17 +30,6 @@ class HalilsTaverneAdministration (object):
                 return mapper.insert(user)
           
     #müssen noch richtig implementiert werden
-    def set_nickname(self, nick_name):
-        pass
-
-    def get_first_name(self, last_name):
-        pass
-
-    def get_last_name(self, last_name):
-        pass
-
-    def get_google_id(self, id):
-        pass #da noch unsicher wie zu implementieren
 
     def get_all_users(self):
         with UserMapper() as mapper:

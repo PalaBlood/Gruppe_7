@@ -1,6 +1,5 @@
 from BusinessObject import BusinessObject
-from User import User
-"""Imports muss jeder für sich anpassen."""
+
 
 """
 An Löschweitergabe denken (falls wir das Löschen eines Haushalts implementieren müssen)
@@ -36,7 +35,8 @@ class Household(BusinessObject):
     
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = Household()
+        obj.set_id(dictionary["id"])
 
 
 

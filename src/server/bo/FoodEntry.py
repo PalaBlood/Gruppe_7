@@ -22,7 +22,7 @@ class FootEntry(BusinessObject):
         self.__unit_of_measurement = None
 
     
-    def set_grocerie(self, groceries=Groceries):
+    def set_groceries(self, groceries=Groceries):
         """Eintrag des Lebensmittel anhand seiner ID""" 
         self.__groceries = groceries.get_id()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden. 
     
@@ -52,18 +52,37 @@ class FootEntry(BusinessObject):
     def __str__(self) -> str:
         """Beschreibung des Eintrags"""
         return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
-    
-    
+
+
+
+
+
+#Ansatz, wie man die Einträge vergleichen könnte
+#Jedoch müssten wir dann trz noch schauen, wie wir es mit der Maßeinheit machen
+    """def equals(self, other_food_entry):
+        if not isinstance(other_food_entry, FoodEntry):
+            return False
+        return (self.__groceries == other_food_entry.get_groceries() and
+                self.__quantity == other_food_entry.get_quantity() and
+                self.__unit_of_measurement == other_food_entry.get_unit_of_measurement())"""
+
+
     @staticmethod
     def form_dict(dictionary=dict()):
-        pass 
+        obj = FootEntry()
+        obj.set_id(dictionary["id"])
+        obj.set_groceries(dictionary["groceries"])
+        obj.set_unit_of_measurement["unit of measurement"]
+
+
+        
     
     
 if __name__ == "__main__":
     
     gurke = Groceries() #Intanz erstellen vom Lebensmittel
     gurke.set_id(1)
-    gurke.set_name("Gurke")
+    gurke.set_designation("Gurke")
     
     kilogramm = UnitOfMeasurement() #Intanz einer Maßeinheit erstellen
     kilogramm.set_id(2)
@@ -71,7 +90,7 @@ if __name__ == "__main__":
     
     eintrag1 = FootEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben 
     eintrag1.set_id(3)
-    eintrag1.set_grocerie(gurke)
+    eintrag1.set_groceries(gurke)
     eintrag1.set_unit_of_measurement(kilogramm)
     eintrag1.set_quanity(200)
     

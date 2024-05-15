@@ -1,4 +1,4 @@
-from BusinessObject import BusinessObject 
+from BusinessObject import BusinessObject
 
 class User(BusinessObject): 
     def __init__(self):
@@ -7,13 +7,18 @@ class User(BusinessObject):
         self.__google_id = None #Google ID zur Authentifizierung
         self.__first_name = "" #Vorname des Users
         self.__last_name = "" #Nchname des Users
+        self.__User_id = ""
+
+    def set_User_id(self, value):
+        self.__User_id = value
     
     def get_google_id(self):
         """Google ID Auslesen"""
         return self.__google_id
     
-    def set_google_id(self):
-        pass #Hier müssen wir herausfinden wie die Google ID verwiesen werden kann
+    def set_google_id(self, google_id):
+        
+        self.__google_id = google_id
     
     
     def set_nickname(self, nickname): 
