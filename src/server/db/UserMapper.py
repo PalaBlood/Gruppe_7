@@ -32,5 +32,9 @@ zugriff = UserMapper()
 
 ergebnis = zugriff.find_all()
 for user in ergebnis:
-    print(user.get_nickname())
-    print(user.get_google_id())
+    print("User ID:", user.get_User_id())
+    print("Nickname:", user.get_nickname())
+    print("First Name:", user.get_first_name())
+    print("Last Name:", user.get_last_name())
+    print("Google ID:", user.get_google_id())
+    print()

@@ -9,6 +9,10 @@ class User(BusinessObject):
         self.__last_name = "" #Nchname des Users
         self.__User_id = ""
 
+
+    def get_User_id(self):
+        return  self.__User_id
+
     def set_User_id(self, value):
         self.__User_id = value
     
