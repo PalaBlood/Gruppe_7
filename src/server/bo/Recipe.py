@@ -1,5 +1,5 @@
 from BusinessObject import BusinessObject
-from src.server.db.User import User 
+from server.db.User import User 
 from FoodEntry import FootEntry
 
 """Ein Rezept hat: 

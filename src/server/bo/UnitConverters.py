@@ -63,5 +63,5 @@ class UnitConverter:
 
 converter = UnitConverter()
 
-print(converter.convert_to_grams(10, 'kilogram'))
+print(converter.convert_to_grams(1, 'kilogram'))
 print(converter.convert_to_milliliters(10, 'cups'))

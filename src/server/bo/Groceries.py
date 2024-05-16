@@ -6,16 +6,6 @@ from UnitOfMeasurement import UnitOfMeasurement
 
 
 
-class UnitOfMeasurement(Enum): 
-    """Müssen wir uns aufjedenfall nochmal anschauen!!!!!! In diesem speziellen Fall wird die Enum-Klasse verwendet, 
-    um die Maßeinheiten für die Lebensmittel zu definieren, damit Sie nicht jedes Mal dieselben Werte manuell eingeben müssen. 
-    Sie können dann einfach die entsprechende Maßeinheit aus der Enumeration auswählen."""
-    
-    """Enumeration zur Darstellung von Maßeinheiten."""
-    
-    PIECE = "Stück" #Hier kommen die Maßeinheiten rein die wir wollen, weiß nicht ob UnitOfMeasurement deswegen wegfällt oder wir es dort reinschreiben müssen
-    GRAM = "Gramm"
-    LITRE = "Liter"
 
 class Groceries(BusinessObject):
     
@@ -26,4 +16,13 @@ class Groceries(BusinessObject):
         """Konstruktor."""
         
         super().__init__()
-        
+        self.__designation = None
+    
+    def get_designation(self): 
+        return self.__designation
+    
+    def set_designation(self, designation):
+        self.__designation = designation
+    
+    
+    
