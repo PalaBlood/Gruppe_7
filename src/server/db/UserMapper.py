@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 
 from Mapper import Mapper
+=======
+>>>>>>> 76f8606d4dd42b3cef753d4005459d219f6e5204
 
 class User(): 
     def __init__(self):
