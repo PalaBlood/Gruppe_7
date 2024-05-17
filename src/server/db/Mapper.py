@@ -32,7 +32,7 @@ class Mapper(AbstractContextManager, ABC):
     Hier dienen sie als gemeinsame Schnittstelle für alle Mapperklassen und geben gleichzeitig vor, dass alle Subklassen folgende Methoden bereitstellen müssen"""
 
 
-"""  @abstractmethod 
+    @abstractmethod 
     def find_all(self):
 
         pass
@@ -56,4 +56,3 @@ class Mapper(AbstractContextManager, ABC):
     def delete(self, object):
 
         pass
-"""

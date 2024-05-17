@@ -1,4 +1,4 @@
-from Gruppe_7.src.server.bo.User import User
+from bo.User import User
 from Mapper import Mapper
 
 
@@ -125,3 +125,8 @@ class UserMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+
+
+Users = UserMapper
+
+results = Users.find_all()
