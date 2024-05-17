@@ -1,7 +1,6 @@
-Diese tabellen benötigen wir unteranderem
+Diese tabellen benötigen wir (mindestens)
 
 
-Tabelle users
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nickname VARCHAR(255),
@@ -11,7 +10,7 @@ CREATE TABLE users (
     user_id VARCHAR(255)
 );
 
-Tabelle groceries
+
 CREATE TABLE groceries (
     id INT AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
@@ -19,7 +18,7 @@ CREATE TABLE groceries (
     quantity FLOAT
 );
 
-Tabelle recipes
+
 CREATE TABLE recipes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255),
@@ -29,7 +28,6 @@ CREATE TABLE recipes (
 );
 
 
-Tabelle recipe_ingredients
 CREATE TABLE recipe_ingredients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     recipe_id INT,
@@ -38,4 +36,32 @@ CREATE TABLE recipe_ingredients (
     unit_of_measurement VARCHAR(50),
     FOREIGN KEY (recipe_id) REFERENCES recipes(id),
     FOREIGN KEY (grocery_id) REFERENCES groceries(id)
+);
+
+
+CREATE TABLE fridges (
+    id INT AUTO_INCREMENT PRIMARY KEY
+);
+
+
+CREATE TABLE fridge_contents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fridge_id INT,
+    grocery_id INT,
+    FOREIGN KEY (fridge_id) REFERENCES fridges(id),
+    FOREIGN KEY (grocery_id) REFERENCES groceries(id)
+);
+
+
+CREATE TABLE households (
+    id INT AUTO_INCREMENT PRIMARY KEY
+);
+
+
+CREATE TABLE household_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    household_id INT,
+    user_id INT,
+    FOREIGN KEY (household_id) REFERENCES households(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

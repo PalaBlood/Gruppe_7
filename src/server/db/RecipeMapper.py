@@ -30,14 +30,14 @@ class RecipeMapper(Mapper):
             recipe.set_id(id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
-            recipe.set_creator(UserMapper().find_by_key(creator_id))  # Assuming UserMapper is already implemented
+            recipe.set_creator(UserMapper().find_by_key(creator_id))  # Angenommen, UserMapper ist bereits implementiert.
 
             command = "SELECT groceries_id FROM recipe_ingredients WHERE recipe_id=%s"
             cursor.execute(command, (id,))
             ingredients = cursor.fetchall()
 
             for (groceries_id,) in ingredients:
-                recipe.add_content(GroceriesMapper().find_by_key(groceries_id))
+                recipe.add_content(GroceriesMapper().find_by_key(groceries_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
 
             result.append(recipe)
 
@@ -107,7 +107,7 @@ class RecipeMapper(Mapper):
             ingredients = cursor.fetchall()
 
             for (grocery_id,) in ingredients:
-                recipe.add_content(GroceriesMapper().find_by_key(grocery_id))
+                recipe.add_content(GroceriesMapper().find_by_key(grocery_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
 
             result = recipe
         except IndexError:
