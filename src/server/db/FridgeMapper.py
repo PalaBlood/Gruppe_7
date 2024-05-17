@@ -1,92 +1,145 @@
+from server.db.Mapper import Mapper
 from server.bo.Fridge import Fridge
 from server.bo.Groceries import Groceries
-from Mapper import Mapper
-
-"""Imports muss jeder für sich anpassen."""
-
+from server.db.GroceriesMapper import GroceriesMapper
 
 class FridgeMapper(Mapper):
-    
-    """Mapper-Klasse für die Datenbankabbildung von Kühlschrank-Objekten."""
-    
+    """Mapper-Klasse, die Fridge-Objekte auf eine relationale
+    Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+    gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
+    gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+    in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+    """
+
     def __init__(self):
         super().__init__()
-
+        
+        
+        
     def find_all(self):
-        
-        """Suche alle Kühlschränke und gibt sie als Liste von Fridge-Objekten zurück."""
-        
+        """Auslesen aller Fridges.
+
+        :return Eine Sammlung mit Fridge-Objekten, die sämtliche Fridges repräsentieren.
+        """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, groceries FROM fridges")
-        
-        for (id, groceries) in cursor.fetchall():
+        cursor.execute("SELECT * FROM fridges")
+        tuples = cursor.fetchall()
+
+        for (id,) in tuples:
             fridge = Fridge()
             fridge.set_id(id)
-            fridge.set_groceries(groceries)
+
+            command = "SELECT grocery_id FROM fridge_contents WHERE fridge_id=%s"
+            cursor.execute(command, (id,))
+            groceries = cursor.fetchall()
+
+            for (grocery_id,) in groceries:
+                fridge.add_content(GroceriesMapper().find_by_key(grocery_id))
+
             result.append(fridge)
 
-        self._cnx.commit()  
-        cursor.close()
-        
-        return result
-    
-    def find_by_id(self, id):
-        
-        """Suche einen Kühlschrank anhand seiner ID und gibt das entsprechende Fridge-Objekt zurück."""
-        
-        cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries FROM fridges WHERE id = %s", (id,))
-        record = cursor.fetchone()
-        if record:
-            fridge = Fridge()
-            fridge.set_id(id)
-            fridge.set_groceries(record[0])
-
-            self._cnx.commit()  
-            cursor.close()
-
-            return fridge
-        else:
-            return None
-        
-    def insert(self, fridge):
-        
-        """Fügt einen neuen Kühlschrank in die Datenbank ein."""
-        
-        cursor = self._cnx.cursor()
-        cursor.execute("INSERT INTO fridges (groceries) VALUES (%s)", (fridge.get_groceries(),))
-        fridge.set_id(cursor.lastrowid)
-
-        self._cnx.commit()  
-        cursor.close()
-
-        return fridge
-    
-    def update(self, fridge):
-        
-        """Aktualisiert einen vorhandenen Kühlschrank in der Datenbank."""
-        
-        cursor = self._cnx.cursor()
-        cursor.execute("UPDATE fridges SET groceries = %s WHERE id = %s", (fridge.get_groceries(), fridge.get_id()))
-        self._cnx.commit()  
-        cursor.close()
-
-    def delete(self, fridge):
-       
-        """Löscht einen Kühlschrank aus der Datenbank."""
-       
-        cursor = self._cnx.cursor()
-        cursor.execute("DELETE FROM fridges WHERE id = %s", (fridge.get_id(),))
         self._cnx.commit()
         cursor.close()
 
-# Beispiel zum Ausführen:
-if __name__ == "__main__":
-    with FridgeMapper() as mapper:
-        all_fridges = mapper.find_all() # Beispiel: Alle Kühlschränke aus der Datenbank abrufen
-        for fridge in all_fridges:
-            print(f"Fridge ID: {fridge.get_id()}, Groceries: {fridge.get_groceries()}")
+        return result
 
+    def insert(self, fridge):
+        """Einfügen eines Fridge-Objekts in die Datenbank.
+
+        Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
+        berichtigt.
+
+        :param fridge das zu speichernde Objekt
+        :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
+        """
         
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT MAX(id) AS maxid FROM fridges")
+        tuples = cursor.fetchall()
 
+        for (maxid) in tuples:
+            fridge.set_id(maxid[0] + 1)
+
+        command = "INSERT INTO fridges (id) VALUES (%s)"
+        data = (fridge.get_id(),)
+        cursor.execute(command, data)
+
+        for grocery_id in fridge.get_content():
+            command = "INSERT INTO fridge_contents (fridge_id, grocery_id) VALUES (%s, %s)"
+            data = (fridge.get_id(), grocery_id)
+            cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return fridge
+
+
+
+    def find_by_key(self, key):
+        """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
+        wird genau ein Objekt zurückgegeben.
+
+        :param key Primärschlüsselattribut (->DB)
+        :return Fridge-Objekt, das dem übergebenen Schlüssel entspricht, None bei
+            nicht vorhandenem DB-Tupel.
+        """
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT id FROM fridges WHERE id=%s"
+        cursor.execute(command, (key,))
+        tuples = cursor.fetchall()
+
+        try:
+            (id,) = tuples[0]
+            fridge = Fridge()
+            fridge.set_id(id)
+
+            command = "SELECT grocery_id FROM fridge_contents WHERE fridge_id=%s"
+            cursor.execute(command, (id,))
+            groceries = cursor.fetchall()
+
+            for (grocery_id,) in groceries:
+                fridge.add_content(GroceriesMapper().find_by_key(grocery_id))
+
+            result = fridge
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def update(self, fridge):
+        """Wiederholtes Schreiben eines Objekts in die Datenbank.
+
+        :param fridge das Objekt, das in die DB geschrieben werden soll
+        """
+        cursor = self._cnx.cursor()
+        command = "DELETE FROM fridge_contents WHERE fridge_id=%s"
+        cursor.execute(command, (fridge.get_id(),))
+
+        for grocery_id in fridge.get_content():
+            command = "INSERT INTO fridge_contents (fridge_id, grocery_id) VALUES (%s, %s)"
+            data = (fridge.get_id(), grocery_id)
+            cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
+    def delete(self, fridge):
+        """Löschen der Daten eines Fridge-Objekts aus der Datenbank.
+
+        :param fridge das aus der DB zu löschende "Objekt"
+        """
+        cursor = self._cnx.cursor()
+        command = "DELETE FROM fridge_contents WHERE fridge_id=%s"
+        cursor.execute(command, (fridge.get_id(),))
+
+        command = "DELETE FROM fridges WHERE id=%s"
+        cursor.execute(command, (fridge.get_id(),))
+
+        self._cnx.commit()
+        cursor.close()
