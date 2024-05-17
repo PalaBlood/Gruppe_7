@@ -16,8 +16,6 @@ Anhand der Attribute Quantity und "MoM können "
 """
 
 
-
-
 class Groceries(BusinessObject):
     
     """Klasse zur Repräsentation von Lebensmitteln (Groceries)."""
