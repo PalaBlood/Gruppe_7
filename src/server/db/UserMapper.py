@@ -1,4 +1,4 @@
-from bo.User import User
+from src.server.bo.User import User
 from Mapper import Mapper
 
 
@@ -67,7 +67,7 @@ class UserMapper(Mapper):
 
  
 
-    def find_by_key(self, key):
+    def find_by_id(self, id):
         """Suchen eines Users mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
