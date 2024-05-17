@@ -1,4 +1,4 @@
-from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
+from BusinessObject import BusinessObject
 
 class User(BusinessObject): 
     def __init__(self):
@@ -8,12 +8,13 @@ class User(BusinessObject):
         self.__first_name = "" #Vorname des Users
         self.__last_name = "" #Nchname des Users
         self.__User_id = ""
+        """evt. Household id als Attribut ergänzen"""
 
 
     def get_User_id(self):
         return  self.__User_id
 
-    def set_User_id(self, value):
+    def set_User_id(self, value): #Warum benötigt User nochmal eine Id?
         self.__User_id = value
     
     def get_google_id(self):
