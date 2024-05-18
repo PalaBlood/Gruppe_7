@@ -2,6 +2,7 @@ from server.bo.Household import Household
 from bo.Household import Household
 from bo.User import User
 from UserMapper import UserMapper
+from Mapper import Mapper
 
 class HouseholdMapper(Mapper):
     """Mapper-Klasse, die Household-Objekte auf eine relationale
@@ -34,7 +35,7 @@ class HouseholdMapper(Mapper):
             users = cursor.fetchall()
 
             for (user_id,) in users:
-                household.add_user(UserMapper().find_by_key(user_id))
+                household.add_user(UserMapper().find_by_id(user_id))
 
             result.append(household)
 
@@ -103,7 +104,7 @@ class HouseholdMapper(Mapper):
             users = cursor.fetchall()
 
             for (user_id,) in users:
-                household.add_user(UserMapper().find_by_key(user_id))
+                household.add_user(UserMapper().find_by_id(user_id))
 
             result = household
         except IndexError:

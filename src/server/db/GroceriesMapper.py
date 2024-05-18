@@ -66,7 +66,7 @@ class GroceriesMapper(Mapper):
 
 
 
-    def find_by_id(self, key):
+    def find_by_id(self, id):
         """Suchen eines Lebensmittels mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -77,7 +77,7 @@ class GroceriesMapper(Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT id, designation, unit_of_measurement, quantity FROM groceries WHERE id=%s"
-        cursor.execute(command, (key,))
+        cursor.execute(command, (id,))
         tuples = cursor.fetchall()
 
         try:

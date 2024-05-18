@@ -78,7 +78,7 @@ class UserMapper(Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT id, nickname, google_id, first_name, last_name, user_id FROM users WHERE id=%s"
-        cursor.execute(command, (key,))
+        cursor.execute(command, (id,))
         tuples = cursor.fetchall()
 
         try:
@@ -89,7 +89,7 @@ class UserMapper(Mapper):
             user.set_google_id(google_id)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
-            user.set_User_id(user_id)
+            user.set_user_id(user_id) #Gibt es nicht? Wollte das noch jemand in der Klasse "User" implementieren? 
             result = user
             
         except IndexError:

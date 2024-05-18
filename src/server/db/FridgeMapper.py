@@ -35,7 +35,7 @@ class FridgeMapper(Mapper):
             groceries = cursor.fetchall()
 
             for (grocery_id,) in groceries:
-                fridge.add_content(GroceriesMapper().find_by_key(grocery_id))
+                fridge.add_content(GroceriesMapper().find_by_id(grocery_id))
 
             result.append(fridge)
 
@@ -79,7 +79,7 @@ class FridgeMapper(Mapper):
 
 
 
-    def find_by_id(self, key):
+    def find_by_id(self, id):
         """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -90,7 +90,7 @@ class FridgeMapper(Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT id FROM fridges WHERE id=%s"
-        cursor.execute(command, (key,))
+        cursor.execute(command, (id,))
         tuples = cursor.fetchall()
 
         try:
@@ -103,7 +103,7 @@ class FridgeMapper(Mapper):
             groceries = cursor.fetchall()
 
             for (grocery_id,) in groceries:
-                fridge.add_content(GroceriesMapper().find_by_key(grocery_id))
+                fridge.add_content(GroceriesMapper().find_by_id(grocery_id))
 
             result = fridge
         except IndexError:

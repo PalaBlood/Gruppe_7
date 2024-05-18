@@ -31,14 +31,14 @@ class RecipeMapper(Mapper):
             recipe.set_id(id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
-            recipe.set_creator(UserMapper().find_by_key(creator_id))  # Angenommen, UserMapper ist bereits implementiert.
+            recipe.set_creator(UserMapper().find_by_id(creator_id))  # Angenommen, UserMapper ist bereits implementiert.
 
             command = "SELECT groceries_id FROM recipe_ingredients WHERE recipe_id=%s"
             cursor.execute(command, (id,))
             ingredients = cursor.fetchall()
 
             for (groceries_id,) in ingredients:
-                recipe.add_content(GroceriesMapper().find_by_key(groceries_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
+                recipe.add_content(GroceriesMapper().find_by_id(groceries_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
 
             result.append(recipe)
 
@@ -72,7 +72,7 @@ class RecipeMapper(Mapper):
 
         for content in recipe.get_content():
             command = "INSERT INTO recipe_ingredients (recipe_id, grocery_id, quantity, unit_of_measurement) VALUES (%s, %s, %s, %s)"
-            groceries = GroceriesMapper().find_by_key(content)  # Angenommen, GroceriesMapper ist bereits implementiert.
+            groceries = GroceriesMapper().find_by_id(content)  # Angenommen, GroceriesMapper ist bereits implementiert.
             data = (recipe.get_id(), groceries.get_id(), groceries.get_quantity(), groceries.get_unit_of_measurement())
             cursor.execute(command, data)
 
@@ -104,14 +104,14 @@ class RecipeMapper(Mapper):
             recipe.set_id(id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
-            recipe.set_creator(UserMapper().find_by_key(creator_id))  # Angenommen, UserMapper ist bereits implementiert.
+            recipe.set_creator(UserMapper().find_by_id(creator_id))  # Angenommen, UserMapper ist bereits implementiert.
 
             command = "SELECT grocery_id FROM recipe_ingredients WHERE recipe_id=%s"
             cursor.execute(command, (id,))
             ingredients = cursor.fetchall()
 
             for (grocery_id,) in ingredients:
-                recipe.add_content(GroceriesMapper().find_by_key(grocery_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
+                recipe.add_content(GroceriesMapper().find_by_id(grocery_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
 
             result = recipe
         except IndexError:
@@ -140,7 +140,7 @@ class RecipeMapper(Mapper):
 
         for content in recipe.get_content():
             command = "INSERT INTO recipe_ingredients (recipe_id, grocery_id, quantity, unit_of_measurement) VALUES (%s, %s, %s, %s)"
-            grocery = GroceriesMapper().find_by_key(content)  # Angenommen, GroceriesMapper ist bereits implementiert.
+            grocery = GroceriesMapper().find_by_id(content)  # Angenommen, GroceriesMapper ist bereits implementiert.
             data = (recipe.get_id(), grocery.get_id(), grocery.get_quantity(), grocery.get_unit_of_measurement())
             cursor.execute(command, data)
 
