@@ -15,6 +15,7 @@ class RecipeMapper(Mapper):
         super().__init__()
         
     
+    
     def find_all(self):
         """Auslesen aller Rezepte.
 
@@ -45,6 +46,8 @@ class RecipeMapper(Mapper):
         cursor.close()
 
         return result
+
+
 
 
     def insert(self, recipe):
@@ -79,8 +82,9 @@ class RecipeMapper(Mapper):
         return recipe
 
    
+   
 
-    def find_by_key(self, key):
+    def find_by_id(self, key):
         """Suchen eines Rezepts mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -117,6 +121,9 @@ class RecipeMapper(Mapper):
         cursor.close()
 
         return result
+
+
+
 
     def update(self, recipe):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.

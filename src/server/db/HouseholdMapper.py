@@ -1,7 +1,7 @@
-from server.db.Mapper import Mapper
 from server.bo.Household import Household
-from server.bo.User import User
-from server.db.UserMapper import UserMapper
+from bo.Household import Household
+from bo.User import User
+from UserMapper import UserMapper
 
 class HouseholdMapper(Mapper):
     """Mapper-Klasse, die Household-Objekte auf eine relationale
@@ -79,7 +79,7 @@ class HouseholdMapper(Mapper):
  
 
 
-    def find_by_key(self, key):
+    def find_by_id(self, key):
         """Suchen eines Haushalts mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -152,6 +152,7 @@ class HouseholdMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
 
 
 

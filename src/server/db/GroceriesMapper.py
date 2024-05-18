@@ -1,4 +1,4 @@
-from server.db.Mapper import Mapper
+from Mapper import Mapper
 from server.bo.Groceries import Groceries
 
 class GroceriesMapper(Mapper):
@@ -37,6 +37,9 @@ class GroceriesMapper(Mapper):
 
         return groceries
 
+
+
+
     def find_all(self):
         """Auslesen aller Lebensmittel.
 
@@ -60,7 +63,10 @@ class GroceriesMapper(Mapper):
 
         return result
 
-    def find_by_key(self, key):
+
+
+
+    def find_by_id(self, key):
         """Suchen eines Lebensmittels mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -90,6 +96,9 @@ class GroceriesMapper(Mapper):
 
         return result
 
+
+
+
     def update(self, groceries):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
 
@@ -102,6 +111,9 @@ class GroceriesMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+
+
 
     def delete(self, groceries):
         """Löschen der Daten eines Groceries-Objekts aus der Datenbank.

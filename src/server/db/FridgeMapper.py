@@ -44,6 +44,8 @@ class FridgeMapper(Mapper):
 
         return result
 
+
+
     def insert(self, fridge):
         """Einfügen eines Fridge-Objekts in die Datenbank.
 
@@ -77,7 +79,7 @@ class FridgeMapper(Mapper):
 
 
 
-    def find_by_key(self, key):
+    def find_by_id(self, key):
         """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -112,6 +114,9 @@ class FridgeMapper(Mapper):
 
         return result
 
+
+
+
     def update(self, fridge):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
 
@@ -128,6 +133,9 @@ class FridgeMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+
+
 
     def delete(self, fridge):
         """Löschen der Daten eines Fridge-Objekts aus der Datenbank.
