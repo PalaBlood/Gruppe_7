@@ -1,9 +1,6 @@
-from src.server.bo.User import User
-from Mapper import Mapper
+from Gruppe_7.src.server.bo.User import User
+from Gruppe_7.src.server.db.Mapper import Mapper
 
-
-from server.db.Mapper import Mapper
-from server.bo.User import User
 
 class UserMapper(Mapper):
     """Mapper-Klasse, die User-Objekte auf eine relationale
@@ -21,12 +18,11 @@ class UserMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT * FROM user")
         tuples = cursor.fetchall()
 
-        for (id, nickname, google_id, first_name, last_name, user_id) in tuples:
+        for (nickname, google_id, first_name, last_name, user_id) in tuples:
             user = User()
-            user.set_id(id)
             user.set_nickname(nickname)
             user.set_google_id(google_id)
             user.set_first_name(first_name)
@@ -127,6 +123,13 @@ class UserMapper(Mapper):
 
 
 
-Users = UserMapper
+Users = UserMapper()
 
 results = Users.find_all()
+for user in results:
+    print("User ID:", user.get_User_id())
+    print("Nickname:", user.get_nickname())
+    print("First Name:", user.get_first_name())
+    print("Last Name:", user.get_last_name())
+    print("Google ID:", user.get_google_id())
+    print()

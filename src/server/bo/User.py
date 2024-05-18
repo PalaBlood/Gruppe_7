@@ -1,20 +1,23 @@
-from BusinessObject import BusinessObject 
+from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
 
-class User(BusinessObject): 
+
+class User(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__nickname = "" #Der Nickname des Users
         self.__google_id = None #Google ID zur Authentifizierung
         self.__last_name = ""
         self.__first_name = ""
+        self.__user_id = ""
     
     def get_google_id(self):
         """Google ID Auslesen"""
         return self.__google_id
     
-    def set_google_id(self):
-        pass #Hier müssen wir herausfinden wie die Google ID verwiesen werden kann
-    
+    def set_google_id(self, value):
+
+        self.__google_id = value
+
     
     def set_nickname(self, nickname): 
         """nickname setzen"""
@@ -39,6 +42,14 @@ class User(BusinessObject):
     def get_first_name(self):
 
         return self.__first_name
+
+    def set_User_id(self, value):
+
+        self.__user_id = value
+
+    def get_User_id(self):
+
+        return self.__user_id
     
     def delete_user(self): 
         """Hier müssen wir eine "Löschweitergabe implementieren (siehe Thies Videomitschnitt 20.05 min. 12.00)
