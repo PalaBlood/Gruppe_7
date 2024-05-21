@@ -1,4 +1,4 @@
-
+from Groceries import Groceries
 
 """Klasse für diverse Converter von Maßeinheiten, sodass eine Klasse UnitofMeasurement trivial wird und als Attribut eines Lebensmittels aufgeführt wird.
    Wir haben uns für diese Implementierung umentschieden"""
@@ -8,7 +8,7 @@ class UnitConverter:
 
     def __init__(self): 
 
-        self._mass_conversions = {                      #Umwandlungsfaktoren zu Gramm
+        self._mass_conversions = {              #Umwandlungsfaktoren zu Gramm
             'teaspoon':6,                               
             'tablespoon': 17,
             'kilogram': 1000,
@@ -17,7 +17,7 @@ class UnitConverter:
         }
 
 
-        self._volume_conversions = {                    #Umwandlungsfaktoren zu Mililiter
+        self._volume_conversions = {            #Umwandlungsfaktoren zu Mililiter
             'teaspoon':5,
             'tablespoon':15,
             'cups':240,
@@ -26,7 +26,10 @@ class UnitConverter:
 
         }
 
-    def convert_to_grams(self, value, unit):
+    def convert_to_grams(self, value, unit): 
+        """Wir nehmen eine Einheit und wandeln sie in gramm um.
+        Die Einheit muss jedoch in "self_mass_conversions" vorhanden sein"""
+        
         if unit in self._mass_conversions:
             return value * self._mass_conversions[unit]
         else:
@@ -51,6 +54,9 @@ class UnitConverter:
             return None
 
     def convert_to_milliliters(self, value, unit):
+        """Wir nehmen eine Einheit und wandeln sie in milliliter um.
+        Die Einheit muss jedoch in "self_mass_conversions" vorhanden sein"""
+        
         if unit in self._volume_conversions:
             return value * self._volume_conversions[unit]
         else:
@@ -63,5 +69,17 @@ class UnitConverter:
 
 converter = UnitConverter()
 
-print(converter.convert_to_grams(10, 'kilogram'))
+print(converter.convert_to_grams(1, 'kilogram'))
 print(converter.convert_to_milliliters(10, 'cups'))
+print(converter.convert_from_grams(1, "kilogram"))
+
+
+#Test mit Lebensmittel
+salat = Groceries()
+salat.set_quantity(1)
+salat.set_unit_of_measurement("kilogram")
+print(converter.convert_to_grams(salat.get_quantity(), salat.get_unit_of_measurement()))
+
+
+
+
