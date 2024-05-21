@@ -5,12 +5,11 @@ und dem Business Object Layer
 Ausführbefehle (create, delete usw.) aller Art werden hier untergebracht. """
 
 """Imports muss jeder für sich anpassen."""
-from server.bo.User import User
-from server.bo.Recipe import Recipe
-from server.bo.Fridge import Fridge
-from server.db.UserMapper import UserMapper
 
-class HalilsTaverneAdministration (object):
+from Gruppe_7.src.server.db import UserMapper
+from Gruppe_7.src.server.bo import User
+
+class HalilsTaverneAdministration(object):
 
     def __init__(self):
             pass
@@ -45,4 +44,6 @@ class HalilsTaverneAdministration (object):
           
 
 
-        
+admintest = HalilsTaverneAdministration
+list = HalilsTaverneAdministration.get_all_users()
+print(list)

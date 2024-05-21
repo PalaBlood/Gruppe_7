@@ -1,4 +1,5 @@
 from BusinessObject import BusinessObject
+from User import User
 
 
 """

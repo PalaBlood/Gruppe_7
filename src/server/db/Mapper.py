@@ -16,28 +16,21 @@ Ebenfalls wird hier die Verbindung zum Server erstellt, an der sich alle anderen
 """
 
 
-class Mapper (AbstractContextManager, ABC):
+class Mapper(AbstractContextManager, ABC):
 
     def __init__(self):
-
-        self._cursor = None #cursor: Wir laden nur den Teil der Relation, den wir benötigen 
-
-
-    def __enter__(self):
-
-
-        self._cursor = connector.connect(user="root", password="9902", 
-                                      host="localhost", 
+        self._cnx = connector.connect(user="root", password="9902",
+                                      host="localhost",
                                       database="sopra")
-        
-        return self
-    
-    def __exit__(self, exc_type, exc_val, exc_tb): #Verschiedene Abschlussarten 
+
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
         """Verbindung mit der Datenbank trennen"""
-        self._cursor.close()
+        self._cnx.close()
 
     """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.
     Hier dienen sie als gemeinsame Schnittstelle für alle Mapperklassen und geben gleichzeitig vor, dass alle Subklassen folgende Methoden bereitstellen müssen"""
+
 
     @abstractmethod 
     def find_all(self):
@@ -63,9 +56,3 @@ class Mapper (AbstractContextManager, ABC):
     def delete(self, object):
 
         pass
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 from BusinessObject import BusinessObject
-from src.server.db.User import User 
-from FoodEntry import FootEntry
+from User import User 
+from Groceries import Groceries
 
 """Ein Rezept hat: 
 -einen Titel
@@ -60,15 +60,14 @@ class Recipe(BusinessObject):
         return self.__creator
 
 
-    
-    
     def get_content(self):
         """Auslesen der Lebensmitteleinträge"""
         return self.__content
     
-    def add_entry(self, entry=FootEntry):
-        """Hinzufügen eines Lebensmitteleintrags"""
-        self.__content.append(entry)
+    def add_content(self, grocieries=Groceries()):
+        self.__content.append(grocieries.get_id()) #Anhand der ID könnte man das Lebensmittel aus der DB herausziehen
+    
+
     
     
     @staticmethod
@@ -87,9 +86,28 @@ if __name__ == "__main__":
     
     rezept = Recipe()
     
-    eintrag = FootEntry()
+    salat = Groceries()
+    salat.set_designation("Salat")
+    salat.set_quantity(1)
+    salat.set_unit_of_measurement("grams")
+    salat.set_id(1)
     
-    rezept.add_entry(eintrag)
+    brot = Groceries()
+    brot.set_designation("brot")
+    brot.set_quantity(1)
+    brot.set_unit_of_measurement("kilogram")
+    brot.set_id(2)
     
+    
+    #Hinzufügen eines Lebensmittels
+    rezept.add_content(salat)
+ 
+    
+    rezept.add_content(brot)
     print(rezept.get_content())
+    
+    
+    
+    
+   
         
