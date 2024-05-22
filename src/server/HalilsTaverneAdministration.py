@@ -18,20 +18,20 @@ from Gruppe_7.src.server.bo.UnitConverters import UnitConverter"""
 
 #Halils imports
 
-from server.bo.User import User
-from server.db.UserMapper import UserMapper
-from server.db.HouseholdMapper import HouseholdMapper
-from server.db.RecipeMapper import RecipeMapper
-from server.db.FridgeMapper import FridgeMapper
-from server.db.FridgeMapper import GroceriesMapper
+from src.server.bo.User import User
+from src.server.db.UserMapper import UserMapper
+from src.server.db.HouseholdMapper import HouseholdMapper
+from src.server.db.RecipeMapper import RecipeMapper
+from src.server.db.FridgeMapper import FridgeMapper
+from src.server.db.FridgeMapper import GroceriesMapper
 
-from server.bo.FoodEntry import FoodEntry
-from server.bo.User import User
-from server.bo.Fridge import Fridge
-from server.bo.Groceries import Groceries
-from server.bo.Household import Household
-from server.bo.ShoppingList import ShoppingList
-from server.bo.UnitConverters import UnitConverter
+from src.server.bo.FoodEntry import FoodEntry
+from src.server.bo.User import User
+from src.server.bo.Fridge import Fridge
+from src.server.bo.Groceries import Groceries
+from src.server.bo.Household import Household
+from src.server.bo.ShoppingList import ShoppingList
+from src.server.bo.UnitConverters import UnitConverter
 
 
 
