@@ -58,8 +58,8 @@ CREATE TABLE Recipe_Groceries (
     FOREIGN KEY (Groceries_ID) REFERENCES Groceries(Groceries_ID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `User`;
-CREATE TABLE User (
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE users (
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nick_name VARCHAR(255),
     google_id VARCHAR(255),
@@ -67,7 +67,7 @@ CREATE TABLE User (
     last_name VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO User (nick_name, google_id, Name, last_name) VALUES
+INSERT INTO users (nick_name, google_id, Name, last_name) VALUES
 ('Tom_Schönfeld', 'tom_google_id', 'Tom', 'Schönfeld'),
 ('Bob345', 'bob_google_id', 'Bob', 'Schönfeld'),
 ('Michel223', 'charlie_google_id', 'Michel', 'Finger');

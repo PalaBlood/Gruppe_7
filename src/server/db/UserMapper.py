@@ -1,11 +1,8 @@
-from src.server.bo.User import User
-from Mapper import Mapper
+from Gruppe_7.src.server.bo.User import User
+from Gruppe_7.src.server.db.Mapper import Mapper
 
 
-from server.db.Mapper import Mapper
-from server.bo.User import User
-
-class UserMapper(Mapper):
+class UserMapper (Mapper):
     """Mapper-Klasse, die User-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
@@ -24,9 +21,8 @@ class UserMapper(Mapper):
         cursor.execute("SELECT * FROM users")
         tuples = cursor.fetchall()
 
-        for (id, nickname, google_id, first_name, last_name, user_id) in tuples:
+        for (nickname, google_id, first_name, last_name, user_id) in tuples:
             user = User()
-            user.set_id(id)
             user.set_nickname(nickname)
             user.set_google_id(google_id)
             user.set_first_name(first_name)
@@ -50,14 +46,14 @@ class UserMapper(Mapper):
         :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM users")
+        cursor.execute("SELECT MAX(user_id) AS maxid FROM users")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            user.set_id(maxid[0] + 1)
+            user.set_User_id(maxid[0] + 1)
 
-        command = "INSERT INTO users (id, nickname, google_id, first_name, last_name, user_id) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (user.get_id(), user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name(), user.get_User_id())
+        command = "INSERT INTO users (user_id, nick_name, google_id, first_name, last_name) VALUES (%s, %s, %s, %s, %s)"
+        data = (user.get_User_id(), user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -82,14 +78,13 @@ class UserMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, nickname, google_id, first_name, last_name, user_id) = tuples[0]
+            (user_id, nickname, google_id, first_name, last_name, user_id) = tuples[0]
             user = User()
-            user.set_id(id)
+            user.set_id(user_id)
             user.set_nickname(nickname)
             user.set_google_id(google_id)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
-            user.set_user_id(user_id) #Gibt es nicht? Wollte das noch jemand in der Klasse "User" implementieren? 
             result = user
             
         except IndexError:
@@ -127,6 +122,6 @@ class UserMapper(Mapper):
 
 
 
-Users = UserMapper
 
-results = Users.find_all()
+
+

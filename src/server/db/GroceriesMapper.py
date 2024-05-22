@@ -1,5 +1,5 @@
-from Mapper import Mapper
-from server.bo.Groceries import Groceries
+from Gruppe_7.src.server.db.Mapper import Mapper
+from Gruppe_7.src.server.bo.Groceries import Groceries
 
 class GroceriesMapper(Mapper):
     """Mapper-Klasse, die Groceries-Objekte auf eine relationale

@@ -1,5 +1,5 @@
-from BusinessObject import BusinessObject
-from Groceries import Groceries
+from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
+from Gruppe_7.src.server.bo.Groceries import Groceries
 
 
 class Fridge(BusinessObject):

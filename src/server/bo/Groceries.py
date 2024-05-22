@@ -1,5 +1,5 @@
 from enum import Enum
-from BusinessObject import BusinessObject 
+from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
 
 
 """Imports muss jeder für sich anpassen."""
