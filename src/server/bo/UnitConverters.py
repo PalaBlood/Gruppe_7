@@ -1,4 +1,4 @@
-from Groceries import Groceries
+from Gruppe_7.src.server.bo.Groceries import Groceries
 
 """Klasse für diverse Converter von Maßeinheiten, sodass eine Klasse UnitofMeasurement trivial wird und als Attribut eines Lebensmittels aufgeführt wird.
    Wir haben uns für diese Implementierung umentschieden"""
@@ -64,21 +64,6 @@ class UnitConverter:
             return None
 
 
-
-#test
-
-converter = UnitConverter()
-
-print(converter.convert_to_grams(1, 'kilogram'))
-print(converter.convert_to_milliliters(10, 'cups'))
-print(converter.convert_from_grams(1, "kilogram"))
-
-
-#Test mit Lebensmittel
-salat = Groceries()
-salat.set_quantity(1)
-salat.set_unit_of_measurement("kilogram")
-print(converter.convert_to_grams(salat.get_quantity(), salat.get_unit_of_measurement()))
 
 
 

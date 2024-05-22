@@ -1,4 +1,3 @@
-from types import TracebackType
 import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
@@ -19,13 +18,28 @@ Ebenfalls wird hier die Verbindung zum Server erstellt, an der sich alle anderen
 class Mapper(AbstractContextManager, ABC):
 
     def __init__(self):
-        self._cnx = connector.connect(user="root", password="9902",
-                                      host="localhost",
-                                      database="sopra")
+        self._cnx = None
 
+    def __enter__(self):
+        if os.getenv('GAE_ENV', '').startswith('standard'):
+            self._cnx = connector.connect(user='demo', password='demo',
+                                          unix_socket='demo',
+                                          database='fridge-app')
+        else:
+
+            self._cnx = connector.connect(user="root", password="9902",
+                              host="localhost",
+                              database="sopra")
+
+        print("database connection established")
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Verbindung mit der Datenbank trennen"""
+        if exc_type or exc_val or exc_tb:
+            self._cnx.rollback()
+        else:
+            self._cnx.commit()
         self._cnx.close()
 
     """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.

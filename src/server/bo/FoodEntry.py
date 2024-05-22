@@ -1,6 +1,6 @@
-from BusinessObject import BusinessObject
-from Groceries import Groceries
-from UnitOfMeasurement import UnitOfMeasurement
+from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
+from Gruppe_7.src.server.bo.Groceries import Groceries
+
 """Imports muss jeder für sich anpassen."""
 
 """Meine Überlegung ist, dass wir einen doch Lebensmitteleintrag als Intanz benötigen. Ein Rezept beinhaltet 
@@ -14,7 +14,7 @@ from UnitOfMeasurement import UnitOfMeasurement
  - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen? - hab Quantity als Klasse mal wegelassen. 
  """
 
-class FootEntry(BusinessObject):
+class FoodEntry(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__groceries = None
@@ -41,9 +41,9 @@ class FootEntry(BusinessObject):
     
  
     
-    def set_unit_of_measurement(self, uom=UnitOfMeasurement):
+    def set_unit_of_measurement(self, value):
         """Maßeinheit setzen"""
-        self.__unit_of_measurement = uom.get_id() #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden
+        self.__unit_of_measurement = value #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden
     
     def get_unit_of_measurement(self):
         return self.__unit_of_measurement
