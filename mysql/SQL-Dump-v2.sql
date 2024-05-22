@@ -22,15 +22,16 @@ CREATE TABLE Groceries (
 
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
-    Quantity FLOAT
+    Quantity FLOAT,
+    Unitofmeasurement VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 INSERT INTO Groceries (designation, Quantity) VALUES
-('Apples', 2.5),
-('Milk',  1),
-('Flour',  0.5),
-('Sugar',  500);
+('Apples', 2.5, 'grams'),
+('Milk',  1, 'mililiters'),
+('Flour',  0.5, 'kilos'),
+('Sugar',  500, 'grams');
 
 
 

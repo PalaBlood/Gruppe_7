@@ -60,12 +60,12 @@ class HalilsTaverneAdministration(object):
 
     def get_user_by_nickname(self, nick_name):
 
-        with UserMapper as mapper:
+        with UserMapper() as mapper:
             return mapper.find_by_nickname(nick_name)
 
     def get_user_by_id(self, user_id):
 
-        with UserMapper as mapper:
+        with UserMapper() as mapper:
             return mapper.find_by_id(user_id)
 
     #Fridge spezifische Methoden
@@ -75,18 +75,32 @@ class HalilsTaverneAdministration(object):
         fridge = Fridge()
         fridge.set_id(1)
 
-        with FridgeMapper as mapper:
+        with FridgeMapper() as mapper:
             return mapper.insert(fridge)
 
     def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
 
-        with FridgeMapper as mapper:
+        with FridgeMapper() as mapper:
             return mapper.find_all()
 
     def get_fridge_by_id(self, fridge_id):
 
-        with FridgeMapper as mapper:
+        with FridgeMapper() as mapper:
             return mapper.find_by_id(fridge_id)
+
+    def save_fridge(self, fridge):
+
+        with FridgeMapper() as mapper:
+            mapper.update(fridge)
+
+    def delete_fridge(self, fridge):
+
+        with FridgeMapper() as mapper:
+            mapper.delete(fridge)
+
+    #Groceries spezifische Methoden
+
+    def create_Grocerie(self, ):
 
 
 
