@@ -1,5 +1,5 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
-
+"""
 from Gruppe_7.src.server.db.RecipeMapper import RecipeMapper
 from Gruppe_7.src.server.db.HouseholdMapper import HouseholdMapper
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
@@ -13,6 +13,25 @@ from Gruppe_7.src.server.bo.Groceries import Groceries
 from Gruppe_7.src.server.bo.Household import Household
 from Gruppe_7.src.server.bo.ShoppingList import ShoppingList
 from Gruppe_7.src.server.bo.UnitConverters import UnitConverter
+"""
+
+
+#Halils imports
+
+from .bo.User import User
+from .db.UserMapper import UserMapper
+from .db.HouseholdMapper import HouseholdMapper
+from .db.RecipeMapper import RecipeMapper
+from .db.FridgeMapper import FridgeMapper
+
+from .bo.FoodEntry import FoodEntry
+from .bo.User import User
+from .bo.Fridge import Fridge
+from .bo.Groceries import Groceries
+from .bo.Household import Household
+from .bo.ShoppingList import ShoppingList
+from .bo.UnitConverters import UnitConverter
+
 
 
 
@@ -27,71 +46,66 @@ class HalilsTaverneAdministration(object):
 
     def __init__(self):
             pass
-    """
-    User spezifische Methoden
     
-    """
+    #User spezifische Methoden
 
-    def create_user(self, nick_name, first_name, last_name, google_user_id):
+    def create_user(self, nick_name, first_name, last_name):
           #Benutzer erstellen
           user = User()
           user.set_first_name(first_name)
           user.set_last_name(last_name)
-          user.set_nickname(nick_name)
-          user.set_google_id(google_user_id)
+          user.set_nick_name(nick_name)
           user.set_id(1) #default id, wird später in der Datenbank geupdatet
 
           with UserMapper() as mapper:
                 return mapper.insert(user)
           
-    #Suchen eines Users
-    def get_user(self, id):
-        with UserMapper() as mapper:
-            return mapper.find_all(id)
+    #müssen noch richtig implementiert werden
 
-    #Speichern eines Users
+    def get_all_users(self):
+
+        with UserMapper() as mapper:
+            return mapper.find_all()
+
     def save_user(self, user):
+
         with UserMapper() as mapper:
             mapper.update(user)
 
-    #löschen eines Users
     def delete_user(self, user):
+
         with UserMapper() as mapper:
             mapper.delete(user)
-          
 
-    """
-    Recipe spezifische Methoden
-    
-    """
+    def get_user_by_nickname(self, nick_name):
 
-    def create_recipe(self, recipe_id, groceries_id, groceries_quantity, groceries_unit_of_measurement):
-        #Benutzer erstellen
-        recipe = User()
-        recipe.set_first_name(first_name)
-        recipe.set_last_name(last_name)
-        recipe.set_nickname(nick_name)
-        recipe.set_google_id(google_user_id)
-        recipe.set_id(1) #default id, wird später in der Datenbank geupdatet
+        with UserMapper as mapper:
+            return mapper.find_by_nickname(nick_name)
 
-        with RecipeMapper() as mapper:
-            return mapper.insert(recipe)
+    def get_user_by_id(self, user_id):
 
-    #Auslesen aller Rezepte
-    def get_all_recipe(self):
-        with UserMapper() as mapper:
+        with UserMapper as mapper:
+            return mapper.find_by_id(user_id)
+
+    #Fridge spezifische Methoden
+
+    def create_Fridge(self):
+
+        fridge = Fridge()
+        fridge.set_id(1)
+
+        with FridgeMapper as mapper:
+            return mapper.insert(fridge)
+
+    def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
+
+        with FridgeMapper as mapper:
             return mapper.find_all()
-        
-    #Auslesen eines Rezepts
-    def get_all_recipe(self, id):
-        with UserMapper() as mapper:
-            return mapper.find_all(id)
-        
-    
 
+    def get_fridge_by_id(self, fridge_id):
 
-
-
+        with FridgeMapper as mapper:
+            return mapper.find_by_id(fridge_id)
 
 
 
@@ -182,10 +196,9 @@ admintest = HalilsTaverneAdministration()
 list = admintest.get_all_users()
 for user in list:
     print("User ID:", user.get_User_id())
-    print("Nickname:", user.get_nickname())
+    print("Nickname:", user.get_nick_name())
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
-    print("Google ID:", user.get_google_id())
     print()
 
-admintest.create_user("Tom","scd","jo",1283283)
+admintest.create_user("Tom","scd","jo")

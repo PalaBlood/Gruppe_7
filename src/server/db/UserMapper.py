@@ -1,5 +1,11 @@
+"""
 from Gruppe_7.src.server.bo.User import User
 from Gruppe_7.src.server.db.Mapper import Mapper
+"""
+
+
+from server.bo.User import User
+from server.db.Mapper import Mapper
 
 
 class UserMapper (Mapper):

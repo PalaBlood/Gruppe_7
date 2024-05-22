@@ -1,7 +1,16 @@
+
+"""
 from Gruppe_7.src.server.db.Mapper import Mapper
 from Gruppe_7.src.server.bo.Recipe import Recipe
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
 from Gruppe_7.src.server.db.UserMapper import UserMapper
+"""
+
+
+from server.db.Mapper import Mapper
+from server.bo.Recipe import Recipe
+from server.db.GroceriesMapper import GroceriesMapper
+from server.db.UserMapper import UserMapper
 
 class RecipeMapper(Mapper):
     """Mapper-Klasse, die Recipe-Objekte auf eine relationale

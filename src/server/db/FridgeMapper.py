@@ -1,7 +1,15 @@
+"""
 from Gruppe_7.src.server.db.Mapper import Mapper
 from Gruppe_7.src.server.bo.Fridge import Fridge
 from Gruppe_7.src.server.bo.Groceries import Groceries
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
+"""
+
+
+from server.db.Mapper import Mapper
+from server.bo.Fridge import Fridge
+from server.bo.Groceries import Groceries
+from server.db.GroceriesMapper import GroceriesMapper
 
 class FridgeMapper(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale
