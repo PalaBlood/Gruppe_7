@@ -1,5 +1,5 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
-
+"""
 from Gruppe_7.src.server.db.RecipeMapper import RecipeMapper
 from Gruppe_7.src.server.db.HouseholdMapper import HouseholdMapper
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
@@ -13,6 +13,25 @@ from Gruppe_7.src.server.bo.Groceries import Groceries
 from Gruppe_7.src.server.bo.Household import Household
 from Gruppe_7.src.server.bo.ShoppingList import ShoppingList
 from Gruppe_7.src.server.bo.UnitConverters import UnitConverter
+"""
+
+
+#Halils imports
+
+from .bo.User import User
+from .db.UserMapper import UserMapper
+from .db.HouseholdMapper import HouseholdMapper
+from .db.RecipeMapper import RecipeMapper
+from .db.FridgeMapper import FridgeMapper
+
+from .bo.FoodEntry import FoodEntry
+from .bo.User import User
+from .bo.Fridge import Fridge
+from .bo.Groceries import Groceries
+from .bo.Household import Household
+from .bo.ShoppingList import ShoppingList
+from .bo.UnitConverters import UnitConverter
+
 
 
 
@@ -100,8 +119,7 @@ class HalilsTaverneAdministration(object):
 
     #Groceries spezifische Methoden
 
-    def create_groceries(self,):
-
+    def create_Grocerie(self, ):
 
 
 
