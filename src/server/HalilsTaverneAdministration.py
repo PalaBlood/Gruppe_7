@@ -128,8 +128,89 @@ class HalilsTaverneAdministration(object):
         groceries.set_quantity(quantity)
         groceries.set_id(1)
 
-        with GroceriesMapper as mapper:
+        with GroceriesMapper() as mapper:
             return mapper.insert(groceries)
+        
+
+    def get_all_groceries(self):
+
+        with GroceriesMapper() as mapper:
+            mapper.find_all()
+
+    def get_groceries_by_id(self, groceries_id):
+
+        with GroceriesMapper() as mapper:
+            return mapper.find_by_id(groceries_id)
+        
+    def save_groceries(self, groceries):
+
+        with GroceriesMapper() as mapper:
+            return mapper.update(groceries)
+        
+    def delete_groceries(self, groceries):
+
+        with GroceriesMapper() as mapper:
+            mapper.delete(groceries)
+
+    #recipe-spezifische methoden:
+
+
+
+
+
+
+
+
+
+
+
+
+    #shoppinglist-spezifische methoden:
+
+
+
+
+
+
+
+
+
+    #household-spezifische methoden:
+
+
+
+
+
+
+
+
+
+
+
+
+    #foodentry-spezifische methoden:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #unitconversions mit UnitConverter()
+
+
+
+
+
 
 
 
