@@ -104,7 +104,7 @@ class UserMapper (Mapper):
             (user_id, nick_name, first_name, last_name) = tuples[0]
             user = User()
             user.set_User_id(user_id)
-            user.set_nickname(nick_name)
+            user.set_nick_name(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
             result = user

@@ -8,7 +8,7 @@ class User(BusinessObject):
         self.__google_id = None #Google ID --> wird außerhalb unseres systems verwaltet
         self.__last_name = ""
         self.__first_name = ""
-        self.__user_id = ""
+        self.__user_id = int
     
     def get_google_id(self):
         """Google ID Auslesen"""

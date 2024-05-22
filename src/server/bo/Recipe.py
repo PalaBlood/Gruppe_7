@@ -25,6 +25,7 @@ Grundsätzlich funktioniert alles mit der Klasse "Lebensmitteleintrag", jedoch g
 class Recipe(BusinessObject): 
     def __init__(self):
         super().__init__()
+        self.__recipe_id = ""
         self.__title = ""
         self.__number_of_persons = int
         self.__creator = None 
@@ -67,7 +68,13 @@ class Recipe(BusinessObject):
     def add_content(self, grocieries=Groceries()):
         self.__content.append(grocieries.get_id()) #Anhand der ID könnte man das Lebensmittel aus der DB herausziehen
     
+    def get_id(self):
 
+        return self.__recipe_id
+
+    def set_id(self,value):
+
+        self.__recipe_id = value
     
     
     @staticmethod

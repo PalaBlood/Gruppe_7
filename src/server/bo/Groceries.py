@@ -28,6 +28,7 @@ class Groceries(BusinessObject):
         self.__designation = None
         self.__unit_of_measurement = None
         self.__quantity = None
+        self.__groceries_id = ""
     
     def get_designation(self): 
         return self.__designation
@@ -48,8 +49,14 @@ class Groceries(BusinessObject):
     
     def set_quantity(self, quantity):
         self.__quantity = quantity
-    
-    
+
+    def get_groceries_id(self):
+
+        return self.__groceries_id
+
+    def set_groceries_id(self, value):
+
+        self.__groceries_id = value
     
     
 if __name__ == "__main__":
