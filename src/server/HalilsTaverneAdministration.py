@@ -100,7 +100,8 @@ class HalilsTaverneAdministration(object):
 
     #Groceries spezifische Methoden
 
-    def create_Grocerie(self, ):
+    def create_groceries(self,):
+
 
 
 
