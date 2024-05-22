@@ -22,15 +22,16 @@ CREATE TABLE Groceries (
 
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
-    Quantity FLOAT
+    Quantity FLOAT,
+    Unitofmeasurement VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 INSERT INTO Groceries (designation, Quantity) VALUES
-('Apples', 2.5),
-('Milk',  1),
-('Flour',  0.5),
-('Sugar',  500);
+('Apples', 2.5, 'grams'),
+('Milk',  1, 'mililiters'),
+('Flour',  0.5, 'kilos'),
+('Sugar',  500, 'grams');
 
 
 
@@ -62,15 +63,14 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE users (
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nick_name VARCHAR(255),
-    google_id VARCHAR(255),
-    Name VARCHAR(255),
+    first_name VARCHAR(255),
     last_name VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO users (nick_name, google_id, Name, last_name) VALUES
-('Tom_Schönfeld', 'tom_google_id', 'Tom', 'Schönfeld'),
-('Bob345', 'bob_google_id', 'Bob', 'Schönfeld'),
-('Michel223', 'charlie_google_id', 'Michel', 'Finger');
+INSERT INTO users (nick_name, first_name, last_name) VALUES
+('Tom_Schönfeld', 'Tom', 'Schönfeld'),
+('Bob345', 'Bob', 'Schönfeld'),
+('Michel223', 'Michel', 'Finger');
 
 
 DROP TABLE IF EXISTS `Household`;

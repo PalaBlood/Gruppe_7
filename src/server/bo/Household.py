@@ -14,6 +14,7 @@ class Household(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__users = []
+        self.__household_id = ""
         
     
     def get_users(self): 
@@ -35,7 +36,13 @@ class Household(BusinessObject):
             print(f"User mit ID {user.get_id()} wurde aus dem Haushalt entfernt")
         else:
             print("User ist nicht im Haushalt registriert") 
-    
+
+    def get_household_id(self):
+         return self.__household_id
+
+    def set_household_id(self, value):
+
+        self.__household_id = value
     
     @staticmethod
     def form_dict(dictionary=dict()):
