@@ -18,14 +18,14 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT nick_name, first_name, last_name, user_id FROM users")
         tuples = cursor.fetchall()
 
-        for (nickname, first_name, last_name, user_id) in tuples:
+        for (nick_name, first_name, last_name, user_id) in tuples:
             user = User()
-            user.set_nick_name(nickname)
-            user.set_first_name(first_name)
+            user.set_nick_name(nick_name)
             user.set_last_name(last_name)
+            user.set_first_name(first_name)
             user.set_User_id(user_id)
             result.append(user)
 
