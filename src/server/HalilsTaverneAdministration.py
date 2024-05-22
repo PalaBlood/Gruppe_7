@@ -32,6 +32,7 @@ from server.bo.Groceries import Groceries
 from server.bo.Household import Household
 from server.bo.ShoppingList import ShoppingList
 from server.bo.UnitConverters import UnitConverter
+from server.bo.Recipe import Recipe
 
 
 
@@ -154,6 +155,14 @@ class HalilsTaverneAdministration(object):
 
     #recipe-spezifische methoden:
 
+    def create_recipe(self, title, number_of_persons, creator, content):
+
+        recipe = Recipe()
+        recipe.set_title(title)
+        recipe.set_number_of_persons(number_of_persons)
+        recipe.set_creator(creator)
+        recipe.add_content(content)
+        recipe.set_id(1)
 
 
 

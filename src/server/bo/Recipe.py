@@ -72,8 +72,8 @@ class Recipe(BusinessObject):
         """Auslesen der Lebensmitteleinträge"""
         return self.__content
     
-    def add_content(self, grocieries=Groceries()):
-        self.__content.append(grocieries.get_id()) #Anhand der ID könnte man das Lebensmittel aus der DB herausziehen
+    def add_content(self, groceries=Groceries()):
+        self.__content.append(groceries.get_id()) #Anhand der ID könnte man das Lebensmittel aus der DB herausziehen
     
     def get_id(self):
 
