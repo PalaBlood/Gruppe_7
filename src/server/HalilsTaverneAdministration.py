@@ -1,6 +1,6 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
-"""
-from Gruppe_7.src.server.db.RecipeMapper import RecipeMapper
+
+"""from Gruppe_7.src.server.db.RecipeMapper import RecipeMapper
 from Gruppe_7.src.server.db.HouseholdMapper import HouseholdMapper
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
 from Gruppe_7.src.server.db.FridgeMapper import FridgeMapper
@@ -12,25 +12,25 @@ from Gruppe_7.src.server.bo.Fridge import Fridge
 from Gruppe_7.src.server.bo.Groceries import Groceries
 from Gruppe_7.src.server.bo.Household import Household
 from Gruppe_7.src.server.bo.ShoppingList import ShoppingList
-from Gruppe_7.src.server.bo.UnitConverters import UnitConverter
-"""
+from Gruppe_7.src.server.bo.UnitConverters import UnitConverter"""
+
 
 
 #Halils imports
 
-from src.server.bo.User import User
-from src.server.db.UserMapper import UserMapper
-from src.server.db.HouseholdMapper import HouseholdMapper
-from src.server.db.RecipeMapper import RecipeMapper
-from src.server.db.FridgeMapper import FridgeMapper
+from .bo.User import User
+from .db.UserMapper import UserMapper
+from .db.HouseholdMapper import HouseholdMapper
+from .db.RecipeMapper import RecipeMapper
+from .db.FridgeMapper import FridgeMapper
 
-from src.server.bo.FoodEntry import FoodEntry
-from src.server.bo.User import User
-from src.server.bo.Fridge import Fridge
-from src.server.bo.Groceries import Groceries
-from src.server.bo.Household import Household
-from src.server.bo.ShoppingList import ShoppingList
-from src.server.bo.UnitConverters import UnitConverter
+from .bo.FoodEntry import FoodEntry
+from .bo.User import User
+from .bo.Fridge import Fridge
+from .bo.Groceries import Groceries
+from .bo.Household import Household
+from .bo.ShoppingList import ShoppingList
+from .bo.UnitConverters import UnitConverter
 
 
 
@@ -119,7 +119,17 @@ class HalilsTaverneAdministration(object):
 
     #Groceries spezifische Methoden
 
-    def create_Grocerie(self, ):
+    def create_Grocerie(self, designation, unit_of_measurement, quantity):
+
+        groceries = Groceries()
+        groceries.set_designation(designation)
+        groceries.set_unit_of_measurement(unit_of_measurement)
+        groceries.set_quantity(quantity)
+        groceries.set_id(1)
+
+        with GroceriesMapper as mapper:
+            return mapper.insert(groceries)
+
 
 
 
