@@ -5,25 +5,24 @@ class User(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__nickname = "" #Der Nickname des Users
-        self.__google_id = None #Google ID zur Authentifizierung
+        self.__google_id = None #Google ID --> wird außerhalb unseres systems verwaltet
         self.__last_name = ""
         self.__first_name = ""
         self.__user_id = ""
     
     def get_google_id(self):
         """Google ID Auslesen"""
-        return self.__google_id
+        return self.__google_id              #eigentlich unnütze
     
     def set_google_id(self, value):
 
         self.__google_id = value
 
-    
-    def set_nickname(self, nickname): 
+    def set_nick_name(self, nickname):
         """nickname setzen"""
         self.__nickname = nickname
     
-    def get_nickname(self):
+    def get_nick_name(self):
         """nickname auslesen"""
         return self.__nickname
 
@@ -67,7 +66,9 @@ class User(BusinessObject):
         obj = User()
         obj.set_id(dictionary["id"])
         obj.__nickname(dictionary["nickname"])
-        obj.__google_id(dictionary["google_id"])
+        obj.__first_name(dictionary["firstname"])
+        obj.__last_name(dictionary["lastname"])
+
     
     
         

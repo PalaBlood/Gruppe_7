@@ -21,10 +21,9 @@ class UserMapper (Mapper):
         cursor.execute("SELECT * FROM users")
         tuples = cursor.fetchall()
 
-        for (nickname, google_id, first_name, last_name, user_id) in tuples:
+        for (nickname, first_name, last_name, user_id) in tuples:
             user = User()
-            user.set_nickname(nickname)
-            user.set_google_id(google_id)
+            user.set_nick_name(nickname)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
             user.set_User_id(user_id)
@@ -52,8 +51,8 @@ class UserMapper (Mapper):
         for (maxid) in tuples:
             user.set_User_id(maxid[0] + 1)
 
-        command = "INSERT INTO users (user_id, nick_name, google_id, first_name, last_name) VALUES (%s, %s, %s, %s, %s)"
-        data = (user.get_User_id(), user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name())
+        command = "INSERT INTO users (user_id, nick_name, first_name, last_name) VALUES (%s, %s, %s, %s)"
+        data = (user.get_User_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -61,9 +60,33 @@ class UserMapper (Mapper):
 
         return user
 
- 
+    def find_by_nickname(self, nick_name):
+        """Auslesen aller Benutzer anhand des Benutzernamens.
 
-    def find_by_id(self, id):
+        :param nickname Name der zugehörigen Benutzer.
+        :return Eine Sammlung mit User-Objekten, die sämtliche Benutzer
+            mit dem gewünschten Namen enthält.
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT user_id, nick_name, first_name, last_name FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (user_id, nick_name, first_name, last_name) in tuples:
+            user = User()
+            user.set_User_id(id)
+            user.set_nick_name(nick_name)
+            user.set_first_name(first_name)
+            user.set_last_name(last_name)
+            result.append(user)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_by_id(self, user_id):
         """Suchen eines Users mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -73,16 +96,15 @@ class UserMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, nickname, google_id, first_name, last_name, user_id FROM users WHERE id=%s"
-        cursor.execute(command, (id,))
+        command = "SELECT user_id, nick_name, first_name, last_name FROM users WHERE id=%s".format(user_id)
+        cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (user_id, nickname, google_id, first_name, last_name, user_id) = tuples[0]
+            (user_id, nick_name, first_name, last_name) = tuples[0]
             user = User()
-            user.set_id(user_id)
-            user.set_nickname(nickname)
-            user.set_google_id(google_id)
+            user.set_User_id(user_id)
+            user.set_nickname(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
             result = user
@@ -101,8 +123,8 @@ class UserMapper (Mapper):
         :param user das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE users SET nickname=%s, google_id=%s, first_name=%s, last_name=%s, user_id=%s WHERE id=%s"
-        data = (user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name(), user.get_User_id(), user.get_id())
+        command = "UPDATE users SET nickname=%s, first_name=%s, last_name=%s, user_id=%s WHERE id=%s"
+        data = (user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_User_id(), user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

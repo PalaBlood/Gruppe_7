@@ -30,13 +30,12 @@ class HalilsTaverneAdministration(object):
     
     #User spezifische Methoden
 
-    def create_user(self, nick_name, first_name, last_name, google_user_id):
+    def create_user(self, nick_name, first_name, last_name):
           #Benutzer erstellen
           user = User()
           user.set_first_name(first_name)
           user.set_last_name(last_name)
-          user.set_nickname(nick_name)
-          user.set_google_id(google_user_id)
+          user.set_nick_name(nick_name)
           user.set_id(1) #default id, wird später in der Datenbank geupdatet
 
           with UserMapper() as mapper:
@@ -149,10 +148,9 @@ admintest = HalilsTaverneAdministration()
 list = admintest.get_all_users()
 for user in list:
     print("User ID:", user.get_User_id())
-    print("Nickname:", user.get_nickname())
+    print("Nickname:", user.get_nick_name())
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
-    print("Google ID:", user.get_google_id())
     print()
 
-admintest.create_user("Tom","scd","jo",1283283)
+admintest.create_user("Tom","scd","jo")
