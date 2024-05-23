@@ -57,8 +57,6 @@ class RecipeMapper(Mapper):
         return result
 
 
-
-
     def insert(self, recipe):
         """Einfügen eines Recipe-Objekts in die Datenbank.
 
@@ -75,7 +73,7 @@ class RecipeMapper(Mapper):
         for (maxid) in tuples:
             recipe.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO recipes (id, title, number_of_persons, creator_id) VALUES (%s, %s, %s, %s)"
+        command = "INSERT INTO recipes (recipe_id, title, number_of_persons, creator_id) VALUES (%s, %s, %s, %s)"
         data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator().get_id())
         cursor.execute(command, data)
 

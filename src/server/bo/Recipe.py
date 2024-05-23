@@ -62,9 +62,11 @@ class Recipe(BusinessObject):
 
 
     def set_creator(self, creator=User()):
+        
         self.__creator = creator
 
     def get_creator(self):
+
         return self.__creator
 
 
