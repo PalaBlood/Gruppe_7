@@ -1,8 +1,3 @@
-"""
-from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
-from Gruppe_7.src.server.bo.Groceries import Groceries
-"""
-
 from src.server.bo.BusinessObject import BusinessObject
 from src.server.bo.Groceries import Groceries
 
@@ -27,7 +22,7 @@ class FoodEntry(BusinessObject):
         self.__unit_of_measurement = None
 
     
-    def set_groceries(self, groceries=Groceries):
+    def set_groceries(self, groceries=Groceries()):
         """Eintrag des Lebensmittel anhand seiner ID""" 
         self.__groceries = groceries.get_id()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden. 
     

@@ -3,19 +3,33 @@
 """
 from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
 """
+from FoodEntry import FoodEntry
+from Groceries import Groceries
+from BusinessObject import BusinessObject
 
-from server.bo.BusinessObject import BusinessObject
+class Shoppinglist(BusinessObject):
 
-class ShoppingList(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__shopping_list = {}
-        self.__shopping_id = ""
-        self.__ingedient = "" #in Datenbank varchar
-        self.__quantity_needed = float
+        self.__Shopping_List_Id = int
+        self.__Content = {}
 
-    def get_shopping_id(self):
-        return self.__shopping_id
+
+
+    def set_id(self,value):
+
+        self.__Shopping_List_Id = value
+
+    def get_id(self):
+
+        return self.__Shopping_List_Id
+
+    def set_Content(self, entry = FoodEntry()):
+
+        self.__Content = entry
+
+
+
 
 
         

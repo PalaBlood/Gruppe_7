@@ -1,22 +1,23 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
 
-"""from Gruppe_7.src.server.db.RecipeMapper import RecipeMapper
-from Gruppe_7.src.server.db.HouseholdMapper import HouseholdMapper
-from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
-from Gruppe_7.src.server.db.FridgeMapper import FridgeMapper
-from Gruppe_7.src.server.db.UserMapper import UserMapper
+from RecipeMapper import RecipeMapper
+from HouseholdMapper import HouseholdMapper
+from GroceriesMapper import GroceriesMapper
+from FridgeMapper import FridgeMapper
+from UserMapper import UserMapper
 
-from Gruppe_7.src.server.bo.FoodEntry import FoodEntry
-from Gruppe_7.src.server.bo.User import User
-from Gruppe_7.src.server.bo.Fridge import Fridge
-from Gruppe_7.src.server.bo.Groceries import Groceries
-from Gruppe_7.src.server.bo.Household import Household
-from Gruppe_7.src.server.bo.ShoppingList import ShoppingList
-from Gruppe_7.src.server.bo.UnitConverters import UnitConverter"""
+from FoodEntry import FoodEntry
+from User import User
+from Fridge import Fridge
+from Groceries import Groceries
+from Household import Household
+from ShoppingList import ShoppingList
+from Groceries import Groceries
+from Recipe import Recipe
 
 
 
-#Halils imports
+"""#Halils imports
 
 from server.bo.User import User
 from server.db.UserMapper import UserMapper
@@ -32,7 +33,7 @@ from server.bo.Groceries import Groceries
 from server.bo.Household import Household
 from server.bo.ShoppingList import ShoppingList
 from server.bo.UnitConverters import UnitConverter
-from server.bo.Recipe import Recipe
+from server.bo.Recipe import Recipe"""
 
 
 
@@ -174,17 +175,18 @@ class HalilsTaverneAdministration(object):
 
     def get_recipes_by_id(self, recipe_id):
 
-        with RecipeMapper as mapper:
-            return mapper.find_by_id(recipe_id)
+        with RecipeMapper() as mapper:
+            return mapper.find_by_id()
 
+    def save_recipe(self, recipe):
 
+        with RecipeMapper() as mapper:
+            return mapper.update(recipe)
 
+    def delete_recipe(self, recipe):
 
-
-
-
-
-
+        with RecipeMapper() as mapper:
+            mapper.delete(recipe)
 
 
     #shoppinglist-spezifische methoden:

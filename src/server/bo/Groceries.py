@@ -2,7 +2,7 @@ from enum import Enum
 """from Gruppe_7.src.server.bo.BusinessObject import BusinessObject"""
 
 from server.bo.BusinessObject import BusinessObject
-
+from server.bo.UnitConverters import UnitConverter
 
 """Imports muss jeder für sich anpassen."""
 
@@ -37,12 +37,11 @@ class Groceries(BusinessObject):
     
     def set_designation(self, designation):
         self.__designation = designation
-        
     
     def get_unit_of_measurement(self):
         return self.__unit_of_measurement
     
-    def set_unit_of_measurement(self, unit=str): 
+    def set_unit_of_measurement(self, unitConverter = UnitConverter()):
          self.__unit_of_measurement = unit.lower() #Mengenangaben werden immer in klein konventiert 
     
     
