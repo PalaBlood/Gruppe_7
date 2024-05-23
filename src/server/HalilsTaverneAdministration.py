@@ -164,6 +164,11 @@ class HalilsTaverneAdministration(object):
         recipe.add_content(content)
         recipe.set_id(1)
 
+    def get_all_recipes(self):
+
+        with RecipeMapper() as mapper:
+            mapper.find_all()
+
 
 
 
