@@ -12,7 +12,8 @@ class User(BusinessObject):
         self.__google_id = None #Google ID --> wird außerhalb unseres systems verwaltet
         self.__last_name = ""
         self.__first_name = ""
-        self.__user_id = int
+        self.__user_id = 0
+        self.__Household_id = 0
     
     def get_google_id(self):
         """Google ID Auslesen"""
@@ -59,6 +60,14 @@ class User(BusinessObject):
         Sobald ein User gelöscht wird, müssen wir auch dessen angelegte Rezepte löschen. Ansosonten hätten wir im System eine Referenz
         die nicht mehr exsitiert. Dies werden wir in Adminklasse durchführen."""
         pass
+
+    def get_household_id(self):
+
+        return self.__Household_id
+
+    def set_household_id(self, value):
+
+        self.__Household_id = value
     
     
     

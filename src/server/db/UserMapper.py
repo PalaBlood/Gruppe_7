@@ -8,6 +8,7 @@ from server.bo.User import User
 from server.db.Mapper import Mapper
 
 
+
 class UserMapper (Mapper):
     """Mapper-Klasse, die User-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
@@ -18,29 +19,42 @@ class UserMapper (Mapper):
 
     def __init__(self):
         super().__init__()
-        
+
+
+
+    def find_existing_household_id(self):
+        cursor = self._cnx.cursor()
+        query = "SELECT household_id FROM household LIMIT 1"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            return result[0]
+        return None
+
     def find_all(self):
         """Auslesen aller User. :return Eine Sammlung mit User-Objekten, die sämtliche User repräsentieren.
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT nick_name, first_name, last_name, user_id FROM users")
+        cursor.execute("SELECT nick_name, first_name, last_name, user_id, household_id FROM users")
         tuples = cursor.fetchall()
 
-        for (nick_name, first_name, last_name, user_id) in tuples:
+        for (nick_name, first_name, last_name, user_id, household_id) in tuples:
             user = User()
             user.set_nick_name(nick_name)
             user.set_last_name(last_name)
             user.set_first_name(first_name)
             user.set_User_id(user_id)
+            user.set_household_id(household_id)
             result.append(user)
 
         self._cnx.commit()
         cursor.close()
 
-        return result  
-  
-        
+        return result
+
+
     def insert(self, user):
         """Einfügen eines User-Objekts in die Datenbank.
 
@@ -57,8 +71,12 @@ class UserMapper (Mapper):
         for (maxid) in tuples:
             user.set_User_id(maxid[0] + 1)
 
-        command = "INSERT INTO users (user_id, nick_name, first_name, last_name) VALUES (%s, %s, %s, %s)"
-        data = (user.get_User_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name())
+        household_id = self.find_existing_household_id()
+
+        user.set_household_id(household_id)
+
+        command = "INSERT INTO users (user_id, nick_name, first_name, last_name, household_id) VALUES (%s, %s, %s, %s, %s)"
+        data = (user.get_User_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

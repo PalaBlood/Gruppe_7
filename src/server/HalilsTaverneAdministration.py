@@ -312,18 +312,12 @@ class HalilsTaverneAdministration(object):
 
 
 
+admintest2 = HalilsTaverneAdministration()
+list2 = admintest2.get_fridge_by_id(1)
 
 
 
-admintest2 = HalilsTaverneAdministration
-list = admintest2.get_all_fridges()
-for fridge in list:
-    print(fridge.get_fridge_id())
-    print(fridge.get_content())
-
-
-
-
+admintest2.create_Fridge()
 
 
 admintest = HalilsTaverneAdministration()
@@ -333,6 +327,6 @@ for user in list:
     print("Nickname:", user.get_nick_name())
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
-    print()
+    print("household_id:", user.get_household_id())
 
 admintest.create_user("Tom","scd","jo")
