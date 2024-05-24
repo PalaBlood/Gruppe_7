@@ -128,3 +128,20 @@ class FridgeMapper(Mapper):
         cursor.execute(command, (fridge.get_fridge_id(),))
 
        
+    def delete(self, fridge):
+        """Löschen der Daten eines Fridge-Objekts aus der Datenbank.
+
+        :param fridge: das aus der DB zu löschende Objekt
+        """
+        cursor = self._cnx.cursor()
+        
+        
+        command = "DELETE FROM Fridge_Groceries WHERE fridge_id=%s"
+        cursor.execute(command, (fridge.get_fridge_id(),))
+
+      
+        command = "DELETE FROM fridge WHERE fridge_id=%s"
+        cursor.execute(command, (fridge.get_fridge_id(),))
+
+        self._cnx.commit()
+        cursor.close()
