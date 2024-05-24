@@ -28,8 +28,6 @@ class Groceries(BusinessObject):
         
         super().__init__()
         self.__designation = None
-        self.__unit = None
-        self.__quantity = None
         self.__groceries_id = None
     
     def get_designation(self): 

@@ -313,7 +313,7 @@ class HalilsTaverneAdministration(object):
 
 
 admintest2 = HalilsTaverneAdministration()
-list2 = admintest2.get_fridge_by_id(1)
+list2 = admintest2.get_all_fridges()
 
 
 
