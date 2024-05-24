@@ -5,9 +5,9 @@ from Gruppe_7.src.server.bo.Groceries import Groceries
 """
 
 
-from server.bo.BusinessObject import BusinessObject
-from server.bo.User import User
-from server.bo.Groceries import Groceries
+from BusinessObject import BusinessObject
+from User import User
+from Groceries import Groceries
 
 """Ein Rezept hat: 
 -einen Titel
@@ -32,7 +32,7 @@ Grundsätzlich funktioniert alles mit der Klasse "Lebensmitteleintrag", jedoch g
 class Recipe(BusinessObject): 
     def __init__(self):
         super().__init__()
-        self.__recipe_id = ""
+        self.__recipe_id = None
         self.__title = ""
         self.__number_of_persons = int
         self.__creator = None 

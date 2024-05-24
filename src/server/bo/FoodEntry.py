@@ -1,5 +1,6 @@
-from src.server.bo.BusinessObject import BusinessObject
-from src.server.bo.Groceries import Groceries
+from BusinessObject import BusinessObject
+from Groceries import Groceries
+from groceries2 import Groceries2
 
 """Imports muss jeder für sich anpassen."""
 
@@ -19,13 +20,16 @@ class FoodEntry(BusinessObject):
         super().__init__()
         self.__groceries = None
         self.__quantity = None
-        self.__unit_of_measurement = None
+        self.__unit_of_measurement = None #Hier evt einfach ne Matrix mit allen möglichen Maßeinheiten
 
     
-    def set_groceries(self, groceries=Groceries()):
+    def set_groceries(self, groceries=Groceries2()):
         """Eintrag des Lebensmittel anhand seiner ID""" 
-        self.__groceries = groceries.get_id()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden. 
-    
+        self.__groceries = groceries.get_designation()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden.
+
+
+    def get_groceries(self):
+        return self.__groceries
 
     def get_quantity(self):
         """Auslesen der Menge"""
