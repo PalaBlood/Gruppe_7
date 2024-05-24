@@ -11,7 +11,7 @@ from User import User
 from Fridge import Fridge
 from Groceries import Groceries
 from Household import Household
-from ShoppingList import ShoppingList
+from ShoppingList import Shoppinglist
 from Groceries import Groceries
 from Recipe import Recipe
 
@@ -126,7 +126,7 @@ class HalilsTaverneAdministration(object):
 
         groceries = Groceries()
         groceries.set_designation(designation)
-        groceries.set_unit_of_measurement(unit_of_measurement)
+        groceries.set_unit(unit_of_measurement)
         groceries.set_quantity(quantity)
         groceries.set_id(1)
 
@@ -315,7 +315,11 @@ class HalilsTaverneAdministration(object):
 
 
 
-
+admintest2 = HalilsTaverneAdministration
+list = admintest2.get_all_fridges()
+for fridge in list:
+    print(fridge.get_fridge_id())
+    print(fridge.get_content())
 
 
 

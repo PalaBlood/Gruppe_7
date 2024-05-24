@@ -28,22 +28,15 @@ class Groceries(BusinessObject):
         
         super().__init__()
         self.__designation = None
-        self.__unit_of_measurement = None
+        self.__unit = None
         self.__quantity = None
-        self.__groceries_id = ""
+        self.__groceries_id = None
     
     def get_designation(self): 
         return self.__designation
     
     def set_designation(self, designation):
         self.__designation = designation
-    
-    def get_unit_of_measurement(self):
-        return self.__unit_of_measurement
-    
-    def set_unit_of_measurement(self, unitConverter = UnitConverter()):
-         self.__unit_of_measurement = unit.lower() #Mengenangaben werden immer in klein konventiert 
-    
     
     def get_quantity(self):
         return self.__quantity
@@ -58,6 +51,16 @@ class Groceries(BusinessObject):
     def set_groceries_id(self, value):
 
         self.__groceries_id = value
+
+    def get_unit(self):
+
+        return self.__unit
+    
+    def set_unit(self, value):
+
+        self.__unit = value
+
+
     
     
 if __name__ == "__main__":

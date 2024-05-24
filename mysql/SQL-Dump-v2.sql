@@ -4,30 +4,18 @@ CREATE DATABASE IF NOT EXISTS Sopra;
 
 USE Sopra;
 
-/*DROP TABLE IF EXISTS `Unitofmeasurement`;
-CREATE TABLE Unitofmeasurement (
-    ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    designation VARCHAR(255)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO Unitofmeasurement (designation) VALUES
-('Kilogram'),
-('Gram'),
-('Liter'),
-('Milliliter');
-*/
 
 DROP TABLE IF EXISTS `Groceries`;
 CREATE TABLE Groceries (
 
     Groceries_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(255),
-    Quantity FLOAT,
-    Unitofmeasurement VARCHAR(255)
+    quantity FLOAT,
+    Unit VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Groceries (designation, Quantity) VALUES
+INSERT INTO Groceries (designation, Quantity, Unit) VALUES
 ('Apples', 2.5, 'grams'),
 ('Milk',  1, 'mililiters'),
 ('Flour',  0.5, 'kilos'),
@@ -40,20 +28,22 @@ CREATE TABLE Recipe (
     recipe_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recipe_title VARCHAR(255),
     number_of_persons INT,
-    ingredients VARCHAR(255), -- Zutatenliste als String
-    creator VARCHAR(255) -- Ersteller als String
+    creator INT
+    FOREIGN KEY (creator) REFERENCES Users(user_id)  -- Ersteller als Referenz auf User_ID
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Recipe (recipe_title, number_of_persons, ingredients, creator) VALUES
-('Apple Pie', 8 , 'Apples, Flour, Sugar', 'Tom'),
-('Pancakes', 4 , 'Flour, Milk, Sugar', 'Bob'),
-('Omelette', 2 , 'Eggs', 'Michel');
+INSERT INTO Recipe (recipe_title, number_of_persons, ingredients) VALUES
+('Apple Pie', 8 , 'Apples, Flour, Sugar'),
+('Pancakes', 4 , 'Flour, Milk, Sugar'),
+('Omelette', 2 , 'Eggs');
 
 
 DROP TABLE IF EXISTS `Recipe_Groceries`;
 CREATE TABLE Recipe_Groceries (
     recipe_id INT NOT NULL,
     Groceries_ID INT NOT NULL,
+    quantity FLOAT,
+    unit VARCHAR(255),
     PRIMARY KEY (recipe_id, Groceries_ID),
     FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id),
     FOREIGN KEY (Groceries_ID) REFERENCES Groceries(Groceries_ID)
@@ -76,16 +66,20 @@ INSERT INTO users (nick_name, first_name, last_name) VALUES
 DROP TABLE IF EXISTS `Household`;
 CREATE TABLE Household (
     Household_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    users VARCHAR(255) -- Benutzerliste als string
+    users INT,
+    FOREIGN KEY (users) REFERENCES users(user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household (users) VALUES
-('Tom_Schönfeld, Bob345, Michel223');
 
 DROP TABLE IF EXISTS `Fridge`;
 CREATE TABLE Fridge (
     Fridge_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    groceries_list VARCHAR(255) -- Liste als string
+    household_id INT NOT NULL,
+    Groceries_ID INT NOT NULL,
+    quantity,
+    unit,
+    FOREIGN KEY household_id REFERENCES Household(Household_ID),
+    FOREIGN KEY Groceries_ID REFERENCES Groceries(Groceries_ID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -95,9 +89,11 @@ INSERT INTO Fridge (groceries_list) VALUES
 
 DROP TABLE IF EXISTS `ShoppingList`;
 CREATE TABLE ShoppingList (
-    shopping_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    ingredient VARCHAR(255),
-    quantity_needed FLOAT
+    shopping_list_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ingredient_id VARCHAR(255),
+    quantity_needed FLOAT,
+    unit,
+    FOREIGN KEY ingredient_id REFERENCES Groceries(Groceries_ID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
