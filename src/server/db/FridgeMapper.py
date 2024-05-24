@@ -58,6 +58,7 @@ class FridgeMapper(Mapper):
 
         return fridge
 
+
     def find_by_id(self, id):
         """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.

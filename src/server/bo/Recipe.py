@@ -69,7 +69,6 @@ class Recipe(BusinessObject):
 
         return self.__creator
 
-
     def get_content(self):
         """Auslesen der Lebensmitteleinträge"""
         return self.__content

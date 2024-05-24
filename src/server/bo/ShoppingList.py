@@ -24,9 +24,9 @@ class Shoppinglist(BusinessObject):
 
         return self.__Shopping_List_Id
 
-    def set_Content(self, entry = FoodEntry()):
+    def set_Content(self):
 
-        self.__Content = entry
+        self.__Content
 
 
 
