@@ -1,15 +1,16 @@
 
-"""
+
 from Gruppe_7.src.server.bo.Household import Household
 from Gruppe_7.src.server.bo.User import User
 from Gruppe_7.src.server.db.UserMapper import UserMapper
 from Gruppe_7.src.server.db.Mapper import Mapper
-"""
 
+"""
 from src.server.bo.Household import Household
 from src.server.bo.User import User
 from src.server.db.UserMapper import UserMapper
 from src.server.db.Mapper import Mapper
+"""
 
 class HouseholdMapper(Mapper):
     """Mapper-Klasse, die Household-Objekte auf eine relationale

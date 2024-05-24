@@ -23,7 +23,7 @@ Noch zu erledigen:
 - Rezept löschen
 
 
-Sonstitges: 
+Sonstiges: 
 Grundsätzlich funktioniert alles mit der Klasse "Lebensmitteleintrag", jedoch gibt es da noch ein paar Punkte, die wir ausprobieren müssen 
 (siehe src/server/bo/Lebensmitteleintrag)
 
@@ -94,8 +94,7 @@ class Recipe(BusinessObject):
         obj.set_number_of_persons(dictionary["number of persons"])
         obj.add_entry(dictionary["food entry"])
 
-    
-    
+
 
 
 if __name__ == "__main__":
@@ -105,13 +104,13 @@ if __name__ == "__main__":
     salat = Groceries()
     salat.set_designation("Salat")
     salat.set_quantity(1)
-    salat.set_unit_of_measurement("grams")
+    salat.set_unit("grams")
     salat.set_id(1)
     
     brot = Groceries()
     brot.set_designation("brot")
     brot.set_quantity(1)
-    brot.set_unit_of_measurement("kilogram")
+    brot.set_unit("kilogram")
     brot.set_id(2)
     
     

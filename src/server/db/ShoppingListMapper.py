@@ -12,21 +12,26 @@ class ShoppingListMapper(Mapper):
 
 
     def find_all(self):
+        pass
 
 
 
     def find_by_id(self, id):
+        pass
 
 
 
     def insert(self, object):
+        pass
 
 
 
 
     def update(self, object):
+        pass
 
 
 
 
     def delete(self, object):
+        pass

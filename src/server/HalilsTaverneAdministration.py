@@ -315,7 +315,7 @@ class HalilsTaverneAdministration(object):
 
 
 
-admintest2 = HalilsTaverneAdministration
+admintest2 = HalilsTaverneAdministration()
 list = admintest2.get_all_fridges()
 for fridge in list:
     print(fridge.get_fridge_id())
