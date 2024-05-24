@@ -54,6 +54,7 @@ class Groceries(BusinessObject):
 
     def get_unit(self):
 
+
         return self.__unit
     
     def set_unit(self, value):
@@ -68,9 +69,9 @@ if __name__ == "__main__":
     salat = Groceries()
     salat.set_designation("Salat")
     salat.set_quantity(1)
-    salat.set_unit_of_measurement("kilogram")
+    salat.set_unit("kilogram")
     
-    print(salat.get_unit_of_measurement())
+    print(salat.get_unit())
     
 
 
