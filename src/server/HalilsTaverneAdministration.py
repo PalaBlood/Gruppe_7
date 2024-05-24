@@ -9,10 +9,9 @@ from UserMapper import UserMapper
 from FoodEntry import FoodEntry
 from User import User
 from Fridge import Fridge
-from Groceries import Groceries
+from Groceries2 import Groceries2
 from Household import Household
 from ShoppingList import Shoppinglist
-from Groceries import Groceries
 from Recipe import Recipe
 
 

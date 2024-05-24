@@ -7,7 +7,7 @@ from Gruppe_7.src.server.bo.Groceries import Groceries
 
 from BusinessObject import BusinessObject
 from User import User
-from Groceries import Groceries
+
 
 """Ein Rezept hat: 
 -einen Titel

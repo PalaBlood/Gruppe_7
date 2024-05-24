@@ -1,18 +1,17 @@
 from FoodEntry import FoodEntry
 from Recipe import Recipe
-from groceries2 import Groceries2
+from Groceries2 import Groceries2
 
 class RecipeEntry(FoodEntry):
     def __init__(self):
         super().__init__()
         self.__recipe_id = None
 
-
-    def get_reicpe(self):
+    def get_recipe(self):
         return self.__recipe_id
 
     def set_recipe_id(self, recipe_id=Recipe()):
-        self.__recipe_id = recipe_id.get_title()
+        self.__recipe_id = recipe_id.get_id()
 
 
 
