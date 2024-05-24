@@ -328,5 +328,6 @@ for user in list:
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
     print("household_id:", user.get_household_id())
+    print()
 
 admintest.create_user("Tom","scd","jo")
