@@ -19,7 +19,7 @@ class FoodEntry(BusinessObject):
         super().__init__()
         self.__groceries = None
         self.__quantity = None
-        self.__unit_of_measurement = None #Hier evt einfach ne Matrix mit allen möglichen Maßeinheiten
+        self.__unit = None #Hier evt einfach ne Matrix mit allen möglichen Maßeinheiten
 
     
     def set_groceries(self, groceries=Groceries2()):
@@ -44,12 +44,12 @@ class FoodEntry(BusinessObject):
     
  
     
-    def set_unit_of_measurement(self, value):
+    def set_unit(self, value):
         """Maßeinheit setzen"""
-        self.__unit_of_measurement = value #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden
+        self.__unit = value #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden
     
-    def get_unit_of_measurement(self):
-        return self.__unit_of_measurement
+    def get_unit(self):
+        return self.__unit
     
     
     def __str__(self) -> str:
