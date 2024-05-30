@@ -34,8 +34,8 @@ class GroceriesMapper(Mapper):
         for (maxid) in tuples:
             groceries.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO groceries (id, designation, unit_of_measurement, quantity) VALUES (%s, %s, %s, %s)"
-        data = (groceries.get_id(), groceries.get_designation(), groceries.get_unit_of_measurement(), groceries.get_quantity())
+        command = "INSERT INTO groceries (id, designation) VALUES (%s, %s)"
+        data = (groceries.get_id(), groceries.get_designation())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -56,12 +56,10 @@ class GroceriesMapper(Mapper):
         cursor.execute("SELECT * FROM groceries")
         tuples = cursor.fetchall()
 
-        for (id, designation, unit_of_measurement, quantity) in tuples:
+        for (id, designation) in tuples:
             groceries = Groceries()
             groceries.set_id(id)
             groceries.set_designation(designation)
-            groceries.set_unit_of_measurement(unit_of_measurement)
-            groceries.set_quantity(quantity)
             result.append(groceries)
 
         self._cnx.commit()
@@ -82,17 +80,15 @@ class GroceriesMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, designation, unit_of_measurement, quantity FROM groceries WHERE id=%s"
+        command = "SELECT id, designation FROM groceries WHERE id=%s"
         cursor.execute(command, (id,))
         tuples = cursor.fetchall()
 
         try:
-            (id, designation, unit_of_measurement, quantity) = tuples[0]
+            (id, designation) = tuples[0]
             groceries = Groceries()
             groceries.set_id(id)
             groceries.set_designation(designation)
-            groceries.set_unit_of_measurement(unit_of_measurement)
-            groceries.set_quantity(quantity)
             result = groceries
         except IndexError:
             result = None
@@ -111,8 +107,8 @@ class GroceriesMapper(Mapper):
         :param groceries das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE groceries SET designation=%s, unit_of_measurement=%s, quantity=%s WHERE id=%s"
-        data = (groceries.get_designation(), groceries.get_unit_of_measurement(), groceries.get_quantity(), groceries.get_id())
+        command = "UPDATE groceries SET designation=%s WHERE id=%s"
+        data = (groceries.get_designation(), groceries.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
