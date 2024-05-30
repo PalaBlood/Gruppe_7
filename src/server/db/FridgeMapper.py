@@ -5,11 +5,10 @@ from Gruppe_7.src.server.bo.Groceries import Groceries
 from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
 """
 
-import unittest
-from server.db.Mapper import Mapper
-from server.bo.Fridge import Fridge
-from server.bo.Groceries import Groceries
-from server.db.GroceriesMapper import GroceriesMapper
+from Mapper import Mapper
+from ..bo.FridgeEntry import FridgeEntry
+from ..bo.Fridge import Fridge
+from ..bo.Groceries import Groceries
 
 
 class FridgeMapper(Mapper):
@@ -149,7 +148,7 @@ class FridgeMapper(Mapper):
 
 
 
-class FridgeMapper(Mapper):
+class FridgeMapper2(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
@@ -186,17 +185,17 @@ class FridgeMapper(Mapper):
 
         return fridge
 
-    def insert_fridge_entry(self, fridge_entry, fridge_id):
+    def insert_fridge_entry(self, fridge_entry, fridge):
         """Einfügen eines FridgeEntry-Objekts in die Datenbank.
 
         :param fridge_entry: das zu speichernde FridgeEntry-Objekt
-        :param fridge_id: die ID des Fridge, zu dem der Eintrag gehört
+        :param fridge: wir übergeben die Fridge von der wir die ID als Fremdschlüssel auslesen
         """
         cursor = self._cnx.cursor()
 
         command = """INSERT INTO Fridge_Groceries (fridge_id, groceries_id, quantity, unit)
                      VALUES (%s, %s, %s, %s)"""
-        data = (fridge_id, fridge_entry.get_groceries(), fridge_entry.get_quantity(), fridge_entry.get_unit())
+        data = (fridge.get_id(), fridge_entry.get_groceries(), fridge_entry.get_quantity(), fridge_entry.get_unit())
         cursor.execute(command, data)
 
         self._cnx.commit()
