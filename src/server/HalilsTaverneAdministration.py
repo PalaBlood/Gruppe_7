@@ -242,76 +242,7 @@ class HalilsTaverneAdministration(object):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-admintest2 = HalilsTaverneAdministration()
+"""admintest2 = HalilsTaverneAdministration()
 list2 = admintest2.get_all_fridges()
 
 
@@ -329,4 +260,4 @@ for user in list:
     print("household_id:", user.get_household_id())
     print()
 
-admintest.create_user("Tom","scd","jo")
+admintest.create_user("Tom","scd","jo")"""
