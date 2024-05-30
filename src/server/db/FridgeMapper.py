@@ -216,7 +216,7 @@ class FridgeMapper2(Mapper):
             cursor = self._cnx.cursor()
             command = """INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
-            data = (fridge_id, fridge_entry.get_groceries(), fridge_entry.get_quantity(), fridge_entry.get_unit())
+            data = (fridge_id, fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(), fridge_entry.get_unit())
             cursor.execute(command, data)
             self._cnx.commit()
             cursor.close()
@@ -268,19 +268,18 @@ class FridgeMapper2(Mapper):
         cursor.execute("SELECT fridge_id, groceries_designation, quantity, unit FROM fridge_groceries")
         tuples = cursor.fetchall()
 
-        for (fridge_id, groceries_designation, quantity, unit,) in tuples:
+        for (fridge_id, groceries_designation, quantity, unit) in tuples:
             fridge_entry = FridgeEntry()
             fridge_entry.set_fridge_id(fridge_id),
             fridge_entry.set_groceries_designation(groceries_designation)
             fridge_entry.set_quantity(quantity)
             fridge_entry.set_unit(unit)
-
             result.append(fridge_entry)
 
-            self._cnx.commit()
-            cursor.close()
+        self._cnx.commit()
+        cursor.close()
 
-            return result
+        return result
     def find_all(self):
         """Auslesen aller Fridges.
 

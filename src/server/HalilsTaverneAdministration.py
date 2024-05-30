@@ -138,7 +138,7 @@ class HalilsTaverneAdministration(object):
     def get_all_fridge_entries(self):
 
         with FridgeMapper2() as mapper:
-            mapper.find_all_entries()
+            return mapper.find_all_entries()
 
 
     def create_Grocerie(self, designation, unit_of_measurement, quantity):
@@ -266,9 +266,12 @@ class HalilsTaverneAdministration(object):
 
 admintest = HalilsTaverneAdministration()
 admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
-admintest.get_all_fridge_entries()
-for entry in list:
-    print("Designation:", entry.get_groceries_designation())
+list2 = admintest.get_all_fridge_entries()
+for fridge_entry in list2:
+    print("Designation:", fridge_entry.get_groceries_designation())
+    print("Unit:", fridge_entry.get_unit())
+    print(fridge_entry.get_quantity())
+    print(fridge_entry.get_fridge())
 
 
 list = admintest.get_all_users()
