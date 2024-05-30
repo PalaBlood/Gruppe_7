@@ -11,9 +11,6 @@ from server.bo.Fridge import Fridge
 from server.bo.Groceries import Groceries
 from server.db.GroceriesMapper import GroceriesMapper
 
-from src.server.db.Mapper import Mapper
-from src.server.bo.Fridge import Fridge
-from src.server.bo.Groceries import Groceries
 
 class FridgeMapper(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale

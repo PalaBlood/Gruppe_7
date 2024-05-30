@@ -1,5 +1,5 @@
 from BusinessObject import BusinessObject
-from Groceries2 import Groceries2
+from Groceries import Groceries
 
 """Imports muss jeder für sich anpassen."""
 
@@ -14,47 +14,70 @@ from Groceries2 import Groceries2
  - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen? - hab Quantity als Klasse mal wegelassen. 
  """
 
+
+
 class FoodEntry(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__groceries = None
         self.__quantity = None
-        self.__unit = None #Hier evt einfach ne Matrix mit allen möglichen Maßeinheiten
+        self.__unit = None
 
-    
-    def set_groceries(self, groceries=Groceries2()):
-        """Eintrag des Lebensmittel anhand seiner ID""" 
-        self.__groceries = groceries.get_designation()  #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden.
-
+    def set_groceries(self, groceries=Groceries()):
+        self.__groceries = groceries.get_id()
 
     def get_groceries(self):
         return self.__groceries
 
     def get_quantity(self):
-        """Auslesen der Menge"""
         return self.__quantity
-    
-    def set_quanity(self, quantity):
-        """Eintrag der Menge"""
+
+    def set_quantity(self, quantity):
         self.__quantity = quantity
-        
-    def edit_quantity(self): 
-        """Logik für das Editieren von Eintrag implementieren"""
-        pass
-    
- 
-    
-    def set_unit(self, value):
-        """Maßeinheit setzen"""
-        self.__unit = value #Hier wird die Frage sein, ob wir das Objekt übergeben sollen oder die ID. Ich denke das wird aber aufgrund der DB sowieso etwas anders gehandhabt werden
-    
+
+    def set_unit(self, unit):
+        self.__unit = unit
+
     def get_unit(self):
         return self.__unit
-    
-    
+
+
+
+
+    def get_quantity_in_base_unit(self):
+        return self.__unit.convert_to_base(self.__quantity)
+
+
+
+    def convert_to_base_unit(quantity, unit):
+        return unit.convert_to_base(quantity)
+
+    def can_prepare_recipe(recipe, fridge_entries):
+        for entry in recipe.entries:
+            required_quantity = entry.get_quantity_in_base_unit()
+            available_quantity = 0
+            for fridge_entry in fridge_entries:
+                if fridge_entry.get_groceries() == entry.get_groceries():
+                    available_quantity += fridge_entry.get_quantity_in_base_unit()
+            if available_quantity < required_quantity:
+                return False
+        return True
+
+
+    def __str__(self):
+        return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()} {self.get_unit()}"
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = FoodEntry()
+        obj.set_id(dictionary["id"])
+        obj.set_groceries(dictionary["groceries"])
+        obj.set_quantity(dictionary["quantity"])
+        obj.set_unit(dictionary["unit"])
+
     def __str__(self) -> str:
         """Beschreibung des Eintrags"""
-        return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
+        return f"Lebensmittel: {self.__groceries()}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
+
 
 
 
@@ -72,7 +95,7 @@ class FoodEntry(BusinessObject):
 
     @staticmethod
     def form_dict(dictionary=dict()):
-        obj = FootEntry()
+        obj = FoodEntry()
         obj.set_id(dictionary["id"])
         obj.set_groceries(dictionary["groceries"])
         obj.set_unit_of_measurement["unit of measurement"]
@@ -91,7 +114,7 @@ if __name__ == "__main__":
     kilogramm.set_id(2)
     kilogramm.set_designation("Kilogramm")
     
-    eintrag1 = FootEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben 
+    eintrag1 = FoodEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben
     eintrag1.set_id(3)
     eintrag1.set_groceries(gurke)
     eintrag1.set_unit_of_measurement(kilogramm)

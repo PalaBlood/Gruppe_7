@@ -1,12 +1,12 @@
 from FoodEntry import FoodEntry
 from Recipe import Recipe
-from Groceries2 import Groceries2
+from Groceries import Groceries
 
 class RecipeEntry(FoodEntry):
     def __init__(self):
         super().__init__()
         self.__recipe_id = None
-        self.__recipe_entry_id = None          
+
 
     def get_recipe(self):
         return self.__recipe_id
@@ -14,13 +14,6 @@ class RecipeEntry(FoodEntry):
     def set_recipe_id(self, recipe_id=Recipe()):
         self.__recipe_id = recipe_id.get_id()
 
-    def set_recipe_entry_id(self, value):
-
-        self.__recipe_entry_id = value
-
-    def get_recipe_entry_id(self):
-
-        return self.__recipe_entry_id
 
         
 
@@ -33,7 +26,7 @@ if __name__ == "__main__":
     apfelkuchen.set_title("Apfelkuchen")
 
 
-    apfel = Groceries2()
+    apfel = Groceries()
     apfel.set_designation("Apfel")
     apfel.set_id(11)
     eintrag = RecipeEntry()

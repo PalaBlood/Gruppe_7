@@ -12,12 +12,11 @@ class User(BusinessObject):
         self.__google_id = None #Google ID --> wird außerhalb unseres systems verwaltet
         self.__last_name = ""
         self.__first_name = ""
-        self.__user_id = 0
         self.__Household_id = 0
     
     def get_google_id(self):
         """Google ID Auslesen"""
-        return self.__google_id              #eigentlich unnütze
+        return self.__google_id
     
     def set_google_id(self, value):
 
@@ -47,13 +46,7 @@ class User(BusinessObject):
 
         return self.__first_name
 
-    def set_User_id(self, value):
 
-        self.__user_id = value
-
-    def get_User_id(self):
-
-        return self.__user_id
     
     def delete_user(self): 
         """Hier müssen wir eine "Löschweitergabe implementieren (siehe Thies Videomitschnitt 20.05 min. 12.00)
