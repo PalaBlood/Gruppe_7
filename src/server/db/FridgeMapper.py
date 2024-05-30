@@ -246,7 +246,7 @@ class FridgeMapper2(Mapper):
 
             for (groceries_id, quantity, unit) in entries:
                 entry = FridgeEntry()
-                entry.set_groceries(groceries_id)
+                entry.set_groceries_designation(groceries_id)
                 entry.set_quantity(quantity)
                 entry.set_unit(unit)
                 fridge.add_content(entry)
