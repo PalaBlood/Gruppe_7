@@ -1,5 +1,6 @@
 from BusinessObject import BusinessObject
 from Groceries import Groceries
+from Unit import Unit
 
 """Imports muss jeder für sich anpassen."""
 
@@ -24,7 +25,7 @@ class FoodEntry(BusinessObject):
         self.__unit = None
 
     def set_groceries(self, groceries=Groceries()):
-        self.__groceries = groceries.get_id()
+        self.__groceries = groceries.get_designation()
 
     def get_groceries(self):
         return self.__groceries
@@ -35,7 +36,7 @@ class FoodEntry(BusinessObject):
     def set_quantity(self, quantity):
         self.__quantity = quantity
 
-    def set_unit(self, unit):
+    def set_unit(self, unit = Unit()):
         self.__unit = unit
 
     def get_unit(self):

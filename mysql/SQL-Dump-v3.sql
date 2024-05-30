@@ -112,3 +112,17 @@ CREATE TABLE ShoppingList (
 
 INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALUES
 (1, 'Gurke', 0.5, 'kilos');
+
+DROP TABLE IF EXISTS UNIT;
+CREATE TABLE Unit (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    conversion_factor INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO Unit (id, name, conversion_factor) VALUES
+(1, 'gramm', 1),
+(2, 'kilogramm', 1000),
+(3, 'mililiter', 1),
+(4, 'liter',1000)
+
