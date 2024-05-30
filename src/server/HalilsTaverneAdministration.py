@@ -100,12 +100,14 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper() as mapper:
             return mapper.insert(fridge)
-    def create_Fridge_entry(self):
+    def create_Fridge_entry(self, unit, quantity):
 
         fridgeentry = FridgeEntry()
         fridgeentry.set_id(1)
         fridgeentry.set_unit()
         fridgeentry.set_fridge_id(1)
+        fridgeentry.set_quantity()
+        fridgeentry.set_groceries()
     def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
 
         with FridgeMapper() as mapper:
