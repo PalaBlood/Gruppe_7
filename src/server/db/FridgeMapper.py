@@ -6,9 +6,9 @@ from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
 """
 
 from Mapper import Mapper
-from ..bo.FridgeEntry import FridgeEntry
-from ..bo.Fridge import Fridge
-from ..bo.Groceries import Groceries
+from src.server.bo.FridgeEntry import FridgeEntry
+from src.server.bo.Fridge import Fridge
+from src.server.bo.Groceries import Groceries
 
 
 class FridgeMapper(Mapper):
@@ -185,21 +185,41 @@ class FridgeMapper2(Mapper):
 
         return fridge
 
-    def insert_fridge_entry(self, fridge_entry, fridge):
-        """Einfügen eines FridgeEntry-Objekts in die Datenbank.
-
-        :param fridge_entry: das zu speichernde FridgeEntry-Objekt
-        :param fridge: wir übergeben die Fridge von der wir die ID als Fremdschlüssel auslesen
-        """
+    def get_existing_entry(self, fridge_id, groceries_designation):
         cursor = self._cnx.cursor()
+        query = "SELECT quantity FROM Fridge_Groceries WHERE fridge_id = %s AND groceries_designation = %s"
+        cursor.execute(query, (fridge_id, groceries_designation))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
 
-        command = """INSERT INTO Fridge_Groceries (fridge_id, groceries_id, quantity, unit)
-                     VALUES (%s, %s, %s, %s)"""
-        data = (fridge.get_id(), fridge_entry.get_groceries(), fridge_entry.get_quantity(), fridge_entry.get_unit())
-        cursor.execute(command, data)
-
+    def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
+        """Update an existing fridge entry in the database."""
+        cursor = self._cnx.cursor()
+        command = """UPDATE fridge_groceries
+                     SET quantity = %s, unit = %s
+                     WHERE fridge_id = %s AND groceries_designation = %s"""
+        cursor.execute(command, (quantity, unit, fridge_id, groceries_designation))
         self._cnx.commit()
         cursor.close()
+
+    def insert_fridge_entry(self, fridge_entry, fridge_id):
+        """Insert or update a FridgeEntry object into the database."""
+        existing_entry = self.get_existing_entry(fridge_id, fridge_entry.get_groceries_designation())
+
+        if existing_entry:
+            # Update the existing entry
+            new_quantity = existing_entry[0] + fridge_entry.get_quantity()
+            self.update_fridge_entry(fridge_id, fridge_entry.get_groceries_designation(), new_quantity, fridge_entry.get_unit())
+        else:
+            # Insert the new entry
+            cursor = self._cnx.cursor()
+            command = """INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit)
+                         VALUES (%s, %s, %s, %s)"""
+            data = (fridge_id, fridge_entry.get_groceries(), fridge_entry.get_quantity(), fridge_entry.get_unit())
+            cursor.execute(command, data)
+            self._cnx.commit()
+            cursor.close()
 
     def find_by_id(self, id):
         """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
@@ -240,6 +260,27 @@ class FridgeMapper2(Mapper):
 
         return result
 
+    def find_all_entries(self):
+
+        result = []
+        cursor = self._cnx.cursor()
+
+        cursor.execute("SELECT fridge_id, groceries_designation, quantity, unit FROM fridge_groceries")
+        tuples = cursor.fetchall()
+
+        for (fridge_id, groceries_designation, quantity, unit,) in tuples:
+            fridge_entry = FridgeEntry()
+            fridge_entry.set_fridge_id(fridge_id),
+            fridge_entry.set_groceries_designation(groceries_designation)
+            fridge_entry.set_quantity(quantity)
+            fridge_entry.set_unit(unit)
+
+            result.append(fridge_entry)
+
+            self._cnx.commit()
+            cursor.close()
+
+            return result
     def find_all(self):
         """Auslesen aller Fridges.
 
@@ -247,7 +288,7 @@ class FridgeMapper2(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT fridge_id FROM fridge")
+        cursor.execute("SELECT id FROM fridge")
         tuples = cursor.fetchall()
 
         for (fridge_id,) in tuples:
@@ -259,23 +300,6 @@ class FridgeMapper2(Mapper):
         cursor.close()
 
         return result
-
-    def update_fridge_entry(self, fridge_entry, fridge_id):
-        """Aktualisieren eines FridgeEntry-Objekts in der Datenbank.
-
-        :param fridge_entry: das zu aktualisierende FridgeEntry-Objekt
-        :param fridge_id: die ID des Fridge, zu dem der Eintrag gehört
-        """
-        cursor = self._cnx.cursor()
-
-        command = """UPDATE Fridge_Groceries 
-                     SET quantity=%s, unit=%s 
-                     WHERE fridge_id=%s AND groceries_id=%s"""
-        data = (fridge_entry.get_quantity(), fridge_entry.get_unit(), fridge_id, fridge_entry.get_groceries())
-        cursor.execute(command, data)
-
-        self._cnx.commit()
-        cursor.close()
 
     def delete_fridge_entry(self, fridge_entry, fridge_id):
         """Löschen eines FridgeEntry-Objekts aus der Datenbank.

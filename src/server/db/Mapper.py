@@ -55,16 +55,6 @@ class Mapper(AbstractContextManager, ABC):
     def find_by_id(self, id):
 
         pass
-
-    @abstractmethod
-    def insert(self, object):
-
-        pass
-    
-    @abstractmethod
-    def update(self, object):
-
-        pass
     
     @abstractmethod
     def delete(self, object):

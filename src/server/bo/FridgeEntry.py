@@ -9,11 +9,6 @@ class FridgeEntry(FoodEntry):
     def get_fridge(self):
         return self.__fridge_id
 
-    def set_fridge_id(self, fridge_id=None):
-        if fridge_id:
-            self.__fridge_id = fridge_id.get_id()
-        else:
-            from Fridge import Fridge
-            fridge = Fridge()
-            self.__fridge_id = fridge.get_id()
+    def set_fridge_id(self, fridge_id):
 
+        self.__fridge_id = fridge_id

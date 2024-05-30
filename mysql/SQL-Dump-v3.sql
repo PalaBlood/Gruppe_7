@@ -33,15 +33,14 @@ DROP TABLE IF EXISTS Groceries;
 CREATE TABLE Groceries (
     id INT NOT NULL,
     designation VARCHAR(255) PRIMARY KEY,
-    quantity FLOAT,
-    unit VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Groceries (id, designation, quantity, unit) VALUES
-(1,'Gurke', 2.5, 'grams'),
-(2,'Tomate', 1, 'milliliters'),
-(3,'lachs', 0.5, 'kilos'),
-(4,'Pasta', 500, 'grams');
+INSERT INTO Groceries (id, designation) VALUES
+(1,'Gurke'),
+(2,'Tomate'),
+(3,'lachs'),
+(4,'Pasta');
+(5,'Kartoffel')
 
 DROP TABLE IF EXISTS Recipe;
 CREATE TABLE Recipe (

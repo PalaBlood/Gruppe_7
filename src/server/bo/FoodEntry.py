@@ -18,17 +18,17 @@ from Unit import Unit
 
 
 class FoodEntry(BusinessObject):
-    def __init__(self):
+    def __init__(self, groceries_designation=None, quantity = 0, unit = None):
         super().__init__()
-        self.__groceries = None
-        self.__quantity = None
-        self.__unit = None
+        self.__groceries_designation = groceries_designation
+        self.__quantity = quantity
+        self.__unit = unit
 
-    def set_groceries(self, groceries=Groceries()):
-        self.__groceries = groceries.get_designation()
+    def set_groceries_designation(self, groceries):
+        self.__groceries_designation = groceries
 
-    def get_groceries(self):
-        return self.__groceries
+    def get_groceries_designation(self):
+        return self.__groceries_designation
 
     def get_quantity(self):
         return self.__quantity
@@ -36,7 +36,7 @@ class FoodEntry(BusinessObject):
     def set_quantity(self, quantity):
         self.__quantity = quantity
 
-    def set_unit(self, unit = Unit()):
+    def set_unit(self, unit):
         self.__unit = unit
 
     def get_unit(self):

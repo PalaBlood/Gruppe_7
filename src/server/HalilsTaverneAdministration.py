@@ -3,7 +3,7 @@
 from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
 from GroceriesMapper import GroceriesMapper
-from FridgeMapper import FridgeMapper
+from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
 
 
@@ -98,37 +98,48 @@ class HalilsTaverneAdministration(object):
         fridge = Fridge()
         fridge.set_id(1)
 
-        with FridgeMapper() as mapper:
+        with FridgeMapper2() as mapper:
             return mapper.insert(fridge)
-    def create_Fridge_entry(self, unit, quantity):
 
-        fridgeentry = FridgeEntry()
-        fridgeentry.set_id(1)
-        fridgeentry.set_unit()
-        fridgeentry.set_fridge_id(1)
-        fridgeentry.set_quantity()
-        fridgeentry.set_groceries()
     def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
 
-        with FridgeMapper() as mapper:
+        with FridgeMapper2() as mapper:
             return mapper.find_all()
 
     def get_fridge_by_id(self, fridge_id):
 
-        with FridgeMapper() as mapper:
+        with FridgeMapper2() as mapper:
             return mapper.find_by_id(fridge_id)
 
     def save_fridge(self, fridge):
 
-        with FridgeMapper() as mapper:
+        with FridgeMapper2() as mapper:
             mapper.update(fridge)
 
     def delete_fridge(self, fridge):
 
-        with FridgeMapper() as mapper:
+        with FridgeMapper2() as mapper:
             mapper.delete(fridge)
+    #FridgeEntry spezifische Methoden
 
+    def create_Fridge_entry(self, unit, quantity, groceries, fridge_id):
+
+        fridgeentry = FridgeEntry()
+        fridgeentry.set_fridge_id(fridge_id)
+        fridgeentry.set_id(1)
+        fridgeentry.set_unit(unit)
+        fridgeentry.set_quantity(quantity)
+        fridgeentry.set_groceries_designation(groceries)
+
+        with FridgeMapper2() as mapper:
+            return mapper.insert_fridge_entry(fridgeentry, fridge_id)
     #Groceries spezifische Methoden
+
+    def get_all_fridge_entries(self):
+
+        with FridgeMapper2() as mapper:
+            mapper.find_all_entries()
+
 
     def create_Grocerie(self, designation, unit_of_measurement, quantity):
 
@@ -254,6 +265,12 @@ class HalilsTaverneAdministration(object):
 
 
 admintest = HalilsTaverneAdministration()
+admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
+admintest.get_all_fridge_entries()
+for entry in list:
+    print("Designation:", entry.get_groceries_designation())
+
+
 list = admintest.get_all_users()
 for user in list:
     print("User ID:", user.get_id())

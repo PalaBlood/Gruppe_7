@@ -2,7 +2,7 @@ from BusinessObject import BusinessObject
 
 class Unit(BusinessObject):
     def __init__(self, name, conversion_factor):
-        super.__init__()
+        super().__init__()
         self.name = name
         self.conversion_factor = conversion_factor
 
