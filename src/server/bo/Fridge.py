@@ -12,6 +12,7 @@ class Fridge(BusinessObject):
         return self.__content
 
     def add_content(self, fridge_entry):
+        from FridgeEntry import FridgeEntry  #Import innerhalb der Methode
         if isinstance(fridge_entry, FridgeEntry):
             self.__content.append(fridge_entry)
         else:
