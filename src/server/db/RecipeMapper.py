@@ -78,7 +78,7 @@ class RecipeMapper(Mapper):
         cursor.execute(command, data)
 
         for content in recipe.get_content():
-            command = "INSERT INTO recipe_ingredients (recipe_id, grocery_id, quantity, unit_of_measurement) VALUES (%s, %s, %s, %s)"
+            command = "INSERT INTO recipe_groceries (recipe_id, grocery_id, quantity, unit_of_measurement) VALUES (%s, %s, %s, %s)"
             groceries = GroceriesMapper().find_by_id(content)  # Angenommen, GroceriesMapper ist bereits implementiert.
             data = (recipe.get_id(), groceries.get_id(), groceries.get_quantity(), groceries.get_unit_of_measurement())
             cursor.execute(command, data)

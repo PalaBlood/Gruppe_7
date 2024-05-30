@@ -29,8 +29,8 @@ INSERT INTO users (nick_name, first_name, last_name, household_id) VALUES
 
 DROP TABLE IF EXISTS Groceries;
 CREATE TABLE Groceries (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    designation VARCHAR(255),
+    id INT NOT NULL,
+    designation VARCHAR(255) PRIMARY KEY,
     quantity FLOAT,
     unit VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
