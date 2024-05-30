@@ -9,6 +9,7 @@ from Gruppe_7.src.server.db.Mapper import Mapper
 from src.server.bo.Household import Household
 from src.server.bo.User import User
 from src.server.db.Mapper import Mapper
+from db.UserMapper import UserMapper
 
 class HouseholdMapper(Mapper):
     """Mapper-Klasse, die Household-Objekte auf eine relationale
@@ -40,8 +41,8 @@ class HouseholdMapper(Mapper):
             cursor.execute(command, (id,))
             users = cursor.fetchall()
 
-            for (user_id,) in users:
-                household.add_user(UserMapper().find_by_id(user_id))
+            for (id,) in users:
+                household.add_user(UserMapper().find_by_id(id))
 
             result.append(household)
 
@@ -73,9 +74,9 @@ class HouseholdMapper(Mapper):
         data = (household.get_id(),)
         cursor.execute(command, data)
 
-        for user_id in household.get_users():
+        for id in household.get_users():
             command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
-            data = (household.get_id(), user_id)
+            data = (household.get_id(), id)
             cursor.execute(command, data)
 
         self._cnx.commit()
@@ -109,8 +110,8 @@ class HouseholdMapper(Mapper):
             cursor.execute(command, (id,))
             users = cursor.fetchall()
 
-            for (user_id,) in users:
-                household.add_user(UserMapper().find_by_id(user_id))
+            for (id,) in users:
+                household.add_user(UserMapper().find_by_id(id))
 
             result = household
         except IndexError:

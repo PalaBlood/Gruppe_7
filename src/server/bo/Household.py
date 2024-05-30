@@ -37,13 +37,7 @@ class Household(BusinessObject):
         else:
             print("User ist nicht im Haushalt registriert") 
 
-    def get_household_id(self):
-         return self.__household_id
 
-    def set_household_id(self, value):
-
-        self.__household_id = value
-    
     @staticmethod
     def form_dict(dictionary=dict()):
         obj = Household()
