@@ -7,6 +7,7 @@ from FoodEntry import FoodEntry
 from Groceries import Groceries
 from BusinessObject import BusinessObject
 
+
 class Shoppinglist(BusinessObject):
 
     def __init__(self):

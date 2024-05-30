@@ -5,6 +5,10 @@ from FridgeEntry import FridgeEntry
 from Groceries import Groceries
 
 class RecipeService:
+
+
+    #Methode um machbarkeit von rezepten abzurufen. Hier muss noch eine funktion implementiert werden, sodass drei Werte jeweils zurückgegeben werden: designation, quantity und unit.
+
     @staticmethod
     def can_prepare_recipe(recipe, fridge_entries):
         required_ingredients = {}
