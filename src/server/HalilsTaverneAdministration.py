@@ -9,7 +9,7 @@ from UserMapper import UserMapper
 from FoodEntry import FoodEntry
 from User import User
 from Fridge import Fridge
-from Groceries2 import Groceries2
+from Groceries import Groceries
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
@@ -242,22 +242,16 @@ class HalilsTaverneAdministration(object):
 
 
 
-"""admintest2 = HalilsTaverneAdministration()
-list2 = admintest2.get_all_fridges()
-
-
-
-admintest2.create_Fridge()
 
 
 admintest = HalilsTaverneAdministration()
 list = admintest.get_all_users()
 for user in list:
-    print("User ID:", user.get_User_id())
+    print("User ID:", user.get_id())
     print("Nickname:", user.get_nick_name())
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
     print("household_id:", user.get_household_id())
     print()
 
-admintest.create_user("Tom","scd","jo")"""
+admintest.create_user("Tom","scd","jo")

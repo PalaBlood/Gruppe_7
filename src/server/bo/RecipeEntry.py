@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     eintrag.set_id(1)
     eintrag.set_groceries(apfel)
-    eintrag.set_quanity(200)
+    eintrag.set_quantity(200)
     eintrag.set_unit_of_measurement("Kilogramm")
     eintrag.set_recipe_id(apfelkuchen)
 

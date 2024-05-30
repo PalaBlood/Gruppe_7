@@ -24,7 +24,7 @@ class UserMapper (Mapper):
 
     def find_existing_household_id(self):
         cursor = self._cnx.cursor()
-        query = "SELECT household_id FROM household LIMIT 1"
+        query = "SELECT id FROM household LIMIT 1"
         cursor.execute(query)
         result = cursor.fetchone()
         cursor.close()
@@ -37,15 +37,15 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT nick_name, first_name, last_name, user_id, household_id FROM users")
+        cursor.execute("SELECT nick_name, first_name, last_name, id, household_id FROM users")
         tuples = cursor.fetchall()
 
-        for (nick_name, first_name, last_name, user_id, household_id) in tuples:
+        for (nick_name, first_name, last_name, id, household_id) in tuples:
             user = User()
             user.set_nick_name(nick_name)
             user.set_last_name(last_name)
             user.set_first_name(first_name)
-            user.set_User_id(user_id)
+            user.set_id(id)
             user.set_household_id(household_id)
             result.append(user)
 
@@ -65,18 +65,18 @@ class UserMapper (Mapper):
         :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(user_id) AS maxid FROM users")
+        cursor.execute("SELECT MAX(id) AS maxid FROM users")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            user.set_User_id(maxid[0] + 1)
+            user.set_id(maxid[0] + 1)
 
         household_id = self.find_existing_household_id()
 
         user.set_household_id(household_id)
 
-        command = "INSERT INTO users (user_id, nick_name, first_name, last_name, household_id) VALUES (%s, %s, %s, %s, %s)"
-        data = (user.get_User_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id())
+        command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id) VALUES (%s, %s, %s, %s, %s)"
+        data = (user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -93,13 +93,13 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT user_id, nick_name, first_name, last_name FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
+        command = "SELECT id, nick_name, first_name, last_name FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (user_id, nick_name, first_name, last_name) in tuples:
+        for (id, nick_name, first_name, last_name) in tuples:
             user = User()
-            user.set_User_id(id)
+            user.set_id(id)
             user.set_nick_name(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
@@ -110,7 +110,7 @@ class UserMapper (Mapper):
 
         return result
 
-    def find_by_id(self, user_id):
+    def find_by_id(self, id):
         """Suchen eines Users mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -120,14 +120,14 @@ class UserMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT user_id, nick_name, first_name, last_name FROM users WHERE id=%s".format(user_id)
+        command = "SELECT id, nick_name, first_name, last_name FROM users WHERE id=%s".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (user_id, nick_name, first_name, last_name) = tuples[0]
+            (id, nick_name, first_name, last_name) = tuples[0]
             user = User()
-            user.set_User_id(user_id)
+            user.set_id(id)
             user.set_nick_name(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
@@ -148,7 +148,7 @@ class UserMapper (Mapper):
         """
         cursor = self._cnx.cursor()
         command = "UPDATE users SET nickname=%s, first_name=%s, last_name=%s, user_id=%s WHERE id=%s"
-        data = (user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_User_id(), user.get_id())
+        data = (user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

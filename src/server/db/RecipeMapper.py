@@ -6,7 +6,7 @@ from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
 from Gruppe_7.src.server.db.UserMapper import UserMapper
 """
 
-
+from server.db.UserMapper import UserMapper
 from server.db.Mapper import Mapper
 from server.bo.Recipe import Recipe
 from server.db.GroceriesMapper import GroceriesMapper
@@ -46,8 +46,8 @@ class RecipeMapper(Mapper):
             cursor.execute(command, (id,))
             ingredients = cursor.fetchall()
 
-            for (groceries_id,) in ingredients:
-                recipe.add_content(GroceriesMapper().find_by_id(groceries_id)) # Angenommen, GroceriesMapper ist bereits implementiert.
+            for (id,) in ingredients:
+                recipe.add_content(GroceriesMapper().find_by_id(id)) # Angenommen, GroceriesMapper ist bereits implementiert.
 
             result.append(recipe)
 
@@ -73,7 +73,7 @@ class RecipeMapper(Mapper):
         for (maxid) in tuples:
             recipe.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO recipes (recipe_id, title, number_of_persons, creator_id) VALUES (%s, %s, %s, %s)"
+        command = "INSERT INTO recipes (id, title, number_of_persons, creator_id) VALUES (%s, %s, %s, %s)"
         data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator().get_id())
         cursor.execute(command, data)
 
