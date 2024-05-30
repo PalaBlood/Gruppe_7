@@ -1,3 +1,5 @@
+DROP DATABASE sopra;
+
 CREATE DATABASE IF NOT EXISTS Sopra;
 
 -- Use the created database
@@ -36,10 +38,10 @@ CREATE TABLE Groceries (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Groceries (id, designation, quantity, unit) VALUES
-(1,'Apples', 2.5, 'grams'),
-(2,'Milk', 1, 'milliliters'),
-(3,'Flour', 0.5, 'kilos'),
-(4,'Sugar', 500, 'grams');
+(1,'Gurke', 2.5, 'grams'),
+(2,'Tomate', 1, 'milliliters'),
+(3,'lachs', 0.5, 'kilos'),
+(4,'Pasta', 500, 'grams');
 
 DROP TABLE IF EXISTS Recipe;
 CREATE TABLE Recipe (
@@ -60,15 +62,19 @@ INSERT INTO Recipe (id, recipe_title, number_of_persons, creator) VALUES
 DROP TABLE IF EXISTS Recipe_Groceries;
 CREATE TABLE Recipe_Groceries (
     recipe_id INT NOT NULL,
-    groceries_id INT NOT NULL,
+    groceries_designation VARCHAR(255),
     quantity FLOAT,
     unit VARCHAR(255),
-    PRIMARY KEY (recipe_id, groceries_id),
+    PRIMARY KEY (recipe_id, groceries_designation),
     FOREIGN KEY (recipe_id) REFERENCES Recipe(id),
-    FOREIGN KEY (groceries_id) REFERENCES Groceries(id)
+    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
+INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) VALUES
+(1, 'Gurke', 2.5, 'grams'),
+(1, 'Tomate', 1, 'milliliters'),
+(1, 'lachs', 0.5, 'kilos'),
+(1, 'Pasta', 500, 'grams');
 
 DROP TABLE IF EXISTS Fridge;
 CREATE TABLE Fridge (
@@ -81,28 +87,28 @@ INSERT INTO Fridge(id) VALUES
 DROP TABLE IF EXISTS Fridge_Groceries;
 CREATE TABLE Fridge_Groceries (
     fridge_id INT NOT NULL,
-    groceries_id INT NOT NULL,
+    groceries_designation VARCHAR(255),
     quantity FLOAT,
     unit VARCHAR(255),
-    PRIMARY KEY (fridge_id, groceries_id),
+    PRIMARY KEY (fridge_id, groceries_designation),
     FOREIGN KEY (fridge_id) REFERENCES Fridge(id),
-    FOREIGN KEY (groceries_id) REFERENCES Groceries(id)
+    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Fridge_Groceries (fridge_id, groceries_id, quantity, unit) VALUES
-(1, 1, 2.5, 'grams'),
-(1, 2, 1, 'milliliters'),
-(1, 3, 0.5, 'kilos'),
-(1, 4, 500, 'grams');
+INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) VALUES
+(1, 'Gurke', 2.5, 'grams'),
+(1, 'Tomate', 1, 'milliliters'),
+(1, 'lachs', 0.5, 'kilos'),
+(1, 'Pasta', 500, 'grams');
 
 DROP TABLE IF EXISTS ShoppingList;
 CREATE TABLE ShoppingList (
-    shopping_list_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    groceries_id INT,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    groceries_designation VARCHAR(255),
     quantity_needed FLOAT,
     unit VARCHAR(255),
-    FOREIGN KEY (groceries_id) REFERENCES Groceries(id)
+    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO ShoppingList (shopping_list_id, groceries_id, quantity_needed, unit) VALUES
-(1, 3, 0.5, 'kilos');
+INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALUES
+(1, 'Gurke', 0.5, 'kilos');
