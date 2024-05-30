@@ -43,7 +43,6 @@ class FoodEntry(BusinessObject):
 
 
 
-
     def get_quantity_in_base_unit(self):
         return self.__unit.convert_to_base(self.__quantity)
 
@@ -52,16 +51,7 @@ class FoodEntry(BusinessObject):
     def convert_to_base_unit(quantity, unit):
         return unit.convert_to_base(quantity)
 
-    def can_prepare_recipe(recipe, fridge_entries):
-        for entry in recipe.entries:
-            required_quantity = entry.get_quantity_in_base_unit()
-            available_quantity = 0
-            for fridge_entry in fridge_entries:
-                if fridge_entry.get_groceries() == entry.get_groceries():
-                    available_quantity += fridge_entry.get_quantity_in_base_unit()
-            if available_quantity < required_quantity:
-                return False
-        return True
+
 
 
     def __str__(self):
@@ -83,50 +73,7 @@ class FoodEntry(BusinessObject):
 
 
 
-#Ansatz, wie man die Einträge vergleichen könnte
-#Jedoch müssten wir dann trz noch schauen, wie wir es mit der Maßeinheit machen
-    """def equals(self, other_food_entry):
-        if not isinstance(other_food_entry, FoodEntry):
-            return False
-        return (self.__groceries == other_food_entry.get_groceries() and
-                self.__quantity == other_food_entry.get_quantity() and
-                self.__unit_of_measurement == other_food_entry.get_unit_of_measurement())"""
 
-
-    @staticmethod
-    def form_dict(dictionary=dict()):
-        obj = FoodEntry()
-        obj.set_id(dictionary["id"])
-        obj.set_groceries(dictionary["groceries"])
-        obj.set_unit_of_measurement["unit of measurement"]
-
-
-        
-    
-    
-if __name__ == "__main__":
-    
-    gurke = Groceries() #Intanz erstellen vom Lebensmittel
-    gurke.set_id(1)
-    gurke.set_designation("Gurke")
-    
-    kilogramm = UnitOfMeasurement() #Intanz einer Maßeinheit erstellen
-    kilogramm.set_id(2)
-    kilogramm.set_designation("Kilogramm")
-    
-    eintrag1 = FoodEntry() #Intanz des Eintrags erstellen und ihm die oberen beiden Intanzen übergeben
-    eintrag1.set_id(3)
-    eintrag1.set_groceries(gurke)
-    eintrag1.set_unit_of_measurement(kilogramm)
-    eintrag1.set_quanity(200)
-    
-    
-    print(eintrag1)
-    	
-    """Aktuell arbeite ich bei den Instanzen von Groceries und uom mit deren IDs, weshalb bei der Ausführung
-    dessen ID angezeigt wird. Sobald wir mit der Adminklasse arbeiten, können wir die ID als Refernz nehmen, aber 
-    als Ausgabe dessen Bezeichnung"""
-    
     
     
     
