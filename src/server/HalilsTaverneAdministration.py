@@ -163,6 +163,13 @@ class HalilsTaverneAdministration(object):
 
     #household-spezifische methoden:
 
+    def create_household(self):
+
+        household = Household()
+        household.set_id(1)
+
+        with HouseholdMapper() as mapper:
+            return mapper.insert(household)
 
 
 
@@ -208,7 +215,11 @@ class HalilsTaverneAdministration(object):
 
 
 admintest = HalilsTaverneAdministration()
-admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
+
+admintest.create_household()
+
+
+"""admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()
 for fridge_entry in list2:
     print("Designation:", fridge_entry.get_groceries_designation())
@@ -226,4 +237,4 @@ for user in list:
     print("household_id:", user.get_household_id())
     print()
 
-admintest.create_user("Tom","scd","jo")
+admintest.create_user("Tom","scd","jo")"""
