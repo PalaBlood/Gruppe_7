@@ -40,7 +40,7 @@ class Recipe(BusinessObject):
 
     @staticmethod
     def form_dict(dictionary=dict()):
-        from RecipeEntry import RecipeEntry  # Import innerhalb der Methode
+        from RecipeEntry import RecipeEntry # Import innerhalb der Methode
         obj = Recipe()
         obj.set_id(dictionary["id"])
         obj.set_title(dictionary["title"])

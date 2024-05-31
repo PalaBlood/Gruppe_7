@@ -50,6 +50,7 @@ class FridgeMapper2(Mapper):
         return fridge
 
     def get_existing_entry(self, fridge_id, groceries_designation):
+        """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
         cursor = self._cnx.cursor()
         query = "SELECT quantity FROM Fridge_Groceries WHERE fridge_id = %s AND groceries_designation = %s"
         cursor.execute(query, (fridge_id, groceries_designation))
