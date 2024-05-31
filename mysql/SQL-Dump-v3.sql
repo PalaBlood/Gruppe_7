@@ -116,4 +116,9 @@ INSERT INTO Unit (id, name, conversion_factor) VALUES
 
 DROP TABLE IF EXISTS Household_Users;
 CREATE TABLE Household_Users (
-)
+    household_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY(household_id, user_id),
+    FOREIGN KEY (household_id) REFERENCES Household(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

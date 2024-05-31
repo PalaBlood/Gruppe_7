@@ -2,7 +2,6 @@
 
 from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
-from GroceriesMapper import GroceriesMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
 
@@ -11,7 +10,6 @@ from FridgeEntry import FridgeEntry
 from FoodEntry import FoodEntry
 from User import User
 from Fridge import Fridge
-from Groceries import Groceries
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
