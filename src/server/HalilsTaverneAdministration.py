@@ -2,7 +2,6 @@
 
 from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
-from GroceriesMapper import GroceriesMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
 
@@ -11,12 +10,21 @@ from FridgeEntry import FridgeEntry
 from FoodEntry import FoodEntry
 from User import User
 from Fridge import Fridge
-from Groceries import Groceries
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
 
+"""from RecipeMapper import RecipeMapper
+from .db.HouseholdMapper import HouseholdMapper
+from .db.FridgeMapper import FridgeMapper2
+from .db.UserMapper import UserMapper
 
+from .bo.FridgeEntry import FridgeEntry
+from .bo.RecipeEntry import RecipeEntry
+from .bo.User import User
+from .bo.Fridge import Fridge
+from .bo.Household import Household
+from .bo.Recipe import Recipe"""
 
 """#Halils imports
 
@@ -150,7 +158,32 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.delete_fridge_entry(fridge_entry)
 
+
+
+
+
+
     #recipe-spezifische methoden:
+
+    def create_recipe(self, title, number_of_persons):
+
+        recipe = Recipe()
+        recipe.set_id(1)
+        user = User()
+        user.set_id(77)
+        recipe.set_creator(user.get_id())
+        recipe.set_title(title)
+        recipe.set_number_of_persons(number_of_persons)
+
+        with RecipeMapper() as mapper:
+            return mapper.insert(recipe)
+
+
+
+
+
+
+
 
 
     #shoppinglist-spezifische methoden:
@@ -228,4 +261,10 @@ for user in list:
     print("household_id:", user.get_household_id())
     print()
 
+
+
+
 admintest.create_user("Tom","scd","jo")
+
+
+admintest.create_recipe("Pizza", 2)
