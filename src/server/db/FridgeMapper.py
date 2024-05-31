@@ -2,6 +2,7 @@
 from src.server.db.Mapper import Mapper
 from src.server.bo.Fridge import Fridge
 from src.server.bo.FridgeEntry import FridgeEntry
+from src.server.db.UserMapper import UserMapper
 
 
 """from Mapper import Mapper
@@ -11,9 +12,6 @@ from src.server.bo.Groceries import Groceries"""
 
 
 ##############################################################
-
-
-
 class FridgeMapper2(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
@@ -69,8 +67,15 @@ class FridgeMapper2(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def insert_fridge_entry(self, fridge_entry, fridge_id):
+    def insert_fridge_entry(self, fridge_entry):
         """Insert or update a FridgeEntry object into the database."""
+
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT id FROM fridge LIMIT 1")
+        result = cursor.fetchone()
+        fridge_id = result[0]
+
+
         existing_entry = self.get_existing_entry(fridge_id, fridge_entry.get_groceries_designation())
 
         if existing_entry:
@@ -79,7 +84,6 @@ class FridgeMapper2(Mapper):
             self.update_fridge_entry(fridge_id, fridge_entry.get_groceries_designation(), new_quantity, fridge_entry.get_unit())
         else:
             # Insert the new entry
-            cursor = self._cnx.cursor()
             command = """INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
             data = (fridge_id, fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(), fridge_entry.get_unit())
@@ -87,43 +91,34 @@ class FridgeMapper2(Mapper):
             self._cnx.commit()
             cursor.close()
 
-    def find_by_id(self, id):
-        """Suchen eines Fridges mit vorgegebener ID. Da diese eindeutig ist,
-        wird genau ein Objekt zurückgegeben.
-
-        :param id: Primärschlüsselattribut (->DB)
-        :return: Fridge-Objekt, das dem übergebenen Schlüssel entspricht, None bei
-            nicht vorhandenem DB-Tupel.
-        """
-        result = None
+    def find_fridge_by_id(self, id):
+        """Find a Fridge by its ID."""
         cursor = self._cnx.cursor()
-        command = "SELECT fridge_id FROM fridge WHERE fridge_id=%s"
-        cursor.execute(command, (id,))
-        tuples = cursor.fetchall()
-
-        try:
-            (fridge_id,) = tuples[0]
+        cursor.execute("SELECT id FROM fridge WHERE id = %s", (id,))
+        result = cursor.fetchone()
+        if result:
             fridge = Fridge()
-            fridge.set_id(fridge_id)
-
-            command = "SELECT groceries_id, quantity, unit FROM Fridge_Groceries WHERE fridge_id=%s"
-            cursor.execute(command, (fridge_id,))
-            entries = cursor.fetchall()
-
-            for (groceries_id, quantity, unit) in entries:
-                entry = FridgeEntry()
-                entry.set_groceries_designation(groceries_id)
-                entry.set_quantity(quantity)
-                entry.set_unit(unit)
-                fridge.add_content(entry)
-
-            result = fridge
-        except IndexError:
-            result = None
-
-        self._cnx.commit()
+            fridge.set_id(result[0])
+            cursor.close()
+            return fridge
         cursor.close()
+        return None
 
+    def find_entries_by_fridge_id(self, fridge_id):
+        """Find all entries associated with a specific fridge ID."""
+        result = []
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT groceries_designation, quantity, unit FROM fridge_groceries WHERE fridge_id = %s",
+                       (fridge_id,))
+        entries = cursor.fetchall()
+        for groceries_designation, quantity, unit in entries:
+            entry = FridgeEntry()
+            entry.set_fridge_id(fridge_id)
+            entry.set_groceries_designation(groceries_designation)
+            entry.set_quantity(quantity)
+            entry.set_unit(unit)
+            result.append(entry)
+        cursor.close()
         return result
 
     def find_all_entries(self):
@@ -146,7 +141,7 @@ class FridgeMapper2(Mapper):
         cursor.close()
 
         return result
-    def find_all(self):
+    def find_all_fridges(self):
         """Auslesen aller Fridges.
 
         :return Eine Sammlung mit Fridge-Objekten, die sämtliche Fridges repräsentieren.
@@ -167,33 +162,17 @@ class FridgeMapper2(Mapper):
         return result
 
     def delete_fridge_entry(self, fridge_entry, fridge_id):
-        """Löschen eines FridgeEntry-Objekts aus der Datenbank.
-
-        :param fridge_entry: das zu löschende FridgeEntry-Objekt
-        :param fridge_id: die ID des Fridge, zu dem der Eintrag gehört
-        """
+        """Delete a FridgeEntry object from the database."""
         cursor = self._cnx.cursor()
-
-        command = "DELETE FROM Fridge_Groceries WHERE fridge_id=%s AND groceries_id=%s"
-        cursor.execute(command, (fridge_id, fridge_entry.get_groceries()))
-
+        command = "DELETE FROM fridge_groceries WHERE fridge_id = %s AND groceries_designation = %s"
+        cursor.execute(command, (fridge_id, fridge_entry.get_groceries_designation()))
         self._cnx.commit()
         cursor.close()
 
     def delete(self, fridge):
-        """Löschen der Daten eines Fridge-Objekts aus der Datenbank.
-
-        :param fridge: das aus der DB zu löschende Objekt
-        """
+        """Delete a Fridge object from the database."""
         cursor = self._cnx.cursor()
-
-        # Lösche die Einträge aus der Verknüpfungstabelle
-        command = "DELETE FROM Fridge_Groceries WHERE fridge_id=%s"
+        command = "DELETE FROM fridge WHERE id = %s"
         cursor.execute(command, (fridge.get_id(),))
-
-        # Lösche das Kühlschrank-Objekt
-        command = "DELETE FROM fridge WHERE fridge_id=%s"
-        cursor.execute(command, (fridge.get_id(),))
-
         self._cnx.commit()
         cursor.close()

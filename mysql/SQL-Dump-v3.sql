@@ -5,12 +5,22 @@ CREATE DATABASE IF NOT EXISTS Sopra;
 -- Use the created database
 USE Sopra;
 
+DROP TABLE IF EXISTS Fridge;
+CREATE TABLE Fridge (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO Fridge(id) VALUES
+(1);
+
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    fridge_id INT NOT NULL,
+    FOREIGN KEY (fridge_id) REFERENCES Fridge(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household (id) VALUES
+INSERT INTO Household (fridge_id) VALUES
 (1);
 
 
@@ -53,7 +63,7 @@ CREATE TABLE Recipe_Groceries (
     quantity FLOAT,
     unit VARCHAR(255),
     PRIMARY KEY (recipe_id, groceries_designation),
-    FOREIGN KEY (recipe_id) REFERENCES Recipe(id),
+    FOREIGN KEY (recipe_id) REFERENCES Recipe(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) VALUES
@@ -62,13 +72,6 @@ INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) 
 (1, 'lachs', 0.5, 'kilos'),
 (1, 'Pasta', 500, 'grams');
 
-DROP TABLE IF EXISTS Fridge;
-CREATE TABLE Fridge (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO Fridge(id) VALUES
-(1);
 
 DROP TABLE IF EXISTS Fridge_Groceries;
 CREATE TABLE Fridge_Groceries (
@@ -77,7 +80,7 @@ CREATE TABLE Fridge_Groceries (
     quantity FLOAT,
     unit VARCHAR(255),
     PRIMARY KEY (fridge_id, groceries_designation),
-    FOREIGN KEY (fridge_id) REFERENCES Fridge(id),
+    FOREIGN KEY (fridge_id) REFERENCES Fridge(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) VALUES
@@ -91,7 +94,7 @@ CREATE TABLE ShoppingList (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     groceries_designation VARCHAR(255),
     quantity_needed FLOAT,
-    unit VARCHAR(255),
+    unit VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALUES

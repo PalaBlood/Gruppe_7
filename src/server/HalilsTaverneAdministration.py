@@ -97,22 +97,17 @@ class HalilsTaverneAdministration(object):
         fridge.set_id(1)
 
         with FridgeMapper2() as mapper:
-            return mapper.insert(fridge)
+            return mapper.insert_fridge(fridge)
 
     def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
 
         with FridgeMapper2() as mapper:
-            return mapper.find_all()
+            return mapper.find_all_fridges()
 
     def get_fridge_by_id(self, fridge_id):
 
         with FridgeMapper2() as mapper:
-            return mapper.find_by_id(fridge_id)
-
-    def save_fridge(self, fridge):
-
-        with FridgeMapper2() as mapper:
-            mapper.update(fridge)
+            return mapper.find_fridge_by_id(fridge_id)
 
     def delete_fridge(self, fridge):
 
@@ -120,23 +115,27 @@ class HalilsTaverneAdministration(object):
             mapper.delete(fridge)
     #FridgeEntry spezifische Methoden
 
-    def create_Fridge_entry(self, unit, quantity, groceries, fridge_id):
+    def create_Fridge_entry(self, unit, quantity, groceries):
 
         fridgeentry = FridgeEntry()
-        fridgeentry.set_fridge_id(fridge_id)
         fridgeentry.set_id(1)
         fridgeentry.set_unit(unit)
         fridgeentry.set_quantity(quantity)
         fridgeentry.set_groceries_designation(groceries)
 
         with FridgeMapper2() as mapper:
-            return mapper.insert_fridge_entry(fridgeentry, fridge_id)
+            return mapper.insert_fridge_entry(fridgeentry)
     #Groceries spezifische Methoden
 
     def get_all_fridge_entries(self):
 
         with FridgeMapper2() as mapper:
             return mapper.find_all_entries()
+
+    def get_all_entries_by_id(self, fridge_id):
+
+        with FridgeMapper2() as mapper:
+            return mapper.find_entries_by_fridge_id(fridge_id)
 
     #recipe-spezifische methoden:
 
@@ -230,7 +229,7 @@ class HalilsTaverneAdministration(object):
 
 
 admintest = HalilsTaverneAdministration()
-admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
+admintest.create_Fridge_entry('Gramm',500,'Kartoffel')
 list2 = admintest.get_all_fridge_entries()
 for fridge_entry in list2:
     print("Designation:", fridge_entry.get_groceries_designation())
