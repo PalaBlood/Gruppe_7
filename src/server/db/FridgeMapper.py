@@ -214,7 +214,7 @@ class FridgeMapper2(Mapper):
         else:
             # Insert the new entry
             cursor = self._cnx.cursor()
-            command = """INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit)
+            command = """INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
             data = (fridge_id, fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(), fridge_entry.get_unit())
             cursor.execute(command, data)
