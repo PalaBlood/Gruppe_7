@@ -50,9 +50,9 @@ class HouseholdMapper(Mapper):
         cursor.close()
 
         return result
-    
-    
-    
+
+
+
 
     def insert(self, household):
         """Einfügen eines Household-Objekts in die Datenbank.
@@ -64,19 +64,20 @@ class HouseholdMapper(Mapper):
         :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM households")
+
+        cursor.execute("SELECT MAX(id) AS maxid FROM household")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
             household.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO households (id) VALUES (%s)"
-        data = (household.get_id(),)
+        command = "INSERT INTO household (id, fridge_id) VALUES (%s, %s)"
+        data = (household.get_id(),household.get_id() + 1)
         cursor.execute(command, data)
 
-        for id in household.get_users():
+        for user_id in household.get_users():
             command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
-            data = (household.get_id(), id)
+            data = (household.get_id(), user_id)
             cursor.execute(command, data)
 
         self._cnx.commit()
