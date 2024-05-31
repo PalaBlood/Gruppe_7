@@ -1,5 +1,4 @@
 from BusinessObject import BusinessObject
-from Groceries import Groceries
 from Unit import Unit
 
 """Imports muss jeder für sich anpassen."""

@@ -2,7 +2,6 @@
 
 from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
-from GroceriesMapper import GroceriesMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
 
@@ -11,7 +10,6 @@ from FridgeEntry import FridgeEntry
 from FoodEntry import FoodEntry
 from User import User
 from Fridge import Fridge
-from Groceries import Groceries
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
@@ -139,39 +137,6 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper2() as mapper:
             return mapper.find_all_entries()
-
-
-    def create_Grocerie(self, designation, unit_of_measurement, quantity):
-
-        groceries = Groceries()
-        groceries.set_designation(designation)
-        groceries.set_unit(unit_of_measurement)
-        groceries.set_quantity(quantity)
-        groceries.set_id(1)
-
-        with GroceriesMapper() as mapper:
-            return mapper.insert(groceries)
-        
-
-    def get_all_groceries(self):
-
-        with GroceriesMapper() as mapper:
-            mapper.find_all()
-
-    def get_groceries_by_id(self, groceries_id):
-
-        with GroceriesMapper() as mapper:
-            return mapper.find_by_id(groceries_id)
-        
-    def save_groceries(self, groceries):
-
-        with GroceriesMapper() as mapper:
-            return mapper.update(groceries)
-        
-    def delete_groceries(self, groceries):
-
-        with GroceriesMapper() as mapper:
-            mapper.delete(groceries)
 
     #recipe-spezifische methoden:
 

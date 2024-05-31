@@ -4,7 +4,6 @@
 from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
 """
 from FoodEntry import FoodEntry
-from Groceries import Groceries
 from BusinessObject import BusinessObject
 
 

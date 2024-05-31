@@ -9,7 +9,7 @@ from Gruppe_7.src.server.db.UserMapper import UserMapper
 from server.db.UserMapper import UserMapper
 from server.db.Mapper import Mapper
 from server.bo.Recipe import Recipe
-from server.db.GroceriesMapper import GroceriesMapper
+
 
 
 class RecipeMapper(Mapper):

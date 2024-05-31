@@ -29,18 +29,6 @@ INSERT INTO users (nick_name, first_name, last_name, household_id) VALUES
 ('Bob345', 'Bob', 'Schönfeld', 1),
 ('Michel223', 'Michel', 'Finger', 1);
 
-DROP TABLE IF EXISTS Groceries;
-CREATE TABLE Groceries (
-    id INT NOT NULL,
-    designation VARCHAR(255) PRIMARY KEY,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO Groceries (id, designation) VALUES
-(1,'Gurke'),
-(2,'Tomate'),
-(3,'lachs'),
-(4,'Pasta');
-(5,'Kartoffel')
 
 DROP TABLE IF EXISTS Recipe;
 CREATE TABLE Recipe (
@@ -66,7 +54,6 @@ CREATE TABLE Recipe_Groceries (
     unit VARCHAR(255),
     PRIMARY KEY (recipe_id, groceries_designation),
     FOREIGN KEY (recipe_id) REFERENCES Recipe(id),
-    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) VALUES
@@ -91,7 +78,6 @@ CREATE TABLE Fridge_Groceries (
     unit VARCHAR(255),
     PRIMARY KEY (fridge_id, groceries_designation),
     FOREIGN KEY (fridge_id) REFERENCES Fridge(id),
-    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) VALUES
@@ -106,7 +92,6 @@ CREATE TABLE ShoppingList (
     groceries_designation VARCHAR(255),
     quantity_needed FLOAT,
     unit VARCHAR(255),
-    FOREIGN KEY (groceries_designation) REFERENCES Groceries(designation)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALUES
