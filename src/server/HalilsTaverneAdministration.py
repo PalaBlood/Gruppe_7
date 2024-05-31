@@ -171,7 +171,15 @@ class HalilsTaverneAdministration(object):
         with HouseholdMapper() as mapper:
             return mapper.insert(household)
 
+    def get_all_households(self):
 
+        with HouseholdMapper() as mapper:
+            return mapper.find_all()
+
+    def find_household_by_id(self, household_id):
+
+        with HouseholdMapper() as mapper:
+            mapper.find_by_id(household_id)
 
 
 
@@ -217,7 +225,9 @@ class HalilsTaverneAdministration(object):
 admintest = HalilsTaverneAdministration()
 
 admintest.create_household()
-
+households = admintest.find_household_by_id(1)
+for household in households:
+    print("household id:", household.get_id())
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()

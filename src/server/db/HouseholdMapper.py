@@ -30,7 +30,7 @@ class HouseholdMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * FROM households")
+        cursor.execute("SELECT * FROM household")
         tuples = cursor.fetchall()
 
         for (id,) in tuples:
@@ -51,9 +51,6 @@ class HouseholdMapper(Mapper):
 
         return result
 
-
-
-
     def insert(self, household):
         """Einfügen eines Household-Objekts in die Datenbank.
 
@@ -71,8 +68,8 @@ class HouseholdMapper(Mapper):
         for (maxid) in tuples:
             household.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO household (id, fridge_id) VALUES (%s, %s)"
-        data = (household.get_id(),household.get_id() + 1)
+        command = "INSERT INTO household (id) VALUES (%s)"
+        data = (household.get_id(),)
         cursor.execute(command, data)
 
         for user_id in household.get_users():
@@ -85,8 +82,6 @@ class HouseholdMapper(Mapper):
 
         return household
 
- 
-
 
     def find_by_id(self, key):
         """Suchen eines Haushalts mit vorgegebener ID. Da diese eindeutig ist,
@@ -96,20 +91,23 @@ class HouseholdMapper(Mapper):
         :return Household-Objekt, das dem übergebenen Schlüssel entspricht, None bei
             nicht vorhandenem DB-Tupel.
         """
-        result = None
+
         cursor = self._cnx.cursor()
-        command = "SELECT id FROM households WHERE id=%s"
+        command = "SELECT id FROM household WHERE id=%s"
         cursor.execute(command, (key,))
-        tuples = cursor.fetchall()
+        tuples = cursor.fetchone()
+        print(tuples)
+
 
         try:
-            (id,) = tuples[0]
+            (id,) = tuples
             household = Household()
             household.set_id(id)
 
             command = "SELECT user_id FROM household_users WHERE household_id=%s"
             cursor.execute(command, (id,))
             users = cursor.fetchall()
+            print(users)
 
             for (id,) in users:
                 household.add_user(UserMapper().find_by_id(id))
