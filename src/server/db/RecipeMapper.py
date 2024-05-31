@@ -201,7 +201,7 @@ class RecipeMapper2(Mapper):
                 recipe.set_creator())
         cursor.execute(command, data)
 
-        self.cnx.commit()
+        self._cnx.commit()
         cursor.close()
 
         return recipe

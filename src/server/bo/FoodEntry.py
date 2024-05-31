@@ -42,12 +42,8 @@ class FoodEntry(BusinessObject):
     def get_unit(self):
         return self.__unit
 
-
-
     def get_quantity_in_base_unit(self):
         return self.__unit.convert_to_base(self.__quantity)
-
-
 
     def convert_to_base_unit(quantity, unit):
         return unit.convert_to_base(quantity)
