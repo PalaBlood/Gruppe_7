@@ -125,7 +125,6 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper2() as mapper:
             return mapper.insert_fridge_entry(fridgeentry)
-    #Groceries spezifische Methoden
 
     def get_all_fridge_entries(self):
 
@@ -137,39 +136,12 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.find_entries_by_fridge_id(fridge_id)
 
+    def delete_fridge_entry(self, fridge_entry):
+
+        with FridgeMapper2() as mapper:
+            return mapper.delete_fridge_entry(fridge_entry)
+
     #recipe-spezifische methoden:
-
-    def create_recipe(self, title, number_of_persons, creator, content):
-
-        recipe = Recipe()
-        recipe.set_title(title)
-        recipe.set_number_of_persons(number_of_persons)
-        recipe.set_creator(creator)
-        recipe.add_content(content)
-        recipe.set_id(1)
-
-        with RecipeMapper as mapper:
-            return mapper.insert(recipe)
-
-    def get_all_recipes(self):
-
-        with RecipeMapper() as mapper:
-            mapper.find_all()
-
-    def get_recipes_by_id(self, recipe_id):
-
-        with RecipeMapper() as mapper:
-            return mapper.find_by_id()
-
-    def save_recipe(self, recipe):
-
-        with RecipeMapper() as mapper:
-            return mapper.update(recipe)
-
-    def delete_recipe(self, recipe):
-
-        with RecipeMapper() as mapper:
-            mapper.delete(recipe)
 
 
     #shoppinglist-spezifische methoden:

@@ -113,3 +113,7 @@ INSERT INTO Unit (id, name, conversion_factor) VALUES
 (3, 'mililiter', 1),
 (4, 'liter',1000)
 
+
+DROP TABLE IF EXISTS Household_Users;
+CREATE TABLE Household_Users (
+)
