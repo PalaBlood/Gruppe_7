@@ -1,14 +1,14 @@
-"""
-from Gruppe_7.src.server.db.Mapper import Mapper
-from Gruppe_7.src.server.bo.Fridge import Fridge
-from Gruppe_7.src.server.bo.Groceries import Groceries
-from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
-"""
 
-from Mapper import Mapper
+from ..db.Mapper import Mapper
+from ..bo.Fridge import Fridge
+from ..bo.Groceries import Groceries
+from ..bo.FridgeEntry import FridgeEntry
+
+
+"""from Mapper import Mapper
 from src.server.bo.FridgeEntry import FridgeEntry
 from src.server.bo.Fridge import Fridge
-from src.server.bo.Groceries import Groceries
+from src.server.bo.Groceries import Groceries"""
 
 
 class FridgeMapper(Mapper):
