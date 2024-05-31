@@ -14,17 +14,7 @@ from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
 
-"""from RecipeMapper import RecipeMapper
-from .db.HouseholdMapper import HouseholdMapper
-from .db.FridgeMapper import FridgeMapper2
-from .db.UserMapper import UserMapper
 
-from .bo.FridgeEntry import FridgeEntry
-from .bo.RecipeEntry import RecipeEntry
-from .bo.User import User
-from .bo.Fridge import Fridge
-from .bo.Household import Household
-from .bo.Recipe import Recipe"""
 
 """#Halils imports
 
@@ -158,32 +148,7 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.delete_fridge_entry(fridge_entry)
 
-
-
-
-
-
     #recipe-spezifische methoden:
-
-    def create_recipe(self, title, number_of_persons):
-
-        recipe = Recipe()
-        recipe.set_id(1)
-        user = User()
-        user.set_id(77)
-        recipe.set_creator(user.get_id())
-        recipe.set_title(title)
-        recipe.set_number_of_persons(number_of_persons)
-
-        with RecipeMapper() as mapper:
-            return mapper.insert(recipe)
-
-
-
-
-
-
-
 
 
     #shoppinglist-spezifische methoden:
@@ -198,8 +163,23 @@ class HalilsTaverneAdministration(object):
 
     #household-spezifische methoden:
 
+    def create_household(self):
 
+        household = Household()
+        household.set_id(1)
 
+        with HouseholdMapper() as mapper:
+            return mapper.insert(household)
+
+    def get_all_households(self):
+
+        with HouseholdMapper() as mapper:
+            return mapper.find_all()
+
+    def find_household_by_id(self, household_id):
+
+        with HouseholdMapper() as mapper:
+            mapper.find_by_id(household_id)
 
 
 
@@ -242,8 +222,14 @@ class HalilsTaverneAdministration(object):
 
 
 
-admintest = HalilsTaverneAdministration()
-admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
+"""admintest = HalilsTaverneAdministration()
+
+admintest.create_household()
+households = admintest.find_household_by_id(1)
+for household in households:
+    print("household id:", household.get_id())"""
+
+"""admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()
 for fridge_entry in list2:
     print("Designation:", fridge_entry.get_groceries_designation())
@@ -261,10 +247,4 @@ for user in list:
     print("household_id:", user.get_household_id())
     print()
 
-
-
-
-admintest.create_user("Tom","scd","jo")
-
-
-admintest.create_recipe("Pizza", 2)
+admintest.create_user("Tom","scd","jo")"""

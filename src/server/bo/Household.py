@@ -22,7 +22,7 @@ class Household(BusinessObject):
         return self.__users
     
     
-    def add_user(self, user = User):
+    def add_user(self, user = User()):
         """Hinzufügen eines Users"""
         if user.get_id() in self.__users:
             print("User ist bereits im Haushalt angemeldet")

@@ -15,14 +15,11 @@ INSERT INTO Fridge(id) VALUES
 
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    fridge_id INT NOT NULL,
-    FOREIGN KEY (fridge_id) REFERENCES Fridge(id)
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household (fridge_id) VALUES
+INSERT INTO Household(id) VALUES
 (1);
-
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -111,7 +108,7 @@ INSERT INTO Unit (id, name, conversion_factor) VALUES
 (1, 'gramm', 1),
 (2, 'kilogramm', 1000),
 (3, 'mililiter', 1),
-(4, 'liter',1000)
+(4, 'liter',1000);
 
 
 DROP TABLE IF EXISTS Household_Users;
@@ -122,3 +119,9 @@ CREATE TABLE Household_Users (
     FOREIGN KEY (household_id) REFERENCES Household(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO Household_Users(household_id, user_id) VALUES
+(1,2),
+(1,3),
+(1,1);
