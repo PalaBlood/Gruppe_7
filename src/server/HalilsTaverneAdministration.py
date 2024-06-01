@@ -151,7 +151,7 @@ class HalilsTaverneAdministration(object):
     #recipe-spezifische methoden:
 
 
-    #shoppinglist-spezifische methoden:
+    
 
 
 
@@ -192,7 +192,7 @@ class HalilsTaverneAdministration(object):
             mapper.delete(household)
 
 
-    #foodentry-spezifische methoden:
+
 
 
 
@@ -238,7 +238,7 @@ for fridge_entry in list2:
     print("Unit:", fridge_entry.get_unit())
     print(fridge_entry.get_quantity())
     print(fridge_entry.get_fridge())
-
+"""
 
 list = admintest.get_all_users()
 for user in list:
@@ -252,7 +252,7 @@ for user in list:
 
 
 
-admintest.create_user("Lisa","Müller","jo")"""
+admintest.create_user("Lisa","Müller","jo")
 
 
 
