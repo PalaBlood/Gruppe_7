@@ -99,7 +99,7 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.insert(fridge)
 
-    def get_all_fridges(self):     #findet doch eigentlich keine anwendung in der praxis?
+    def get_all_fridges(self):     
 
         with FridgeMapper2() as mapper:
             return mapper.find_all()
@@ -131,8 +131,7 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper2() as mapper:
             return mapper.insert_fridge_entry(fridgeentry)
-    #Groceries spezifische Methoden
-
+   
     def get_all_fridge_entries(self):
 
         with FridgeMapper2() as mapper:
@@ -154,7 +153,7 @@ class HalilsTaverneAdministration(object):
 
 
 
-
+    #recipeEntry spezifische Methoden
 
 
 
