@@ -1,5 +1,5 @@
 from f
-from flask_cors import CORS
+from 
 
 from HalilsTaverneAdministration import HalilsTaverneAdministration
 from Fridge import Fridge
