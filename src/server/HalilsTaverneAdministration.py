@@ -138,7 +138,7 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.find_all_entries()
 
-    def update_fridge_entry(self, fridge_entry):
+    def save_fridge_entry(self, fridge_entry):
 
         with FridgeMapper2() as mapper:
             return mapper.update_fridge_entry(fridge_entry)
@@ -163,10 +163,10 @@ class HalilsTaverneAdministration(object):
 
     #household-spezifische methoden:
 
-    def create_household(self):
+    def create_household(self, name):
 
         household = Household()
-        household.set_id(1)
+        household.set_name(name)
 
         with HouseholdMapper() as mapper:
             return mapper.insert(household)
@@ -179,14 +179,17 @@ class HalilsTaverneAdministration(object):
     def find_household_by_id(self, household_id):
 
         with HouseholdMapper() as mapper:
-            mapper.find_by_id(household_id)
+            return mapper.find_by_id(household_id)
 
+    def save_household(self, household):
 
+        with HouseholdMapper() as mapper:
+            mapper.update(household)
 
+    def delete_household(self, household):
 
-
-
-
+        with HouseholdMapper() as mapper:
+            mapper.delete(household)
 
 
     #foodentry-spezifische methoden:
@@ -224,12 +227,11 @@ class HalilsTaverneAdministration(object):
 
 admintest = HalilsTaverneAdministration()
 
-admintest.create_household()
-"""households = admintest.find_household_by_id(1)
-for household in households:
-    print("household id:", household.get_id())
+admintest.create_household("Neuer Haushalt")
+print(admintest.get_all_households())
 
-admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
+
+"""admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()
 for fridge_entry in list2:
     print("Designation:", fridge_entry.get_groceries_designation())
@@ -250,7 +252,7 @@ for user in list:
 
 
 
-admintest.create_user("Lisa","Müller","jo")
+admintest.create_user("Lisa","Müller","jo")"""
 
 
 

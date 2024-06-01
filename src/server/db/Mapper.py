@@ -27,11 +27,11 @@ class Mapper(AbstractContextManager, ABC):
                                           database='fridge-app')
         else:
 
-            self._cnx = connector.connect(user="root", password="test",
+            self._cnx = connector.connect(user="root", password="9902",
                               host="localhost",
                               database="sopra")
 
-        print("database connection established")
+
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

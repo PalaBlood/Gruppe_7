@@ -9,18 +9,10 @@ class User(BusinessObject):
     def __init__(self):
         super().__init__()
         self.__nickname = "" #Der Nickname des Users
-        self.__google_id = None #Google ID --> wird außerhalb unseres systems verwaltet
         self.__last_name = ""
         self.__first_name = ""
         self.__Household_id = 0
-    
-    def get_google_id(self):
-        """Google ID Auslesen"""
-        return self.__google_id
-    
-    def set_google_id(self, value):
 
-        self.__google_id = value
 
     def set_nick_name(self, nickname):
         """nickname setzen"""
@@ -46,14 +38,6 @@ class User(BusinessObject):
 
         return self.__first_name
 
-
-    
-    def delete_user(self): 
-        """Hier müssen wir eine "Löschweitergabe implementieren (siehe Thies Videomitschnitt 20.05 min. 12.00)
-        Sobald ein User gelöscht wird, müssen wir auch dessen angelegte Rezepte löschen. Ansosonten hätten wir im System eine Referenz
-        die nicht mehr exsitiert. Dies werden wir in Adminklasse durchführen."""
-        pass
-
     def get_household_id(self):
 
         return self.__Household_id
@@ -61,7 +45,9 @@ class User(BusinessObject):
     def set_household_id(self, value):
 
         self.__Household_id = value
-    
+
+    def __str__(self):
+        return f"User(ID: {self.get_id()}, Nickname: {self.get_nick_name()}, First Name: {self.get_first_name()}, Last Name: {self.get_last_name()}, Household ID: {self.get_household_id()})"
     
     
     """Wir benötigen die Methode, damit wir das Objekt in ein dict umwandeln.

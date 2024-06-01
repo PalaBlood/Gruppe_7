@@ -15,11 +15,13 @@ INSERT INTO Fridge(id) VALUES
 
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household(id) VALUES
-(1);
+INSERT INTO Household (id, name) VALUES
+(2, "der haushalt");
+
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -32,10 +34,14 @@ CREATE TABLE users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO users (nick_name, first_name, last_name, household_id) VALUES
-('Tom_Schönfeld', 'Tom', 'Schönfeld', 1),
-('Bob345', 'Bob', 'Schönfeld', 1),
-('Michel223', 'Michel', 'Finger', 1);
+('Tom_Schönfeld', 'Tom', 'Schönfeld', 2),
+('Bob345', 'Bob', 'Schönfeld', 2),
+('Michel223', 'Michel', 'Finger', 2);
 
+
+
+INSERT INTO Household(id) VALUES
+(1);
 
 DROP TABLE IF EXISTS Recipe;
 CREATE TABLE Recipe (
@@ -109,19 +115,3 @@ INSERT INTO Unit (id, name, conversion_factor) VALUES
 (2, 'kilogramm', 1000),
 (3, 'mililiter', 1),
 (4, 'liter',1000);
-
-
-DROP TABLE IF EXISTS Household_Users;
-CREATE TABLE Household_Users (
-    household_id INT NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY(household_id, user_id),
-    FOREIGN KEY (household_id) REFERENCES Household(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-INSERT INTO Household_Users(household_id, user_id) VALUES
-(1,2),
-(1,3),
-(1,1);

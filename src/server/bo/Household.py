@@ -13,30 +13,37 @@ In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in
 class Household(BusinessObject): 
     def __init__(self):
         super().__init__()
-        self.__users = []
-        self.__household_id = ""
-        
-    
+        self._users = []
+        self.__name = ""
     def get_users(self): 
         """User im Haushalt auslesen"""
-        return self.__users
-    
-    
-    def add_user(self, user = User()):
-        """Hinzufügen eines Users"""
-        if user.get_id() in self.__users:
-            print("User ist bereits im Haushalt angemeldet")
-        else:
-            self.__users.append(user.get_id())
-            
-    def remove_user(self, user=User):
-        """Entfernen eines Users"""
-        if user.get_id() in self.get_users():
-            self.__users.remove(user.get_id())
-            print(f"User mit ID {user.get_id()} wurde aus dem Haushalt entfernt")
-        else:
-            print("User ist nicht im Haushalt registriert") 
+        return self._users[:]
 
+    def add_user(self, user):
+        """Add a user to the household."""
+        if user not in self._users:
+            self._users.append(user)
+    def remove_user(self, user):
+        """Entfernen eines Users"""
+        if user in self._users:
+            self._users.remove(user)
+        else:
+            raise ValueError("User not found in household")
+
+    def set_name(self, name):
+
+        self.__name = name
+
+    def get_name(self):
+
+        return self.__name
+    def __str__(self):
+        user_info = ', '.join(str(user) for user in self._users)
+        return f"Household(ID: {self.get_id()}, Users: [{user_info}])"
+
+    def __repr__(self):
+
+        return f"<Household(ID: {self._id}, Name: {self.__name})>"
 
     @staticmethod
     def form_dict(dictionary=dict()):

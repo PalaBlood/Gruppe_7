@@ -116,30 +116,20 @@ class UserMapper (Mapper):
 
         :param key Primärschlüsselattribut (->DB)
         :return User-Objekt, das dem übergebenen Schlüssel entspricht, None bei
-            nicht vorhandenem DB-Tupel.
-        """
-        result = None
+            nicht vorhandenem DB-Tupel."""
+
         cursor = self._cnx.cursor()
-        command = "SELECT id, nick_name, first_name, last_name FROM users WHERE id=%s".format(id)
-        cursor.execute(command, (id,))
-        tuples = cursor.fetchall()
-
-        try:
-            (id, nick_name, first_name, last_name) = tuples[0]
+        cursor.execute("SELECT id, nick_name, first_name, last_name, household_id FROM users WHERE id=%s", (id,))
+        tuple = cursor.fetchone()
+        if tuple:
             user = User()
-            user.set_id(id)
-            user.set_nick_name(nick_name)
-            user.set_first_name(first_name)
-            user.set_last_name(last_name)
-            result = user
-            
-        except IndexError:
-            result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
+            user.set_id(tuple[0])
+            user.set_nick_name(tuple[1])
+            user.set_first_name(tuple[2])
+            user.set_last_name(tuple[3])
+            user.set_household_id(tuple[4])
+            return user
+        return None
 
     def update(self, user):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.

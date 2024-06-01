@@ -22,146 +22,108 @@ class HouseholdMapper(Mapper):
     def __init__(self):
         super().__init__()
 
-
     def find_all(self):
-        """Auslesen aller Haushalte.
-
-        :return Eine Sammlung mit Household-Objekten, die sämtliche Haushalte repräsentieren.
-        """
+        """Retrieve all households with associated users."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * FROM household")
-        tuples = cursor.fetchall()
+        try:
+            cursor.execute("SELECT id, name FROM household")
+            tuples = cursor.fetchall()
 
-        for (id,) in tuples:
-            household = Household()
-            household.set_id(id)
+            for (id, name) in tuples:
+                household = Household()
+                household.set_id(id)
+                household.set_name(name)
+                result.append(household)
 
-            command = "SELECT user_id FROM household_users WHERE household_id=%s"
-            cursor.execute(command, (id,))
-            users = cursor.fetchall()
-
-            for (id,) in users:
-                household.add_user(UserMapper().find_by_id(id))
-
-            result.append(household)
-
-        self._cnx.commit()
-        cursor.close()
+        except Exception as e:
+            print(f"An error occurred while retrieving households: {e}")
+        finally:
+            cursor.close()
 
         return result
+
+    def find_user_ids_for_household(self, household_id):
+        """Helper method to find user IDs for a specific household."""
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT id FROM users WHERE household_id=%s", (household_id,))
+        return [user_id[0] for user_id in cursor.fetchall()]
 
     def insert(self, household):
-        """Einfügen eines Household-Objekts in die Datenbank.
-
-        Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
-        berichtigt.
-
-        :param household das zu speichernde Objekt
-        :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
-        """
+        """Insert a Household object into the database."""
         cursor = self._cnx.cursor()
-
-        cursor.execute("SELECT MAX(id) AS maxid FROM household")
-        tuples = cursor.fetchall()
-
-        for (maxid) in tuples:
-            household.set_id(maxid[0] + 1)
-
-        command = "INSERT INTO household (id) VALUES (%s)"
-        data = (household.get_id(),)
-        cursor.execute(command, data)
-
-        for user_id in household.get_users():
-            command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
-            data = (household.get_id(), user_id)
-            cursor.execute(command, data)
-
+        name = household.get_name()
+        cursor.execute("INSERT INTO household (name) VALUES (%s)",(name,))
+        household.set_id(cursor.lastrowid)
         self._cnx.commit()
-        cursor.close()
-
         return household
 
-
-    def find_by_id(self, key):
-        """Suchen eines Haushalts mit vorgegebener ID. Da diese eindeutig ist,
-        wird genau ein Objekt zurückgegeben.
-
-        :param key Primärschlüsselattribut (->DB)
-        :return Household-Objekt, das dem übergebenen Schlüssel entspricht, None bei
-            nicht vorhandenem DB-Tupel.
-        """
-
+    def find_by_id(self, id):
+        """Find a Household by its ID."""
         cursor = self._cnx.cursor()
-        command = "SELECT id FROM household WHERE id=%s"
-        cursor.execute(command, (key,))
-        tuples = cursor.fetchone()
-        print(tuples)
+        cursor.execute("SELECT id FROM household WHERE id=%s", (id,))
+        tuple = cursor.fetchone()
+        if tuple:
+            # Create a Household object
 
-
-        try:
-            (id,) = tuples
             household = Household()
-            household.set_id(id)
+            household.set_id(tuple[0])
 
-            command = "SELECT user_id FROM household_users WHERE household_id=%s"
-            cursor.execute(command, (id,))
+            # Retrieve all users associated with this household
+            cursor.execute("SELECT id, nick_name, first_name, last_name, household_id FROM users WHERE household_id=%s",
+                           (household.get_id(),))
             users = cursor.fetchall()
-            print(users)
 
-            for (id,) in users:
-                household.add_user(UserMapper().find_by_id(id))
+            # Create User objects for each retrieved user record and add to the Household
+            for (user_id, nick_name, first_name, last_name, household_id) in users:
+                user = User()
+                user.set_id(user_id)
+                user.set_nick_name(nick_name)
+                user.set_first_name(first_name)
+                user.set_last_name(last_name)
+                user.set_household_id(household_id)
+                household.add_user(user)
 
-            result = household
-        except IndexError:
-            result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-
-
-
+            return household
 
     def update(self, household):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
-
-        :param household das Objekt, das in die DB geschrieben werden soll
-        """
+        """Update household data in the database and re-associate users."""
         cursor = self._cnx.cursor()
-        command = "DELETE FROM household_users WHERE household_id=%s"
-        cursor.execute(command, (household.get_id(),))
+        try:
 
-        for user_id in household.get_users():
-            command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
-            data = (household.get_id(), user_id)
-            cursor.execute(command, data)
+            command = "UPDATE households SET name = %s WHERE id = %s"
+            cursor.execute(command, (household.get_name(), household.get_id()))
 
-        self._cnx.commit()
-        cursor.close()
+            for user_id in household.get_users():
+                command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
+                data = (household.get_id(), user_id)
+                cursor.execute(command, data)
 
-
-
+            self._cnx.commit()
+        except Exception as e:
+            print(f"An error occurred while updating the household: {e}")
+            self._cnx.rollback()
+        finally:
+            cursor.close()
 
     def delete(self, household):
-        """Löschen der Daten eines Household-Objekts aus der Datenbank.
 
-        :param household das aus der DB zu löschende "Objekt"
-        """
         cursor = self._cnx.cursor()
-        command = "DELETE FROM household_users WHERE household_id=%s"
-        cursor.execute(command, (household.get_id(),))
+        try:
 
-        command = "DELETE FROM households WHERE id=%s"
-        cursor.execute(command, (household.get_id(),))
-
-        self._cnx.commit()
-        cursor.close()
+            command = "DELETE FROM users WHERE household_id = %s"
+            cursor.execute(command, (household.get_id(),))
 
 
+            command = "DELETE FROM households WHERE id = %s"
+            cursor.execute(command, (household.get_id(),))
 
+            self._cnx.commit()
+        except Exception as e:
+            print(f"An error occurred while deleting the household: {e}")
+            self._cnx.rollback()
+        finally:
+            cursor.close()
 
 if __name__ == "__main__":
     household_mapper = HouseholdMapper()
