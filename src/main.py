@@ -40,5 +40,5 @@ user = api.inherit('User', bo, {
 
 
 Fridge = api.inherit('Fridge', bo, {
-    
+
 })
