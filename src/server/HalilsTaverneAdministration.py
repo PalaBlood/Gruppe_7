@@ -222,12 +222,12 @@ class HalilsTaverneAdministration(object):
 
 
 
-"""admintest = HalilsTaverneAdministration()
+admintest = HalilsTaverneAdministration()
 
 admintest.create_household()
 households = admintest.find_household_by_id(1)
 for household in households:
-    print("household id:", household.get_id())"""
+    print("household id:", household.get_id())
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()

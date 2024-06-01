@@ -121,7 +121,7 @@ class UserMapper (Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT id, nick_name, first_name, last_name FROM users WHERE id=%s".format(id)
-        cursor.execute(command)
+        cursor.execute(command, (id,))
         tuples = cursor.fetchall()
 
         try:
