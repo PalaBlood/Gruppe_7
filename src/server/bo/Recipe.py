@@ -6,7 +6,7 @@ class Recipe(BusinessObject):
         super().__init__()
         self.__title = ""
         self.__number_of_persons = 0
-        self.__creator = None
+        self.__creator = ""
         self.__content = []
 
     def get_title(self):

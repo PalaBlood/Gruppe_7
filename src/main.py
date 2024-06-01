@@ -1,5 +1,4 @@
-from flask import Flask, jsonify
-from flask_restx import Api, Resource, fields
+from f
 from flask_cors import CORS
 
 from HalilsTaverneAdministration import HalilsTaverneAdministration
@@ -40,5 +39,11 @@ user = api.inherit('User', bo, {
 
 
 Fridge = api.inherit('Fridge', bo, {
+    'content': fields.List()
+})
 
+
+Recipe = api.inherit('Recipe', bo, {
+    'title':fields.String(),
+    'number_of_persons':fields.INT
 })
