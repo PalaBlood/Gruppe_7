@@ -6,9 +6,9 @@ from Gruppe_7.src.server.db.UserMapper import UserMapper
 from Gruppe_7.src.server.db.Mapper import Mapper
 """
 
-from src.server.bo.Household import Household
-from src.server.bo.User import User
-from src.server.db.Mapper import Mapper
+from Household import Household
+from server.bo.User import User
+from server.db.Mapper import Mapper
 from db.UserMapper import UserMapper
 
 class HouseholdMapper(Mapper):

@@ -1,8 +1,8 @@
 
-from src.server.db.Mapper import Mapper
-from src.server.bo.Fridge import Fridge
-from src.server.bo.FridgeEntry import FridgeEntry
-from src.server.db.UserMapper import UserMapper
+from Mapper import Mapper
+from server.bo.Fridge import Fridge
+from server.bo.FridgeEntry import FridgeEntry
+from server.db.UserMapper import UserMapper
 
 
 """from Mapper import Mapper

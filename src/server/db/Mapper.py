@@ -27,7 +27,7 @@ class Mapper(AbstractContextManager, ABC):
                                           database='fridge-app')
         else:
 
-            self._cnx = connector.connect(user="root", password="9902",
+            self._cnx = connector.connect(user="root", password="test",
                               host="localhost",
                               database="sopra")
 
