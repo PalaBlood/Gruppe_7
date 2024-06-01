@@ -151,7 +151,7 @@ class HalilsTaverneAdministration(object):
     #recipe-spezifische methoden:
 
 
-    
+
 
 
 
