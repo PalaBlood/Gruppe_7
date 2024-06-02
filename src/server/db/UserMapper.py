@@ -37,16 +37,17 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT nick_name, first_name, last_name, id, household_id FROM users")
+        cursor.execute("SELECT nick_name, first_name, last_name, id, household_id, google_user_id FROM users")
         tuples = cursor.fetchall()
 
-        for (nick_name, first_name, last_name, id, household_id) in tuples:
+        for (nick_name, first_name, last_name, id, household_id, google_user_id) in tuples:
             user = User()
             user.set_nick_name(nick_name)
             user.set_last_name(last_name)
             user.set_first_name(first_name)
             user.set_id(id)
             user.set_household_id(household_id)
+            user.set_google_user_id(google_user_id)
             result.append(user)
 
         self._cnx.commit()
@@ -75,8 +76,8 @@ class UserMapper (Mapper):
 
         user.set_household_id(household_id)
 
-        command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id) VALUES (%s, %s, %s, %s, %s)"
-        data = (user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id())
+        command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id, google_user_id) VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id(), user.get_google_user_id)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -93,16 +94,17 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, nick_name, first_name, last_name FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
+        command = "SELECT id, nick_name, first_name, last_name, google_user_id FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, nick_name, first_name, last_name) in tuples:
+        for (id, nick_name, first_name, last_name, google_user_id) in tuples:
             user = User()
             user.set_id(id)
             user.set_nick_name(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
+            user.set_google_user_id(google_user_id)
             result.append(user)
 
         self._cnx.commit()
@@ -119,7 +121,7 @@ class UserMapper (Mapper):
             nicht vorhandenem DB-Tupel."""
 
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, nick_name, first_name, last_name, household_id FROM users WHERE id=%s", (id,))
+        cursor.execute("SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE id=%s", (id,))
         tuple = cursor.fetchone()
         if tuple:
             user = User()
@@ -128,6 +130,7 @@ class UserMapper (Mapper):
             user.set_first_name(tuple[2])
             user.set_last_name(tuple[3])
             user.set_household_id(tuple[4])
+            user.set_google_user_id(tuple[5])
             return user
         return None
 
@@ -137,8 +140,8 @@ class UserMapper (Mapper):
         :param user das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE users SET nickname=%s, first_name=%s, last_name=%s, user_id=%s WHERE id=%s"
-        data = (user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_id())
+        command = "UPDATE users SET nickname=%s, first_name=%s, last_name=%s, user_id=%s, google_user_id=%s WHERE id=%s"
+        data = (user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_google_user_id)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -157,7 +160,32 @@ class UserMapper (Mapper):
         cursor.close()
 
 
+    def find_by_google_user_id(self, google_user_id):
+        
+        result = None
 
+        cursor = self._cnx.cursor()
+        command = "SELECT id, nick_name, first_name, last_name, google_user_id FROM users WHERE google_user_id='{}'".format(google_user_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, nick_name, first_name, last_name, google_user_id) = tuples[0]
+            u = User()
+            u.set_id(id)
+            u.set_nick_name(nick_name)
+            u.set_first_name(first_name)
+            u.set_last_name(last_name)
+            u.set_google_user_id(google_user_id)
+            result = u
+        except IndexError:
+            
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
 
 

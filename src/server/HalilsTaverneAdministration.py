@@ -86,6 +86,11 @@ class HalilsTaverneAdministration(object):
 
         with UserMapper() as mapper:
             return mapper.find_by_id(user_id)
+        
+    def get_user_by_google_user_id(self, google_user_id):
+
+        with UserMapper() as mapper:
+            return mapper.find_by_google_user_id(google_user_id)
 
     #Fridge spezifische Methoden
 

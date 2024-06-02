@@ -30,13 +30,14 @@ CREATE TABLE users (
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     household_id INT NOT NULL,
+    google_user_id VARCHAR(255),
     FOREIGN KEY (household_id) REFERENCES Household (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO users (nick_name, first_name, last_name, household_id) VALUES
-('Tom_Schönfeld', 'Tom', 'Schönfeld', 2),
-('Bob345', 'Bob', 'Schönfeld', 2),
-('Michel223', 'Michel', 'Finger', 2);
+INSERT INTO users (nick_name, first_name, last_name, household_id, google_user_id) VALUES
+('Tom_Schönfeld', 'Tom', 'Schönfeld', 2,232424),
+('Bob345', 'Bob', 'Schönfeld', 2,23423423),
+('Michel223', 'Michel', 'Finger', 2,9832342);
 
 
 

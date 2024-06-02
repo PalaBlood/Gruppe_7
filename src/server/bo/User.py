@@ -12,6 +12,7 @@ class User(BusinessObject):
         self.__last_name = ""
         self.__first_name = ""
         self.__Household_id = 0
+        self.__google_user_id = 0
 
 
     def set_nick_name(self, nickname):
@@ -45,6 +46,14 @@ class User(BusinessObject):
     def set_household_id(self, value):
 
         self.__Household_id = value
+
+    def set_google_user_id(self, value):
+
+        self.__google_user_id = value
+
+    def get_google_user_id(self):
+
+        return self.__google_user_id
 
     def __str__(self):
         return f"User(ID: {self.get_id()}, Nickname: {self.get_nick_name()}, First Name: {self.get_first_name()}, Last Name: {self.get_last_name()}, Household ID: {self.get_household_id()})"
