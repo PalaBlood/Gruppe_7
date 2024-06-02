@@ -1,6 +1,6 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
 
-from RecipeMapper import RecipeMapper
+"""from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
@@ -12,27 +12,25 @@ from User import User
 from Fridge import Fridge
 from Household import Household
 from ShoppingList import Shoppinglist
-from Recipe import Recipe
+from Recipe import Recipe"""
 
 
 
-"""#Halils imports
+#Halils imports
 
 from server.bo.User import User
 from server.db.UserMapper import UserMapper
 from server.db.HouseholdMapper import HouseholdMapper
 from server.db.RecipeMapper import RecipeMapper
-from server.db.FridgeMapper import FridgeMapper
-from server.db.FridgeMapper import GroceriesMapper
+from server.db.FridgeMapper import FridgeMapper2
+
 
 from server.bo.FoodEntry import FoodEntry
 from server.bo.User import User
 from server.bo.Fridge import Fridge
-from server.bo.Groceries import Groceries
 from server.bo.Household import Household
 from server.bo.ShoppingList import ShoppingList
-from server.bo.UnitConverters import UnitConverter
-from server.bo.Recipe import Recipe"""
+from server.bo.Recipe import Recipe
 
 
 
@@ -149,7 +147,16 @@ class HalilsTaverneAdministration(object):
 
     #recipe-spezifische methoden:
 
+    def create_recipe(self, title, number_of_persons, creator, content):
 
+        recipe = Recipe()
+        recipe.set_id(1)
+        recipe.set_number_of_persons(number_of_persons)
+        recipe.set_creator(creator)
+        recipe.set_content(content)
+
+        with RecipeMapper() as mapper:
+            return mapper.insert(recipe)
 
 
 

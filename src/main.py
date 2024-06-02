@@ -1,5 +1,6 @@
-from f
-from 
+from flask import Flask
+from flask_cors import CORS
+from flask_restx import Api, Resource, fields
 
 from HalilsTaverneAdministration import HalilsTaverneAdministration
 from Fridge import Fridge
@@ -45,5 +46,10 @@ Fridge = api.inherit('Fridge', bo, {
 
 Recipe = api.inherit('Recipe', bo, {
     'title':fields.String(),
-    'number_of_persons':fields.INT
+    'number_of_persons':fields.Integer(),
+
 })
+
+
+if __name__== '__main__':
+    app.run(debug=True)
