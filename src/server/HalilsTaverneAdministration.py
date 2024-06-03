@@ -13,6 +13,7 @@ from Fridge import Fridge
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
+from RecipeEntry import RecipeEntry
 
 
 
@@ -157,17 +158,16 @@ class HalilsTaverneAdministration(object):
 
     #recipe-spezifische methoden:
 
-    def create_recipe(self, title, number_of_persons, creator, content):
-
+    def create_recipe(self, title, number_of_persons, creator_id, description):
         recipe = Recipe()
-        recipe.set_id(1)
         recipe.set_title(title)
         recipe.set_number_of_persons(number_of_persons)
-        recipe.set_creator(creator)
-        recipe.add_content(content)
+        recipe.set_creator_id(creator_id)
+        recipe.set_description(description)
 
         with RecipeMapper() as mapper:
-            return mapper.insert(recipe)
+            return mapper.insert_recipe(recipe)
+
 
     def get_all_recipes(self):
         with RecipeMapper() as mapper:
@@ -310,5 +310,19 @@ admintest.create_user("Lisa","Müller","jo",12)
 
 
 
+new_recipe_title = "Spaghetti Carbonara"
+new_recipe_persons = 2
+new_recipe_creator_id = 1  # Annahme: ID des Erstellers
+new_recipe_description = "Ein klassisches italienisches Pastagericht."
 
+# Aufruf der create_recipe-Methode, um das Rezept in die Datenbank einzufügen
+new_recipe = admintest.create_recipe(new_recipe_title, new_recipe_persons, new_recipe_creator_id, new_recipe_description)
+
+# Ausgabe des erstellten Rezepts
+print("Neues Rezept erstellt:")
+print("ID:", new_recipe.get_id())
+print("Titel:", new_recipe.get_title())
+print("Anzahl der Personen:", new_recipe.get_number_of_persons())
+print("Ersteller-ID:", new_recipe.get_creator_id())
+print("Beschreibung:", new_recipe.get_description())
 

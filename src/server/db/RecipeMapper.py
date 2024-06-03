@@ -13,7 +13,7 @@ from server.bo.RecipeEntry import RecipeEntry
 
 
 class RecipeMapper(Mapper):
-    """Mapper-Klasse, die Recipe-Objekte auf eine relationale
+    """Mapper-Klasse, die Fridge-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
     gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
@@ -33,14 +33,14 @@ class RecipeMapper(Mapper):
         :return: das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(recipe_id) AS maxid FROM recipe")
+        cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
         tuples = cursor.fetchall()
 
         maxid = tuples[0][0] if tuples[0][0] is not None else 0
         recipe.set_id(maxid + 1)
 
-        command = "INSERT INTO recipe (recipe_id, title, number_of_persons, creator) VALUES (%s, %s, %s, %s)"
-        data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator())
+        command = "INSERT INTO recipe (id, title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
+        data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator_id(), recipe.get_description())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -48,51 +48,52 @@ class RecipeMapper(Mapper):
 
         return recipe
 
-    def get_existing_entry(self, recipe_id, groceries_designation):
+
+    def get_existing_entry(self, id, groceries_designation):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
         cursor = self._cnx.cursor()
-        query = "SELECT quantity FROM recipe_groceries WHERE recipe_id = %s AND groceries_designation = %s"
-        cursor.execute(query, (recipe_id, groceries_designation))
+        query = "SELECT quantity FROM recipe_groceries WHERE id = %s AND groceries_designation = %s"
+        cursor.execute(query, (id, groceries_designation))
         result = cursor.fetchone()
         cursor.close()
         return result
 
-    def update_recipe_entry(self, recipe_id, groceries_designation, quantity, unit):
+    def update_recipe_entry(self, id, groceries_designation, quantity, unit):
         """Update an existing recipe entry in the database."""
         cursor = self._cnx.cursor()
         command = """UPDATE recipe_groceries
                      SET quantity = %s, unit = %s
-                     WHERE recipe_id = %s AND groceries_designation = %s"""
-        cursor.execute(command, (quantity, unit, recipe_id, groceries_designation))
+                     WHERE id = %s AND groceries_designation = %s"""
+        cursor.execute(command, (quantity, unit, id, groceries_designation))
         self._cnx.commit()
         cursor.close()
 
     def insert_recipe_entry(self, recipe_entry):
         """Insert or update a RecipeEntry object into the database."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id FROM recipe LIMIT 1")
+        cursor.execute("SELECT id FROM recipe LIMIT 1")
         result = cursor.fetchone()
-        recipe_id = result[0]
+        id = result[0]
 
-        existing_entry = self.get_existing_entry(recipe_id, recipe_entry.get_groceries_designation())
+        existing_entry = self.get_existing_entry(id, recipe_entry.get_groceries_designation())
 
         if existing_entry:
             # Update the existing entry
             new_quantity = existing_entry[0] + recipe_entry.get_quantity()
-            self.update_recipe_entry(recipe_id, recipe_entry.get_groceries_designation(), new_quantity, recipe_entry.get_unit())
+            self.update_recipe_entry(id, recipe_entry.get_groceries_designation(), new_quantity, recipe_entry.get_unit())
         else:
             # Insert the new entry
-            command = """INSERT INTO recipe_groceries (recipe_id, groceries_designation, quantity, unit)
+            command = """INSERT INTO recipe_groceries (id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
-            data = (recipe_id, recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
+            data = (id, recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
             cursor.execute(command, data)
             self._cnx.commit()
         cursor.close()
 
-    def find_recipe_by_id(self, recipe_id):
+    def find_recipe_by_id(self, id):
         """Find a Recipe by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id, title, number_of_persons, creator FROM recipe WHERE recipe_id = %s", (recipe_id,))
+        cursor.execute("SELECT id, title, number_of_persons, creator FROM recipe WHERE id = %s", (id,))
         result = cursor.fetchone()
         if result:
             recipe = Recipe()
@@ -105,16 +106,16 @@ class RecipeMapper(Mapper):
         cursor.close()
         return None
 
-    def find_entries_by_recipe_id(self, recipe_id):
+    def find_entries_by_recipe_id(self, id):
         """Find all entries associated with a specific recipe ID."""
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s",
-                       (recipe_id,))
+                       (id,))
         entries = cursor.fetchall()
         for groceries_designation, quantity, unit in entries:
             entry = RecipeEntry()
-            entry.set_recipe_id(recipe_id)
+            entry.set_recipe_id(id)
             entry.set_groceries_designation(groceries_designation)
             entry.set_quantity(quantity)
             entry.set_unit(unit)
@@ -129,9 +130,9 @@ class RecipeMapper(Mapper):
         cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries")
         tuples = cursor.fetchall()
 
-        for (recipe_id, groceries_designation, quantity, unit) in tuples:
+        for (id, groceries_designation, quantity, unit) in tuples:
             recipe_entry = RecipeEntry()
-            recipe_entry.set_recipe_id(recipe_id)
+            recipe_entry.set_recipe_id(id)
             recipe_entry.set_groceries_designation(groceries_designation)
             recipe_entry.set_quantity(quantity)
             recipe_entry.set_unit(unit)
@@ -152,9 +153,9 @@ class RecipeMapper(Mapper):
         cursor.execute("SELECT recipe_id, title, number_of_persons, creator FROM recipe")
         tuples = cursor.fetchall()
 
-        for (recipe_id, title, number_of_persons, creator) in tuples:
+        for (id, title, number_of_persons, creator) in tuples:
             recipe = Recipe()
-            recipe.set_id(recipe_id)
+            recipe.set_id(id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
             recipe.set_creator(creator)
@@ -165,11 +166,11 @@ class RecipeMapper(Mapper):
 
         return result
 
-    def delete_recipe_entry(self, recipe_entry, recipe_id):
+    def delete_recipe_entry(self, recipe_entry, id):
         """Delete a RecipeEntry object from the database."""
         cursor = self._cnx.cursor()
         command = "DELETE FROM recipe_groceries WHERE recipe_id = %s AND groceries_designation = %s"
-        cursor.execute(command, (recipe_id, recipe_entry.get_groceries_designation()))
+        cursor.execute(command, (id, recipe_entry.get_groceries_designation()))
         self._cnx.commit()
         cursor.close()
 

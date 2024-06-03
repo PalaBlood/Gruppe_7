@@ -6,8 +6,8 @@ class Recipe(BusinessObject):
         super().__init__()
         self.__title = ""
         self.__number_of_persons = 0
-        self.__creator = ""
-        self.__content = []
+        self.__creator_id = 0  # Hinzugefügt
+        self.__description = ""
 
     def get_title(self):
         return self.__title
@@ -24,19 +24,25 @@ class Recipe(BusinessObject):
         else:
             print("Fehler: Die Anzahl der Personen muss eine Ganzzahl sein.")
 
-    def set_creator(self, creator=User()):
-        self.__creator = creator
+    def set_creator(self, creator):
+        if isinstance(creator, User):
+            self.__creator_id = creator.get_id()
+        else:
+            print("Fehler: Der Ersteller muss ein Benutzerobjekt sein.")
 
-    def get_creator(self):
-        return self.__creator
+    def get_creator_id(self):
+        return self.__creator_id
 
-    def get_content(self):
-        return self.__content
+    def set_creator_id(self, creator_id):
+        self.__creator_id = creator_id
 
-    def add_content(self, recipe_entry):
-        from RecipeEntry import RecipeEntry  # Import innerhalb der Methode
-        if isinstance(recipe_entry, RecipeEntry):
-            self.__content.append(recipe_entry)
+    def get_description(self):
+        return self.__description
+
+    def set_description(self, description):
+        self.__description = description
+
+
 
     @staticmethod
     def form_dict(dictionary=dict()):
