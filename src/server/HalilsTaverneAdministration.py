@@ -56,7 +56,7 @@ class HalilsTaverneAdministration(object):
           user.set_last_name(last_name)
           user.set_nick_name(nick_name)
           user.set_id(1) #default id, wird später in der Datenbank geupdatet
-          user.set_google_user_id(1)
+          user.set_google_user_id(google_user_id)
 
           with UserMapper() as mapper:
                 return mapper.insert(user)
@@ -259,6 +259,7 @@ for user in list:
     print("First Name:", user.get_first_name())
     print("Last Name:", user.get_last_name())
     print("household_id:", user.get_household_id())
+    print("google_user_id",user.get_google_user_id())
     print()
 
 
