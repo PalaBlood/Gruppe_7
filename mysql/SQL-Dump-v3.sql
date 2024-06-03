@@ -49,8 +49,8 @@ CREATE TABLE Recipe (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recipe_title VARCHAR(255),
     number_of_persons INT,
-    creator INT,
-    FOREIGN KEY (creator) REFERENCES users(id)
+    creator_id INT,
+    FOREIGN KEY (creator_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
