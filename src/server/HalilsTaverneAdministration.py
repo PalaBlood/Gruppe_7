@@ -157,9 +157,10 @@ class HalilsTaverneAdministration(object):
 
         recipe = Recipe()
         recipe.set_id(1)
+        recipe.set_title(title)
         recipe.set_number_of_persons(number_of_persons)
         recipe.set_creator(creator)
-        recipe.set_content(content)
+        recipe.add_content(content)
 
         with RecipeMapper() as mapper:
             return mapper.insert(recipe)
