@@ -13,6 +13,7 @@ from Fridge import Fridge
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
+from RecipeEntry import RecipeEntry
 
 
 
@@ -123,9 +124,6 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             mapper.delete(fridge)
 
-
-
-
     #FridgeEntry spezifische Methoden
 
     def create_Fridge_entry(self, unit, quantity, groceries, fridge_id):
@@ -167,7 +165,7 @@ class HalilsTaverneAdministration(object):
         recipe.add_content(content)
 
         with RecipeMapper() as mapper:
-            return mapper.insert(recipe)
+            return mapper.insert_recipe(recipe)
 
     def get_all_recipes(self):
         with RecipeMapper() as mapper:
@@ -177,7 +175,7 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.find_by_id(recipe_id)
 
-    def update_fridge(self, recipe):
+    def update_recipe(self, recipe):
         with RecipeMapper as mapper:
             mapper.update(recipe)
 
@@ -209,10 +207,6 @@ class HalilsTaverneAdministration(object):
     def delete_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
             return mapper.delete_recipe_entry(recipe_entry)
-
-
-
-
 
     #household-spezifische methoden:
 
@@ -283,6 +277,8 @@ admintest = HalilsTaverneAdministration()
 admintest.create_household("Neuer Haushalt")
 print(admintest.get_all_households())
 
+admintest.create_recipe("Spaghtti",3,1,"Spaghetti kochen, Hackfleisch klein machen und anbraten. Tomatensauce dazu geben und alles verrühren")
+admintest.create_recipe_entry("gramm",500, "Käse", 1)
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()

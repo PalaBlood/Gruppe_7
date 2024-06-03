@@ -33,13 +33,13 @@ class RecipeMapper(Mapper):
         :return: das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(recipe_id) AS maxid FROM recipe")
+        cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
         tuples = cursor.fetchall()
 
         maxid = tuples[0][0] if tuples[0][0] is not None else 0
         recipe.set_id(maxid + 1)
 
-        command = "INSERT INTO recipe (recipe_id, title, number_of_persons, creator) VALUES (%s, %s, %s, %s)"
+        command = "INSERT INTO recipe (id, recipe_title, number_of_persons, creator) VALUES (%s, %s, %s, %s)"
         data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator())
         cursor.execute(command, data)
 
