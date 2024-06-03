@@ -1,4 +1,4 @@
-#Hier muss ein security decorator noch selbst geschrieben werden
+
 
 from HalilsTaverneAdministration import HalilsTaverneAdministration
 
@@ -38,9 +38,9 @@ def secured(function):
                         adm.save_user(user)
                     else:
                         # Fall: Der Benutzer ist neu.
-                        user = adm.create_user(first_name, last_name, nickname, email, google_user_id)
+                        user = adm.create_user(first_name, last_name, nick_name, email, google_user_id)
 
-                    print(request.method, request.path, "Requested by:", nickname, email)
+                    print(request.method, request.path, "Requested by:", nick_name, email)
 
                     objects = function(*args, **kwargs)
                     return objects
