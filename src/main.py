@@ -2,12 +2,13 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 
-from HalilsTaverneAdministration import HalilsTaverneAdministration
-from Fridge import Fridge
-from Recipe import Recipe
-from FridgeEntry import FridgeEntry
-from RecipeEntry import RecipeEntry
-from User import User
+from src.server.HalilsTaverneAdministration import HalilsTaverneAdministration
+from src.server.bo.Fridge import Fridge
+from src.server.bo.Recipe import Recipe
+from src.server.bo.FridgeEntry import FridgeEntry
+from src.server.bo.RecipeEntry import RecipeEntry
+from src.server.bo.User import User
+from src.server.bo.FoodEntry import FoodEntry
 
 from SecurityDecorator import secured
 
@@ -30,6 +31,11 @@ bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description= 'ID eines BO')
 })
 
+foodentry = api.inherit('FoodEntry', bo, {
+    'groceries_designation': fields.String(),
+    'quantity': fields.Float(),
+    'unit':fields.String()
+})
 
 user = api.inherit('User', bo, {
     'name': fields.String(),
@@ -47,7 +53,16 @@ Fridge = api.inherit('Fridge', bo, {
 Recipe = api.inherit('Recipe', bo, {
     'title':fields.String(),
     'number_of_persons':fields.Integer(),
+    'creator':fields.String(),
+    'content':fields.List()
+})
 
+RecipeEntry = api.inherit('RecipeEntry', foodentry, {
+    'recipe_id':fields.Integer(),
+})
+
+FridgeEntry = api.inherit('FridgeEntry', foodentry, {
+    'fridge_id':fields.Integer()
 })
 
 
