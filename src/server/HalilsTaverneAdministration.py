@@ -279,10 +279,10 @@ class HalilsTaverneAdministration(object):
 
 
 
-admintest = HalilsTaverneAdministration()
+"""admintest = HalilsTaverneAdministration()
 
 admintest.create_household("Neuer Haushalt")
-print(admintest.get_all_households())
+print(admintest.get_all_households())"""
 
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
@@ -294,7 +294,7 @@ for fridge_entry in list2:
     print(fridge_entry.get_fridge())
 """
 
-list = admintest.get_all_users()
+"""list = admintest.get_all_users()
 for user in list:
     print("User ID:", user.get_id())
     print("Nickname:", user.get_nick_name())
@@ -307,7 +307,7 @@ for user in list:
 
 
 
-admintest.create_user("Lisa","Müller","jo",12)
+admintest.create_user("Lisa","Müller","jo",12)"""
 
 
 

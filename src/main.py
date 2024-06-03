@@ -107,6 +107,42 @@ class UserListOperations(Resource):
         else:
             return '', 500
         #500: server-fehler
+@fridge_ns.route('/users/<int:id>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.param('id','die Id eines Users')
+class UserOperations(Resource):
+    @fridge_ns.marshal_with(user)
+    @secured
+    def get(self, id):
+
+        adm = HalilsTaverneAdministration()
+        User = adm.get_user_by_id(id)
+        return User
+
+    @secured
+    def delete(self,id):
+
+        adm = HalilsTaverneAdministration()
+        User = adm.get_user_by_id(id)
+        adm.delete_user(User)
+        return '', 200
+
+
+    @fridge_ns.marshal_with(user)
+    @fridge_ns.expect(user, validate=True)
+    @secured
+    def put(self, id):
+        """User Objekt updaten"""
+        adm = HalilsTaverneAdministration()
+        u = User.from_dict(api.payload)
+
+        if u is not None:
+
+            u.set_id(id)
+            adm.save_user(u)
+            return '', 200
+        else:
+            return '', 500
 
 
 #auslesen aller fridges
