@@ -122,6 +122,10 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper2() as mapper:
             mapper.delete(fridge)
+
+
+
+
     #FridgeEntry spezifische Methoden
 
     def create_Fridge_entry(self, unit, quantity, groceries, fridge_id):
@@ -165,10 +169,46 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.insert(recipe)
 
+    def get_all_recipes(self):
+        with RecipeMapper() as mapper:
+            return mapper.find_all()
 
+    def get_recipe_by_id(self, recipe_id):
+        with RecipeMapper() as mapper:
+            return mapper.find_by_id(recipe_id)
+
+    def update_fridge(self, recipe):
+        with RecipeMapper as mapper:
+            mapper.update(recipe)
+
+    def delete_recipe(self, recipe):
+        with RecipeMapper as mapper:
+            mapper.delete(recipe)
 
     #recipeEntry spezifische Methoden
 
+    def create_recipe_entry(self, unit, quantity, groceries, recipe_id):
+        recipe_entry = RecipeEntry()
+        recipe_entry.set_recipe_id(recipe_id)
+        recipe_entry.set_id(1)
+        recipe_entry.set_unit(unit)
+        recipe_entry.set_quantity(quantity)
+        recipe_entry.set_groceries_designation(groceries)
+
+        with FridgeMapper2() as mapper:
+            return mapper.insert_fridge_entry(recipe_entry)
+
+    def get_all_recipes_entries(self):
+        with RecipeMapper() as mapper:
+            return mapper.find_all_entries()
+
+    def update_recipe_entry(self, recipe_entry):
+        with RecipeMapper as mapper:
+            return mapper.update_recipe_entry(recipe_entry)
+
+    def delete_recipe_entry(self, recipe_entry):
+        with RecipeMapper() as mapper:
+            return mapper.delete_recipe_entry(recipe_entry)
 
 
 
