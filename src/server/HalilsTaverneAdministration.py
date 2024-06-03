@@ -1,6 +1,6 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
 
-"""from RecipeMapper import RecipeMapper
+from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
@@ -12,7 +12,7 @@ from User import User
 from Fridge import Fridge
 from Household import Household
 from ShoppingList import Shoppinglist
-from Recipe import Recipe"""
+from Recipe import Recipe
 
 
 
@@ -29,7 +29,7 @@ from server.bo.FoodEntry import FoodEntry
 from server.bo.User import User
 from server.bo.Fridge import Fridge
 from server.bo.Household import Household
-from server.bo.ShoppingList import ShoppingList
+from server.bo.ShoppingList import Shoppinglist
 from server.bo.Recipe import Recipe
 
 
@@ -49,13 +49,14 @@ class HalilsTaverneAdministration(object):
     
     #User spezifische Methoden
 
-    def create_user(self, nick_name, first_name, last_name):
+    def create_user(self, nick_name, first_name, last_name, google_user_id):
           #Benutzer erstellen
           user = User()
           user.set_first_name(first_name)
           user.set_last_name(last_name)
           user.set_nick_name(nick_name)
           user.set_id(1) #default id, wird später in der Datenbank geupdatet
+          user.set_google_user_id(1)
 
           with UserMapper() as mapper:
                 return mapper.insert(user)
@@ -263,7 +264,7 @@ for user in list:
 
 
 
-admintest.create_user("Lisa","Müller","jo")
+admintest.create_user("Lisa","Müller","jo",12)
 
 
 

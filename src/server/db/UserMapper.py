@@ -77,7 +77,7 @@ class UserMapper (Mapper):
         user.set_household_id(household_id)
 
         command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id, google_user_id) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id(), user.get_google_user_id)
+        data = (user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id(), user.get_google_user_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
