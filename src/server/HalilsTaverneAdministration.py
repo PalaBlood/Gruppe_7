@@ -31,7 +31,7 @@ from server.bo.Household import Household
 from server.bo.ShoppingList import Shoppinglist
 from server.bo.Recipe import Recipe
 from server.bo.RecipeEntry import RecipeEntry
-
+from server.bo.FridgeEntry import FridgeEntry
 
 
 
