@@ -160,9 +160,6 @@ class HalilsTaverneAdministration(object):
             return mapper.delete_fridge_entry(fridge_entry)
 
 
-
-
-
     #recipe-spezifische methoden:
 
 
@@ -174,11 +171,11 @@ class HalilsTaverneAdministration(object):
         recipe.set_description(description)
 
         with RecipeMapper() as mapper:
-            return  mapper.insert(recipe)
+            return mapper.insert_recipe(recipe)
 
     def get_all_recipes(self):
         with RecipeMapper() as mapper:
-            return mapper.find_all()
+            return mapper.find_all_recipes()
 
     def get_recipe_by_id(self, recipe_id):
         with RecipeMapper() as mapper:
@@ -279,10 +276,13 @@ class HalilsTaverneAdministration(object):
 
 
 
-"""admintest = HalilsTaverneAdministration()
+admintest = HalilsTaverneAdministration()
+
+admintest.create_recipe("Spaghetti", 7,2,"aaaa")
+admintest.get_all_recipes()
 
 admintest.create_household("Neuer Haushalt")
-print(admintest.get_all_households())"""
+print(admintest.get_all_households())
 
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)

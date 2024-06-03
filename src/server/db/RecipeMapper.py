@@ -21,13 +21,13 @@ class RecipeMapper(Mapper):
 
 
             cursor = self._cnx.cursor()
-            cursor.execute("SELECT MAX(recipe_id) AS maxid FROM recipe")
+            cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
             tuples = cursor.fetchall()
 
             maxid = tuples[0][0] if tuples[0][0] is not None else 0
             recipe.set_id(maxid + 1)
 
-            command = "INSERT INTO recipe (recipe_id, title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
+            command = "INSERT INTO recipe (id, recipe_title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
             data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator_id(), recipe.get_description())
             cursor.execute(command, data)
 
@@ -139,15 +139,15 @@ class RecipeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id, title, number_of_persons, creator FROM recipe")
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id FROM recipe")
         tuples = cursor.fetchall()
 
-        for (recipe_id, title, number_of_persons, creator) in tuples:
+        for (recipe_id, title, number_of_persons, creator_id) in tuples:
             recipe = Recipe()
             recipe.set_id(recipe_id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
-            recipe.set_creator(creator)
+            recipe.set_creator(creator_id)
             result.append(recipe)
 
         self._cnx.commit()
