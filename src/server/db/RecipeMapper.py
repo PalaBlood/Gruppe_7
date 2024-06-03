@@ -82,7 +82,7 @@ class RecipeMapper(Mapper):
     def find_recipe_by_id(self, recipe_id):
         """Find a Recipe by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id, title, number_of_persons, creator FROM recipe WHERE recipe_id = %s", (recipe_id,))
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id FROM recipe WHERE id = %s", (recipe_id,))
         result = cursor.fetchone()
         if result:
             recipe = Recipe()
@@ -99,7 +99,7 @@ class RecipeMapper(Mapper):
         """Find all entries associated with a specific recipe ID."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s",
+        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE id = %s",
                        (recipe_id,))
         entries = cursor.fetchall()
         for groceries_designation, quantity, unit in entries:
@@ -116,7 +116,7 @@ class RecipeMapper(Mapper):
         """Find all entries in the database."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries")
+        cursor.execute("SELECT id, groceries_designation, quantity, unit FROM recipe_groceries")
         tuples = cursor.fetchall()
 
         for (recipe_id, groceries_designation, quantity, unit) in tuples:
@@ -139,15 +139,16 @@ class RecipeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id FROM recipe")
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id, description FROM recipe")
         tuples = cursor.fetchall()
 
-        for (recipe_id, title, number_of_persons, creator_id) in tuples:
+        for (recipe_id, title, number_of_persons, creator_id, description) in tuples:
             recipe = Recipe()
             recipe.set_id(recipe_id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
             recipe.set_creator(creator_id)
+            recipe.set_description(description)
             result.append(recipe)
 
         self._cnx.commit()
@@ -166,7 +167,7 @@ class RecipeMapper(Mapper):
     def delete(self, recipe):
         """Delete a Recipe object from the database."""
         cursor = self._cnx.cursor()
-        command = "DELETE FROM recipe WHERE recipe_id = %s"
+        command = "DELETE FROM recipe WHERE id = %s"
         cursor.execute(command, (recipe.get_id(),))
         self._cnx.commit()
         cursor.close()

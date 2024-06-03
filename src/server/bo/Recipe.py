@@ -25,12 +25,9 @@ class Recipe(BusinessObject):
             print("Fehler: Die Anzahl der Personen muss eine Ganzzahl sein.")
 
     def set_creator(self, creator):
-        """Wir nehmen uns vom jeweiligen User die jeweilige ID und packen
-        diese dann in die DB"""
-        if isinstance(creator, User):
-            self.__creator_id = creator.get_id()
-        else:
-            print("Fehler: Der Ersteller muss ein Benutzerobjekt sein.")
+
+        self.__creator_id = creator
+
 
     def get_creator_id(self):
         return self.__creator_id
@@ -45,6 +42,13 @@ class Recipe(BusinessObject):
         self.__description = description
 
 
+    def __repr__(self):
+        """__repr__ und __str__ werdeb zum Auslesen auf der console verwendet"""
+        return (f"Recipe(Title: {self.__title}, Number of Persons: {self.__number_of_persons}, "
+                f"Creator ID: {self.__creator_id}, Description: {self.__description})")
+
+    def __str__(self):
+        return f"Title: {self.__title}, Serves: {self.__number_of_persons}, Created by: {self.__creator_id}, Description: {self.__description}"
 
     @staticmethod
     def form_dict(dictionary=dict()):
