@@ -21,50 +21,111 @@ CORS(app, resources={r"/api/":{"origins":"*"}})
 
 #alle pfade für ursprünge offen
 
-api = Api(app, version='1.0', title='SmartFridgeDemo',
-          description='Api für unsere SmartFridge')
+api = Api(app, version='1.0', title='SmartFridgeDemo API',
+          description='An API for managing a smart fridge system.')
 
+# Namespace
+fridge_ns = api.namespace('fridge', description='Fridge-related functionalities')
 
-fridgesystem = api.namespace('fridge', description = "Funktionen der Fridge")
-
+# Modelle für Flask-Restx
 bo = api.model('BusinessObject', {
-    'id': fields.Integer(attribute='_id', description= 'ID eines BO')
+    'id': fields.Integer(attribute='_id', description='Unique identifier of a business object')
 })
 
-foodentry = api.inherit('FoodEntry', bo, {
-    'groceries_designation': fields.String(),
-    'quantity': fields.Float(),
-    'unit':fields.String()
+food_entry = api.inherit('FoodEntry', bo, {
+    'groceries_designation': fields.String(required=True, description='Name of the grocery item'),
+    'quantity': fields.Float(required=True, description='Quantity of the grocery item'),
+    'unit': fields.String(required=True, description='Unit of measure for the quantity')
 })
 
 user = api.inherit('User', bo, {
-    'name': fields.String(),
-    'nick_name': fields.String(),
-    'first_name':fields.String(),
-    'last_name':fields.String()
+    'nick_name': fields.String(description='Nickname of the user'),
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user'),
+    'google_user_id': fields.String(description='Unique google_user_id')
+})
+
+fridge = api.inherit('Fridge', bo, {
+    'content': fields.List(fields.Nested(food_entry), description='List of food entries in the fridge')
+})
+
+recipe = api.inherit('Recipe', bo, {
+    'title': fields.String(required=True, description='Title of the recipe'),
+    'number_of_persons': fields.Integer(required=True, description='Number of servings the recipe provides'),
+    'creator': fields.String(description='Creator of the recipe'),
+    'content': fields.List(fields.Nested(food_entry), description='List of ingredients used in the recipe')
+})
+
+recipe_entry = api.inherit('RecipeEntry', food_entry, {
+    'recipe_id': fields.Integer(required=True, description='Identifier of the associated recipe')
+})
+
+fridge_entry = api.inherit('FridgeEntry', food_entry, {
+    'fridge_id': fields.Integer(required=True, description='Identifier of the associated fridge')
 })
 
 
-Fridge = api.inherit('Fridge', bo, {
-    'content': fields.List()
+household = api.inherit('Household', bo, {
+    'name': fields.String(description='Name of the household'),
 })
 
 
-Recipe = api.inherit('Recipe', bo, {
-    'title':fields.String(),
-    'number_of_persons':fields.Integer(),
-    'creator':fields.String(),
-    'content':fields.List()
-})
+@fridge_ns.route('/users')
+@fridge_ns.response(500, 'Server-Fehler')
+class UserListOperations(Resource):
+    @fridge_ns.marshal_list_with(user)
+    @secured
 
-RecipeEntry = api.inherit('RecipeEntry', foodentry, {
-    'recipe_id':fields.Integer(),
-})
+    def get(self):
+        """Auslesen aller User"""
 
-FridgeEntry = api.inherit('FridgeEntry', foodentry, {
-    'fridge_id':fields.Integer()
-})
+        adm = HalilsTaverneAdministration()
+        users = adm.get_all_users()
+        return users
+    
+    @fridge_ns.marshal_with(user, code=200)
+
+    @fridge_ns.expect(user)
+    @secured
+    def post(self):
+
+        """Neuen User anlegen"""
+
+        adm = HalilsTaverneAdministration()
+        proposal = user.from_dict(api.payload)
+
+        if proposal is not None:
+
+            u = adm.create_user(
+                proposal.get_nick_name(),
+                proposal.get_first_name(),
+                proposal.get_last_name(),
+                proposal.get_google_user_id()
+            )
+            return u, 200
+
+        else:
+            return '', 500
+        #500: server-fehler
 
 
-if __name__== '__main__':
+#auslesen aller fridges
+
+@fridge_ns.route('/Fridge')
+@fridge_ns.response(500,'Server-Fehler')
+class FridgeOperations(Resource):
+
+    @fridge_ns.marshal_list_with(fridge)
+    @secured
+    def get(self):
+
+
+        adm = HalilsTaverneAdministration()
+        fridges = adm.get_all_fridges()
+        return fridges
+
+
+
+
+if  __name__== '__main__':
     app.run(debug=True)

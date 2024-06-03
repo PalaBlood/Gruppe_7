@@ -51,7 +51,7 @@ class FoodEntry(BusinessObject):
 
 
     def __str__(self):
-        return f"Lebensmittel: {self.__groceries}, Menge: {self.get_quantity()} {self.get_unit()}"
+        return f"Lebensmittel: {self.__groceries_designation}, Menge: {self.get_quantity()} {self.get_unit()}"
     @staticmethod
     def from_dict(dictionary=dict()):
         obj = FoodEntry()
@@ -62,7 +62,7 @@ class FoodEntry(BusinessObject):
 
     def __str__(self) -> str:
         """Beschreibung des Eintrags"""
-        return f"Lebensmittel: {self.__groceries()}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
+        return f"Lebensmittel: {self.__groceries_designation()}, Menge: {self.get_quantity()}, Masseinheit: {self.get_unit_of_measurement()}" #Aktuell nicht texutell. Man könnte das zwar machen, ich glaube aber dass wir das lieber über die DB rausfiltern sollen
 
 
 

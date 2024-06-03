@@ -12,34 +12,34 @@ from server.bo.Recipe import Recipe
 from server.bo.RecipeEntry import RecipeEntry
 
 
-def insert_recipe(self, recipe):
-    """Einfügen eines Recipe-Objekts in die Datenbank.
+class RecipeMapper(Mapper):
+    
+    def __init__(self):
+        super().__init__()
 
-    Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
-    berichtigt.
+    def insert_recipe(self, recipe):
 
-    :param recipe: das zu speichernde Objekt
-    :return: das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
-    """
-    cursor = self._cnx.cursor()
-    cursor.execute("SELECT MAX(recipe_id) AS maxid FROM recipe")
-    tuples = cursor.fetchall()
 
-    maxid = tuples[0][0] if tuples[0][0] is not None else 0
-    recipe.set_id(maxid + 1)
+            cursor = self._cnx.cursor()
+            cursor.execute("SELECT MAX(recipe_id) AS maxid FROM recipe")
+            tuples = cursor.fetchall()
 
-    command = "INSERT INTO recipe (recipe_id, title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
-    data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator_id(), recipe.get_description())
-    cursor.execute(command, data)
+            maxid = tuples[0][0] if tuples[0][0] is not None else 0
+            recipe.set_id(maxid + 1)
 
-    self._cnx.commit()
-    cursor.close()
+            command = "INSERT INTO recipe (recipe_id, title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
+            data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator_id(), recipe.get_description())
+            cursor.execute(command, data)
 
-    return recipe
+            self._cnx.commit()
+            cursor.close()
+
+            return recipe
 
 
     def get_existing_entry(self, recipe_id, groceries_designation):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
+
         cursor = self._cnx.cursor()
         query = "SELECT quantity FROM recipe_groceries WHERE recipe_id = %s AND groceries_designation = %s"
         cursor.execute(query, (recipe_id, groceries_designation))

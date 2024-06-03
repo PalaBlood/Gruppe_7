@@ -1,6 +1,6 @@
 """Imports muss jeder für sich anpassen, dürften aber vom relativen Pfad gleich sein."""
 
-from RecipeMapper import RecipeMapper
+"""from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
 from FridgeMapper import FridgeMapper2
 from UserMapper import UserMapper
@@ -13,12 +13,11 @@ from Fridge import Fridge
 from Household import Household
 from ShoppingList import Shoppinglist
 from Recipe import Recipe
-
+"""
 
 
 #Halils imports
 
-from server.bo.User import User
 from server.db.UserMapper import UserMapper
 from server.db.HouseholdMapper import HouseholdMapper
 from server.db.RecipeMapper import RecipeMapper
@@ -31,6 +30,7 @@ from server.bo.Fridge import Fridge
 from server.bo.Household import Household
 from server.bo.ShoppingList import Shoppinglist
 from server.bo.Recipe import Recipe
+from server.bo.RecipeEntry import RecipeEntry
 
 
 
@@ -191,9 +191,6 @@ class HalilsTaverneAdministration(object):
     def delete_recipe(self, recipe):
         with RecipeMapper as mapper:
             mapper.delete(recipe)
-
-
-
 
 
     #recipeEntry spezifische Methoden

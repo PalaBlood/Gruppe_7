@@ -54,7 +54,7 @@ CREATE TABLE Recipe (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Recipe (id, recipe_title, number_of_persons, creator) VALUES
+INSERT INTO Recipe (id, recipe_title, number_of_persons, creator_id) VALUES
 (1, 'Apple Pie', 8, 1),
 (2, 'Pancakes', 4, 2),
 (3, 'Omelette', 2, 3);
