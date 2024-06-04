@@ -115,7 +115,7 @@ class HouseholdMapper(Mapper):
             cursor.execute(command, (household.get_id(),))
 
 
-            command = "DELETE FROM households WHERE id = %s"
+            command = "DELETE FROM household WHERE id = %s"
             cursor.execute(command, (household.get_id(),))
 
             self._cnx.commit()

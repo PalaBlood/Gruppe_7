@@ -94,16 +94,17 @@ class UserMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, nick_name, first_name, last_name, google_user_id FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
+        command = "SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(nick_name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, nick_name, first_name, last_name, google_user_id) in tuples:
+        for (id, nick_name, first_name, last_name,household_id, google_user_id) in tuples:
             user = User()
             user.set_id(id)
             user.set_nick_name(nick_name)
             user.set_first_name(first_name)
             user.set_last_name(last_name)
+            user.set_household_id(household_id)
             user.set_google_user_id(google_user_id)
             result.append(user)
 

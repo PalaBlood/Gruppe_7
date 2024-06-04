@@ -8,55 +8,56 @@ from BusinessObject import BusinessObject
 class User(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__nickname = "" #Der Nickname des Users
-        self.__last_name = ""
-        self.__first_name = ""
-        self.__Household_id = 0
-        self.__google_user_id = 0
+        self._nickname = "" #Der Nickname des Users
+        self._last_name = ""
+        self._first_name = ""
+        self._Household_id = ""
+        self._google_user_id = ""
 
 
     def set_nick_name(self, nickname):
         """nickname setzen"""
-        self.__nickname = nickname
+        self._nickname = nickname
     
     def get_nick_name(self):
         """nickname auslesen"""
-        return self.__nickname
+        return self._nickname
 
     def set_last_name(self, value):
         """last name setzen"""
-        self.__last_name = value
+        self._last_name = value
 
     def get_last_name(self):
 
-        return self.__last_name
+        return self._last_name
     
     def set_first_name(self, value):
 
-        self.__first_name = value
+        self._first_name = value
 
     def get_first_name(self):
 
-        return self.__first_name
+        return self._first_name
 
     def get_household_id(self):
 
-        return self.__Household_id
+        return self._Household_id
 
     def set_household_id(self, value):
 
-        self.__Household_id = value
+        self._Household_id = value
 
     def set_google_user_id(self, value):
 
-        self.__google_user_id = value
+        self._google_user_id = value
 
     def get_google_user_id(self):
 
-        return self.__google_user_id
+        return self._google_user_id
 
     def __str__(self):
-        return f"User(ID: {self.get_id()}, Nickname: {self.get_nick_name()}, First Name: {self.get_first_name()}, Last Name: {self.get_last_name()}, Household ID: {self.get_household_id()})"
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
+        return "User: {}, {}, {}, {},{},{}".format(self.get_id(), self._first_name, self._last_name,self._Household_id, self._google_user_id, self._nickname)
     
     
     """Wir benötigen die Methode, damit wir das Objekt in ein dict umwandeln.
@@ -69,7 +70,10 @@ class User(BusinessObject):
         obj.set_id(dictionary["id"])
         obj.set_nick_name(dictionary["nick_name"])
         obj.set_first_name(dictionary["first_name"])
+        obj.set_household_id(dictionary["household_id"])
         obj.set_last_name(dictionary["last_name"])
+        obj.set_google_user_id(dictionary["google_user_id"])
+        return obj
 
     
     

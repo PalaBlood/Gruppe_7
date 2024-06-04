@@ -124,14 +124,14 @@ class HalilsTaverneAdministration(object):
 
     #FridgeEntry spezifische Methoden
 
-    def create_Fridge_entry(self, unit, quantity, groceries, fridge_id):
+    def create_Fridge_entry(self, fridge_id, groceries_designation, quantity , unit):
 
         fridgeentry = FridgeEntry()
-        fridgeentry.set_fridge_id(fridge_id)
         fridgeentry.set_id(1)
-        fridgeentry.set_unit(unit)
+        fridgeentry.set_groceries_designation(groceries_designation)
         fridgeentry.set_quantity(quantity)
-        fridgeentry.set_groceries_designation(groceries)
+        fridgeentry.set_unit(unit)
+        fridgeentry.set_fridge_id(fridge_id)
 
         with FridgeMapper2() as mapper:
             return mapper.insert_fridge_entry(fridgeentry)
@@ -273,7 +273,7 @@ class HalilsTaverneAdministration(object):
 
 
 
-admintest = HalilsTaverneAdministration()
+"""admintest = HalilsTaverneAdministration()
 
 
 ##########Recipe Test
@@ -293,7 +293,7 @@ admintest.delete_recipe(recipe) #Geht
 ############Household Test
 admintest.create_household("Neuer Haushalt")
 print(admintest.get_all_households()) #
-
+"""
 
 """admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
 list2 = admintest.get_all_fridge_entries()

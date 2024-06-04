@@ -1,9 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-
-
-
 from src.server.HalilsTaverneAdministration import HalilsTaverneAdministration
 from src.server.bo.Fridge import Fridge
 from src.server.bo.Recipe import Recipe
@@ -36,40 +33,38 @@ bo = api.model('BusinessObject', {
 })
 
 food_entry = api.inherit('FoodEntry', bo, {
-    'groceries_designation': fields.String(required=True, description='Name of the grocery item'),
-    'quantity': fields.Float(required=True, description='Quantity of the grocery item'),
-    'unit': fields.String(required=True, description='Unit of measure for the quantity')
+    'groceries_designation': fields.String(attribute='__groceries_designation',required=True, description='Name of the grocery item'),
+    'quantity': fields.Integer(attribute='__quantity',required=True, description='Quantity of the grocery item'),
+    'unit': fields.String(attribute='__unit',required=True, description='Unit of measure for the quantity')
 })
 
 user = api.inherit('User', bo, {
-    'nick_name': fields.String(description='Nickname of the user'),
-    'first_name': fields.String(description='First name of the user'),
-    'last_name': fields.String(description='Last name of the user'),
-    'google_user_id': fields.String(description='Unique google_user_id')
+    'nick_name': fields.String(attribute='_nickname',description='Nickname of the user'),
+    'first_name': fields.String(attribute='_first_name',description='First name of the user'),
+    'last_name': fields.String(attribute='_last_name',description='Last name of the user'),
+    'household_id': fields.String(attribute='_Household_id',description='The household_id of the user'),
+    'google_user_id': fields.String(attribute='_google_user_id',description='Unique google_user_id')
 })
 
-fridge = api.inherit('Fridge', bo, {
-    'content': fields.List(fields.Nested(food_entry), description='List of food entries in the fridge')
-})
+fridge = api.inherit('Fridge', bo, {})
 
 recipe = api.inherit('Recipe', bo, {
-    'title': fields.String(required=True, description='Title of the recipe'),
-    'number_of_persons': fields.Integer(required=True, description='Number of servings the recipe provides'),
-    'creator': fields.String(description='Creator of the recipe'),
-    'content': fields.List(fields.Nested(food_entry), description='List of ingredients used in the recipe')
+    'title': fields.String(attribute='__title', required=True, description='Title of the recipe'),
+    'number_of_persons': fields.Integer(attribute='__number_of_persons', required=True, description='Number of servings the recipe provides'),
+    'creator': fields.String(attribute='__creator', description='Creator of the recipe'),
 })
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
-    'recipe_id': fields.Integer(required=True, description='Identifier of the associated recipe')
+    'recipe_id': fields.Integer(attribute='__recipe_id',required=True, description='Identifier of the associated recipe')
 })
 
 fridge_entry = api.inherit('FridgeEntry', food_entry, {
-    'fridge_id': fields.Integer(required=True, description='Identifier of the associated fridge')
+    'fridge_id': fields.Integer(attribute='__fridge_id',required=True, description='Identifier of the associated fridge')
 })
 
 
 household = api.inherit('Household', bo, {
-    'name': fields.String(description='Name of the household'),
+    'name': fields.String(attribute='__name',description='Name of the household'),
 })
 
 
@@ -84,7 +79,7 @@ class UserListOperations(Resource):
         adm = HalilsTaverneAdministration()
         users = adm.get_all_users()
         return users
-    
+
     @fridge_ns.marshal_with(user, code=200)
     @fridge_ns.expect(user)
     @secured
@@ -93,7 +88,7 @@ class UserListOperations(Resource):
         """Neuen User anlegen"""
 
         adm = HalilsTaverneAdministration()
-        proposal = user.from_dict(api.payload)
+        proposal = User.from_dict(api.payload)
 
         if proposal is not None:
 
@@ -163,7 +158,6 @@ class UserOperations(Resource):
 class UsersByNameOperations(Resource):
 
     @fridge_ns.marshal_with(user)
-    @secured
     def get(self, nick_name):
         """User nach Nickname auslesen"""
         adm = HalilsTaverneAdministration()
@@ -182,8 +176,8 @@ class HouseholdListOperation(Resource):
         households = adm.get_all_households()
         return households
 
-    @fridge_ns.expect(household)
     @secured
+    @fridge_ns.expect(household)
     def post(self):
 
         adm = HalilsTaverneAdministration()
@@ -219,8 +213,22 @@ class HouseholdOperations(Resource):
         adm.delete_household(hou)
         return '', 200
 
+    @fridge_ns.marshal_with(household)
+    @fridge_ns.expect(household, validate=True)
+    @secured
+    def put(self, id):
+        """update eines household-objekts nach id"""
 
+        adm = HalilsTaverneAdministration()
+        h = adm.find_household_by_id(id)
 
+        if h is not None:
+
+            h.set_id(id)
+            adm.save_household(h)
+            return '', 200
+        else:
+            return '', 500
 
 
 #auslesen aller fridges
@@ -243,7 +251,7 @@ class FridgeListOperations(Resource):
     def post(self):
 
         adm = HalilsTaverneAdministration()
-        proposal = Fridge.from_dict(api.payload)
+        proposal = Fridge.form_dict(api.payload)
         if proposal is not None:
 
             f = adm.create_Fridge()
@@ -253,7 +261,36 @@ class FridgeListOperations(Resource):
 
 
 
+@fridge_ns.route('/FridgeEntry')
+@fridge_ns.response(500,'Server-Fehler')
+class FridgeEntryListOperations(Resource):
 
+    @fridge_ns.marshal_list_with(fridge_entry)
+    def get(self):
+
+        adm = HalilsTaverneAdministration()
+        fridge_entries = adm.get_all_fridge_entries()
+        print(fridge_entries)
+        return fridge_entries
+
+    @fridge_ns.expect(fridge_entry)
+    @secured
+    def post(self):
+
+        adm = HalilsTaverneAdministration()
+        proposal = FridgeEntry.form_dict(api.payload)
+        print(proposal)
+        if proposal is not None:
+
+            fe = adm.create_Fridge_entry(
+                proposal.get_fridge(),
+                proposal.get_groceries_designation(),
+                proposal.get_quantity(),
+                proposal.get_unit()
+            )
+            return fe, 200
+        else:
+            return '', 500
 
 
 

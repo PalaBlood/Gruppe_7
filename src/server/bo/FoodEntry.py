@@ -17,11 +17,11 @@ from Unit import Unit
 
 
 class FoodEntry(BusinessObject):
-    def __init__(self, groceries_designation=None, quantity = 0, unit = None):
+    def __init__(self):
         super().__init__()
-        self.__groceries_designation = groceries_designation
-        self.__quantity = quantity
-        self.__unit = unit
+        self.__groceries_designation = ""
+        self.__quantity = 0
+        self.__unit = 0
 
     def set_groceries_designation(self, groceries):
         self.__groceries_designation = groceries
@@ -47,16 +47,13 @@ class FoodEntry(BusinessObject):
     def convert_to_base_unit(quantity, unit):
         return unit.convert_to_base(quantity)
 
-
-
-
     def __str__(self):
         return f"Lebensmittel: {self.__groceries_designation}, Menge: {self.get_quantity()} {self.get_unit()}"
     @staticmethod
     def from_dict(dictionary=dict()):
         obj = FoodEntry()
         obj.set_id(dictionary["id"])
-        obj.set_groceries(dictionary["groceries"])
+        obj.set_groceries_designation(dictionary["groceries"])
         obj.set_quantity(dictionary["quantity"])
         obj.set_unit(dictionary["unit"])
 
