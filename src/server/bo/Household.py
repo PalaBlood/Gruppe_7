@@ -37,6 +37,9 @@ class Household(BusinessObject):
     def get_name(self):
 
         return self.__name
+
+
+
     def __str__(self):
         user_info = ', '.join(str(user) for user in self._users)
         return f"Household(ID: {self.get_id()}, Users: [{user_info}])"
