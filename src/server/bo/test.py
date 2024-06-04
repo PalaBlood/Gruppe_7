@@ -2,7 +2,7 @@ from Unit import Unit
 from Recipe import Recipe
 from RecipeEntry import RecipeEntry
 from FridgeEntry import FridgeEntry
-from Groceries import Groceries
+
 
 class RecipeService:
 
@@ -42,28 +42,33 @@ class RecipeService:
 
 
 if __name__ == "__main__":
-    gram = Unit("gram", 1)
-    kilogram = Unit("kilogram", 1000)
-    teaspoon = Unit("teaspoon", 5)
+    """Wir erstellen zuerst die Maßeinheiten"""
+    gram = Unit()
+    gram.set_name("Gramm")
+    gram.set_conversion_factor(1)
 
-    hackfleisch = Groceries()
-    hackfleisch.set_id(1)
-    hackfleisch.set_designation("Hackfleisch")
+    kilogram = Unit()
+    kilogram.set_name("Kilogramm")
+    kilogram.set_conversion_factor(1000)
 
-    salz = Groceries()
-    salz.set_id(2)
-    salz.set_designation("Salz")
+    teaspoon = Unit()
+    teaspoon.set_name("Teelöffel")
+    teaspoon.set_conversion_factor(5)
+
+    """Nun erstellen wir die Einträge"""
 
     recipe_entry1 = RecipeEntry()
-    recipe_entry1.set_groceries(hackfleisch)
+    recipe_entry1.set_groceries_designation("Hackfleisch")
     recipe_entry1.set_quantity(500)
     recipe_entry1.set_unit(gram)
 
     recipe_entry2 = RecipeEntry()
-    recipe_entry2.set_groceries(salz)
+    recipe_entry2.set_groceries_designation("Salz")
     recipe_entry2.set_quantity(2)
     recipe_entry2.set_unit(teaspoon)
 
+    """Wir haben die Methode Add Content entfernt, da wir alles auf der DB speichern und nicht
+    in einer Liste in der jeweiligen Instanz. Das Prinzip sollte aber trz. funktionieren"""
     recipe = Recipe()
     recipe.set_title("Pizza")
     recipe.add_content(recipe_entry1)
@@ -76,12 +81,12 @@ if __name__ == "__main__":
 
 
     fridge_entry1 = FridgeEntry()
-    fridge_entry1.set_groceries(hackfleisch)
+    fridge_entry1.set_groceries_designation("Hackfleisch")
     fridge_entry1.set_quantity(1)
     fridge_entry1.set_unit(kilogram)
 
     fridge_entry2 = FridgeEntry()
-    fridge_entry2.set_groceries(salz)
+    fridge_entry2.set_groceries_designation("Salz")
     fridge_entry2.set_quantity(50)
     fridge_entry2.set_unit(gram)
 

@@ -6,17 +6,19 @@ from BusinessObject import BusinessObject
 class Fridge(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__content = []
 
-    def get_content(self):
-        return self.__content
 
-    def add_content(self, fridge_entry):
-        from FridgeEntry import FridgeEntry  #Import innerhalb der Methode
-        if isinstance(fridge_entry, FridgeEntry):
-            self.__content.append(fridge_entry)
-        else:
-            from FridgeEntry import FridgeEntry
-            entry = FridgeEntry()
-            self.__content.append(entry)
+    def __str__(self):
+        return f"ID: {self._id}"
 
+    @staticmethod
+    def form_dict(dictionary=dict()):
+        from RecipeEntry import RecipeEntry # Import innerhalb der Methode
+        obj = Fridge()
+        obj.set_id(dictionary["id"])
+
+
+if __name__ == "__main__":
+    f = Fridge()
+    f.set_id(22)
+    print(f)

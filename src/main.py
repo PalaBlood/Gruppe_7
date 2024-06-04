@@ -208,9 +208,9 @@ class HouseholdOperations(Resource):
     @secured
     def delete(self, id):
 
-        adm = HalilsTaverneAdministration()
-        hou = adm.find_household_by_id(id)
-        adm.delete_household(hou)
+        adm = HalilsTaverneAdministration() #Vermindung zur Adminklasse mit allen Methoden
+        hou = adm.find_household_by_id(id) #Nun verwenden wir die Methode, um die notwenige Id auszulesen
+        adm.delete_household(hou) # Anhhand der ID löschen wir das Household Objekt anhand der ID
         return '', 200
 
     @fridge_ns.marshal_with(household)

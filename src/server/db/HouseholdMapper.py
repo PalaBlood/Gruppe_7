@@ -6,7 +6,7 @@ from Gruppe_7.src.server.db.UserMapper import UserMapper
 from Gruppe_7.src.server.db.Mapper import Mapper
 """
 
-from Household import Household
+from bo.Household import Household
 from server.bo.User import User
 from server.db.Mapper import Mapper
 from db.UserMapper import UserMapper
@@ -111,7 +111,7 @@ class HouseholdMapper(Mapper):
         cursor = self._cnx.cursor()
         try:
 
-            command = "DELETE FROM users WHERE household_id = %s"
+            command = "DELETE FROM users WHERE household_id = %s" ####Hierran orientieren was die Deleltevorgänge angeht
             cursor.execute(command, (household.get_id(),))
 
 
