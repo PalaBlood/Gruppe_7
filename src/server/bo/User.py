@@ -64,11 +64,12 @@ class User(BusinessObject):
     versenden (oder entgegennehmen)"""
     @staticmethod
     def from_dict(dictionary=dict()):
+
         obj = User()
         obj.set_id(dictionary["id"])
-        obj.__nickname(dictionary["nickname"])
-        obj.__first_name(dictionary["firstname"])
-        obj.__last_name(dictionary["lastname"])
+        obj.set_nick_name(dictionary["nick_name"])
+        obj.set_first_name(dictionary["first_name"])
+        obj.set_last_name(dictionary["last_name"])
 
     
     

@@ -27,8 +27,8 @@ class RecipeMapper(Mapper):
             maxid = tuples[0][0] if tuples[0][0] is not None else 0
             recipe.set_id(maxid + 1)
 
-            command = "INSERT INTO recipe (id, recipe_title, number_of_persons, creator_id, description) VALUES (%s, %s, %s, %s, %s)"
-            data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator_id(), recipe.get_description())
+            command = "INSERT INTO recipe (id, recipe_title, number_of_persons, creator, description) VALUES (%s, %s, %s, %s, %s)"
+            data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator(), recipe.get_description())
             cursor.execute(command, data)
 
             self._cnx.commit()
@@ -82,7 +82,7 @@ class RecipeMapper(Mapper):
     def find_recipe_by_id(self, recipe_id):
         """Find a Recipe by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id FROM recipe WHERE id = %s", (recipe_id,))
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator FROM recipe WHERE id = %s", (recipe_id,))
         result = cursor.fetchone()
         if result:
             recipe = Recipe()
@@ -139,15 +139,15 @@ class RecipeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, recipe_title, number_of_persons, creator_id, description FROM recipe")
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator, description FROM recipe")
         tuples = cursor.fetchall()
 
-        for (recipe_id, title, number_of_persons, creator_id, description) in tuples:
+        for (recipe_id, title, number_of_persons, creator, description) in tuples:
             recipe = Recipe()
             recipe.set_id(recipe_id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
-            recipe.set_creator(creator_id)
+            recipe.set_creator(creator)
             recipe.set_description(description)
             result.append(recipe)
 

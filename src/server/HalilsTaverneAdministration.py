@@ -93,12 +93,7 @@ class HalilsTaverneAdministration(object):
         with UserMapper() as mapper:
             return mapper.find_by_google_user_id(google_user_id)
 
-
-
-
-
     #Fridge spezifische Methoden
-
     def create_Fridge(self):
 
         fridge = Fridge()
@@ -126,9 +121,6 @@ class HalilsTaverneAdministration(object):
 
         with FridgeMapper2() as mapper:
             mapper.delete(fridge)
-
-
-
 
     #FridgeEntry spezifische Methoden
 
@@ -163,11 +155,11 @@ class HalilsTaverneAdministration(object):
     #recipe-spezifische methoden:
 
 
-    def create_recipe(self, title, number_of_persons, creator_id, description):
+    def create_recipe(self, title, number_of_persons, creator, description):
         recipe = Recipe()
         recipe.set_title(title)
         recipe.set_number_of_persons(number_of_persons)
-        recipe.set_creator_id(creator_id)
+        recipe.set_creator(creator)
         recipe.set_description(description)
 
         with RecipeMapper() as mapper:
@@ -280,7 +272,7 @@ admintest = HalilsTaverneAdministration()
 
 
 ##########Recipe Test
-admintest.create_recipe("Spaghetti", 7,2,"aaaa")
+admintest.create_recipe("Spaghetti", 7,"Michel","aaaa")
 print(admintest.get_all_recipes()) #geht
 print(admintest.get_recipe_by_id(2)) #geht
 

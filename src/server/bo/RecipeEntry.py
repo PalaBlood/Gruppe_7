@@ -10,11 +10,19 @@ class RecipeEntry(FoodEntry):
 
         return self.__recipe_id
 
-    def set_recipe_id(self, recipe_id=Recipe()):
+    def set_recipe_id(self, recipe_id):
         """RecipeEntry benötigt eine Referenz zu einem Rezept"""
 
-        self.__recipe_id = recipe_id.get_id()
+        self.__recipe_id = recipe_id
 
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = RecipeEntry()
+        obj.set_id(dictionary["id"])
+        obj.set_recipe_id(dictionary["recipe_id"])
+        obj.set_groceries_designation(dictionary["groceries_designation"])
+        obj.set_quantity(dictionary["quantity"])
+        obj.set_unit(dictionary["unit"])
 
         
 

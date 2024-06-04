@@ -23,6 +23,7 @@ def secured(function):
 
                 if claims is not None:
                     adm = HalilsTaverneAdministration()
+
                     google_user_id = claims.get("user_id")
                     email = claims.get("email")
                     first_name = claims.get("given_name", "")  # 'given_name' aus dem Firebase-Token

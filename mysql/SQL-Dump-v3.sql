@@ -49,16 +49,15 @@ CREATE TABLE Recipe (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recipe_title VARCHAR(255),
     number_of_persons INT,
-    creator_id INT,
+    creator VARCHAR(255),
     description VARCHAR(255),
-    FOREIGN KEY (creator_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Recipe (id, recipe_title, number_of_persons, creator_id) VALUES
-(1, 'Apple Pie', 8, 1),
-(2, 'Pancakes', 4, 2),
-(3, 'Omelette', 2, 3);
+INSERT INTO Recipe (id, recipe_title, number_of_persons, creator) VALUES
+(1, 'Apple Pie', 8, "Tom"),
+(2, 'Pancakes', 4, "Michel"),
+(3, 'Omelette', 2, "Michel");
 
 
 DROP TABLE IF EXISTS Recipe_Groceries;

@@ -49,6 +49,7 @@ class Household(BusinessObject):
     def form_dict(dictionary=dict()):
         obj = Household()
         obj.set_id(dictionary["id"])
+        obj.set_name(dictionary["name"])
 
 
 

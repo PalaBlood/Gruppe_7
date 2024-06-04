@@ -6,7 +6,7 @@ class Recipe(BusinessObject):
         super().__init__()
         self.__title = ""
         self.__number_of_persons = 0
-        self.__creator_id = 0  # Hinzugefügt
+        self.__creator = ""  # Hinzugefügt
         self.__description = ""
 
     def get_title(self):
@@ -26,14 +26,10 @@ class Recipe(BusinessObject):
 
     def set_creator(self, creator):
 
-        self.__creator_id = creator
+        self.__creator = creator
 
-
-    def get_creator_id(self):
-        return self.__creator_id
-
-    def set_creator_id(self, creator_id):
-        self.__creator_id = creator_id
+    def get_creator(self):
+        return self.__creator
 
     def get_description(self):
         return self.__description
@@ -45,10 +41,10 @@ class Recipe(BusinessObject):
     def __repr__(self):
         """__repr__ und __str__ werdeb zum Auslesen auf der console verwendet"""
         return (f"Recipe(Title: {self.__title}, Number of Persons: {self.__number_of_persons}, "
-                f"Creator ID: {self.__creator_id}, Description: {self.__description})")
+                f"Creator ID: {self.__creator}, Description: {self.__description})")
 
     def __str__(self):
-        return f"Title: {self.__title}, Serves: {self.__number_of_persons}, Created by: {self.__creator_id}, Description: {self.__description}"
+        return f"Title: {self.__title}, Serves: {self.__number_of_persons}, Created by: {self.__creator}, Description: {self.__description}"
 
     @staticmethod
     def form_dict(dictionary=dict()):
@@ -57,6 +53,7 @@ class Recipe(BusinessObject):
         obj.set_id(dictionary["id"])
         obj.set_title(dictionary["title"])
         obj.set_number_of_persons(dictionary["number of persons"])
+        obj.set_creator(dictionary["Creator"])
         for entry_dict in dictionary["food entry"]:
             entry = RecipeEntry.from_dict(entry_dict)
             obj.add_content(entry)
