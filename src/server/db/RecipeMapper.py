@@ -99,16 +99,16 @@ class RecipeMapper(Mapper):
         """Find all entries associated with a specific recipe ID."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE id = %s",
+        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s",
                        (recipe_id,))
         entries = cursor.fetchall()
         for groceries_designation, quantity, unit in entries:
-            entry = RecipeEntry()
-            entry.set_recipe_id(recipe_id)
-            entry.set_groceries_designation(groceries_designation)
-            entry.set_quantity(quantity)
-            entry.set_unit(unit)
-            result.append(entry)
+                entry = RecipeEntry()
+                entry.set_recipe_id(recipe_id)
+                entry.set_groceries_designation(groceries_designation)
+                entry.set_quantity(quantity)
+                entry.set_unit(unit)
+                result.append(entry)
         cursor.close()
         return result
 

@@ -330,7 +330,27 @@ class FridgeEntryOperations(Resource):
 
 
 
+@fridge_ns.route('/COOK/<int:recipe_id>')
+@fridge_ns.response(500, 'Server_fehler')
+@fridge_ns.param('recipe_id', 'die eindeutige id eines rezepts')
+class UseRecipeIngredients(Resource):
+    def put(self, recipe_id):
+        """Zutaten eines rezepts von entry abziehen"""
+        adm = HalilsTaverneAdministration()
+        recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id)
+        print(recipe_entries)
+        for recipe_entry in recipe_entries:
+            fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.__groceries_designation)
+            if fridge_entry:
+                if fridge_entry.quantity >= recipe_entry.quantity:
+                    new_quantity = fridge_entry.quantity - recipe_entry.quantity
+                    adm.update_fridge_entry_quantity(fridge_entry.fridge_id, fridge_entry.groceries_designation,
+                                                     new_quantity, fridge_entry.unit)
+                else:
+                    # Nicht genug in der Fridge
+                    return {"error": f"Not enough {fridge_entry.groceries_designation} in fridge."}, 400
 
+        return {"message": "Ingredients used successfully."}, 200
 
 
 

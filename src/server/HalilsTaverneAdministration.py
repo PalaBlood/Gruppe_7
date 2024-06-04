@@ -146,6 +146,10 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper2() as mapper:
             return mapper.update_fridge_entry2(fridge_entry)
 
+    def update_fridge_entry_quantity(self, fridge_id, groceries_designation, new_quantity, unit):
+
+        with FridgeMapper2 as mapper:
+            mapper.update_fridge_entry(fridge_id, groceries_designation, new_quantity, unit)
     def delete_fridge_entry(self, fridge_entry):
 
         with FridgeMapper2() as mapper:
@@ -209,6 +213,11 @@ class HalilsTaverneAdministration(object):
     def delete_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
             return mapper.delete_recipe_entry(recipe_entry)
+
+    def find_recipe_entries_by_recipe_id(self, recipe_id):
+
+        with RecipeMapper() as mapper:
+            return mapper.find_entries_by_recipe_id(recipe_id)
 
 
 
