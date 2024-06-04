@@ -31,3 +31,5 @@ yarn-error.log*
 frontend/package-lock.json
 
 /db/Mapper
+
+*.pyc

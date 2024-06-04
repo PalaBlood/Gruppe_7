@@ -16,7 +16,7 @@ class RecipeEntry(FoodEntry):
         self.__recipe_id = recipe_id
 
     def __str__(self):
-        return f"Lebensmittel: {self.__groceries_designation}, Menge: {self.get_quantity()} {self.get_unit()}, Rezept ID: {self.__recipe_id}"
+        return f"Lebensmittel: {self.get_groceries_designation()}, Menge: {self.get_quantity()}, {self.get_unit()}, Rezept ID: {self.get_recipe()}"
 
     @staticmethod
     def from_dict(dictionary=dict()):
