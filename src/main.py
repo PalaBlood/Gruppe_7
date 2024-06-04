@@ -187,7 +187,7 @@ class HouseholdListOperation(Resource):
     def post(self):
 
         adm = HalilsTaverneAdministration()
-        proposal = Household.from_dict(api.payload)
+        proposal = Household.form_dict(api.payload)
 
         if proposal is not None:
 
@@ -199,6 +199,25 @@ class HouseholdListOperation(Resource):
             return '', 500
 
 
+@fridge_ns.route('/Household/<int:id>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.param('id','die Id eines Haushalts')
+class HouseholdOperations(Resource):
+    @fridge_ns.marshal_with(household)
+    @secured
+    def get(self,id):
+
+        adm = HalilsTaverneAdministration()
+        hou = adm.find_household_by_id(id)
+        return hou
+
+    @secured
+    def delete(self, id):
+
+        adm = HalilsTaverneAdministration()
+        hou = adm.find_household_by_id(id)
+        adm.delete_household(hou)
+        return '', 200
 
 
 

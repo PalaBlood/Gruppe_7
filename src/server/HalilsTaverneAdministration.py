@@ -240,6 +240,11 @@ class HalilsTaverneAdministration(object):
         with HouseholdMapper() as mapper:
             mapper.delete(household)
 
+    def get_user_ids_of_household(self, household):
+
+        with HouseholdMapper() as mapper:
+            mapper.find_user_ids_for_household(household)
+
 
 
 
