@@ -70,6 +70,8 @@ class User(BusinessObject):
         obj.set_nick_name(dictionary["nick_name"])
         obj.set_first_name(dictionary["first_name"])
         obj.set_last_name(dictionary["last_name"])
+        obj.set_google_user_id(dictionary["google_id"])
+        obj.set_household_id(dictionary["household_id"])
 
     
     
