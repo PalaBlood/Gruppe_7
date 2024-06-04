@@ -13,15 +13,14 @@ class FridgeEntry(FoodEntry):
         self.__fridge_id = fridge_id
 
     def __str__(self):
-        return f"FridgeEntry(ID: {self.get_id()}, Fridge_id: {self.get_fridge()}, Groceries: {self.get_groceries_designation()}, Quantity: {self.get_quantity()}, Unit: {self.get_unit()})"
+        return f"FridgeEntry(Fridge_id: {self.get_fridge()}, Groceries: {self.get_groceries_designation()}, Quantity: {self.get_quantity()}, Unit: {self.get_unit()})"
 
     def __repr__(self):
-        return f"<FridgeEntry(fridge_id={self.__fridge_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit}, id={self._id})>"
+        return f"<FridgeEntry(fridge_id={self.__fridge_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
 
     def form_dict(dictionary=dict()):
 
         obj = FridgeEntry()
-        obj.set_id(dictionary["id"])
         obj.set_fridge_id(dictionary["fridge_id"])
         obj.set_groceries_designation(dictionary["groceries_designation"])
         obj.set_quantity(dictionary["quantity"])

@@ -144,16 +144,19 @@ class HalilsTaverneAdministration(object):
     def save_fridge_entry(self, fridge_entry):
 
         with FridgeMapper2() as mapper:
-            return mapper.update_fridge_entry(fridge_entry)
+            return mapper.update_fridge_entry2(fridge_entry)
 
     def delete_fridge_entry(self, fridge_entry):
 
         with FridgeMapper2() as mapper:
             return mapper.delete_fridge_entry(fridge_entry)
 
+    def find_fridge_entry_by_designation(self, groceries_designation):
+
+        with FridgeMapper2() as mapper:
+            return mapper.get_full_existing_entry(groceries_designation)
 
     #recipe-spezifische methoden:
-
 
     def create_recipe(self, title, number_of_persons, creator, description):
         recipe = Recipe()
@@ -173,7 +176,7 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.find_recipe_by_id(recipe_id)
 
-    def update_fridge(self, recipe):
+    def update_recipe(self, recipe):
         with RecipeMapper as mapper:
             mapper.update(recipe)
 

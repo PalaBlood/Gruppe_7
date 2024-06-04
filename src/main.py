@@ -32,10 +32,10 @@ bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description='Unique identifier of a business object')
 })
 
-food_entry = api.inherit('FoodEntry', bo, {
-    'groceries_designation': fields.String(attribute='__groceries_designation',required=True, description='Name of the grocery item'),
-    'quantity': fields.Integer(attribute='__quantity',required=True, description='Quantity of the grocery item'),
-    'unit': fields.String(attribute='__unit',required=True, description='Unit of measure for the quantity')
+food_entry = api.inherit('FoodEntry', {
+    'groceries_designation': fields.String(attribute='_FoodEntry__groceries_designation',required=True, description='Name of the grocery item'),
+    'quantity': fields.Integer(attribute='_FoodEntry__quantity',required=True, description='Quantity of the grocery item'),
+    'unit': fields.String(attribute='_FoodEntry__unit',required=True, description='Unit of measure for the quantity')
 })
 
 user = api.inherit('User', bo, {
@@ -59,7 +59,7 @@ recipe_entry = api.inherit('RecipeEntry', food_entry, {
 })
 
 fridge_entry = api.inherit('FridgeEntry', food_entry, {
-    'fridge_id': fields.Integer(attribute='__fridge_id',required=True, description='Identifier of the associated fridge')
+    'fridge_id': fields.Integer(attribute='_FridgeEntry__fridge_id', required=True, description='Identifier of the associated fridge'),
 })
 
 
@@ -264,7 +264,7 @@ class FridgeListOperations(Resource):
 @fridge_ns.route('/FridgeEntry')
 @fridge_ns.response(500,'Server-Fehler')
 class FridgeEntryListOperations(Resource):
-
+    @secured
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self):
 
@@ -292,6 +292,38 @@ class FridgeEntryListOperations(Resource):
         else:
             return '', 500
 
+
+
+@fridge_ns.route('/FridgeEntry/<string:groceries_designation>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'FridgeEntry not found')
+@fridge_ns.response(200, 'FridgeEntry successfully updated')
+@fridge_ns.param('groceries_designation', 'der Name eines Lebensmittels')
+class FridgeEntryOperations(Resource):
+    @secured
+    def delete(self, groceries_designation):
+        adm = HalilsTaverneAdministration()
+        fridge_entry = adm.find_fridge_entry_by_designation(groceries_designation)
+        adm.delete_fridge_entry(fridge_entry)
+        return '', 200
+
+
+
+    @fridge_ns.expect(fridge_entry)
+    @fridge_ns.marshal_with(fridge_entry)
+
+    def put(self, groceries_designation):
+
+        adm = HalilsTaverneAdministration()
+        fe = FridgeEntry.form_dict(api.payload)
+
+        if fe is not None:
+
+            fe.set_groceries_designation(groceries_designation)
+            adm.save_fridge_entry(fe)
+            return '', 200
+        else:
+            return '', 500
 
 
 

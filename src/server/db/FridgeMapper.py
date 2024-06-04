@@ -58,6 +58,15 @@ class FridgeMapper2(Mapper):
         cursor.close()
         return result
 
+    def get_full_existing_entry(self, groceries_designation):
+
+        cursor = self._cnx.cursor
+        query = "SELECT * FROM Fridge_Groceries WHERE  groceries_designation = %s"
+        cursor.execute(query, (groceries_designation))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""
         cursor = self._cnx.cursor()
@@ -65,6 +74,18 @@ class FridgeMapper2(Mapper):
                      SET quantity = %s, unit = %s
                      WHERE fridge_id = %s AND groceries_designation = %s"""
         cursor.execute(command, (quantity, unit, fridge_id, groceries_designation))
+        self._cnx.commit()
+        cursor.close()
+
+    def update_fridge_entry2(self, fridge_entry):
+        """Update an existing fridge entry in the database."""
+        cursor = self._cnx.cursor()
+        command = """UPDATE fridge_groceries
+                     SET quantity = %s, unit = %s
+                     WHERE fridge_id = %s AND groceries_designation = %s"""
+        # Assuming fridge_entry has properties: fridge_id, groceries_designation, quantity, unit
+        data = (fridge_entry.quantity, fridge_entry.unit, fridge_entry.fridge_id, fridge_entry.groceries_designation)
+        cursor.execute(command, data)
         self._cnx.commit()
         cursor.close()
 
@@ -162,11 +183,11 @@ class FridgeMapper2(Mapper):
 
         return result
 
-    def delete_fridge_entry(self, fridge_entry, fridge_id):
+    def delete_fridge_entry(self, fridge_entry):
         """Delete a FridgeEntry object from the database."""
         cursor = self._cnx.cursor()
-        command = "DELETE FROM fridge_groceries WHERE fridge_id = %s AND groceries_designation = %s"
-        cursor.execute(command, (fridge_id, fridge_entry.get_groceries_designation()))
+        command = "DELETE FROM fridge_groceries WHERE groceries_designation = %s"
+        cursor.execute(command, (fridge_entry.get_groceries_designation()))
         self._cnx.commit()
         cursor.close()
 
