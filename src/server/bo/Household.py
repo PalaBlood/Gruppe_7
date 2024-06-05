@@ -38,8 +38,6 @@ class Household(BusinessObject):
 
         return self.__name
 
-
-
     def __str__(self):
 
         return f"Household(ID: {self.get_id()}, Name: {self.get_name()})"

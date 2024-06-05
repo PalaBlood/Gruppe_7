@@ -224,9 +224,6 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.find_entries_by_recipe_id(recipe_id)
 
-
-
-
     #household-spezifische methoden:
 
     def create_household(self, name):
