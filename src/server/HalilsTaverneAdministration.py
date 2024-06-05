@@ -95,12 +95,14 @@ class HalilsTaverneAdministration(object):
 
     #Fridge spezifische Methoden
     def create_Fridge(self):
+        """Wird beim Aufruf von 'create_household()' automatisch
+        aufgerufen"""
 
         fridge = Fridge()
-        fridge.set_id(1)
+        fridge.set_id(1)#ID wird in Mapperklasse/SQL angepasst
 
         with FridgeMapper2() as mapper:
-            return mapper.insert(fridge)
+            return mapper.insert_fridge(fridge)
 
     def get_all_fridges(self):     
 
@@ -226,13 +228,26 @@ class HalilsTaverneAdministration(object):
 
     #household-spezifische methoden:
 
+
+
     def create_household(self, name):
+        """Da wir bei der erstellung eines Households auch automatisch eine Fridge benötigen
+        wird hier die create_fridge Methode verwendet. Somit enstehen die Relationen 'Fridge' und 'Household'.
+        Household erhält den Primary Key vom jeweiligen Fridge Objekt als Fremdschlüssel zugeteilt
+
+        param: name des Households"""
 
         household = Household()
         household.set_name(name)
 
+        fridge = self.create_Fridge()  #Objekt von fridge wird erzeugt
+        household.set_fridge_id(fridge.get_id())#ID der Fridge wird Household zugewiesen
+
         with HouseholdMapper() as mapper:
             return mapper.insert(household)
+
+
+
 
     def get_all_households(self):
 
@@ -334,6 +349,8 @@ for user in list:
 admintest.create_user("Lisa","Müller","jo",12)"""
 
 
+admintest = HalilsTaverneAdministration()
 
+admintest.create_household("Haus")
 
 

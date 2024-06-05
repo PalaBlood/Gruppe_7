@@ -22,12 +22,12 @@ class Mapper(AbstractContextManager, ABC):
 
     def __enter__(self):
         if os.getenv('GAE_ENV', '').startswith('standard'):
-            self._cnx = connector.connect(user='demo', password='9902',
+            self._cnx = connector.connect(user='root', password='test',
                                           unix_socket='demo',
                                           database='fridge-app')
         else:
 
-            self._cnx = connector.connect(user="root", password="9902",
+            self._cnx = connector.connect(user="root", password="test",
                               host="localhost",
                               database="sopra")
 

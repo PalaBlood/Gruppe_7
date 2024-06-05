@@ -50,13 +50,23 @@ class HouseholdMapper(Mapper):
         return [user_id[0] for user_id in cursor.fetchall()]
 
     def insert(self, household):
-        """Insert a Household object into the database."""
+        """Insert a Household object into the database and set its ID."""
         cursor = self._cnx.cursor()
         name = household.get_name()
-        cursor.execute("INSERT INTO household (name) VALUES (%s)",(name,))
-        household.set_id(cursor.lastrowid)
-        self._cnx.commit()
-        return household
+        fridge_id = household.get_fridge_id()
+
+        try:
+            cursor.execute("INSERT INTO household (name, fridge_id) VALUES (%s, %s)", (name, fridge_id))
+            self._cnx.commit()
+
+            #Setzen der ID, die von der Datenbank generiert wurde
+            household.set_id(cursor.lastrowid)
+            return household
+        except Exception as e:
+            print(f"Ein Fehler ist aufgetreten: {e}")
+            self._cnx.rollback()
+        finally:
+            cursor.close()
 
     def find_by_id(self, id):
         """Find a Household by its ID."""
