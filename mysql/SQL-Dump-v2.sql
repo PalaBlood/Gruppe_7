@@ -16,11 +16,12 @@ INSERT INTO Fridge(id) VALUES
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255),
+    fridge_id INT UNIQUE NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household (id, name) VALUES
-(2, "der haushalt");
+INSERT INTO Household (id, name, fridge_id) VALUES
+(2, "der haushalt", 1);
 
 
 DROP TABLE IF EXISTS users;
@@ -41,24 +42,22 @@ INSERT INTO users (nick_name, first_name, last_name, household_id, google_user_i
 
 
 
-INSERT INTO Household(id) VALUES
-(1);
+
 
 DROP TABLE IF EXISTS Recipe;
 CREATE TABLE Recipe (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recipe_title VARCHAR(255),
     number_of_persons INT,
-    creator_id INT,
-    description VARCHAR(255),
-    FOREIGN KEY (creator_id) REFERENCES users(id)
+    creator VARCHAR(255),
+    description VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Recipe (id, recipe_title, number_of_persons, creator_id) VALUES
-(1, 'Apple Pie', 8, 1),
-(2, 'Pancakes', 4, 2),
-(3, 'Omelette', 2, 3);
+INSERT INTO Recipe (id, recipe_title, number_of_persons, creator) VALUES
+(1, 'Apple Pie', 8, "Tom"),
+(2, 'Pancakes', 4, "Michel"),
+(3, 'Omelette', 2, "Michel");
 
 
 DROP TABLE IF EXISTS Recipe_Groceries;

@@ -15,6 +15,8 @@ class Household(BusinessObject):
         super().__init__()
         self._users = []
         self.__name = ""
+        self.__fridge_id = None #Als Referenz
+
     def get_users(self): 
         """User im Haushalt auslesen"""
         return self._users[:]
@@ -38,19 +40,26 @@ class Household(BusinessObject):
 
         return self.__name
 
+    def get_fridge_id(self):
+        return self.__fridge_id
+
+    def set_fridge_id(self, fridge_id):
+        self.__fridge_id = fridge_id
+
     def __str__(self):
 
-        return f"Household(ID: {self.get_id()}, Name: {self.get_name()})"
+        return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()})"
 
     def __repr__(self):
 
-        return f"<Household(ID: {self._id}, Name: {self.__name})>"
+        return f"<Household(ID: {self._id}, Name: {self.__name}, Fridge ID: {self.get_fridge_id()})>"
 
     @staticmethod
     def form_dict(dictionary=dict()):
         obj = Household()
         obj.set_id(dictionary["id"])
         obj.set_name(dictionary["name"])
+        obj.set_fridge_id(dictionary["fridge_id"])
         return obj
 
 

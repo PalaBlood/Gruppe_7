@@ -29,18 +29,20 @@ class FridgeMapper2(Mapper):
         Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
         berichtigt.
 
+        Die Methode wird bei der Erstellung eines Households Objekts automatisch aufgerufen.
+
         :param fridge: das zu speichernde Objekt
         :return: das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
 
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(fridge_id) AS maxid FROM fridge")
+        cursor.execute("SELECT MAX(id) AS maxid FROM fridge")
         tuples = cursor.fetchall()
 
         maxid = tuples[0][0] if tuples[0][0] is not None else 0
         fridge.set_id(maxid + 1)
 
-        command = "INSERT INTO fridge (fridge_id) VALUES (%s)"
+        command = "INSERT INTO fridge (id) VALUES (%s)"
         data = (fridge.get_id(),)
         cursor.execute(command, data)
 
