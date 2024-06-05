@@ -60,12 +60,17 @@ class FridgeMapper2(Mapper):
 
     def get_full_existing_entry(self, groceries_designation):
 
-        cursor = self._cnx.cursor
+        cursor = self._cnx.cursor()
         query = "SELECT * FROM Fridge_Groceries WHERE  groceries_designation = %s"
-        cursor.execute(query, (groceries_designation))
+        cursor.execute(query, (groceries_designation,))
         result = cursor.fetchone()
         cursor.close()
-        return result
+        if result:
+            return FridgeEntry.from_tuple(result)
+        else:
+            return None
+
+
 
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""
@@ -134,7 +139,7 @@ class FridgeMapper2(Mapper):
                        (fridge_id,))
         entries = cursor.fetchall()
         for groceries_designation, quantity, unit in entries:
-            entry = FridgeEntry()
+            entry = FridgeEntry(fridge_id, groceries_designation, quantity, unit)
             entry.set_fridge_id(fridge_id)
             entry.set_groceries_designation(groceries_designation)
             entry.set_quantity(quantity)
@@ -152,7 +157,7 @@ class FridgeMapper2(Mapper):
         tuples = cursor.fetchall()
 
         for (fridge_id, groceries_designation, quantity, unit) in tuples:
-            fridge_entry = FridgeEntry()
+            fridge_entry = FridgeEntry(fridge_id, groceries_designation, quantity, unit)
             fridge_entry.set_fridge_id(fridge_id),
             fridge_entry.set_groceries_designation(groceries_designation)
             fridge_entry.set_quantity(quantity)

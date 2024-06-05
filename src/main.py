@@ -55,7 +55,7 @@ recipe = api.inherit('Recipe', bo, {
 })
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
-    'recipe_id': fields.Integer(attribute='__recipe_id',required=True, description='Identifier of the associated recipe')
+    'recipe_id': fields.Integer(attribute='_RecipeEntry__recipe_id',required=True, description='Identifier of the associated recipe')
 })
 
 fridge_entry = api.inherit('FridgeEntry', food_entry, {
@@ -261,7 +261,7 @@ class FridgeListOperations(Resource):
 
 
 
-@fridge_ns.route('/FridgeEntry')
+@fridge_ns.route('/Lager')
 @fridge_ns.response(500,'Server-Fehler')
 class FridgeEntryListOperations(Resource):
     @secured
@@ -270,7 +270,6 @@ class FridgeEntryListOperations(Resource):
 
         adm = HalilsTaverneAdministration()
         fridge_entries = adm.get_all_fridge_entries()
-        print(fridge_entries)
         return fridge_entries
 
     @fridge_ns.expect(fridge_entry)
@@ -313,10 +312,8 @@ class FridgeEntryOperations(Resource):
     @fridge_ns.marshal_with(fridge_entry)
 
     def put(self, groceries_designation):
-
         adm = HalilsTaverneAdministration()
         fe = FridgeEntry.form_dict(api.payload)
-
         if fe is not None:
 
             fe.set_groceries_designation(groceries_designation)
@@ -326,32 +323,42 @@ class FridgeEntryOperations(Resource):
             return '', 500
 
 
-
-
-
-
-@fridge_ns.route('/COOK/<int:recipe_id>')
+@fridge_ns.route('/COOK/<string:recipe_title>', methods=['PUT'])
 @fridge_ns.response(500, 'Server_fehler')
-@fridge_ns.param('recipe_id', 'die eindeutige id eines rezepts')
+@fridge_ns.param('recipe_title', 'der name eines rezepts')
 class UseRecipeIngredients(Resource):
-    def put(self, recipe_id):
+
+    @secured
+    def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
+        recipe_id = adm.get_recipe_id_by_title(recipe_title)
         recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id)
-        print(recipe_entries) #test
         for recipe_entry in recipe_entries:
-            fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.__groceries_designation)
+            fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry._FoodEntry__groceries_designation)
             if fridge_entry:
-                if fridge_entry.quantity >= recipe_entry.quantity:
-                    new_quantity = fridge_entry.quantity - recipe_entry.quantity
-                    adm.update_fridge_entry_quantity(fridge_entry.fridge_id, fridge_entry.groceries_designation,
-                                                     new_quantity, fridge_entry.unit)
+                if fridge_entry._FoodEntry__quantity >= recipe_entry._FoodEntry__quantity:
+                    new_quantity = fridge_entry._FoodEntry__quantity - recipe_entry._FoodEntry__quantity
+                    adm.update_fridge_entry_quantity(fridge_entry.fridge_id, fridge_entry._FoodEntry__groceries_designation,
+                                                     new_quantity, fridge_entry._FoodEntry__unit)
                 else:
                     # Nicht genug in der Fridge
-                    return {"error": f"Not enough {fridge_entry.groceries_designation} in fridge."}, 400
+                    return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
 
-        return {"message": "Ingredients used successfully."}, 200
+        return {"message": "LET HIM COOK."}, 200
 
+
+@fridge_ns.route('/RecipeEntries')
+@fridge_ns.response(500, 'Server-Fehler')
+class RecipeEntryListOperation(Resource):
+
+    """@secured"""
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def get(self):
+
+        adm = HalilsTaverneAdministration()
+        recipe_entries = adm.get_all_recipes_entries()
+        return recipe_entries
 
 
 

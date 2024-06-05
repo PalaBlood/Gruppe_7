@@ -17,11 +17,11 @@ from Unit import Unit
 
 
 class FoodEntry(BusinessObject):
-    def __init__(self):
+    def __init__(self, groceries_designation, quantity, unit):
         super().__init__()
-        self.__groceries_designation = ""
-        self.__quantity = 0
-        self.__unit = ""
+        self.__groceries_designation = groceries_designation
+        self.__quantity = quantity
+        self.__unit = unit
 
     def set_groceries_designation(self, value):
         self.__groceries_designation = value

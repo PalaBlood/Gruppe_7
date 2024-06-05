@@ -2,9 +2,9 @@ from FoodEntry import FoodEntry
 from Recipe import Recipe
 
 class RecipeEntry(FoodEntry):
-    def __init__(self):
-        super().__init__()
-        self.__recipe_id = None
+    def __init__(self, recipe_id, groceries_designation, quantity, unit):
+        super().__init__(groceries_designation, quantity, unit)
+        self.__recipe_id = recipe_id
 
     def get_recipe(self):
 
@@ -29,6 +29,8 @@ class RecipeEntry(FoodEntry):
         obj.set_groceries_designation(dictionary["groceries_designation"])
         obj.set_quantity(dictionary["quantity"])
         obj.set_unit(dictionary["unit"])
+
+        return obj
 
         
 

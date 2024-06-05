@@ -96,31 +96,26 @@ class RecipeMapper(Mapper):
         return None
 
     def find_entries_by_recipe_id(self, recipe_id):
-        """Find all entries associated with a specific recipe ID."""
-        result = []
+
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s",
-                       (recipe_id,))
-        entries = cursor.fetchall()
-        for groceries_designation, quantity, unit in entries:
-                entry = RecipeEntry()
-                entry.set_recipe_id(recipe_id)
-                entry.set_groceries_designation(groceries_designation)
-                entry.set_quantity(quantity)
-                entry.set_unit(unit)
-                result.append(entry)
-        cursor.close()
-        return result
+        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id))
+        rows = cursor.fetchall()
+
+
+        entries = []
+        for row in rows:
+            entries.append(RecipeEntry(recipe_id, row[0], row[1], row[2]))
+        return entries
 
     def find_all_entries(self):
         """Find all entries in the database."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, groceries_designation, quantity, unit FROM recipe_groceries")
+        cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries")
         tuples = cursor.fetchall()
 
         for (recipe_id, groceries_designation, quantity, unit) in tuples:
-            recipe_entry = RecipeEntry()
+            recipe_entry = RecipeEntry(recipe_id,groceries_designation,quantity,unit)
             recipe_entry.set_recipe_id(recipe_id)
             recipe_entry.set_groceries_designation(groceries_designation)
             recipe_entry.set_quantity(quantity)
@@ -172,6 +167,12 @@ class RecipeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def find_recipe_id_by_title(self, title):
 
+        cursor = self._cnx.cursor()
+        command = "SELECT id FROM recipe WHERE recipe_title = %s"
+        cursor.execute(command, (title,))
+        result = cursor.fetchone()
+        return result
 
 

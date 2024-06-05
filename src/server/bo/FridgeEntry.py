@@ -2,9 +2,10 @@ from FoodEntry import FoodEntry
 
 
 class FridgeEntry(FoodEntry):
-    def __init__(self):
-        super().__init__()
-        self.__fridge_id = None
+    def __init__(self, fridge_id, groceries_designation, quantity, unit):
+        super().__init__(groceries_designation=groceries_designation, quantity=quantity, unit=unit)
+        self.fridge_id = fridge_id
+
 
     def get_fridge(self):
         return self.__fridge_id
@@ -26,3 +27,7 @@ class FridgeEntry(FoodEntry):
         obj.set_quantity(dictionary["quantity"])
         obj.set_unit(dictionary["unit"])
         return obj
+
+    @staticmethod
+    def from_tuple(data_tuple):
+        return FridgeEntry(data_tuple[0], data_tuple[1], data_tuple[2], data_tuple[3])
