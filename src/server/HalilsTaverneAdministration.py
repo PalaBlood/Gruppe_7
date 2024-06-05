@@ -197,7 +197,7 @@ class HalilsTaverneAdministration(object):
     #recipeEntry spezifische Methoden
 
     def create_recipe_entry(self, unit, quantity, groceries, recipe_id):
-        recipe_entry = RecipeEntry()
+        recipe_entry = RecipeEntry(recipe_id, groceries, quantity, unit)
         recipe_entry.set_recipe_id(recipe_id)
         recipe_entry.set_id(1)
         recipe_entry.set_unit(unit)
@@ -205,7 +205,7 @@ class HalilsTaverneAdministration(object):
         recipe_entry.set_groceries_designation(groceries)
 
         with RecipeMapper() as mapper:
-            return mapper.insert_fridge_entry(recipe_entry)
+            return mapper.insert_recipe_entry(recipe_entry)
 
     def get_all_recipes_entries(self):
         with RecipeMapper() as mapper:

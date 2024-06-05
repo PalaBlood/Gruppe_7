@@ -60,7 +60,7 @@ class RecipeMapper(Mapper):
     def insert_recipe_entry(self, recipe_entry):
         """Insert or update a RecipeEntry object into the database."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT recipe_id FROM recipe LIMIT 1")
+        cursor.execute("SELECT id FROM recipe LIMIT 1")
         result = cursor.fetchone()
         recipe_id = result[0]
 

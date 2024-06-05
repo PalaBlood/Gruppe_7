@@ -53,7 +53,7 @@ class User(BusinessObject):
 
     def get_google_user_id(self):
 
-        return self.__google_user_id
+        return self._google_user_id
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""

@@ -32,7 +32,13 @@ class RecipeEntry(FoodEntry):
 
         return obj
 
-        
+    def form_dict(dictionary):
+        return RecipeEntry(
+            recipe_id=dictionary.get("recipe_id"),
+            groceries_designation=dictionary.get("groceries_designation"),
+            quantity=dictionary.get("quantity"),
+            unit=dictionary.get("unit")
+        )
 
 
 

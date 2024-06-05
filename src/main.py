@@ -9,6 +9,7 @@ from src.server.bo.RecipeEntry import RecipeEntry
 from src.server.bo.User import User
 from src.server.bo.FoodEntry import FoodEntry
 from src.server.bo.Household import Household
+import traceback
 
 from SecurityDecorator import secured
 
@@ -52,6 +53,7 @@ recipe = api.inherit('Recipe', bo, {
     'title': fields.String(attribute='__title', required=True, description='Title of the recipe'),
     'number_of_persons': fields.Integer(attribute='__number_of_persons', required=True, description='Number of servings the recipe provides'),
     'creator': fields.String(attribute='__creator', description='Creator of the recipe'),
+    'description': fields.String(attribute='__description', required=True, description='The Description oif a recipe')
 })
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
@@ -178,6 +180,7 @@ class HouseholdListOperation(Resource):
 
     @secured
     @fridge_ns.expect(household)
+    @fridge_ns.marshal_list_with(household)
     def post(self):
 
         adm = HalilsTaverneAdministration()
@@ -247,6 +250,7 @@ class FridgeListOperations(Resource):
         return fridges
 
     @fridge_ns.expect(fridge)
+    @fridge_ns.marshal_list_with(fridge)
     @secured
     def post(self):
 
@@ -273,6 +277,7 @@ class FridgeEntryListOperations(Resource):
         return fridge_entries
 
     @fridge_ns.expect(fridge_entry)
+    @fridge_ns.marshal_list_with(fridge_entry)
     @secured
     def post(self):
 
@@ -352,7 +357,7 @@ class UseRecipeIngredients(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeEntryListOperation(Resource):
 
-    """@secured"""
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self):
 
@@ -360,13 +365,58 @@ class RecipeEntryListOperation(Resource):
         recipe_entries = adm.get_all_recipes_entries()
         return recipe_entries
 
+    @secured
+    @fridge_ns.expect(recipe_entry)
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def post(self):
+
+        adm = HalilsTaverneAdministration()
+        proposal = RecipeEntry.form_dict(api.payload)
+        if proposal is not None:
+
+            fe = adm.create_recipe_entry(
+                proposal.get_unit(),
+                proposal.get_quantity(),
+                proposal.get_groceries_designation(),
+                proposal.get_recipe()
+            )
+            return fe, 200
+        else:
+            return '', 500
 
 
 
+@fridge_ns.route('/RecipeList')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'Recipe not found')
+@fridge_ns.response(200, 'Recipe successfully updated')
+class RecipeListOperations(Resource):
 
+    @secured
+    @fridge_ns.marshal_list_with(recipe)
+    def get(self):
 
+        adm = HalilsTaverneAdministration()
+        recipes = adm.get_all_recipes()
+        return recipes
 
+    @fridge_ns.expect(recipe)
+    @fridge_ns.marshal_list_with(recipe)
+    def post(self):
 
+            adm = HalilsTaverneAdministration()
+            proposal = Recipe.form_dict(api.payload)
+            if proposal is not None:
+
+                r = adm.create_recipe(
+                    proposal.get_title(),
+                    proposal.get_number_of_persons(),
+                    proposal.get_creator(),
+                    proposal.get_description()
+                )
+                return r, 200
+            else:
+                return '', 500
 
 
 

@@ -50,7 +50,7 @@ CREATE TABLE Recipe (
     recipe_title VARCHAR(255),
     number_of_persons INT,
     creator VARCHAR(255),
-    description VARCHAR(255),
+    description VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
