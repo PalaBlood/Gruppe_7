@@ -18,6 +18,9 @@ class RecipeEntry(FoodEntry):
     def __str__(self):
         return f"Lebensmittel: {self.get_groceries_designation()}, Menge: {self.get_quantity()}, {self.get_unit()}, Rezept ID: {self.get_recipe()}"
 
+    def __repr__(self):
+        return f"<RecipeEntry(recipe_id={self.__recipe_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
+
     @staticmethod
     def from_dict(dictionary=dict()):
         obj = RecipeEntry()

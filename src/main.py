@@ -338,7 +338,7 @@ class UseRecipeIngredients(Resource):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
         recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id)
-        print(recipe_entries)
+        print(recipe_entries) #test
         for recipe_entry in recipe_entries:
             fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.__groceries_designation)
             if fridge_entry:
