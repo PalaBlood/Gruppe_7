@@ -265,10 +265,10 @@ class FridgeListOperations(Resource):
 
 
 
-@fridge_ns.route('/Lager')
+@fridge_ns.route('/FridgeEntries')
 @fridge_ns.response(500,'Server-Fehler')
 class FridgeEntryListOperations(Resource):
-    @secured
+
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self):
 
@@ -333,7 +333,7 @@ class FridgeEntryOperations(Resource):
 @fridge_ns.param('recipe_title', 'der name eines rezepts')
 class UseRecipeIngredients(Resource):
 
-    @secured
+
     def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
