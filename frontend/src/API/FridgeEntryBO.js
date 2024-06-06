@@ -1,6 +1,6 @@
 import FoodEntry from "./FoodEntry";
 
-export default class FridgeEntry extends FoodEntry {
+export default class FridgeEntryBO extends FoodEntry {
 
     constructor(afridgeid) {
         super();
