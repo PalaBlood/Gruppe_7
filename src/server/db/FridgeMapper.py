@@ -52,7 +52,8 @@ class FridgeMapper2(Mapper):
         return fridge
 
     def get_existing_entry(self, fridge_id, groceries_designation):
-        """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
+        """Sollte der Eintrag schon existieren, so wird dieser geupdatet
+        Es wird nur quantity aus der Relation geladen"""
         cursor = self._cnx.cursor()
         query = "SELECT quantity FROM Fridge_Groceries WHERE fridge_id = %s AND groceries_designation = %s"
         cursor.execute(query, (fridge_id, groceries_designation))
@@ -61,7 +62,7 @@ class FridgeMapper2(Mapper):
         return result
 
     def get_full_existing_entry(self, groceries_designation):
-
+        """Der gesamte Eintrag wird aus der Realtion geladen"""
         cursor = self._cnx.cursor()
         query = "SELECT * FROM Fridge_Groceries WHERE  groceries_designation = %s"
         cursor.execute(query, (groceries_designation,))
@@ -97,7 +98,9 @@ class FridgeMapper2(Mapper):
         cursor.close()
 
     def insert_fridge_entry(self, fridge_entry):
-        """Insert or update a FridgeEntry object into the database."""
+        """erstellt oder updatet einen fridge_entry-Eintrag. Sollte das genannte Lebesmittel bereits
+        in der DB vorhanden sein, werden die Werte angepasst. Ansonsten wird ein neuer Eintrag erstellt
+        """
 
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id FROM fridge LIMIT 1")
