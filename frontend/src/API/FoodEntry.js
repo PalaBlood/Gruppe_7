@@ -38,7 +38,7 @@ export default class FoodEntry extends BusinessObject {
         let result = [];
     
         if (Array.isArray(foodentries)) {
-          users.forEach((u) => {
+          users.forEach((f) => {
             Object.setPrototypeOf(a, FoodEntry.prototype);
             result.push(f);
           })
