@@ -2,11 +2,11 @@ from FoodEntry import FoodEntry
 from Recipe import Recipe
 
 class RecipeEntry(FoodEntry):
-    def __init__(self, recipe_id, groceries_designation, quantity, unit):
-        super().__init__(groceries_designation, quantity, unit)
-        self.__recipe_id = recipe_id
+    def __init__(self):
+        super().__init__()
+        self.__recipe_id = None
 
-    def get_recipe(self):
+    def get_recipe_id(self):
 
         return self.__recipe_id
 
@@ -16,10 +16,10 @@ class RecipeEntry(FoodEntry):
         self.__recipe_id = recipe_id
 
     def __str__(self):
-        return f"Lebensmittel: {self.get_groceries_designation()}, Menge: {self.get_quantity()}, {self.get_unit()}, Rezept ID: {self.get_recipe()}"
+        return f"ID: {self.get_id()}, Lebensmittel: {self.get_groceries_designation()}, Menge: {self.get_quantity()}, {self.get_unit()}, Rezept ID: {self.get_recipe_id()}"
 
     def __repr__(self):
-        return f"<RecipeEntry(recipe_id={self.__recipe_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
+        return f"<RecipeEntry(ID = {self.get_id()}, recipe_id={self.__recipe_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
 
     @staticmethod
     def from_dict(dictionary=dict()):
