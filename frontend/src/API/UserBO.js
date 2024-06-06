@@ -67,7 +67,7 @@ export default class UserBO extends BusinessObject {
         } else {
           // Es handelt sich offenbar um ein singuläres Objekt
           let u = users;
-          Object.setPrototypeOf(u, User.prototype);
+          Object.setPrototypeOf(u, UserBO.prototype);
           result.push(u);
         }
     
