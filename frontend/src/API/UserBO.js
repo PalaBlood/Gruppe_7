@@ -61,7 +61,7 @@ export default class UserBO extends BusinessObject {
     
         if (Array.isArray(users)) {
           users.forEach((u) => {
-            Object.setPrototypeOf(a, UserBO.prototype);
+            Object.setPrototypeOf(u, UserBO.prototype);
             result.push(u);
           })
         } else {

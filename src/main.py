@@ -75,7 +75,7 @@ household = api.inherit('Household', bo, {
 @fridge_ns.response(500, 'Server-Fehler')
 class UserListOperations(Resource):
     @fridge_ns.marshal_list_with(user)
-    @secured
+    
     def get(self):
         """Auslesen aller User"""
 

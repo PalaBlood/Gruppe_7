@@ -89,15 +89,14 @@ getUsers() {
 
 
 
+//API TESTEn
 
 
-
-// Get the singleton API instance
 const api = FridgeAPI.getAPI();
 
-// Now use this instance to get users
+
 api.getUsers().then(users => {
-    console.log(users);  // Do something with the users
+    console.log(users);  
 }).catch(error => {
     console.error("Failed to fetch users:", error);
 });
