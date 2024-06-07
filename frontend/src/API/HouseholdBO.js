@@ -1,6 +1,6 @@
 import BusinessObject from "./BusinessObject.js";
 
-export default class HouseholdBO extends BusinessObject() {
+export default class HouseholdBO extends BusinessObject {
 
     constructor(aname) {
         super();
@@ -26,7 +26,7 @@ export default class HouseholdBO extends BusinessObject() {
         } else {
           // Es handelt sich offenbar um ein singuläres Objekt
           let h = households;
-          Object.setPrototypeOf(u, HouseholdBO.prototype);
+          Object.setPrototypeOf(h, HouseholdBO.prototype);
           result.push(h);
         }
     

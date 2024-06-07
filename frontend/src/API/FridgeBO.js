@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject"
+import BusinessObject from "./BusinessObject.js"
 
 export default class FridgeBO extends BusinessObject {
 

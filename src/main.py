@@ -419,8 +419,37 @@ class RecipeListOperations(Resource):
                 return '', 500
 
 
+@fridge_ns.route('/Recipe/<int:id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class RecipeOperations(Resource):
 
 
+    @secured
+    @fridge_ns.marshal_with(recipe)
+    def get(self, recipe_id):
+        adm = HalilsTaverneAdministration()
+        reci = adm.find_recipe_by_id(recipe_id)
+        return reci
+
+    @secured
+    @fridge_ns.marshal_with(recipe)
+    def put(self, recipe_id):
+        adm = HalilsTaverneAdministration()
+        re = Recipe.form_dict(api.payload)
+        if re is not None:
+
+            re.set_id(recipe_id)
+            adm.update_recipe(re)
+            return '', 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, recipe_id):
+            adm = HalilsTaverneAdministration()
+            Recipe = adm.get_recipe_by_id(recipe_id)
+            adm.delete_recipe(Recipe)
+            return '', 200
 
 
 
