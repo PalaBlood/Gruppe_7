@@ -24,7 +24,7 @@ export default class FridgeAPI {
 
 
 //fridgeentry related
-
+    #
 
 
 //recipeentry related
@@ -37,6 +37,12 @@ export default class FridgeAPI {
 
 
 //user related
+#getUserURL = () => `${this.#fridgeserverbaseurl}/users`;
+#addUserURL = () => `${this.#fridgeserverbaseurl}/users`;
+#getUserURL = (id) => `${this.#fridgeserverbaseurl}/users/${id}`;
+#updateUserURL = (id) => `${this.#fridgeserverbaseurl}/users/${id}`;
+#deleteUserURL = (id) =>  `${this.#fridgeserverbaseurl}/users/${id}`;
+#searchUserURL = (nick_name) => `${this.#fridgeserverbaseurl}/users/${nick_name}`;
 
 
 
