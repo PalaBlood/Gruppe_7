@@ -126,7 +126,7 @@ class HalilsTaverneAdministration(object):
 
     #FridgeEntry spezifische Methoden
 
-    def create_Fridge_entry(self, fridge_id, groceries_designation, quantity , unit):
+    def create_Fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
 
         fridgeentry = FridgeEntry()
         fridgeentry.set_id(1)
@@ -353,4 +353,7 @@ admintest = HalilsTaverneAdministration()
 
 admintest.create_household("Haus")
 
+#admintest.create_user("michel_f", "Michel", "Finger", 2)
+
+admintest.create_Fridge_entry(2, "Birne", 200, "Kilogramm")
 

@@ -104,7 +104,13 @@ class RecipeMapper(Mapper):
 
         entries = []
         for row in rows:
-            entries.append(RecipeEntry(recipe_id, row[0], row[1], row[2]))
+            # Initialize the RecipeEntry
+            entry = RecipeEntry()
+            entry.set_groceries_designation(row[0])
+            entry.set_quantity(row[1])
+            entry.set_unit(row[2])
+            entries.append(entry)
+
         return entries
 
     def find_all_entries(self):

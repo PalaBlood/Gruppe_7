@@ -10,18 +10,19 @@ CREATE TABLE Fridge (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Fridge(id) VALUES
-(1);
+-- Hier einfügen eines Beispiel-Datensatzes
+INSERT INTO Fridge (id) VALUES (1);
 
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
-    fridge_id INT UNIQUE NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    fridge_id INT, -- Definition der Spalte für den Foreign Key
+    FOREIGN KEY (fridge_id) REFERENCES Fridge (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Household (id, name, fridge_id) VALUES
-(2, "der haushalt", 1);
+INSERT INTO Household(id, name) VALUES(
+	2, 'der haushalt');
 
 
 DROP TABLE IF EXISTS users;

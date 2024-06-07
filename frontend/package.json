@@ -1,6 +1,7 @@
 {
-  "name": "frontend",
+  "name": "fridgeproject",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "proxy": "http://127.0.0.1:5000",
   "homepage": "/static/reactclient",
@@ -11,7 +12,12 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.11",
+    "@mui/material": "^5.14.11",
+    "firebase": "10.12.2"
   },
   "scripts": {
     "start": "react-scripts start",
