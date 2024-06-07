@@ -75,7 +75,7 @@ household = api.inherit('Household', bo, {
 @fridge_ns.response(500, 'Server-Fehler')
 class UserListOperations(Resource):
     @fridge_ns.marshal_list_with(user)
-    
+
     def get(self):
         """Auslesen aller User"""
 
@@ -113,21 +113,11 @@ class UserListOperations(Resource):
 @fridge_ns.param('id','die Id eines Users')
 class UserOperations(Resource):
     @fridge_ns.marshal_with(user)
-    @secured
     def get(self, id):
         """User nach ID auslesen"""
 
         adm = HalilsTaverneAdministration()
         User = adm.get_user_by_id(id)
-        return User
-
-
-    @fridge_ns.marshal_with(user)
-    @secured
-    def get(self, google_user_id):
-        """user nach google_user_id auslesen"""
-        adm = HalilsTaverneAdministration()
-        User = adm.get_user_by_google_user_id(google_user_id)
         return User
 
     @secured
@@ -154,6 +144,20 @@ class UserOperations(Resource):
             return '', 200
         else:
             return '', 500
+
+
+@fridge_ns.route('user-by-google-id/<string:google_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.param('google_user_id','die google_user_id eines users')
+class UserByGoogleIdOperations(Resource):
+
+    @fridge_ns.marshal_with(user)
+    @secured
+    def get(self, google_user_id):
+        """user nach google_user_id auslesen"""
+        adm = HalilsTaverneAdministration()
+        User = adm.get_user_by_google_user_id(google_user_id)
+        return User
 
 @fridge_ns.route('users-by-nick_name/<string:nick_name>')
 @fridge_ns.response(500, 'Server-Fehler')
