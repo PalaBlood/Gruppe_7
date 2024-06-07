@@ -73,7 +73,8 @@ class FridgeMapper2(Mapper):
         else:
             return None
 
-
+    def update_fridge(self):
+        pass
 
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""
