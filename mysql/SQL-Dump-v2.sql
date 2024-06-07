@@ -21,6 +21,9 @@ CREATE TABLE Household (
     FOREIGN KEY (fridge_id) REFERENCES Fridge (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO Household(id, name) VALUES(
+	2, 'der haushalt');
+
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (

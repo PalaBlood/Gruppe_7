@@ -4,10 +4,10 @@ from FoodEntry import FoodEntry
 class FridgeEntry(FoodEntry):
     def __init__(self):
         super().__init__()
-        self.fridge_id = None
+        self.fridge__id = None
 
 
-    def get_id(self):
+    def get_fridge_id(self):
         return self.__fridge_id
 
     def set_fridge_id(self, fridge_id):
@@ -30,7 +30,12 @@ class FridgeEntry(FoodEntry):
 
     @staticmethod
     def from_tuple(data_tuple):
-        return FridgeEntry(data_tuple[0], data_tuple[1], data_tuple[2], data_tuple[3])
+        entry = FridgeEntry()
+        entry.set_id(data_tuple[0])
+        entry.set_groceries_designation(data_tuple[1])
+        entry.set_quantity(data_tuple[2])
+        entry.set_unit(data_tuple[3])
+        return entry
 
 
 if __name__ == "__main__":
@@ -42,5 +47,5 @@ if __name__ == "__main__":
     entry.set_fridge_id(1)
     entry.set_groceries_designation("Salat")
 
-    print(entry)
+
 

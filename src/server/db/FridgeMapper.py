@@ -9,7 +9,7 @@ from server.db.UserMapper import UserMapper
 from src.server.bo.FridgeEntry import FridgeEntry
 from src.server.bo.Fridge import Fridge
 from src.server.bo.Groceries import Groceries"""
-
+print()
 
 ##############################################################
 class FridgeMapper2(Mapper):

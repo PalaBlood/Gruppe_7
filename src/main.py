@@ -315,7 +315,6 @@ class FridgeEntryOperations(Resource):
 
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_with(fridge_entry)
-
     def put(self, groceries_designation):
         adm = HalilsTaverneAdministration()
         fe = FridgeEntry.form_dict(api.payload)
@@ -334,21 +333,21 @@ class FridgeEntryOperations(Resource):
 class UseRecipeIngredients(Resource):
 
 
+
     def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
         recipe_id = adm.get_recipe_id_by_title(recipe_title)
         recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id)
         for recipe_entry in recipe_entries:
-            fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry._FoodEntry__groceries_designation)
-            if fridge_entry:
-                if fridge_entry._FoodEntry__quantity >= recipe_entry._FoodEntry__quantity:
-                    new_quantity = fridge_entry._FoodEntry__quantity - recipe_entry._FoodEntry__quantity
-                    adm.update_fridge_entry_quantity(fridge_entry.fridge_id, fridge_entry._FoodEntry__groceries_designation,
-                                                     new_quantity, fridge_entry._FoodEntry__unit)
-                else:
+            fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.get_groceries_designation())
+            if fridge_entry and fridge_entry.get_quantity() >= recipe_entry.get_quantity():
+                    new_quantity = fridge_entry.get_quantity() - recipe_entry.get_quantity()
+                    adm.update_fridge_entry_quantity(fridge_entry.get_id(), fridge_entry.get_groceries_designation(),
+                                                     new_quantity, fridge_entry.get_unit())
+            else:
                     # Nicht genug in der Fridge
-                    return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
+                return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
 
         return {"message": "LET HIM COOK."}, 200
 
