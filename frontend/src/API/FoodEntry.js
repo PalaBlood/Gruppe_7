@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 
 export default class FoodEntry extends BusinessObject {
@@ -38,14 +38,14 @@ export default class FoodEntry extends BusinessObject {
         let result = [];
     
         if (Array.isArray(foodentries)) {
-          users.forEach((f) => {
+          foodentries.forEach((f) => {
             Object.setPrototypeOf(a, FoodEntry.prototype);
             result.push(f);
           })
         } else {
           // Es handelt sich offenbar um ein singuläres Objekt
           let f = foodentries;
-          Object.setPrototypeOf(u, FoodEntry.prototype);
+          Object.setPrototypeOf(f, FoodEntry.prototype);
           result.push(f);
         }
     

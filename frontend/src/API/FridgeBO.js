@@ -3,21 +3,21 @@ import BusinessObject from "./BusinessObject"
 export default class FridgeBO extends BusinessObject {
 
     constructor() {
-        super()
+        super();
     }
 
-    static fromJSON(frdiges) {
+    static fromJSON(fridges) {
         let result = [];
     
         if (Array.isArray(fridges)) {
-          users.forEach((f) => {
+          fridges.forEach((f) => {
             Object.setPrototypeOf(a, FridgeBO.prototype);
             result.push(f);
           })
         } else {
           // Es handelt sich offenbar um ein singuläres Objekt
           let f = fridges;
-          Object.setPrototypeOf(u, FridgeBO.prototype);
+          Object.setPrototypeOf(f, FridgeBO.prototype);
           result.push(f);
         }
     
