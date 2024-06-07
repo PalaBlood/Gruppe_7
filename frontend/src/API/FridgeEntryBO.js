@@ -20,7 +20,7 @@ export default class FridgeEntryBO extends FoodEntry {
     
         if (Array.isArray(fridgeentries)) {
           fridgeentries.forEach((f) => {
-            Object.setPrototypeOf(a, FridgeEntryBO.prototype);
+            Object.setPrototypeOf(f, FridgeEntryBO.prototype);
             result.push(f);
           })
         } else {

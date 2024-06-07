@@ -11,7 +11,7 @@ export default class FridgeBO extends BusinessObject {
     
         if (Array.isArray(fridges)) {
           fridges.forEach((f) => {
-            Object.setPrototypeOf(a, FridgeBO.prototype);
+            Object.setPrototypeOf(f, FridgeBO.prototype);
             result.push(f);
           })
         } else {

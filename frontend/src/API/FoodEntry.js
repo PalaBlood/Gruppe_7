@@ -39,7 +39,7 @@ export default class FoodEntry extends BusinessObject {
     
         if (Array.isArray(foodentries)) {
           foodentries.forEach((f) => {
-            Object.setPrototypeOf(a, FoodEntry.prototype);
+            Object.setPrototypeOf(f, FoodEntry.prototype);
             result.push(f);
           })
         } else {

@@ -89,7 +89,7 @@ getUsers() {
 
 
 
-//API TESTEn
+//API TESTEN
 
 
 const api = FridgeAPI.getAPI();

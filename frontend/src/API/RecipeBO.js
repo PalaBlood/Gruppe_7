@@ -40,7 +40,7 @@ export default class RecipeBO extends BusinessObject {
     
         if (Array.isArray(recipes)) {
           recipes.forEach((r) => {
-            Object.setPrototypeOf(a, RecipeBO.prototype);
+            Object.setPrototypeOf(r, RecipeBO.prototype);
             result.push(r);
           })
         } else {
