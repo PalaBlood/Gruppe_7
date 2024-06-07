@@ -2,7 +2,7 @@
 
 """from RecipeMapper import RecipeMapper
 from HouseholdMapper import HouseholdMapper
-from FridgeMapper import FridgeMapper2
+from FridgeMapper import FridgeMapper
 from UserMapper import UserMapper
 
 
@@ -21,7 +21,7 @@ from Recipe import Recipe
 from server.db.UserMapper import UserMapper
 from server.db.HouseholdMapper import HouseholdMapper
 from server.db.RecipeMapper import RecipeMapper
-from server.db.FridgeMapper import FridgeMapper2
+from server.db.FridgeMapper import FridgeMapper
 
 
 from server.bo.FoodEntry import FoodEntry
@@ -101,27 +101,28 @@ class HalilsTaverneAdministration(object):
         fridge = Fridge()
         fridge.set_id(1)#ID wird in Mapperklasse/SQL angepasst
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.insert_fridge(fridge)
 
     def get_all_fridges(self):     
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.find_all()
 
     def get_fridge_by_id(self, fridge_id):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.find_by_id(fridge_id)
 
-    def save_fridge(self, fridge):
 
-        with FridgeMapper2() as mapper:
-            mapper.update(fridge)
+    def save_fridge(self, fridge_id):
+
+        with FridgeMapper() as mapper:
+            mapper.update_fridge(fridge_id)
 
     def delete_fridge(self, fridge):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             mapper.delete(fridge)
 
     #FridgeEntry spezifische Methoden
@@ -135,31 +136,31 @@ class HalilsTaverneAdministration(object):
         fridgeentry.set_unit(unit)
         fridgeentry.set_fridge_id(fridge_id)
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.insert_fridge_entry(fridgeentry)
    
     def get_all_fridge_entries(self):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.find_all_entries()
 
     def save_fridge_entry(self, fridge_entry):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.update_fridge_entry2(fridge_entry)
 
     def update_fridge_entry_quantity(self, fridge_id, groceries_designation, new_quantity, unit):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             mapper.update_fridge_entry(fridge_id, groceries_designation, new_quantity, unit)
     def delete_fridge_entry(self, fridge_entry):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.delete_fridge_entry(fridge_entry)
 
     def find_fridge_entry_by_designation(self, groceries_designation):
 
-        with FridgeMapper2() as mapper:
+        with FridgeMapper() as mapper:
             return mapper.get_full_existing_entry(groceries_designation)
 
     #recipe-spezifische methoden:
@@ -189,7 +190,7 @@ class HalilsTaverneAdministration(object):
 
     def delete_recipe(self, recipe):
 
-        with RecipeMapper() as mapper:  # Erstellen einer Instanz von RecipeMapper
+        with RecipeMapper() as mapper: #Erstellen einer Instanz von RecipeMapper
             mapper.delete(recipe)
 
     def get_recipe_id_by_title(self, title):
@@ -208,6 +209,10 @@ class HalilsTaverneAdministration(object):
 
         with RecipeMapper() as mapper:
             return mapper.insert_recipe_entry(recipe_entry)
+
+    def update_recipe_entry(self, recipe_entry):
+        with RecipeMapper() as mapper:
+            return mapper.update_recipe_entry(recipe_entry)
 
     def get_all_recipes_entries(self):
         with RecipeMapper() as mapper:

@@ -12,7 +12,7 @@ from src.server.bo.Groceries import Groceries"""
 print()
 
 ##############################################################
-class FridgeMapper2(Mapper):
+class FridgeMapper(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
@@ -73,8 +73,17 @@ class FridgeMapper2(Mapper):
         else:
             return None
 
-    def update_fridge(self):
-        pass
+    def update_fridge(self, fridge_id):
+        """Wahrscheinlich benötigen wir diese Methode nie, da
+        es keinen Grund gibt, die id einer Fridge zu ändern
+
+        param: neue fridge ID """
+        cursor = self._cnx.cursor()
+        query = "UPDATE id SET id = %s"
+        cursor.execute(query, (fridge_id,))
+        self._cnx.commit()
+        cursor.close()
+
 
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""

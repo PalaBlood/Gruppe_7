@@ -97,7 +97,8 @@ class HouseholdMapper(Mapper):
             return household
 
     def update(self, household):
-        """Update household data in the database and re-associate users."""
+        """Update des Namens eines Households
+        param: Household-Object"""
         cursor = self._cnx.cursor()
         try:
 

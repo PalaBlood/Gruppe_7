@@ -36,6 +36,20 @@ class RecipeMapper(Mapper):
 
             return recipe
 
+    def update_recipe(self, recipe):
+        """Update an existing recipe in the database."""
+        cursor = self._cnx.cursor()
+        command = """UPDATE recipe
+                       SET recipe_title = %s, number_of_persons = %s, creator = %s, description = %s
+                       WHERE id = %s"""
+        data = (recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator(), recipe.get_description(),
+                recipe.get_id())
+        cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
+
 
     def get_existing_entry(self, recipe_id, groceries_designation):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
