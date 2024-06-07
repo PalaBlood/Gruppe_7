@@ -35,4 +35,10 @@
       "last 1 safari version"
     ]
   }
+  {
+    "name": "your-package-name",
+    "version": "1.0.0",
+    "type": "module",
+  }
+  
 }
