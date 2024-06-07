@@ -107,7 +107,7 @@ const api = FridgeAPI.getAPI();
 
 
 
-api.getUserbyId(1).then(user =>{
+api.getUserbyId(2).then(user =>{
     console.log(user);
 }).catch(error => {
     console.error("Failed", error)
