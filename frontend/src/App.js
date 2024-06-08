@@ -18,7 +18,7 @@ import firebaseConfig from './firebaseconfig';
  * @see See Google [firebase.auth().signInWithRedirect](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithredirect)
  * @see [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start)
  * 
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ * @author [Michel Finger](https://github.com/PalaBlood)
  */
 class App extends React.Component {
 
@@ -28,10 +28,10 @@ class App extends React.Component {
 
 		// Init an empty state
 		this.state = {
-			currentUser: null,
-			appError: null,
+			currentUser: null, //Null gesetzt, da beim Start der App noch kein Benutzer angemeldet ist.
+			appError: null, //appError und authError: Zum Erfassen von Fehlern in der Anwendung bzw. während der Authentifizierung.
 			authError: null,
-			authLoading: false
+			authLoading: false//Ein Boolescher Wert, der angibt, ob ein Authentifizierungsvorgang läuft, um beispielsweise Ladeindikatoren zu aktivieren.
 		};
 	}
 
@@ -133,9 +133,9 @@ class App extends React.Component {
 								<Route path={process.env.PUBLIC_URL + '/'} element={
 									// For some special cases we need to handle the root route
 									// Redirect if the user is signed in
-									currentUser ?
+									currentUser ? //Wenn der Benutzer angemeldet ist, wird er automatisch umgeleitet. Ansonsten kommt er zur SignIn methode.
 										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} />
-										:
+										:  
 										<SignIn onSignIn={this.handleSignIn} />
 								} />
 								<Route path={process.env.PUBLIC_URL + '/*'} element={
@@ -145,7 +145,7 @@ class App extends React.Component {
 										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} />
 										:
 										<SignIn onSignIn={this.handleSignIn} />
-								} />
+								}/>
 								<Route path={process.env.PUBLIC_URL + '/customers'} element={<Secured user={currentUser}><CustomerList /> </Secured>} />
 								<Route path={process.env.PUBLIC_URL + '/transactions'} element={<Secured user={currentUser}><TransactionList /></Secured>} />
 								<Route path={process.env.PUBLIC_URL + '/accounts'} element={<Secured user={currentUser}> <AllAccountList /></Secured>} />
