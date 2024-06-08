@@ -82,6 +82,50 @@ export default class FridgeAPI {
             })
         })    
     }
+    getHouseholds() {
+        return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
+            let householdBOs = HouseholdBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(householdBOs);
+            })
+        })
+    }
+
+    getFridgeEntries() {
+        return this.#fetchAdvanced(this.#getFridgeEntriesURL()).then((responseJSON) => {
+            let fridgentryBOs = FridgeEntryBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(fridgentryBOs);
+            })
+        })
+    }
+
+    getRecipeEntries() {
+        return this.#fetchAdvanced(this.#getRecipeEntriesURL()).then((responseJSON) => {
+            let recipeentryBOs = RecipeEntryBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(recipeentryBOs);
+            })
+        })
+    }
+
+    getRecipes() {
+        return this.#fetchAdvanced(this.#getRecipesURL()).then((responseJSON) => {
+            let recipeBOs = RecipeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(recipeBOs);
+            })
+        })
+    }
+
+    getFridges() {
+        return this.#fetchAdvanced(this.#getFridgesURL()).then((responseJSON) => {
+            let fridgesBOs = FridgeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(fridgesBOs);
+            })
+        })
+    }
     getUserbyId(id) {
         return this.#fetchAdvanced(this.#getUserURL(id)).then((responseJSON) => {
             let userBO = UserBO.fromJSON(responseJSON);
@@ -91,6 +135,7 @@ export default class FridgeAPI {
         }
     )
     }
+
     getUserbyNickname(nick_name) {
         return this.#fetchAdvanced(this.#searchUserURL(nick_name)).then((responsejSON) => {
             let userBO = UserBO.fromJSON(responsejSON);
@@ -99,6 +144,46 @@ export default class FridgeAPI {
             })
         })
     }
+
+    getHouseholdbyID(id) {
+        return this.#fetchAdvanced(this.#getHouseholdURL(id)).then((responseJSON) => {
+            let householdBO = HouseholdBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(householdBO);
+            });
+        });
+    }
+
+    getRecipeByID(id) {
+        return this.#fetchAdvanced(this.#getRecipeURL(id)).then((responseJSON) => {
+            let recipeBO = RecipeBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(recipeBO);
+            });
+        });
+    }
+
+    getRecipeEntriesByID(id) {
+        return this.#fetchAdvanced(`${this.#getRecipeEntriesURL()}/${id}`).then((responseJSON) => {
+            let recipeEntryBO = RecipeEntryBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(recipeEntryBO);
+            });
+        });
+    }
+
+    getFridgeEntriesByID(id) {
+        return this.#fetchAdvanced(this.#getFridgeEntryURL(id)).then((responseJSON) => {
+            let fridgeEntryBO = FridgeEntryBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(fridgeEntryBO);
+            });
+        });
+    }
+    
+    
+    
+    
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
             method: 'POST',
@@ -146,14 +231,7 @@ export default class FridgeAPI {
         })
     }
 
-    getHouseholds() {
-        return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
-            let householdBOs = HouseholdBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(householdBOs);
-            })
-        })
-    }
+    
 
 
 
