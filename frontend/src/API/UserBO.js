@@ -6,14 +6,13 @@ export default class UserBO extends BusinessObject {
 
     /** Konstruktion eines neuen Users */
 
-    constructor(afirstname, alastname, agoogleuserid, anick_name, ahouseholdid) {
+    constructor(anick_name, afirstname, alastname,  ahouseholdid, agoogleuserid,) {
         super();
+        this.nick_name = anick_name;
         this.first_name = afirstname;
         this.last_name = alastname;
-        this.nick_name = anick_name;
+        this.household_id = ahouseholdid;
         this.google_user_id = agoogleuserid;
-        this.householdid = ahouseholdid
-
     }
 
     setfirstname(afirstname) {

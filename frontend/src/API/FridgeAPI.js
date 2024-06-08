@@ -91,6 +91,22 @@ export default class FridgeAPI {
         }
     )
     }
+    addUser(userBO) {
+        return this.#fetchAdvanced(this.#addUserURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type':'application/json',
+            },
+            body: JSON.stringify(userBO)
+        }).then((responseJSON) => {
+            let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+
+            return new Promise(function (resolve) {
+                resolve(responseUserBO);
+            })
+        })
+    }
 
 
 
@@ -111,4 +127,12 @@ api.getUserbyId(4).then(user =>{
     console.log(user);
 }).catch(error => {
     console.error("Failed", error)
+})
+
+
+let user = new UserBO("kje","euhf","wiuehf",2,"wkjnfd")
+console.log(user)
+
+api.addUser(user).then(newUser =>{
+    console.log(newUser);
 })
