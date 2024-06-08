@@ -28,11 +28,14 @@ export default class FridgeAPI {
     // RecipeEntry related
     #getRecipeEntriesURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
+    #getRecipeEntryURL
+    #updateRecipeEntryURL
+    #deleteRecipeEntryURL
 
     // Fridge related
     #getFridgesURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
     #addFridgeURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
-
+    
 
     //user related
     #getUsersURL = () => `${this.#fridgeserverbaseurl}/users`;
@@ -57,6 +60,10 @@ export default class FridgeAPI {
     #getHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
     #updateHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
     #deleteHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
+
+
+    //COOKING A RECIPE: subsctracts the associated ingredients from fridge entries
+    #cookfunctionurl = (recipe_title) => `${this.#fridgeserverbaseurl}/COOK/${recipe_title}`;
 
     static getAPI() {
         if (this.#api == null) {
