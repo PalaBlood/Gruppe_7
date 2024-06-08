@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material'; //Online Bib von der wir einige Komponenten verwenden können
 
 /** 
  * Renders a landing page for users who are not signed in. Provides a sign in button 
@@ -24,7 +24,7 @@ class SignIn extends Component {
 	render() {
 		return (
 			<div>
-				<Typography sx={{margin: 2}} align='center' variant='h6'>Welcome to the HdM React/Python Project Showcase</Typography>
+				<Typography sx={{margin: 2}} align='center' variant='h6'>Wilkommen in unserer SmartFridge</Typography>
 				<Typography sx={{margin: 2}} align='center'>It appears, that you are not signed in.</Typography>
 				<Typography sx={{margin: 2}} align='center'>To use the services of the HdM Bank please</Typography>
 				<Grid container justifyContent='center'>
