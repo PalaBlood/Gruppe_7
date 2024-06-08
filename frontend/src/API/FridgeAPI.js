@@ -182,8 +182,6 @@ export default class FridgeAPI {
     }
     
     
-    
-    
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
             method: 'POST',
@@ -200,6 +198,77 @@ export default class FridgeAPI {
             })
         })
     }
+
+    
+addFridgeEntry(fridgeEntryBO) {
+    return this.#fetchAdvanced(this.#addFridgeEntryURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fridgeEntryBO)
+    }).then(responseJSON => {
+        return FridgeEntryBO.fromJSON(responseJSON)[0];
+    });
+}
+
+
+addRecipeEntry(recipeEntryBO) {
+    return this.#fetchAdvanced(this.#addRecipeEntryURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(recipeEntryBO)
+    }).then(responseJSON => {
+        return RecipeEntryBO.fromJSON(responseJSON)[0];
+    });
+}
+
+
+addRecipe(recipeBO) {
+    return this.#fetchAdvanced(this.#addRecipeURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(recipeBO)
+    }).then(responseJSON => {
+        return RecipeBO.fromJSON(responseJSON)[0];
+    });
+}
+
+
+addHousehold(householdBO) {
+    return this.#fetchAdvanced(this.#addHouseholdURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(householdBO)
+    }).then(responseJSON => {
+        return HouseholdBO.fromJSON(responseJSON)[0];
+    });
+}
+
+
+addFridge(fridgeBO) {
+    return this.#fetchAdvanced(this.#addFridgeURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fridgeBO)
+    }).then(responseJSON => {
+        return FridgeBO.fromJSON(responseJSON)[0];
+    });
+}
+
     updateUser(userBO) {
         return this.#fetchAdvanced(this.#updateUserURL(userBO.getID()), {
             method:'PUT',
@@ -210,7 +279,6 @@ export default class FridgeAPI {
             body: JSON.stringify(userBO)
         }).then((responseJSON) => {
             let responseUserBO = UserBO.fromJSON(responseJSON)[0];
-        
         return new Promise(function(resolve) {
             resolve(responseUserBO);
         })
@@ -231,10 +299,57 @@ export default class FridgeAPI {
         })
     }
 
+    updateFridgeEntry(fridgeEntryBO) {
+        return this.#fetchAdvanced(this.#updateFridgeEntryURL(fridgeEntryBO.getGroceriesDesignation()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(fridgeEntryBO)
+        }).then(responseJSON => FridgeEntryBO.fromJSON(responseJSON)[0]);
+    }
     
+    deleteFridgeEntry(groceriesDesignation) {
+        return this.#fetchAdvanced(this.#deleteFridgeEntryURL(groceriesDesignation), {
+            method: 'DELETE'
+        }).then(() => ({ message: "Fridge entry deleted successfully", groceriesDesignation }));
+    }
 
-
-
+    updateRecipe(recipeBO) {
+        return this.#fetchAdvanced(this.#updateRecipeURL(recipeBO.getId()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(recipeBO)
+        }).then(responseJSON => RecipeBO.fromJSON(responseJSON)[0]);
+    }
+    
+    deleteRecipe(id) {
+        return this.#fetchAdvanced(this.#deleteRecipeURL(id), {
+            method: 'DELETE'
+        }).then(() => ({ message: "Recipe deleted successfully", id }));
+    }
+    
+    updateHousehold(householdBO) {
+        return this.#fetchAdvanced(this.#updateHouseholdURL(householdBO.getId()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(householdBO)
+        }).then(responseJSON => HouseholdBO.fromJSON(responseJSON)[0]);
+    }
+    
+    deleteHousehold(id) {
+        return this.#fetchAdvanced(this.#deleteHouseholdURL(id), {
+            method: 'DELETE'
+        }).then(() => ({ message: "Household deleted successfully", id }));
+    }
+    
 
 
 }
