@@ -6,11 +6,13 @@ from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
 
+
+"""Diese Datei sorgt dafür, dass nur über Google Firebase angemeldete User auf unsere Webanwendung zugreifen können."""
 def secured(function):
     firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
-        # Authentifizierung mittels Firebase.
+        """Nimmt den Token, der von G Firebase generiert wird"""
         id_token = request.cookies.get("token")
         error_message = None
         claims = None
@@ -22,6 +24,7 @@ def secured(function):
                     id_token, firebase_request_adapter)
 
                 if claims is not None:
+                    """Sollte der User bereits existieren, wird eine seine Daten abgefragt"""
                     adm = HalilsTaverneAdministration()
 
                     google_user_id = claims.get("user_id")
@@ -38,7 +41,7 @@ def secured(function):
                         user.nick_name = nick_name
                         adm.save_user(user)
                     else:
-                        # Fall: Der Benutzer ist neu.
+                        """Sollte der User neu sein, wird ein User erstellt"""
                         user = adm.create_user(first_name, last_name, nick_name, email, google_user_id)
 
                     print(request.method, request.path, "Requested by:", nick_name, email)
