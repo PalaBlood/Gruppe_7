@@ -85,7 +85,6 @@ class UserListOperations(Resource):
 
     @fridge_ns.marshal_with(user, code=200)
     @fridge_ns.expect(user)
-    @secured
     def post(self):
 
         """Neuen User anlegen"""
@@ -99,6 +98,7 @@ class UserListOperations(Resource):
                 proposal.get_nick_name(),
                 proposal.get_first_name(),
                 proposal.get_last_name(),
+                proposal.get_household_id(),
                 proposal.get_google_user_id()
             )
             return u, 200

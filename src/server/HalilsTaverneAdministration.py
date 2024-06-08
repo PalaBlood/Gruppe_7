@@ -49,13 +49,14 @@ class HalilsTaverneAdministration(object):
     
     #User spezifische Methoden
 
-    def create_user(self, nick_name, first_name, last_name, google_user_id):
+    def create_user(self, nick_name, first_name, last_name, household_id, google_user_id):
           #Benutzer erstellen
           user = User()
           user.set_first_name(first_name)
           user.set_last_name(last_name)
           user.set_nick_name(nick_name)
           user.set_id(1) #default id, wird später in der Datenbank geupdatet
+          user.set_household_id(household_id)
           user.set_google_user_id(google_user_id)
 
           with UserMapper() as mapper:
