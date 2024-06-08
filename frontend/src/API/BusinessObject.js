@@ -1,5 +1,6 @@
 /**
- * Base class for all BusinessObjects, which has an ID field by default.
+ * Ähnlich wie im Backend erstellen wir eine BusinessObject Klasse, von der alle anderen Klassen erben
+ * Sie dient dazu jede Intanz mit einer ID zu belegen
  */
 export default class BusinessObject {
 
@@ -27,7 +28,7 @@ export default class BusinessObject {
     }
   
     /**
-     * Returns a string representation of this Object. This is useful for debugging purposes.
+     * Java Objekte lassen sich in Strings konventierten, was z.B. bei Logfiles hilfreich sein kann
      */
     toString() {
       let result = '';

@@ -57,6 +57,10 @@ export default class UserBO extends BusinessObject {
 
     static fromJSON(users) {
         let result = [];
+        /**
+         * Wir erstellen aus jedem Objekt von User eine Json.
+         *  
+         */
     
         if (Array.isArray(users)) {
           users.forEach((u) => {
@@ -64,7 +68,7 @@ export default class UserBO extends BusinessObject {
             result.push(u);
           })
         } else {
-          // Es handelt sich offenbar um ein singuläres Objekt
+          // Sollte es ein Singelton Objekt sein
           let u = users;
           Object.setPrototypeOf(u, UserBO.prototype);
           result.push(u);
