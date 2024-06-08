@@ -20,13 +20,17 @@ class Mapper(AbstractContextManager, ABC):
     def __init__(self):
         self._cnx = None
 
+
     def __enter__(self):
+
+        """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
         if os.getenv('GAE_ENV', '').startswith('standard'):
             self._cnx = connector.connect(user='root', password='test',
                                           unix_socket='demo',
                                           database='fridge-app')
-        else:
 
+        else:
+            """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
             self._cnx = connector.connect(user="root", password="9902",
                               host="localhost",
                               database="sopra")
