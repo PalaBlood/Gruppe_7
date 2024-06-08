@@ -14,6 +14,15 @@ export default class FridgeAPI {
 
     //python backend --> main.py, müssen wir noch reinschreiben, erzeugt sicherheit
 
+
+
+    /**
+     * Da sich der Präfix häufig mal ändern kann, setzen wir hier einen Fest
+     * und setzen diese für jede Methode unten ein. 
+     * 
+     * Ebenfalls müssen wir nicht jedes mal bei jeder FetchAdvanded-Methode die URl Übergeben, sondern
+     * z.B. getFridgeEntriesURL
+     */
     #fridgeserverbaseurl = 'http://127.0.0.1:5000/fridge';
 
 
@@ -28,7 +37,7 @@ export default class FridgeAPI {
     // RecipeEntry related
     #getRecipeEntriesURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
-    #getRecipeEntryURL
+    #getRecipeEntryURL 
     #updateRecipeEntryURL
     #deleteRecipeEntryURL
 

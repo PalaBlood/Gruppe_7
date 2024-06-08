@@ -129,19 +129,19 @@ class App extends React.Component {
 					<Container maxWidth='md'>
 						<Header user={currentUser} />
 						<Routes>
-							<Route path={process.env.PUBLIC_URL} >
+							<Route path={process.env.PUBLIC_URL}/**Siehe unter packeage.json unter "homepage" */ >
 								<Route path={process.env.PUBLIC_URL + '/'} element={
 									// For some special cases we need to handle the root route
 									// Redirect if the user is signed in
 									currentUser ? //Wenn der Benutzer angemeldet ist, wird er automatisch umgeleitet. Ansonsten kommt er zur SignIn methode.
-										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} />
+										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} /> /**Hier können wir entscheiden, wo der Startpunkt der App ist (im Bankbeispiel ist es /Customers) */
 										:  
 										<SignIn onSignIn={this.handleSignIn} />
 								} />
 								<Route path={process.env.PUBLIC_URL + '/*'} element={
 									// Firebase redirects to index.html
 									// Redirect if the user is signed in
-									currentUser ?
+									currentUser ? //Sollte es einen User geben, dann gehe direkt zur Hauptapp, ansonsten zu SignIn
 										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} />
 										:
 										<SignIn onSignIn={this.handleSignIn} />
