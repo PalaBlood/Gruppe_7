@@ -91,6 +91,14 @@ export default class FridgeAPI {
         }
     )
     }
+    getUserbyNickname(nick_name) {
+        return this.#fetchAdvanced(this.#searchUserURL(nick_name)).then((responsejSON) => {
+            let userBO = UserBO.fromJSON(responsejSON);
+            return new Promise(function(resolve) {
+                resolve(userBO)
+            })
+        })
+    }
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
             method: 'POST',
@@ -107,6 +115,38 @@ export default class FridgeAPI {
             })
         })
     }
+    updateUser(userBO) {
+        return this.#fetchAdvanced(this.#updateUserURL(userBO.getID()), {
+            method:'PUT',
+            headers: {
+                'Accept':'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(userBO)
+        }).then((responseJSON) => {
+            let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+        
+        return new Promise(function(resolve) {
+            resolve(responseUserBO);
+        })
+    })
+    }
+
+    deleteUser(UserID) {
+        return this.#fetchAdvanced(this.#deleteUserURL(UserID), {
+            method:'DELETE'
+
+        }).then((responseJSON) => {
+
+            let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+
+            return new Promise(function(resolve){
+                resolve(responseUserBO);
+            })
+        })
+    }
+
+
 
 
 
