@@ -146,6 +146,15 @@ export default class FridgeAPI {
         })
     }
 
+    getHouseholds() {
+        return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
+            let householdBOs = HouseholdBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(householdBOs);
+            })
+        })
+    }
+
 
 
 
