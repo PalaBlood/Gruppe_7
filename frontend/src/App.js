@@ -145,11 +145,17 @@ class App extends React.Component {
 										<Navigate replace to={process.env.PUBLIC_URL + '/customers'} />
 										:
 										<SignIn onSignIn={this.handleSignIn} />
-								}/>
+								}/**>
+
+								Muss auf unsere Komponenten angepasst werden!!
+								
 								<Route path={process.env.PUBLIC_URL + '/customers'} element={<Secured user={currentUser}><CustomerList /> </Secured>} />
 								<Route path={process.env.PUBLIC_URL + '/transactions'} element={<Secured user={currentUser}><TransactionList /></Secured>} />
 								<Route path={process.env.PUBLIC_URL + '/accounts'} element={<Secured user={currentUser}> <AllAccountList /></Secured>} />
-								<Route path={process.env.PUBLIC_URL + '/about'} element={<About />} />
+								<Route path={process.env.PUBLIC_URL + '/about'} element={<About />}  
+								
+								*//>
+						
 							</Route>
 						</Routes>
 						<LoadingProgress show={authLoading} />
