@@ -11,6 +11,9 @@ import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 
 /**
+ * Noch nicht Vollständig. Untere Kommentare zeigen wo was zu korrigieren ist
+ * 
+ * 
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the 
  * user to the respective pages, react-router-dom ist used.
  * 
