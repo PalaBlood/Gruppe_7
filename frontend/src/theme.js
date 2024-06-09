@@ -4,7 +4,7 @@ import { colors } from '@mui/material';
 const white = '#FFFFFF';
 const black = '#000000';
 
-// Updated custom theme for this app
+
 const theme = createTheme({
   palette: {
     black,
