@@ -382,13 +382,55 @@ class RecipeEntryListOperation(Resource):
                 proposal.get_unit(),
                 proposal.get_quantity(),
                 proposal.get_groceries_designation(),
-                proposal.get_recipe()
+                proposal.get_recipe_id()
             )
             return fe, 200
         else:
             return '', 500
 
 
+@fridge_ns.route('/RecipeEntry/<id:int>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'RecipeEntry not found')
+@fridge_ns.response(200, 'RecipeEntry successfully updated')
+@fridge_ns.param('id', 'die id eines Rezepts')
+class RecipeEntryListOperation(Resource):
+
+    @secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def get(self, recipe_id):
+
+        adm = HalilsTaverneAdministration()
+        reci = adm.find_recipe_entries_by_recipe_id(recipe_id)
+        return reci
+    
+
+@fridge_ns.route('/RecipeEntry/<string:groceries-designation>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'RecipeEntry not found')
+@fridge_ns.response(200, 'RecipeEntry successfully updated')
+@fridge_ns.param('groceries-designation', 'Bezeichnung eines Lebensmittels')
+class RecipeEntryListOperations2(Resource):
+    @secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def get(self, groceries_designation):
+
+        adm = HalilsTaverneAdministration()
+        reci = adm.find_recipe_entries_by_designation(groceries_designation)
+        return reci
+    
+    @secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def put(self, groceries_designation):
+        adm = HalilsTaverneAdministration()
+        re = RecipeEntry.form_dict(api.payload)
+        if re is not None:
+
+            re.set_groceries_designation(groceries_designation)
+            adm.update_recipe_entry(re)
+            return '', 200
+        else:
+            return '', 500
 
 @fridge_ns.route('/RecipeList')
 @fridge_ns.response(500, 'Server-Fehler')
