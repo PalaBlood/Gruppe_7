@@ -1,14 +1,14 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-from src.server.HalilsTaverneAdministration import HalilsTaverneAdministration
-from src.server.bo.Fridge import Fridge
-from src.server.bo.Recipe import Recipe
-from src.server.bo.FridgeEntry import FridgeEntry
-from src.server.bo.RecipeEntry import RecipeEntry
-from src.server.bo.User import User
-from src.server.bo.FoodEntry import FoodEntry
-from src.server.bo.Household import Household
+from server.HalilsTaverneAdministration import HalilsTaverneAdministration
+from server.bo.Fridge import Fridge
+from server.bo.Recipe import Recipe
+from server.bo.FridgeEntry import FridgeEntry
+from server.bo.RecipeEntry import RecipeEntry
+from server.bo.User import User
+from server.bo.FoodEntry import FoodEntry
+from server.bo.Household import Household
 import traceback
 
 from SecurityDecorator import secured

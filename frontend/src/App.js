@@ -9,8 +9,12 @@ import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
+import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 
 /**
+ * Noch nicht Vollständig. Untere Kommentare zeigen wo was zu korrigieren ist
+ * 
+ * 
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the 
  * user to the respective pages, react-router-dom ist used.
  * 
@@ -123,7 +127,8 @@ class App extends React.Component {
 
 		return (
 			<ThemeProvider theme={Theme}>
-				{/* Global CSS reset and browser normalization. CssBaseline kickstarts an elegant, consistent, and simple baseline to build upon. */}
+				{/* Beschreibung: Diese Komponente sorgt für eine globale Normalisierung des CSS und stellt sicher, dass alle Browser die gleiche Basis für die Darstellung haben. 
+				Sie setzt grundlegende Stile zurück und schafft eine konsistente Basis.*/}
 				<CssBaseline />
 				<Router>
 					<Container maxWidth='md'>
