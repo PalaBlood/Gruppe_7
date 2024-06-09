@@ -389,7 +389,7 @@ class RecipeEntryListOperation(Resource):
             return '', 500
 
 
-@fridge_ns.route('/RecipeEntry/<id:int>')
+@fridge_ns.route('/RecipeEntry/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully updated')
@@ -405,7 +405,7 @@ class RecipeEntryListOperation(Resource):
         return reci
     
 
-@fridge_ns.route('/RecipeEntry/<string:groceries-designation>')
+@fridge_ns.route('/RecipeEntry/<string:groceries_designation>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully updated')

@@ -26,7 +26,7 @@ class SignIn extends Component {
 			<div>
 				<Typography sx={{margin: 2}} align='center' variant='h6'>Wilkommen in unserer SmartFridge</Typography>
 				<Typography sx={{margin: 2}} align='center'>It appears, that you are not signed in.</Typography>
-				<Typography sx={{margin: 2}} align='center'>To use the services of the HdM Bank please</Typography>
+				<Typography sx={{margin: 2}} align='center'>Sign in to your SmartFridge</Typography>
 				<Grid container justifyContent='center'>
 					<Grid item>
 						<Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
