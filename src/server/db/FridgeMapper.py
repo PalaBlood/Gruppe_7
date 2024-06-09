@@ -101,7 +101,7 @@ class FridgeMapper(Mapper):
         command = """UPDATE fridge_groceries
                      SET quantity = %s, unit = %s
                      WHERE fridge_id = %s AND groceries_designation = %s"""
-        # Assuming fridge_entry has properties: fridge_id, groceries_designation, quantity, unit
+       
         data = (fridge_entry.quantity, fridge_entry.unit, fridge_entry.fridge_id, fridge_entry.groceries_designation)
         cursor.execute(command, data)
         self._cnx.commit()
