@@ -39,6 +39,9 @@ class SignIn extends Component {
 	}
 }
 
+
+
+//Hier müssen wir wahrscheinlich was was anpassen
 /** PropTypes */
 SignIn.propTypes = {
 	/** 
