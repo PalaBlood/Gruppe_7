@@ -2,15 +2,24 @@ import FoodEntry from "./FoodEntry.js";
 
 export default class FridgeEntryBO extends FoodEntry {
 
+
+      /** Konstruktion eines neuen Lebensmitteleintrages im Kühlschrank. FridgeEntry erbt von FoodEntry. 
+   * @param {String} afridgeid - Die ID ordnet die Eintragung zu einem Fridge zu.
+   */
     constructor(afridgeid) {
         super();
         this.fridgeid = afridgeid
     }
-
+     
     getfridgeid () {
         return this.fridgeid
     }
 
+    /**
+   * Setzen einer neuen FridgeID.
+   * 
+   * @param {String} afridgeid -  neue ID.
+   */
     setfridgeid(afridgeid) {
         this.fridgeid = afridgeid
     }

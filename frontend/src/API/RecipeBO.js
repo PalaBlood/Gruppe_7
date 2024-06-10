@@ -3,6 +3,12 @@ import BusinessObject from "./BusinessObject.js";
 
 export default class RecipeBO extends BusinessObject {
 
+
+       /** Konstruktion eines Rezeptes.
+   * @param {String} atitle - Fügt dem Rezept einen Titel zu.
+   * @param {String} acreator - Fügt dem Rezept einen Ersteller zu.
+   * @param {String} adescription - Fügt dem Rezept eine Beschreibung zu.
+   */
     constructor(atitle, acreator, adescription) {
         super();
         this.title = atitle;
@@ -11,6 +17,11 @@ export default class RecipeBO extends BusinessObject {
         
     }
     
+
+    /**
+   * Setzen eines neuen Titel für das Rezept.
+   * @param {String} atitle -  neuen Titel des Rezeptes.
+   */
     settitle(atitle) {
         this.title = atitle
     }
@@ -19,6 +30,11 @@ export default class RecipeBO extends BusinessObject {
         return this.title
     }
 
+
+      /**
+   * Setzen eines neuen Ersteller für das Rezept.
+   * @param {String} acreator -  neuer Ersteller des Rezeptes.
+   */
     setcreator(acreator) {
         this.creator = acreator
     }
@@ -27,6 +43,11 @@ export default class RecipeBO extends BusinessObject {
         return this.creator
     }
 
+
+      /**
+   * Setzen einer neuen Beschreibung für das Rezept.
+   * @param {String} adescription -  neue Beschreibung des Rezeptes.
+   */
     setdescription(adescription) {
         this.description = adescription
     }
