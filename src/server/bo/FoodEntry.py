@@ -14,8 +14,6 @@ from Unit import Unit
  - Sollte der Lebensmitteleintrag wirklich aus einem Lebensmittel, der Menge und der Maßeinheit bestehen, oder vielleicht nur aus 2 Klassen? - hab Quantity als Klasse mal wegelassen. 
  """
 
-
-
 class FoodEntry(BusinessObject):
     def __init__(self):
         super().__init__()
