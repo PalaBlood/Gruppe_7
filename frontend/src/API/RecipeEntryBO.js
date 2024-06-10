@@ -2,11 +2,22 @@ import FoodEntry from './FoodEntry.js';
 
 export default class RecipeEntryBO extends FoodEntry{
 
+
+
+   /** Konstruktion der RezeptID.
+   * @param {String} arecipeid - Fügt einem Rezept eine ID hinzu.
+   */
     constructor(arecipeid){
         super();
         this.recipeid = arecipeid
     }
 
+
+    
+    /**
+   * Setzen einer ID für das Rezept.
+   * @param {String} atitle -  neuen ID des Rezeptes.
+   */
     setrecipeid(arecipeid){
         this.recipeid = arecipeid
     }

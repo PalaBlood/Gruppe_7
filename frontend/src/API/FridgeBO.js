@@ -2,6 +2,8 @@ import BusinessObject from "./BusinessObject.js"
 
 export default class FridgeBO extends BusinessObject {
 
+
+    
     constructor() {
         super();
     }

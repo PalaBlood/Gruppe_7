@@ -2,11 +2,21 @@ import BusinessObject from "./BusinessObject.js";
 
 export default class HouseholdBO extends BusinessObject {
 
+
+    /** Konstruktion eines neuen Haushalts 
+   * @param {String} designation - der Name des Haushalts.
+   */ 
     constructor(aname) {
         super();
         this.name = aname
     }
 
+
+    /**
+   * Setzen einer neuen Namen für den Haushalt.
+   * 
+   * @param {String} aname -  neuen Namen des Haushaltes.
+   */
     setname(aname) {
         this.name = aname
     }

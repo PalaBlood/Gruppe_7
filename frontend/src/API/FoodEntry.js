@@ -3,6 +3,11 @@ import BusinessObject from "./BusinessObject.js";
 
 export default class FoodEntry extends BusinessObject {
 
+     /** Konstruktion eines neuen Lebensmittels 
+   * @param {String} designation - der Name des Lebensmittels.
+   * @param {String} quantity - die Menge der Lebensmittel.
+   * @param {String} unit - die Einheit der Lebensmittel.
+   */
     constructor (adesignation, aquantity, aunit) {
         super();
         this.designation = adesignation;
@@ -10,6 +15,11 @@ export default class FoodEntry extends BusinessObject {
         this.unit = aunit;
     }
 
+     /**
+   * Setzen eines neuen Namen der Lebensmittel.
+   * 
+   * @param {String} adesignation -  Name von Lebenmittel.
+   */
     setdesignation (adesignation) {
         this.designation = adesignation;
     }
@@ -18,6 +28,12 @@ export default class FoodEntry extends BusinessObject {
         return this.designation;
     }
 
+
+    /**
+   * Setzen einer Mengenangabe der Lebensmittel.
+   * 
+   * @param {String} aquantity -   Mengenangabe für ein Lebensmittel.
+   */
     setquantity(aquantity) {
         this.quantity = aquantity
     }
@@ -26,6 +42,12 @@ export default class FoodEntry extends BusinessObject {
         return this.quantity
     }
 
+
+    /**
+   * Setzen einer neuen Maßeinheit für Lebensmittel.
+   * 
+   * @param {String} adesignation -  neue Maßeinheit für Lebenmittel.
+   */
     setunit (aunit) {
         this.unit = aunit
     }
