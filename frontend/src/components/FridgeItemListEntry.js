@@ -1,1 +1,1 @@
-//Detailierter Lebensmitteleintrag
+//Detailierter Lebensmitteleintrag auf einer  Fridgeitemlist

@@ -1,0 +1,1 @@
+//Details eine Rezeptes aufrufen und bearbeiten
