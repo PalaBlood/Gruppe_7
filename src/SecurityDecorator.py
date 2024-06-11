@@ -12,7 +12,7 @@ def secured(function):
     firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
-        """Nimmt den Token, der von G Firebase generiert wird"""
+        
         id_token = request.cookies.get("token")
         error_message = None
         claims = None

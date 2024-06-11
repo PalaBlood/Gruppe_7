@@ -425,7 +425,7 @@ class RecipeEntryListOperations2(Resource):
     def get(self, groceries_designation):
 
         adm = HalilsTaverneAdministration()
-        reci = adm.find_recipe_entries_by_designation(groceries_designation)
+        reci = adm.get_recipe_entries_by_designation(groceries_designation)
         return reci
     
     @secured
@@ -445,7 +445,7 @@ class RecipeEntryListOperations2(Resource):
     @fridge_ns.marshal_list_with(recipe_entry)
     def delete(self, groceries_designation):
         adm = HalilsTaverneAdministration()
-        re = adm.find_recipe_entries_by_designation(groceries_designation)
+        re = adm.get_recipe_entries_by_designation(groceries_designation)
         adm.delete_recipe_entry(re)
 
 @fridge_ns.route('/RecipeList')
@@ -490,7 +490,7 @@ class RecipeOperations(Resource):
     @fridge_ns.marshal_with(recipe)
     def get(self, recipe_id):
         adm = HalilsTaverneAdministration()
-        reci = adm.find_recipe_by_id(recipe_id)
+        reci = adm.get_recipe_by_id(recipe_id)
         return reci
 
     @secured
