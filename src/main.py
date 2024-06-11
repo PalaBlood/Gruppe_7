@@ -309,6 +309,7 @@ class FridgeEntryListOperations(Resource):
 @fridge_ns.response(200, 'FridgeEntry successfully updated')
 @fridge_ns.param('groceries_designation', 'der Name eines Lebensmittels')
 class FridgeEntryOperations(Resource):
+
     @secured
     def delete(self, groceries_designation):
         adm = HalilsTaverneAdministration()
@@ -330,6 +331,14 @@ class FridgeEntryOperations(Resource):
             return '', 200
         else:
             return '', 500
+        
+
+    @fridge_ns.expect(fridge_entry)
+    @fridge_ns.marshal_with(fridge_entry)
+    def get(self, groceries_designation):
+        adm = HalilsTaverneAdministration()
+        fe = adm.find_fridge_entry_by_designation(groceries_designation)
+        return fe
 
 
 @fridge_ns.route('/COOK/<string:recipe_title>', methods=['PUT'])
@@ -431,6 +440,13 @@ class RecipeEntryListOperations2(Resource):
             return '', 200
         else:
             return '', 500
+
+    @secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def delete(self, groceries_designation):
+        adm = HalilsTaverneAdministration()
+        re = adm.find_recipe_entries_by_designation(groceries_designation)
+        adm.delete_recipe_entry(re)
 
 @fridge_ns.route('/RecipeList')
 @fridge_ns.response(500, 'Server-Fehler')
