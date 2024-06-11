@@ -1,0 +1,1 @@
+//Anzeige eines Haushalts als Kachel, bei Klick soll auf UserList weitergeleitet werden
