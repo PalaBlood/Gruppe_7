@@ -1,4 +1,4 @@
-Notiz an die Gruppe: Aufteilung von Komponenten, Achtung: Bottom up coden, d.h. jeweils Detail Komponente zuerst, dann Listenkomponente
+Notiz an die Gruppe: Aufteilung von Komponenten, Achtung: Top Down, d.h. jeweils Listen Komponente zuerst, dann Detailkomponente
 
 
 
