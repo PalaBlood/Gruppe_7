@@ -5,12 +5,16 @@ import { Link as RouterLink } from 'react-router-dom';
 import ProfileDropDown from '../dialogs/ProfileDropDown';
 
 /**
- * Shows the header with the main navigation Tabs within a Paper.
- *
+ * DAS WURDE  AUS BANK KOPIERT. evlt Fehlerhaft -> anpassung kommt!!
+ * Ab Zeile 52 noch anpassen, geht erst wenn die Seiten angleget sind
+ * 
+ * 
+ * Shows the header with the main navigation Tabs within a Paper. Die Tabs sollen als kleines Bild statt Text sein->prototyp
+ * 
  * @see See Material-UIs [Tabs](https://mui.com/material-ui/react-tabs/)
  * @see See Material-UIs [Paper](https://mui.com/material-ui/react-paper/)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ * 
+ * @author [Robin Krauß](https://github.com/Roggo17)
  */
 class Header extends Component {
 
@@ -39,10 +43,10 @@ class Header extends Component {
       <Paper variant='outlined' >
         <ProfileDropDown user={user} />
         <Typography variant='h3' component='h1' align='center'>
-          HdM Bank Administration
+          CoolTech SmartFridges
         </Typography>
         <Typography variant='h4' component='h2' align='center'>
-          Client Advisor Home
+          Lebensmittel Rezepte Einkaufsliste Settings
         </Typography>
         {
           user ?

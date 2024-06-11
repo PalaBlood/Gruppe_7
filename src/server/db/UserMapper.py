@@ -20,8 +20,6 @@ class UserMapper (Mapper):
     def __init__(self):
         super().__init__()
 
-
-
     def find_existing_household_id(self):
         cursor = self._cnx.cursor()
         query = "SELECT id FROM household LIMIT 1"

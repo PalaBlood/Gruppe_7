@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography } from '@mui/material'; //Online Bib von der wir einige Komponenten verwenden können
+import backgroundImage from './smartfridge.jpg'; 
+
 
 /** 
  * Renders a landing page for users who are not signed in. Provides a sign in button 
@@ -23,7 +25,28 @@ class SignIn extends Component {
 	/** Renders the sign in page, if user objext is null */
 	render() {
 		return (
-			<div>
+			<div style={{
+				backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover', 
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                width: '100vw', 
+                height: '100vh', 
+                position: 'fixed', 
+                top: 0,
+                left: 0,
+                zIndex: -1 
+			}}>
+			<div style={{
+				display: 'flex',
+				flexDirection:'column',
+				justifyContent:'center',
+				alignItems: 'center',
+				backgroundColor: 'white',
+				marginRight: '400px',
+				marginLeft:'400px',
+				marginTop:'300px'
+			}}>
 				<Typography sx={{margin: 2}} align='center' variant='h6'>Wilkommen in unserer SmartFridge</Typography>
 				<Typography sx={{margin: 2}} align='center'>It appears, that you are not signed in.</Typography>
 				<Typography sx={{margin: 2}} align='center'>Sign in to your SmartFridge</Typography>
@@ -34,6 +57,7 @@ class SignIn extends Component {
 						</Button>
 					</Grid>
 				</Grid>
+			</div>
 			</div>
 		);
 	}
