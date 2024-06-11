@@ -1,1 +1,1 @@
-//Anzeige eines Haushalts als Kachel, bei Klick soll auf UserList weitergeleitet werden
+//Editieren Eines Haushalts(name) + button der auf userlist weiterleitet

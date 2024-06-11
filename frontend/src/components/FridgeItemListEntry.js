@@ -1,0 +1,1 @@
+//Detailierter Lebensmitteleintrag
