@@ -171,7 +171,7 @@ class FridgeAPI {
             })
         })
     }
-
+    //fetched alle user eines bestimmten haushaltes
     getUsersbyHouseholdID(id) {
         return this.#fetchAdvanced(this.#getHouseholdURL(id)).then((responseJSON) => {
             let householdBO = HouseholdBO.fromJSON(responseJSON);

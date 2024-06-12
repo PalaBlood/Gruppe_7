@@ -4,6 +4,8 @@ import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ProfileDropDown from '../dialogs/ProfileDropDown';
 import UserList from '../UserList';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MicrowaveIcon from '@mui/icons-material/Microwave';
 
 class Header extends Component {
   constructor(props) {
@@ -41,8 +43,8 @@ class Header extends Component {
         </Typography>
         {user && (
           <Tabs indicatorColor='primary' textColor='primary' centered value={this.state.tabindex} onChange={this.handleTabChange}>
-            <Tab label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
-            <Tab label='All Users' onClick={this.toggleUserListModal} />
+            <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
+            <Tab icon={<SettingsIcon />} label='Haushalt verwalten' onClick={this.toggleUserListModal} />
             <Tab label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
           </Tabs>
         )}
