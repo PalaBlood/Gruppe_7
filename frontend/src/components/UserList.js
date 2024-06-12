@@ -62,11 +62,14 @@ class UserList extends Component {
         if (error) return <div style={{ fontSize: '16px', color: 'blue' }}>Error: {error}</div>;
     
         return (
-            <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f4f4', color: '#333', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+            <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f4f4', 
+            color: '#333', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
                 <h1 style={{ fontSize: '24px', fontWeight: 'bold', textAlign: 'center', marginBottom: '20px' }}>Household Members</h1>
                 <ul style={{ listStyleType: 'none', padding: '0' }}>
                     {users.map(user => (
-                        <li key={user.id} style={{ backgroundColor: 'white', padding: '10px', margin: '5px 0', borderRadius: '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', transition: 'background-color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}>
+                        <li key={user.id} style={{ backgroundColor: 'white', padding: '10px', margin: '5px 0', borderRadius: '4px',
+                         boxShadow: '0 1px 3px rgba(0,0,0,0.1)', transition: 'background-color 0.3s' }} 
+                         onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}>
                             {user.nick_name} - {user.first_name} {user.last_name}
                         </li>
                     ))}
