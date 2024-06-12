@@ -42,9 +42,9 @@ class SignIn extends Component {
 				flexDirection:'column',
 				justifyContent:'center',
 				alignItems: 'center',
-				backgroundColor: 'white',
-				marginRight: '400px',
-				marginLeft:'400px',
+				backgroundColor: 'lightblue',
+				marginRight: '600px',
+				marginLeft:'600px',
 				marginTop:'300px'
 			}}>
 				<Typography sx={{margin: 2}} align='center' variant='h6'>Wilkommen in unserer SmartFridge</Typography>

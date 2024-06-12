@@ -8,7 +8,7 @@ import FridgeBO from "./FridgeBO.js";
 
 
 
-export default class FridgeAPI {
+class FridgeAPI {
 
     static #api = null
 
@@ -54,6 +54,7 @@ export default class FridgeAPI {
     #updateUserURL = (id) => `${this.#fridgeserverbaseurl}/users/${id}`;
     #deleteUserURL = (id) =>  `${this.#fridgeserverbaseurl}/users/${id}`;
     #searchUserURL = (nick_name) => `${this.#fridgeserverbaseurl}/users/${nick_name}`;
+    #searchUserbygoogleIDURL = (google_id) => `${this.#fridgeserverbaseurl}/user-by-google-id/${google_id}`;
 
 
     // Recipe related
@@ -153,6 +154,15 @@ export default class FridgeAPI {
     )
     }
 
+    getUserbyGoogleUserId(google_user_id) {
+        return this.#fetchAdvanced(this.#searchUserbygoogleIDURL(google_user_id)).then((responseJSON) => {
+            let userBO = UserBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(userBO)
+            })
+        })
+    }
+
     getUserbyNickname(nick_name) {
         return this.#fetchAdvanced(this.#searchUserURL(nick_name)).then((responsejSON) => {
             let userBO = UserBO.fromJSON(responsejSON);
@@ -162,7 +172,7 @@ export default class FridgeAPI {
         })
     }
 
-    getHouseholdbyID(id) {
+    getUsersbyHouseholdID(id) {
         return this.#fetchAdvanced(this.#getHouseholdURL(id)).then((responseJSON) => {
             let householdBO = HouseholdBO.fromJSON(responseJSON);
             return new Promise(function(resolve) {
@@ -410,26 +420,10 @@ export default class FridgeAPI {
 }
 
 
+export default FridgeAPI;
+
+
 
 //API TESTEN
 
 
-const api = FridgeAPI.getAPI();
-
-
-
-
-
-api.getUserbyId(4).then(user =>{
-    console.log(user);
-}).catch(error => {
-    console.error("Failed", error)
-})
-
-
-let user = new UserBO("kje","euhf","wiuehf",2,"wkjnfd")
-console.log(user)
-
-api.addUser(user).then(newUser =>{
-    console.log(newUser);
-})

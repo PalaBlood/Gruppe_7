@@ -7,4 +7,3 @@ import { Link as RouterLink } from 'react-router-dom';
 import { SmartFridgeAPI } from '../API/SmartFridgeAPI';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import MoneyTransferDialog from './dialogs/MoneyTransferDialog';

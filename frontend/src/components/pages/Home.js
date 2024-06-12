@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserList from '../UserList';
 
 class Home extends Component {
     render() {

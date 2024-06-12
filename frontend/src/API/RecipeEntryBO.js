@@ -30,7 +30,7 @@ export default class RecipeEntryBO extends FoodEntry{
         let result = [];
     
         if (Array.isArray(recipeentries)) {
-          users.forEach((r) => {
+          recipeentries.forEach((r) => {
             Object.setPrototypeOf(r, RecipeEntryBO.prototype);
             result.push(r);
           })
