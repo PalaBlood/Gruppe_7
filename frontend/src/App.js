@@ -38,7 +38,7 @@ class App extends React.Component {
     componentDidMount() {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const AuthContext = createContext();
+        const AuthContext = createContext()
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.setState({ authLoading: true });
