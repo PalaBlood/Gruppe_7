@@ -3,7 +3,11 @@ import UserList from '../UserList';
 
 class Home extends Component {
     render() {
-        return <h1>Willkommen</h1>;
+        return <div style={{
+            textAlign: 'center'
+        }}>
+        <h1>Willkommen in unsere SmartFridge Anwendung!</h1>;
+        </div>
     }
 }
 
