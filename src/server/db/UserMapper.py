@@ -161,9 +161,9 @@ class UserMapper(Mapper):
         :param user welcher in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE users SET nickname=%s, first_name=%s, last_name=%s, user_id=%s, google_user_id=%s WHERE id=%s"
+        command = "UPDATE users SET nick_name=%s, first_name=%s, last_name=%s, user_id=%s, google_user_id=%s WHERE id=%s"
         data = (
-        user.get_nickname(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_google_user_id)
+        user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_google_user_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
