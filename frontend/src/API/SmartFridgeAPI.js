@@ -1,11 +1,10 @@
-import UserBO from "./UserBO.js";
-import FoodEntry from "./FoodEntry.js";
-import RecipeBO from "./RecipeBO.js";
-import RecipeEntryBO from "./RecipeEntryBO.js";
-import FridgeEntryBO from "./FridgeEntryBO.js";
-import HouseholdBO from "./HouseholdBO.js";
-import FridgeBO from "./FridgeBO.js";
-
+import UserBO from "./UserBO";
+import FoodEntry from "./FoodEntry";
+import RecipeBO from "./RecipeBO";
+import RecipeEntryBO from "./RecipeEntryBO";
+import FridgeEntryBO from "./FridgeEntryBO";
+import HouseholdBO from "./HouseholdBO";
+import FridgeBO from "./FridgeBO";
 
 
 class FridgeAPI {
