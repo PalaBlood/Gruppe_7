@@ -1,60 +1,56 @@
-
-
-from HalilsTaverneAdministration import HalilsTaverneAdministration
-
 from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
 
+from HalilsTaverneAdministration import HalilsTaverneAdministration
 
-"""Diese Datei sorgt dafür, dass nur über Google Firebase angemeldete User auf unsere Webanwendung zugreifen können."""
 def secured(function):
     firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
-        
         id_token = request.cookies.get("token")
+        print(id_token)
         error_message = None
         claims = None
         objects = None
 
         if id_token:
             try:
+                
                 claims = google.oauth2.id_token.verify_firebase_token(
-                    id_token, firebase_request_adapter)
+                    id_token, firebase_request_adapter, clock_skew_in_seconds=2)
 
-                if claims is not None:
-                    """Sollte der User bereits existieren, wird eine seine Daten abgefragt"""
+                if claims:
                     adm = HalilsTaverneAdministration()
 
                     google_user_id = claims.get("user_id")
-                    email = claims.get("email")
-                    first_name = claims.get("given_name", "")  # 'given_name' aus dem Firebase-Token
-                    last_name = claims.get("family_name", "")  # 'family_name' aus dem Firebase-Token
-                    nick_name = claims.get("name", "")  # 'name' --> oft als Nickname verwendet
+                    first_name = claims.get("given_name", "")
+                    last_name = claims.get("family_name", "")
+                    nick_name = claims.get("name", "")
 
+                    
                     user = adm.get_user_by_google_user_id(google_user_id)
-                    if user is not None:
-                        # Fall: Der Benutzer ist uns bereits bekannt.
+                    if user:
+                        
                         user.first_name = first_name
                         user.last_name = last_name
                         user.nick_name = nick_name
                         adm.save_user(user)
+                        household_id = user.household_id
                     else:
-                        """Sollte der User neu sein, wird ein User erstellt"""
-                        user = adm.create_user(first_name, last_name, nick_name, email, google_user_id)
+                        
+                        household = adm.create_household(nick_name + "'s Household")
+                        user = adm.create_user(nick_name, first_name, last_name, household.get_id(), google_user_id)
+                        household_id = household.get_id()
 
-                    print(request.method, request.path, "Requested by:", nick_name, email)
-
-                    objects = function(*args, **kwargs)
-                    return objects
+                    return function(*args, **kwargs)
                 else:
-                    return '', 401  # UNAUTHORIZED
+                    return 'Unauthorized', 401
             except ValueError as exc:
-                # Fehlerbehandlung für abgelaufene oder ungültige Tokens.
-                error_message = str(exc)
-                return exc, 401  # UNAUTHORIZED
+                
+                print("Token verification error:", str(exc))
+                return 'Unauthorized', 401
 
-        return '', 401  # UNAUTHORIZED
+        return 'Unauthorized', 401
 
     return wrapper

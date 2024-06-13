@@ -212,6 +212,7 @@ class FridgeAPI {
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-type':'application/json',

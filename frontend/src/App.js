@@ -11,6 +11,9 @@ import LoadingProgress from './components/dialogs/LoadingProgress';
 import Header from './components/layout/Header';
 import Home from './components/pages/Home'
 import UserList from './components/UserList';
+import Footer from './components/layout/Footer';
+import FridgeAPI from './API/SmartFridgeAPI.js';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -38,13 +41,13 @@ class App extends React.Component {
     componentDidMount() {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const AuthContext = createContext()
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.setState({ authLoading: true });
                 user.getIdToken().then(token => {
                     document.cookie = `token=${token};path=/`;
-                    localStorage.setItem('currentUserId', user.uid);
+                    console.log(document.cookie);
                     this.setState({
                         currentUser: user,
                         authError: null,
@@ -67,14 +70,26 @@ class App extends React.Component {
         });
     }
 
+
+
     render() {
         const { currentUser, appError, authError, authLoading } = this.state;
         return (
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='md'>
+                <Container maxWidth='md' style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        overflow: 'auto'
+                        }}>
                         <Header user={currentUser} />
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            overflow:'auto'
+                        }}>
                         <Routes>
                             <Route path={process.env.PUBLIC_URL + '/'} element={currentUser ? <Navigate replace to={process.env.PUBLIC_URL + '/home'} /> : <SignIn onSignIn={this.handleSignIn} />} />
                             <Route path={process.env.PUBLIC_URL + '/home'} element={<Home />} />
@@ -85,9 +100,11 @@ class App extends React.Component {
                         <LoadingProgress show={authLoading} />
                         <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
                         <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
-                    </Container>
+                       </div>
+                    </Container>        
                 </Router>
             </ThemeProvider>
+            
         );
     }
 }
