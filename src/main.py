@@ -13,15 +13,12 @@ import traceback
 
 from SecurityDecorator import secured
 
-
 app = Flask(__name__)
-
 
 """CORS(app, resources={r"/api/":{"origins":"*"}})"""
 CORS(app, resources=r'/fridge/*')
 
-
-#alle pfade für ursprünge offen
+# alle pfade für ursprünge offen
 
 api = Api(app, version='1.0', title='SmartFridgeDemo API',
           description='An API for managing a smart fridge system.')
@@ -35,39 +32,45 @@ bo = api.model('BusinessObject', {
 })
 
 food_entry = api.inherit('FoodEntry', {
-    'groceries_designation': fields.String(attribute='_FoodEntry__groceries_designation',required=True, description='Name of the grocery item'),
-    'quantity': fields.Integer(attribute='_FoodEntry__quantity',required=True, description='Quantity of the grocery item'),
-    'unit': fields.String(attribute='_FoodEntry__unit',required=True, description='Unit of measure for the quantity')
+    'groceries_designation': fields.String(attribute='_FoodEntry__groceries_designation', required=True,
+                                           description='Name of the grocery item'),
+    'quantity': fields.Integer(attribute='_FoodEntry__quantity', required=True,
+                               description='Quantity of the grocery item'),
+    'unit': fields.String(attribute='_FoodEntry__unit', required=True, description='Unit of measure for the quantity')
 })
 
 user = api.inherit('User', bo, {
-    'nick_name': fields.String(attribute='_nickname',description='Nickname of the user'),
-    'first_name': fields.String(attribute='_first_name',description='First name of the user'),
-    'last_name': fields.String(attribute='_last_name',description='Last name of the user'),
-    'household_id': fields.String(attribute='_Household_id',description='The household_id of the user'),
-    'google_user_id': fields.String(attribute='_google_user_id',description='Unique google_user_id')
+    'nick_name': fields.String(attribute='_nickname', description='Nickname of the user'),
+    'first_name': fields.String(attribute='_first_name', description='First name of the user'),
+    'last_name': fields.String(attribute='_last_name', description='Last name of the user'),
+    'household_id': fields.Integer(attribute='_Household_id', description='The household_id of the user'),
+    'google_user_id': fields.String(attribute='_google_user_id', description='Unique google_user_id')
 })
 
 fridge = api.inherit('Fridge', bo, {})
 
 recipe = api.inherit('Recipe', bo, {
     'title': fields.String(attribute='__title', required=True, description='Title of the recipe'),
-    'number_of_persons': fields.Integer(attribute='__number_of_persons', required=True, description='Number of servings the recipe provides'),
+    'number_of_persons': fields.Integer(attribute='__number_of_persons', required=True,
+                                        description='Number of servings the recipe provides'),
     'creator': fields.String(attribute='__creator', description='Creator of the recipe'),
     'description': fields.String(attribute='__description', required=True, description='The Description oif a recipe')
 })
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
-    'recipe_id': fields.Integer(attribute='_RecipeEntry__recipe_id',required=True, description='Identifier of the associated recipe')
+    'recipe_id': fields.Integer(attribute='_RecipeEntry__recipe_id', required=True,
+                                description='Identifier of the associated recipe')
 })
 
 fridge_entry = api.inherit('FridgeEntry', food_entry, {
-    'fridge_id': fields.Integer(attribute='_FridgeEntry__fridge_id', required=True, description='Identifier of the associated fridge'),
+    'fridge_id': fields.Integer(attribute='_FridgeEntry__fridge_id', required=True,
+                                description='Identifier of the associated fridge'),
 })
 
-
 household = api.inherit('Household', bo, {
-    'name': fields.String(attribute='__name',description='Name of the household'),
+    'name': fields.String(attribute='_Household__name', description='Name of the household'),
+    'fridge_id': fields.Integer(attribute='_Household__fridge_id', required=True,
+                                description='fridge associated with the household'),
 })
 
 
@@ -75,7 +78,6 @@ household = api.inherit('Household', bo, {
 @fridge_ns.response(500, 'Server-Fehler')
 class UserListOperations(Resource):
     @fridge_ns.marshal_list_with(user)
-
     def get(self):
         """Auslesen aller User"""
 
@@ -105,12 +107,12 @@ class UserListOperations(Resource):
 
         else:
             return '', 500
-        #500: server-fehler
+        # 500: server-fehler
 
 
 @fridge_ns.route('/users/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('id','die Id eines Users')
+@fridge_ns.param('id', 'die Id eines Users')
 class UserOperations(Resource):
     @fridge_ns.marshal_with(user)
     def get(self, id):
@@ -121,13 +123,12 @@ class UserOperations(Resource):
         return User
 
     @secured
-    def delete(self,id):
+    def delete(self, id):
         """user löschen"""
         adm = HalilsTaverneAdministration()
         User = adm.get_user_by_id(id)
         adm.delete_user(User)
         return '', 200
-
 
     @fridge_ns.marshal_with(user)
     @fridge_ns.expect(user, validate=True)
@@ -146,20 +147,20 @@ class UserOperations(Resource):
             return '', 500
 
 
-@fridge_ns.route('user-by-google-id/<string:google_id>')
+@fridge_ns.route('/user-by-google-id/<string:google_user_id>')
 @fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('google_user_id','die google_user_id eines users')
+@fridge_ns.param('google_user_id', 'die google_user_id eines users')
 class UserByGoogleIdOperations(Resource):
 
-    @fridge_ns.marshal_with(user)
-    @secured
+    @fridge_ns.marshal_list_with(user)
     def get(self, google_user_id):
         """user nach google_user_id auslesen"""
         adm = HalilsTaverneAdministration()
         User = adm.get_user_by_google_user_id(google_user_id)
         return User
 
-@fridge_ns.route('users-by-nick_name/<string:nick_name>')
+
+@fridge_ns.route('/users-by-nick_name/<string:nick_name>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.param('nick_name', 'Der nick_name eines Users')
 class UsersByNameOperations(Resource):
@@ -170,6 +171,7 @@ class UsersByNameOperations(Resource):
         adm = HalilsTaverneAdministration()
         User = adm.get_user_by_nickname(nick_name)
         return User
+
 
 @fridge_ns.route('/Household')
 @fridge_ns.response(500, 'Server-Fehler')
@@ -203,22 +205,22 @@ class HouseholdListOperation(Resource):
 
 @fridge_ns.route('/Household/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('id','die Id eines Haushalts')
+@fridge_ns.param('id', 'die Id eines Haushalts')
 class HouseholdOperations(Resource):
-    @fridge_ns.marshal_with(household)
-    @secured
-    def get(self,id):
+
+    @fridge_ns.marshal_with(user)
+    def get(self, id):
 
         adm = HalilsTaverneAdministration()
-        hou = adm.find_household_by_id(id)
+        hou = adm.get_users_by_household_id(id)
         return hou
 
     @secured
     def delete(self, id):
 
-        adm = HalilsTaverneAdministration() #Vermindung zur Adminklasse mit allen Methoden
-        hou = adm.find_household_by_id(id) #Nun verwenden wir die Methode, um die notwenige Id auszulesen
-        adm.delete_household(hou) # Anhhand der ID löschen wir das Household Objekt anhand der ID
+        adm = HalilsTaverneAdministration()  # Vermindung zur Adminklasse mit allen Methoden
+        hou = adm.find_household_by_id(id)  # Nun verwenden wir die Methode, um die notwenige Id auszulesen
+        adm.delete_household(hou)  # Anhhand der ID löschen wir das Household Objekt anhand der ID
         return '', 200
 
     @fridge_ns.marshal_with(household)
@@ -239,16 +241,15 @@ class HouseholdOperations(Resource):
             return '', 500
 
 
-#auslesen aller fridges
+# auslesen aller fridges
 
 @fridge_ns.route('/Fridge')
-@fridge_ns.response(500,'Server-Fehler')
+@fridge_ns.response(500, 'Server-Fehler')
 class FridgeListOperations(Resource):
 
     @fridge_ns.marshal_list_with(fridge)
     @secured
     def get(self):
-
 
         adm = HalilsTaverneAdministration()
         fridges = adm.get_all_fridges()
@@ -269,9 +270,8 @@ class FridgeListOperations(Resource):
             return '', 500
 
 
-
 @fridge_ns.route('/FridgeEntries')
-@fridge_ns.response(500,'Server-Fehler')
+@fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntryListOperations(Resource):
 
     @fridge_ns.marshal_list_with(fridge_entry)
@@ -302,7 +302,6 @@ class FridgeEntryListOperations(Resource):
             return '', 500
 
 
-
 @fridge_ns.route('/FridgeEntry/<string:groceries_designation>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'FridgeEntry not found')
@@ -317,8 +316,6 @@ class FridgeEntryOperations(Resource):
         adm.delete_fridge_entry(fridge_entry)
         return '', 200
 
-
-
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_with(fridge_entry)
     def put(self, groceries_designation):
@@ -331,7 +328,6 @@ class FridgeEntryOperations(Resource):
             return '', 200
         else:
             return '', 500
-        
 
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_with(fridge_entry)
@@ -346,8 +342,6 @@ class FridgeEntryOperations(Resource):
 @fridge_ns.param('recipe_title', 'der name eines rezepts')
 class UseRecipeIngredients(Resource):
 
-
-
     def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
@@ -356,11 +350,11 @@ class UseRecipeIngredients(Resource):
         for recipe_entry in recipe_entries:
             fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.get_groceries_designation())
             if fridge_entry and fridge_entry.get_quantity() >= recipe_entry.get_quantity():
-                    new_quantity = fridge_entry.get_quantity() - recipe_entry.get_quantity()
-                    adm.update_fridge_entry_quantity(fridge_entry.get_id(), fridge_entry.get_groceries_designation(),
-                                                     new_quantity, fridge_entry.get_unit())
+                new_quantity = fridge_entry.get_quantity() - recipe_entry.get_quantity()
+                adm.update_fridge_entry_quantity(fridge_entry.get_id(), fridge_entry.get_groceries_designation(),
+                                                 new_quantity, fridge_entry.get_unit())
             else:
-                    # Nicht genug in der Fridge
+                # Nicht genug in der Fridge
                 return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
 
         return {"message": "LET HIM COOK."}, 200
@@ -408,11 +402,10 @@ class RecipeEntryListOperation(Resource):
     @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self, recipe_id):
-
         adm = HalilsTaverneAdministration()
         reci = adm.find_recipe_entries_by_recipe_id(recipe_id)
         return reci
-    
+
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>')
 @fridge_ns.response(500, 'Server-Fehler')
@@ -427,7 +420,7 @@ class RecipeEntryListOperations2(Resource):
         adm = HalilsTaverneAdministration()
         reci = adm.get_recipe_entries_by_designation(groceries_designation)
         return reci
-    
+
     @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def put(self, groceries_designation):
@@ -448,6 +441,7 @@ class RecipeEntryListOperations2(Resource):
         re = adm.get_recipe_entries_by_designation(groceries_designation)
         adm.delete_recipe_entry(re)
 
+
 @fridge_ns.route('/RecipeList')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'Recipe not found')
@@ -466,25 +460,24 @@ class RecipeListOperations(Resource):
     @fridge_ns.marshal_list_with(recipe)
     def post(self):
 
-            adm = HalilsTaverneAdministration()
-            proposal = Recipe.form_dict(api.payload)
-            if proposal is not None:
+        adm = HalilsTaverneAdministration()
+        proposal = Recipe.form_dict(api.payload)
+        if proposal is not None:
 
-                r = adm.create_recipe(
-                    proposal.get_title(),
-                    proposal.get_number_of_persons(),
-                    proposal.get_creator(),
-                    proposal.get_description()
-                )
-                return r, 200
-            else:
-                return '', 500
+            r = adm.create_recipe(
+                proposal.get_title(),
+                proposal.get_number_of_persons(),
+                proposal.get_creator(),
+                proposal.get_description()
+            )
+            return r, 200
+        else:
+            return '', 500
 
 
 @fridge_ns.route('/Recipe/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeOperations(Resource):
-
 
     @secured
     @fridge_ns.marshal_with(recipe)
@@ -508,54 +501,10 @@ class RecipeOperations(Resource):
 
     @secured
     def delete(self, recipe_id):
-            adm = HalilsTaverneAdministration()
-            Recipe = adm.get_recipe_by_id(recipe_id)
-            adm.delete_recipe(Recipe)
-            return '', 200
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        adm = HalilsTaverneAdministration()
+        Recipe = adm.get_recipe_by_id(recipe_id)
+        adm.delete_recipe(Recipe)
+        return '', 200
 
 
 if  __name__== '__main__':
