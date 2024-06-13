@@ -71,28 +71,17 @@ class HouseholdMapper(Mapper):
     def find_by_id(self, id):
         """Find a Household by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id FROM household WHERE id=%s", (id,))
+        cursor.execute("SELECT id, name, Fridge_ID FROM household WHERE id=%s", (id,))
         tuple = cursor.fetchone()
+
         if tuple:
             # Create a Household object
 
             household = Household()
             household.set_id(tuple[0])
+            household.set_name(tuple[1])
+            household.set_fridge_id(tuple[2])
 
-            # Retrieve all users associated with this household
-            cursor.execute("SELECT id, nick_name, first_name, last_name, household_id FROM users WHERE household_id=%s",
-                           (household.get_id(),))
-            users = cursor.fetchall()
-
-            # Create User objects for each retrieved user record and add to the Household
-            for (user_id, nick_name, first_name, last_name, household_id) in users:
-                user = User()
-                user.set_id(user_id)
-                user.set_nick_name(nick_name)
-                user.set_first_name(first_name)
-                user.set_last_name(last_name)
-                user.set_household_id(household_id)
-                household.add_user(user)
 
             return household
 
@@ -135,6 +124,8 @@ class HouseholdMapper(Mapper):
             self._cnx.rollback()
         finally:
             cursor.close()
+
+
 
 if __name__ == "__main__":
     household_mapper = HouseholdMapper()
