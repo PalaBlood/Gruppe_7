@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
@@ -9,8 +9,8 @@ import firebaseConfig from './firebaseconfig';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import Header from './components/layout/Header';
-import Home from './components/pages/Home'
-import UserList from './components/UserList';
+import Home from './components/pages/Home';
+import Test from './components/pages/Test'; // Importiere die Test-Komponente
 
 class App extends React.Component {
     constructor(props) {
@@ -38,13 +38,11 @@ class App extends React.Component {
     componentDidMount() {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const AuthContext = createContext()
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.setState({ authLoading: true });
                 user.getIdToken().then(token => {
                     document.cookie = `token=${token};path=/`;
-                    localStorage.setItem('currentUserId', user.uid);
                     this.setState({
                         currentUser: user,
                         authError: null,
@@ -58,7 +56,6 @@ class App extends React.Component {
                 });
             } else {
                 document.cookie = 'token=;path=/';
-                localStorage.removeItem('currentUserId')
                 this.setState({
                     currentUser: null,
                     authLoading: false
@@ -78,9 +75,7 @@ class App extends React.Component {
                         <Routes>
                             <Route path={process.env.PUBLIC_URL + '/'} element={currentUser ? <Navigate replace to={process.env.PUBLIC_URL + '/home'} /> : <SignIn onSignIn={this.handleSignIn} />} />
                             <Route path={process.env.PUBLIC_URL + '/home'} element={<Home />} />
-                            <Route path='/users' element={
-                                currentUser ? <UserList /> : <Navigate to='/' />
-                            } />
+                            <Route path={process.env.PUBLIC_URL + '/test'} element={<Test />} /> {/* Neue Route für Test-Komponente */}
                         </Routes>
                         <LoadingProgress show={authLoading} />
                         <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
@@ -93,7 +88,6 @@ class App extends React.Component {
 }
 
 export default App;
-
 
 function Secured({ user, children }) {
     let location = useLocation();

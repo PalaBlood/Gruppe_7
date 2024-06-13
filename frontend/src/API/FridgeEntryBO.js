@@ -1,4 +1,4 @@
-import FoodEntry from "./FoodEntry.js";
+import FoodEntry from "./FoodEntry";
 
 export default class FridgeEntryBO extends FoodEntry {
 
