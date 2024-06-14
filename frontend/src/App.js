@@ -1,4 +1,5 @@
 import React, { createContext } from 'react';
+import React, { createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
@@ -25,11 +26,9 @@ class App extends React.Component {
             authLoading: false
         };
     }
-
     static getDerivedStateFromError(error) {
         return { appError: error };
     }
-
     handleSignIn = () => {
         this.setState({ authLoading: true });
         const app = initializeApp(firebaseConfig);
@@ -37,7 +36,6 @@ class App extends React.Component {
         const provider = new GoogleAuthProvider();
         signInWithRedirect(auth, provider);
     };
-
     componentDidMount() {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -61,6 +59,7 @@ class App extends React.Component {
                 });
             } else {
                 document.cookie = 'token=;path=/';
+                localStorage.removeItem('currentUserId')
                 localStorage.removeItem('currentUserId')
                 this.setState({
                     currentUser: null,
@@ -96,6 +95,9 @@ class App extends React.Component {
                             <Route path='/users' element={
                                 currentUser ? <UserList /> : <Navigate to='/' />
                             } />
+                            <Route path='/users' element={
+                                currentUser ? <UserList /> : <Navigate to='/' />
+                            } />
                         </Routes>
                         <LoadingProgress show={authLoading} />
                         <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
@@ -110,6 +112,7 @@ class App extends React.Component {
 }
 
 export default App;
+
 
 
 function Secured({ user, children }) {

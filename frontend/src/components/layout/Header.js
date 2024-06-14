@@ -1,71 +1,107 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Typography, Tabs, Tab } from '@mui/material';
+import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ProfileDropDown from '../dialogs/ProfileDropDown';
+import UserList from '../UserList';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MicrowaveIcon from '@mui/icons-material/Microwave';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 
-/**
- * DAS WURDE  AUS BANK KOPIERT. evlt Fehlerhaft -> anpassung kommt!!
- * Ab Zeile 52 noch anpassen, geht erst wenn die Seiten angleget sind
- * 
- * 
- * Shows the header with the main navigation Tabs within a Paper. Die Tabs sollen als kleines Bild statt Text sein->prototyp
- * 
- * @see See Material-UIs [Tabs](https://mui.com/material-ui/react-tabs/)
- * @see See Material-UIs [Paper](https://mui.com/material-ui/react-paper/)
- * 
- * @author [Robin Krauß](https://github.com/Roggo17)
- */
 class Header extends Component {
-
   constructor(props) {
     super(props);
-
-    // Init an empty state
     this.state = {
-      tabindex: 0
+      tabindex: 0,
+      openUserList: false 
     };
   }
 
-  /** Handles onChange events of the Tabs component */
   handleTabChange = (e, newIndex) => {
-    // console.log(newValue)
     this.setState({
       tabindex: newIndex
-    })
+    });
   };
 
-  /** Renders the component */
+  toggleUserListModal = () => {
+    this.setState(prevState => ({
+      openUserList: !prevState.openUserList
+    }));
+  };
+
   render() {
     const { user } = this.props;
+    const { openUserList } = this.state;
 
     return (
-      <Paper variant='outlined' >
+      <Paper variant='outlined' style={{
+        borderRadius: '10px', 
+        overflow: 'hidden', 
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
+      }}>
         <ProfileDropDown user={user} />
-        <Typography variant='h3' component='h1' align='center'>
-          CoolTech SmartFridges
+        <Typography variant='h3' component='h1' align='center' style={{
+          marginTop: '20px', 
+          marginBottom: '10px', 
+          fontWeight: 'bold'
+        }}>
+          HdMSmartFridge
         </Typography>
-        <Typography variant='h4' component='h2' align='center'>
-          Lebensmittel Rezepte Einkaufsliste Settings
+        <Typography variant='h4' component='h2' align='center' style={{
+          marginBottom: '20px'
+        }}>
+
         </Typography>
-        {
-          user ?
-            <Tabs indicatorColor='primary' textColor='primary' centered value={this.state.tabindex} onChange={this.handleTabChange} >
-              <Tab label='Customers' component={RouterLink} to={process.env.PUBLIC_URL + '/customers'} />
-              <Tab label='Test' component={RouterLink} to={process.env.PUBLIC_URL + '/test'} />
-              <Tab label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
-            </Tabs>
-            : null
-        }
+        {user && (
+          <Tabs 
+            indicatorColor='primary' 
+            textColor='primary' 
+            centered 
+            value={this.state.tabindex} 
+            onChange={this.handleTabChange}
+            style={{
+              marginBottom: '20px'
+            }}
+          > 
+            <Tab icon={<HomeIcon/>} label='Home' component={RouterLink} to={process.env.PUBLIC_URL + '/home'}/>
+            <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
+            <Tab icon={<SettingsIcon />} label='Haushalt verwalten' onClick={this.toggleUserListModal} />
+            <Tab icon={<InfoIcon/> }label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
+          </Tabs>
+        )}
+        <Modal
+          open={openUserList}
+          onClose={this.toggleUserListModal}
+          aria-labelledby="user-list-modal"
+          aria-describedby="modal-modal-description"
+          style={{
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center'
+          }}
+        >
+          <Box style={{
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)', 
+            width: 400, 
+            backgroundColor: 'white', 
+            boxShadow: '24px', 
+            padding: '20px', 
+            borderRadius: '10px'
+          }}>
+            <UserList /> 
+          </Box>
+        </Modal>
       </Paper>
-    )
+    );
   }
 }
 
-/** PropTypes */
 Header.propTypes = {
-  /** The logged in firesbase user */
   user: PropTypes.object,
-}
+};
 
 export default Header;
