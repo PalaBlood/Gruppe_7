@@ -1,5 +1,4 @@
 import React, { createContext } from 'react';
-import React, { createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
