@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { createContext } from 'react';
+import React, { createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
@@ -9,13 +10,13 @@ import firebaseConfig from './firebaseconfig';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import Header from './components/layout/Header';
-import Home from './components/pages/Home';
+import Home from './components/pages/Home'
 import UserList from './components/UserList';
 import Footer from './components/layout/Footer';
 import FridgeAPI from './API/SmartFridgeAPI.js';
-import Test from './components/pages/Test'; // Make sure this path is correct
 
-class App extends Component {
+
+class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,11 +26,9 @@ class App extends Component {
             authLoading: false
         };
     }
-
     static getDerivedStateFromError(error) {
         return { appError: error };
     }
-
     handleSignIn = () => {
         this.setState({ authLoading: true });
         const app = initializeApp(firebaseConfig);
@@ -37,10 +36,10 @@ class App extends Component {
         const provider = new GoogleAuthProvider();
         signInWithRedirect(auth, provider);
     };
-
     componentDidMount() {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.setState({ authLoading: true });
@@ -60,6 +59,8 @@ class App extends Component {
                 });
             } else {
                 document.cookie = 'token=;path=/';
+                localStorage.removeItem('currentUserId')
+                localStorage.removeItem('currentUserId')
                 this.setState({
                     currentUser: null,
                     authLoading: false
@@ -68,46 +69,51 @@ class App extends Component {
         });
     }
 
+
+
     render() {
         const { currentUser, appError, authError, authLoading } = this.state;
         return (
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='md' style={{
+                <Container maxWidth='md' style={{
                         display: 'flex',
                         flexDirection: 'column',
                         overflow: 'auto'
-                    }}>
+                        }}>
                         <Header user={currentUser} />
                         <div style={{
                             flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            overflow: 'auto'
+                            overflow:'auto'
                         }}>
-                            <Routes>
-                                <Route path={process.env.PUBLIC_URL + '/'} element={
-                                    currentUser ?
-                                    <Navigate replace to={process.env.PUBLIC_URL + '/home'} /> :
-                                    <SignIn onSignIn={this.handleSignIn} />
-                                } />
-                                <Route path={process.env.PUBLIC_URL + '/home'} element={<Home />} />
-                                <Route path='/test' element={<Secured user={currentUser}><Test /></Secured>} />
-                                <Route path='/users' element={<Secured user={currentUser}><UserList /></Secured>} />
-                            </Routes>
-                            <LoadingProgress show={authLoading} />
-                            <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
-                            <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
-                        </div>
+                        <Routes>
+                            <Route path={process.env.PUBLIC_URL + '/'} element={currentUser ? <Navigate replace to={process.env.PUBLIC_URL + '/home'} /> : <SignIn onSignIn={this.handleSignIn} />} />
+                            <Route path={process.env.PUBLIC_URL + '/home'} element={<Home />} />
+                            <Route path='/users' element={
+                                currentUser ? <UserList /> : <Navigate to='/' />
+                            } />
+                            <Route path='/users' element={
+                                currentUser ? <UserList /> : <Navigate to='/' />
+                            } />
+                        </Routes>
+                        <LoadingProgress show={authLoading} />
+                        <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
+                        <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
+                       </div>
                     </Container>
                 </Router>
             </ThemeProvider>
+
         );
     }
 }
 
 export default App;
+
+
 
 function Secured({ user, children }) {
     let location = useLocation();
