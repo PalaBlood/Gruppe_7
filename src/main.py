@@ -94,6 +94,7 @@ class UserListOperations(Resource):
         """Neuen User anlegen"""
 
         adm = HalilsTaverneAdministration()
+        print(api.payload)
         proposal = User.from_dict(api.payload)
 
         if proposal is not None:
@@ -136,11 +137,12 @@ class UserOperations(Resource):
 
     @fridge_ns.marshal_with(user)
     @fridge_ns.expect(user, validate=True)
-    @secured
     def put(self, id):
         """User Objekt updaten"""
         adm = HalilsTaverneAdministration()
+        print(api.payload)
         u = User.from_dict(api.payload)
+
 
         if u is not None:
 
@@ -197,7 +199,9 @@ class HouseholdListOperation(Resource):
     def post(self):
 
         adm = HalilsTaverneAdministration()
+        print(api.payload)
         proposal = Household.form_dict(api.payload)
+        print(proposal)
 
         if proposal is not None:
 

@@ -27,13 +27,14 @@ class HouseholdMapper(Mapper):
         result = []
         cursor = self._cnx.cursor()
         try:
-            cursor.execute("SELECT id, name FROM household")
+            cursor.execute("SELECT id, name, fridge_id FROM household")
             tuples = cursor.fetchall()
 
-            for (id, name) in tuples:
+            for (id, name, fridge_id) in tuples:
                 household = Household()
                 household.set_id(id)
                 household.set_name(name)
+                household.set_fridge_id(fridge_id)
                 result.append(household)
 
         except Exception as e:
@@ -52,6 +53,7 @@ class HouseholdMapper(Mapper):
     def insert(self, household):
         """Insert a Household object into the database and set its ID."""
         cursor = self._cnx.cursor()
+        print(household)
         name = household.get_name()
         fridge_id = household.get_fridge_id()
 

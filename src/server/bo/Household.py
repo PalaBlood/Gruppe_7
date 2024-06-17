@@ -13,7 +13,6 @@ In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in
 class Household(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._users = []
         self._name = ""
         self._fridge_id = None  # Als Referenz
 
@@ -34,25 +33,25 @@ class Household(BusinessObject):
 
     def set_name(self, name):
 
-        self.__name = name
+        self._name = name
 
     def get_name(self):
 
-        return self.__name
+        return self._name
 
     def get_fridge_id(self):
-        return self.__fridge_id
+        return self._fridge_id
 
     def set_fridge_id(self, fridge_id):
-        self.__fridge_id = fridge_id
+        self._fridge_id = fridge_id
 
     def __str__(self):
-        user_details = ", ".join(str(user) for user in self._users)
-        return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()}, Users: [{user_details}])"
+
+        return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()})"
 
     def __repr__(self):
 
-        return f"<Household(ID: {self._id}, Name: {self.__name}, Fridge ID: {self.get_fridge_id()})>"
+        return f"<Household(ID: {self._id}, Name: {self._name}, Fridge ID: {self.get_fridge_id()})>"
 
     @staticmethod
     def form_dict(dictionary=dict()):
@@ -72,10 +71,10 @@ if __name__ == "__main__":
     haushalt = Household()  # Erstelle Haushalt
     haushalt.add_user(user1)  # User hinzufügen
     haushalt.add_user(user2)
-    print(haushalt.get_users())
+
 
     haushalt.remove_user(user1)  # User entfernen
-    print(haushalt.get_users())
+
 
 
     

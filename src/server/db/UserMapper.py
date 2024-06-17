@@ -88,9 +88,7 @@ class UserMapper(Mapper):
         for (maxid) in tuples:
             user.set_id(maxid[0] + 1)
 
-        household_id = self.find_existing_household_id()
 
-        user.set_household_id(household_id)
 
         command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id, google_user_id) VALUES (%s, %s, %s, %s, %s, %s)"
         data = (
@@ -161,9 +159,10 @@ class UserMapper(Mapper):
         :param user welcher in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE users SET nick_name=%s, first_name=%s, last_name=%s, user_id=%s, google_user_id=%s WHERE id=%s"
+        print(user)
+        command = "UPDATE users SET nick_name=%s, first_name=%s, last_name=%s, id=%s, household_id=%s, google_user_id=%s WHERE id=%s"
         data = (
-        user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_id(), user.get_google_user_id())
+        user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_id(),user.get_household_id(), user.get_google_user_id(), user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

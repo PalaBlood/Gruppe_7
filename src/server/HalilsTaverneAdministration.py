@@ -211,7 +211,7 @@ class HalilsTaverneAdministration(object):
 
     # household-spezifische methoden:
 
-    def create_household(self, name):
+    def create_household(self, Name):
         """Da wir bei der erstellung eines Households auch automatisch eine Fridge benötigen
         wird hier die create_fridge Methode verwendet. Somit enstehen die Relationen 'Fridge' und 'Household'.
         Household erhält den Primary Key vom jeweiligen Fridge Objekt als Fremdschlüssel zugeteilt
@@ -219,7 +219,7 @@ class HalilsTaverneAdministration(object):
         param: name des Households"""
 
         household = Household()
-        household.set_name(name)
+        household.set_name(Name)
 
         fridge = self.create_Fridge()  # Objekt von fridge wird erzeugt
         household.set_fridge_id(fridge.get_id())  # ID der Fridge wird Household zugewiesen

@@ -6,9 +6,10 @@ export default class HouseholdBO extends BusinessObject {
     /** Konstruktion eines neuen Haushalts 
    * @param {String} designation - der Name des Haushalts.
    */ 
-    constructor(aname) {
+    constructor(aname, afridgeid) {
         super();
         this.name = aname
+        this.fridge_id = afridgeid
     }
 
 
