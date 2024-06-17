@@ -68,6 +68,7 @@ class Header extends Component {
             <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
             <Tab icon={<SettingsIcon />} label='Haushalt verwalten' onClick={this.toggleUserListModal} />
             <Tab icon={<InfoIcon/> }label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
+            <Tab icon={<InfoIcon/> }label='Test' component={RouterLink} to={process.env.PUBLIC_URL + '/test'} />
           </Tabs>
         )}
         <Modal

@@ -7,7 +7,7 @@ import HouseholdBO from "./HouseholdBO";
 import FridgeBO from "./FridgeBO";
 
 
-class FridgeAPI {
+class SmartFridgeAPI {
 
     static #api = null
 
@@ -77,7 +77,7 @@ class FridgeAPI {
 
     static getAPI() {
         if (this.#api == null) {
-            this.#api = new FridgeAPI();
+            this.#api = new SmartFridgeAPI();
         }
         return this.#api
     }
@@ -227,18 +227,22 @@ class FridgeAPI {
     }
 
     
-    addFridgeEntry(fridgeEntryBO) {
-        return this.#fetchAdvanced(this.#addFridgeEntryURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(fridgeEntryBO)
-        }).then(responseJSON => {
-            return FridgeEntryBO.fromJSON(responseJSON)[0];
-        });
-    }
+   addFridgeEntry(fridgeEntryBO) {
+    return this.#fetchAdvanced(this.#addFridgeEntryURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fridgeEntryBO)
+    }).then(responseJSON => {
+        return FridgeEntryBO.fromJSON(responseJSON)[0];
+    }).catch(error => {
+        console.error('Failed to add fridge entry:', error);
+        throw new Error('Error adding fridge entry');
+    });
+}
+
 
 
     addRecipeEntry(recipeEntryBO) {
@@ -420,10 +424,9 @@ class FridgeAPI {
 }
 
 
-export default FridgeAPI;
+export default SmartFridgeAPI;
 
 
 
-//API TESTEN
 
 

@@ -108,30 +108,24 @@ class FridgeMapper(Mapper):
         cursor.close()
 
     def insert_fridge_entry(self, fridge_entry):
-        """erstellt oder updatet einen fridge_entry-Eintrag. Sollte das genannte Lebesmittel bereits
-        in der DB vorhanden sein, werden die Werte angepasst. Ansonsten wird ein neuer Eintrag erstellt
-        """
-
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id FROM fridge LIMIT 1")
-        result = cursor.fetchone()
-        fridge_id = result[0]
+        existing_entry = self.get_existing_entry(fridge_entry.get_fridge_id(), fridge_entry.get_groceries_designation())
 
-
-        existing_entry = self.get_existing_entry(fridge_id, fridge_entry.get_groceries_designation())
-
-        if existing_entry:
-            # Update the existing entry
-            new_quantity = existing_entry[0] + fridge_entry.get_quantity()
-            self.update_fridge_entry(fridge_id, fridge_entry.get_groceries_designation(), new_quantity, fridge_entry.get_unit())
+        if existing_entry is not None:
+            #Es gibt bereits einen Eintrag, also update ihn
+            new_quantity = existing_entry[0] + fridge_entry.get_quantity()  # Zugriff auf das erste Element des Tupels
+            self.update_fridge_entry(fridge_entry.get_fridge_id(), fridge_entry.get_groceries_designation(),
+                                     new_quantity,
+                                     fridge_entry.get_unit())  # Hier wird angenommen, dass get_unit() bereits den Namen als String zurückgibt
         else:
-            # Insert the new entry
+            #Kein Eintrag vorhanden, füge einen neuen hinzu
             command = """INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
-            data = (fridge_id, fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(), fridge_entry.get_unit())
+            data = (fridge_entry.get_fridge_id(), fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(),
+                    fridge_entry.get_unit())  # Direktes Einfügen des Einheitennamens
             cursor.execute(command, data)
             self._cnx.commit()
-            cursor.close()
+        cursor.close()
 
     def find_fridge_by_id(self, id):
         """Find a Fridge by its ID."""
