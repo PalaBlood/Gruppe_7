@@ -185,12 +185,14 @@ class UsersByNameOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdListOperation(Resource):
 
-    @fridge_ns.marshal_list_with(household)
+
     #@secured
+    @fridge_ns.marshal_list_with(household)
     def get(self):
 
         adm = HalilsTaverneAdministration()
         households = adm.get_all_households()
+        print(households)
         return households
 
     #@secured

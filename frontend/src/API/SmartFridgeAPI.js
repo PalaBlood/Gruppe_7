@@ -99,6 +99,7 @@ class FridgeAPI {
             })
         })    
     }
+    
     getHouseholds() {
         return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
             let householdBOs = HouseholdBO.fromJSON(responseJSON);
@@ -297,7 +298,7 @@ class FridgeAPI {
     }
 
     updateUser(userBO) {
-        console.log(userBO.id)
+        console.log(userBO)
         return this.#fetchAdvanced(this.#updateUserURL(userBO.id), {
             method:'PUT',
             headers: {
