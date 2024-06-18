@@ -78,10 +78,9 @@ class CheckforexistingHousehold extends Component {
         }
         this.setState({ loading: true });
         try {
-            let householdBO = new HouseholdBO
+            let householdBO = new HouseholdBO()
             householdBO = { name: newHouseholdName, id: 0, fridge_id: null };
             const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
-            console.log("Added Household:", addedHousehold);
             const auth = getAuth();
             const currentUser = auth.currentUser;
             if (currentUser) {
@@ -89,7 +88,6 @@ class CheckforexistingHousehold extends Component {
                 if (userBOArray && userBOArray.length > 0) {
                     let userBO = userBOArray[0];
                     userBO.household_id = addedHousehold.id; 
-                    console.log("Updated UserBO with household ID:", userBO);
                     await FridgeAPI.getAPI().updateUser(userBO);
                     this.setState({ loading: false, dialogOpen: false, newHouseholdName: '' });
                     this.props.onHouseholdConfirmed(addedHousehold.id);

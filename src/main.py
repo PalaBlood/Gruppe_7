@@ -68,8 +68,8 @@ fridge_entry = api.inherit('FridgeEntry', food_entry, {
 })
 
 household = api.inherit('Household', bo, {
-    'name': fields.String(attribute='_Household__name', description='Name of the household'),
-    'fridge_id': fields.Integer(attribute='_Household__fridge_id', required=True,
+    'name': fields.String(attribute='_name', description='Name of the household'),
+    'fridge_id': fields.Integer(attribute='_fridge_id', required=True,
                                 description='fridge associated with the household'),
 })
 

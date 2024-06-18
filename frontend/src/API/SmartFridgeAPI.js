@@ -298,7 +298,6 @@ class FridgeAPI {
     }
 
     updateUser(userBO) {
-        console.log(userBO)
         return this.#fetchAdvanced(this.#updateUserURL(userBO.id), {
             method:'PUT',
             headers: {
