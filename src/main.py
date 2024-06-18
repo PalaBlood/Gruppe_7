@@ -16,7 +16,7 @@ from SecurityDecorator import secured
 app = Flask(__name__)
 
 """CORS(app, resources={r"/api/":{"origins":"*"}})"""
-CORS(app, supports_credentials=True, resources=r'/fridge/*', origins=["http://localhost:3000"])
+CORS(app, supports_credentials=True, resources=r'/fridge/*')
 
 # alle pfade für ursprünge offen
 

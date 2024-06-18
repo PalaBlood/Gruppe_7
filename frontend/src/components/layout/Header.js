@@ -8,6 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
+import KitchenIcon from '@mui/icons-material/Kitchen'; // Importiere ein passendes Icon
 
 class Header extends Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class Header extends Component {
           > 
             <Tab icon={<HomeIcon/>} label='Home' component={RouterLink} to={process.env.PUBLIC_URL + '/home'}/>
             <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
+            <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to={process.env.PUBLIC_URL + '/fridge'} /> {/* Neuer Tab für Fridge */}
             <Tab icon={<SettingsIcon />} label='Haushalt verwalten' onClick={this.toggleUserListModal} />
             <Tab icon={<InfoIcon/> }label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
           </Tabs>
