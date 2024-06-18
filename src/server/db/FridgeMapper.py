@@ -108,30 +108,27 @@ class FridgeMapper(Mapper):
         cursor.close()
 
     def insert_fridge_entry(self, fridge_entry):
-        """erstellt oder updatet einen fridge_entry-Eintrag. Sollte das genannte Lebesmittel bereits
-        in der DB vorhanden sein, werden die Werte angepasst. Ansonsten wird ein neuer Eintrag erstellt
-        """
-
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id FROM fridge LIMIT 1")
+        cursor.execute("SELECT quantity FROM fridge_groceries WHERE groceries_designation = %s AND fridge_id = %s",
+                       (fridge_entry.get_groceries_designation(), fridge_entry.get_fridge_id()))
         result = cursor.fetchone()
-        fridge_id = result[0]
 
-
-        existing_entry = self.get_existing_entry(fridge_id, fridge_entry.get_groceries_designation())
-
-        if existing_entry:
-            # Update the existing entry
-            new_quantity = existing_entry[0] + fridge_entry.get_quantity()
-            self.update_fridge_entry(fridge_id, fridge_entry.get_groceries_designation(), new_quantity, fridge_entry.get_unit())
+        if result:
+            existing_quantity = float(result[0])
+            new_quantity = existing_quantity + float(fridge_entry.get_quantity())  # Konvertiere in Float
+            cursor.execute(
+                "UPDATE fridge_groceries SET quantity = %s WHERE groceries_designation = %s AND fridge_id = %s",
+                (new_quantity, fridge_entry.get_groceries_designation(), fridge_entry.get_fridge_id()))
         else:
-            # Insert the new entry
             command = """INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
-            data = (fridge_id, fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(), fridge_entry.get_unit())
+            data = (fridge_entry.get_fridge_id(), fridge_entry.get_groceries_designation(), fridge_entry.get_quantity(),
+                    fridge_entry.get_unit())
             cursor.execute(command, data)
-            self._cnx.commit()
-            cursor.close()
+
+        self._cnx.commit()
+        cursor.close()
+
 
     def find_fridge_by_id(self, id):
         """Find a Fridge by its ID."""

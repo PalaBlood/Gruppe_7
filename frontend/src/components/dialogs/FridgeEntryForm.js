@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import SmartFridgeAPI from '../../API/SmartFridgeAPI';
+import FridgeAPI from '../../API/SmartFridgeAPI';
 import FridgeEntryBO from '../../API/FridgeEntryBO';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
+
 
 /**
  * Shows a modal form dialog for a FridgeEntry in prop fridgeentry. If the fridgeentry is set, the dialog is configured
@@ -54,54 +55,50 @@ class FridgeEntryForm extends Component {
     this.baseState = {...this.state};
   }
 
-  /** Adds the fridge entry */
-  addFridgeEntry = () => {
-    let newFridgeEntry = new FridgeEntryBO(this.state.designation, this.state.quantity, this.state.unit, this.state.fridge_id);
-    SmartFridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
-      this.setState(this.baseState);
-      this.props.onClose(fridgeentry);
-    }).catch(e =>
-      this.setState({
-        addingInProgress: false,
-        addingError: e
-      })
-    );
+/** Adds the fridge entry */
+addFridgeEntry = async () => {
+    const { designation, quantity, unit, fridge_id } = this.state;
 
-    this.setState({
-      addingInProgress: true,
-      addingError: null
+    this.setState({ addingInProgress: true, addingError: null });
+
+    const newFridgeEntry = new FridgeEntryBO(designation, quantity, unit, fridge_id);
+
+    FridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
+        this.setState({ ...this.baseState });
+        this.props.onClose(fridgeentry);
+    }).catch(e => {
+        console.error('Error while adding fridge entry:', e);
+        this.setState({ addingInProgress: false, addingError: e.message });
     });
-  }
+}
 
-  /** Updates the fridge entry */
-  updateFridgeEntry = () => {
-    let updatedFridgeEntry = Object.assign(new FridgeEntryBO(), this.props.fridgeentry);
-    updatedFridgeEntry.setDesignation(this.state.designation);
-    updatedFridgeEntry.setQuantity(this.state.quantity);
-    updatedFridgeEntry.setUnit(this.state.unit);
-    updatedFridgeEntry.setFridgeId(this.state.fridge_id);
-    SmartFridgeAPI.getAPI().updateFridgeEntry(updatedFridgeEntry).then(fridgeentry => {
-      this.setState({
-        updatingInProgress: false,
-        updatingError: null
-      });
-      this.baseState.designation = this.state.designation;
-      this.baseState.quantity = this.state.quantity;
-      this.baseState.unit = this.state.unit;
-      this.baseState.fridge_id = this.state.fridge_id;
-      this.props.onClose(updatedFridgeEntry);
-    }).catch(e =>
-      this.setState({
-        updatingInProgress: false,
-        updatingError: e
-      })
-    );
 
-    this.setState({
-      updatingInProgress: true,
-      updatingError: null
+
+/** Updates the fridge entry */
+updateFridgeEntry = () => {
+    const { designation, quantity, unit, fridge_id } = this.state;
+
+    this.setState({ updatingInProgress: true, updatingError: null });
+
+    let updatedFridgeEntry = new FridgeEntryBO({
+        id: this.props.fridgeentry.id,
+        groceries_designation: designation,
+        quantity: quantity,
+        unit: unit,
+        fridge_id: fridge_id
     });
-  }
+
+    FridgeAPI.getAPI().updateFridgeEntry(updatedFridgeEntry).then(fridgeentry => {
+        this.setState({ ...this.baseState });
+        this.props.onClose(fridgeentry);
+    }).catch(e => {
+        console.error('Error while updating fridge entry:', e);
+        this.setState({ updatingInProgress: false, updatingError: e.message });
+    });
+}
+
+
+
 
   /** Handles value changes of the forms textfields and validates them */
   textFieldValueChange = (event) => {

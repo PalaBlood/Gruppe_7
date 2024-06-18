@@ -1,44 +1,24 @@
 import FoodEntry from "./FoodEntry";
 
 export default class FridgeEntryBO extends FoodEntry {
-
-
-      /** Konstruktion eines neuen Lebensmitteleintrages im Kühlschrank. FridgeEntry erbt von FoodEntry. 
-   * @param {String} afridgeid - Die ID ordnet die Eintragung zu einem Fridge zu.
-   */
-    constructor(afridgeid) {
-        super();
-        this.fridgeid = afridgeid
-    }
-     
-    getfridgeid () {
-        return this.fridgeid
+    constructor(groceriesDesignation, quantity, unit, fridgeId) {
+        super(groceriesDesignation, quantity, unit);
+        this.fridgeId = fridgeId;
     }
 
-    /**
-   * Setzen einer neuen FridgeID.
-   * 
-   * @param {String} afridgeid -  neue ID.
-   */
-    setfridgeid(afridgeid) {
-        this.fridgeid = afridgeid
+    getFridgeId() {
+        return this.fridgeId;
     }
 
-    static fromJSON(fridgeentries) {
-        let result = [];
-    
-        if (Array.isArray(fridgeentries)) {
-          fridgeentries.forEach((f) => {
-            Object.setPrototypeOf(f, FridgeEntryBO.prototype);
-            result.push(f);
-          })
-        } else {
-          // Es handelt sich offenbar um ein singuläres Objekt
-          let f = fridgeentries;
-          Object.setPrototypeOf(f, FridgeEntryBO.prototype);
-          result.push(f);
-        }
-    
-        return result;
-}
+    setFridgeId(fridgeId) {
+        this.fridgeId = fridgeId;
+    }
+
+    static fromJSON(fridgeEntries) {
+        return fridgeEntries.map(f => {
+            let fridgeEntry = new FridgeEntryBO(f.groceriesDesignation, f.quantity, f.unit, f.fridgeId);
+            fridgeEntry.id = f.id; // Angenommen, es gibt eine ID vom Typ BusinessObject
+            return fridgeEntry;
+        });
+    }
 }

@@ -76,7 +76,7 @@ class UserList extends Component {
 
     addUser = async () => {
         const { newUser, householdId } = this.state;
-        const auth = getAuth()
+        const auth = getAuth() //Ab hier um die UserId auszulesen
         const currentUser = auth.currentUser;
         if (!newUser.nick_name || !newUser.first_name || !newUser.last_name) {
             this.setState({ error: 'Please fill out all user details.' });

@@ -31,10 +31,13 @@ class FridgeEntry(FoodEntry):
     @staticmethod
     def form_dict(dictionary):
         obj = FridgeEntry()
-        obj.set_fridge_id(dictionary["fridge_id"])
-        obj.set_designation(dictionary["designation"])
-        obj.set_quantity(dictionary["quantity"])
-        obj.set_unit(dictionary["unit"])
+        try:
+            obj.set_fridge_id(dictionary["fridge_id"])
+            obj.set_groceries_designation(dictionary["groceries_designation"])
+            obj.set_quantity(dictionary["quantity"])
+            obj.set_unit(dictionary["unit"])
+        except KeyError as e:
+            raise ValueError(f'Missing field in dictionary: {e}')
         return obj
 
 

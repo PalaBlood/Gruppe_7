@@ -300,11 +300,11 @@ for user in list:
 
 admintest.create_user("Lisa","Müller","jo",12)"""
 
-admintest = HalilsTaverneAdministration()
+#admintest = HalilsTaverneAdministration()
 
-admintest.create_household("Haus")
+#admintest.create_household("Haus")
 
 # admintest.create_user("michel_f", "Michel", "Finger", 2)
 
-admintest.create_Fridge_entry(2, "Birne", 200, "Kilogramm")
+#admintest.create_Fridge_entry(2, "Birne", 200, "Kilogramm")
 
