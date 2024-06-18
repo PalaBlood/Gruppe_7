@@ -14,6 +14,15 @@ import FridgeAPI from './API/SmartFridgeAPI.js';
 import CheckforexistingHousehold from './components/dialogs/HouseholdCheck.js';
 import UserList from './components/UserList.js';
 import UserBO from './API/UserBO.js';
+import Fridge from './components/pages/Fridge.js'
+import { Link as RouterLink } from 'react-router-dom';
+import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import KitchenIcon from '@mui/icons-material/Kitchen'
+import SettingsIcon from '@mui/icons-material/Settings'
+import backgroundImage from './components/pages/smartfridge.jpg'
+import Home from './components/pages/Home.js'
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -120,15 +129,15 @@ class App extends React.Component {
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='md' style={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+                    <Container maxWidth='md' style={{ display: 'flex', flexDirection: 'column'}}>
                         <Header user={currentUser} />
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column'}}>
                             <Routes>
                                 <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={this.handleSignIn} />} />
                                 <Route path="/home" element={<Secured user={currentUser}>
                                     <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
+                                    <Home />
                                 </Secured>} />
-
                                 <Route path="/users" element={
                                     <Secured user={currentUser}>
                                         <UserList />

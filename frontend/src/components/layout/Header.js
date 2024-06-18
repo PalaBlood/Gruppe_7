@@ -8,21 +8,16 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
-import KitchenIcon from '@mui/icons-material/Kitchen'; // Importiere ein passendes Icon
+import KitchenIcon from '@mui/icons-material/Kitchen';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabindex: 0,
-      openUserList: false 
-    };
-  }
+  state = {
+    tabindex: 0,
+    openUserList: false 
+  };
 
-  handleTabChange = (e, newIndex) => {
-    this.setState({
-      tabindex: newIndex
-    });
+  handleTabChange = (event, newValue) => {
+    this.setState({ tabindex: newValue });
   };
 
   toggleUserListModal = () => {
@@ -33,7 +28,7 @@ class Header extends Component {
 
   render() {
     const { user } = this.props;
-    const { openUserList } = this.state;
+    const { openUserList, tabindex } = this.state;
 
     return (
       <Paper variant='outlined' style={{
@@ -49,34 +44,27 @@ class Header extends Component {
         }}>
           HdMSmartFridge
         </Typography>
-        <Typography variant='h4' component='h2' align='center' style={{
-          marginBottom: '20px'
-        }}>
-
-        </Typography>
         {user && (
           <Tabs 
             indicatorColor='primary' 
             textColor='primary' 
             centered 
-            value={this.state.tabindex} 
+            value={tabindex} 
             onChange={this.handleTabChange}
             style={{
               marginBottom: '20px'
             }}
-          > 
-            <Tab icon={<HomeIcon/>} label='Home' component={RouterLink} to={process.env.PUBLIC_URL + '/home'}/>
-            <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to={process.env.PUBLIC_URL + '/recipes'} />
-            <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to={process.env.PUBLIC_URL + '/fridge'} /> {/* Neuer Tab für Fridge */}
-            <Tab icon={<SettingsIcon />} label='Haushalt verwalten' onClick={this.toggleUserListModal} />
-            <Tab icon={<InfoIcon/> }label='About' component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
+          >
+            <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
+            <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipes' />
+            <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
+            <Tab icon={<SettingsIcon />} label='User' onClick={() => this.toggleUserListModal()} />
+            <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
           </Tabs>
         )}
         <Modal
           open={openUserList}
           onClose={this.toggleUserListModal}
-          aria-labelledby="user-list-modal"
-          aria-describedby="modal-modal-description"
           style={{
             display: 'flex', 
             alignItems: 'center', 
@@ -84,15 +72,12 @@ class Header extends Component {
           }}
         >
           <Box style={{
-            position: 'absolute', 
-            top: '50%', 
-            left: '50%', 
-            transform: 'translate(-50%, -50%)', 
-            width: 400, 
             backgroundColor: 'white', 
             boxShadow: '24px', 
             padding: '20px', 
-            borderRadius: '10px'
+            borderRadius: '10px',
+            width: 400,  // Ensure modal is centered and sized appropriately
+            outline: 'none'  // Remove default focus outline
           }}>
             <UserList /> 
           </Box>
