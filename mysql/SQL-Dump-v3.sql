@@ -15,10 +15,8 @@ INSERT INTO Fridge(id) VALUES
 
 DROP TABLE IF EXISTS Household;
 CREATE TABLE Household (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    fridge_id INT,
-    FOREIGN KEY (fridge_id) REFERENCES Fridge (id)
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Household (id, name) VALUES

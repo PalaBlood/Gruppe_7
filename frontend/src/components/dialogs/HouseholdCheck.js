@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, ListIt
 import { getAuth } from 'firebase/auth';
 import FridgeAPI from '../../API/SmartFridgeAPI';
 import HouseholdBO from '../../API/HouseholdBO';
-    //überprüft ob der user bereits einem haushalt zugeordnet ist, falls nicht wird dieser aufgefordert eine zu erstellen oder zu selektieren
+
 class CheckforexistingHousehold extends Component {
     state = {
         households: [],
@@ -11,13 +11,14 @@ class CheckforexistingHousehold extends Component {
         newHouseholdName: '',
         dialogOpen: false,
         error: null,
-        loading: true
+        loading: true,
+        householdConfirmed: false 
     }
-    //lifecycle methode
+
     componentDidMount() {
         this.checkForHousehold();
     }
-    //sucht ob der user bereits einem haushalt zugeordnet ist, falls nicht wird dieser aufgefordert einen haushalt zu erstellen
+
     checkForHousehold = async () => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -29,8 +30,10 @@ class CheckforexistingHousehold extends Component {
         try {
             const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
             if (userBO && userBO.length > 0 && userBO[0].household_id) {
-                this.props.onHouseholdConfirmed(userBO[0].household_id);
-                this.setState({ loading: false }); 
+                if (!this.state.householdConfirmed) { //haushalt bereits bestätigt?
+                    this.props.onHouseholdConfirmed(userBO[0].household_id);
+                    this.setState({ loading: false, householdConfirmed: true }); 
+                }
             } else {
                 await this.fetchHouseholds();
                 this.setState({ dialogOpen: true, loading: false }); 
@@ -40,14 +43,9 @@ class CheckforexistingHousehold extends Component {
         }
     }
 
-    
-    
-
-    //alle haushalte fetchen
     fetchHouseholds = async () => {
         try {
             const households = await FridgeAPI.getAPI().getHouseholds();
-            console.log(households)
             this.setState({
                 households: households,
                 loading: false
@@ -57,19 +55,21 @@ class CheckforexistingHousehold extends Component {
         }
     }
 
-    //was passiert wenn der user einen haushalt auswählt statt zu kreieren?
     handleSelectHousehold = (id) => {
-        this.setState({
-            selectedHouseholdId: id,
-            dialogOpen: false
-        });
-        this.props.onHouseholdConfirmed(id);
+        if (!this.state.householdConfirmed) { 
+            this.setState({
+                selectedHouseholdId: id,
+                dialogOpen: false,
+                householdConfirmed: true 
+            });
+            this.props.onHouseholdConfirmed(id);
+        }
     }
 
     handleInputChange = (event) => {
         this.setState({ newHouseholdName: event.target.value });
     }
-    //erstellt einen haushalt, greifdt dabei auf unsere api zu und updated gleichzeitig das aktuell angemeldete user objekt
+
     addHousehold = async () => {
         const { newHouseholdName } = this.state;
         if (!newHouseholdName.trim()) {
@@ -78,28 +78,26 @@ class CheckforexistingHousehold extends Component {
         }
         this.setState({ loading: true });
         try {
-            let householdBO = new HouseholdBO
-            householdBO = { name: newHouseholdName, id: 0, fridge_id: null };
+            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null });
             const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
-            console.log("Added Household:", addedHousehold);
             const auth = getAuth();
             const currentUser = auth.currentUser;
             if (currentUser) {
                 let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
                 if (userBOArray && userBOArray.length > 0) {
                     let userBO = userBOArray[0];
-                    userBO.household_id = addedHousehold.id; 
-                    console.log("Updated UserBO with household ID:", userBO);
+                    userBO.household_id = addedHousehold.id;
                     await FridgeAPI.getAPI().updateUser(userBO);
-                    this.setState({ loading: false, dialogOpen: false, newHouseholdName: '' });
-                    this.props.onHouseholdConfirmed(addedHousehold.id);
+                    if (!this.state.householdConfirmed) {
+                        this.setState({ loading: false, dialogOpen: false, newHouseholdName: '', householdConfirmed: true });
+                        this.props.onHouseholdConfirmed(addedHousehold.id);
+                    }
                 } else {
                     throw new Error("Failed to fetch user data for updating.");
                 }
             } else {
                 throw new Error("No authenticated user found.");
             }
-
         } catch (error) {
             this.setState({ error: error.message, loading: false });
         }

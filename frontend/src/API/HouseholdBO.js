@@ -4,7 +4,7 @@ export default class HouseholdBO extends BusinessObject {
 
 
     /** Konstruktion eines neuen Haushalts 
-   * @param {String} designation - der Name des Haushalts.
+   * @param {String} aname - der Name des Haushalts.
    */ 
     constructor(aname, afridgeid) {
         super();
@@ -26,21 +26,33 @@ export default class HouseholdBO extends BusinessObject {
         return this.name
     }
 
+    setfridge_id(afridgeid) {
+      this.afridgeid = afridgeid
+    }
+
+    getfridgeid() {
+      return this.afridgeid
+    }
+
     static fromJSON(households) {
-        let result = [];
-    
-        if (Array.isArray(households)) {
-          households.forEach((h) => {
-            Object.setPrototypeOf(h, HouseholdBO.prototype);
-            result.push(h);
-          })
-        } else {
-          // Es handelt sich offenbar um ein singuläres Objekt
-          let h = households;
+      let result = [];
+      /**
+       * Wir erstellen aus jedem Objekt von User eine Json.
+       *  
+       */
+  
+      if (Array.isArray(households)) {
+        households.forEach((h) => {
           Object.setPrototypeOf(h, HouseholdBO.prototype);
           result.push(h);
-        }
-    
-        return result;
+        })
+      } else {
+        // Sollte es ein Singelton Objekt sein
+        let h = households;
+        Object.setPrototypeOf(h, HouseholdBO.prototype);
+        result.push(h);
       }
+  
+      return result;
+    }
 }
