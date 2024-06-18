@@ -75,7 +75,7 @@ class UserProfile extends Component {
         const { user, loading, error, editDialogOpen } = this.state;
         if (loading) return <LoadingProgress />;
         if (error) return <ContextErrorMessage error={error} />;
-        if (!user) return null;  // Ensure that there is a user to edit before rendering
+        if (!user) return null;  
 
         return (
             <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f4f4',
