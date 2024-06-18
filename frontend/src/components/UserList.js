@@ -20,7 +20,7 @@ class UserProfile extends Component {
 
     loadCurrentUser = async () => {
         this.setState({ loading: true });
-        const auth = getAuth();
+        const auth = getAuth(); //Ab hier => Läd den aktuellen User, kann dann seine ID verwenden
         const currentUser = auth.currentUser;
         if (!currentUser) {
             this.setState({ error: "No user logged in", loading: false });
