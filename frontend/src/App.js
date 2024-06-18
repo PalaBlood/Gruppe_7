@@ -22,6 +22,7 @@ import KitchenIcon from '@mui/icons-material/Kitchen'
 import SettingsIcon from '@mui/icons-material/Settings'
 import backgroundImage from './components/pages/smartfridge.jpg'
 import Home from './components/pages/Home.js'
+import About from './components/pages/About.js';
 
 class App extends React.Component {
     constructor(props) {
@@ -148,6 +149,7 @@ class App extends React.Component {
                                         <Fridge />
                                     </Secured>
                                 } />
+                                <Route path="/about" element={<About />} />
                             </Routes>
                             <LoadingProgress show={authLoading} />
                             <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />

@@ -238,7 +238,6 @@ class HouseholdOperations(Resource):
 
     @fridge_ns.marshal_with(household)
     @fridge_ns.expect(household, validate=True)
-    #@secured
     def put(self, id):
         """update eines household-objekts nach id"""
 

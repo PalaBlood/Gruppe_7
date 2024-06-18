@@ -56,9 +56,17 @@ class Household(BusinessObject):
     @staticmethod
     def form_dict(dictionary=dict()):
         obj = Household()
-        obj.set_id(dictionary["id"])
-        obj.set_name(dictionary["name"])
-        obj.set_fridge_id(dictionary["fridge_id"])
+        print(obj)
+        obj.set_id(dictionary.get("id", 0))
+
+        name_field = dictionary.get("name")
+        if isinstance(name_field, dict):
+            obj.set_name(name_field.get("name", ""))
+            obj.set_fridge_id(name_field.get("fridge_id", None))
+        else:
+            obj.set_name(name_field)
+            obj.set_fridge_id(dictionary.get("fridge_id", None))
+
         return obj
 
 
