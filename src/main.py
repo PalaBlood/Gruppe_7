@@ -290,7 +290,6 @@ class FridgeEntryListOperations(Resource):
     #@secured
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self):
-
         adm = HalilsTaverneAdministration()
         fridge_entries = adm.get_all_fridge_entries()
         return fridge_entries
@@ -299,21 +298,25 @@ class FridgeEntryListOperations(Resource):
     @fridge_ns.marshal_list_with(fridge_entry)
     #@secured
     def post(self):
-
         adm = HalilsTaverneAdministration()
-        proposal = FridgeEntry.form_dict(api.payload)
-        print(proposal)
-        if proposal is not None:
+        try:
+            proposal = FridgeEntry.form_dict(api.payload)
+            print(proposal)
 
-            fe = adm.create_Fridge_entry(
-                proposal.get_fridge(),
-                proposal.get_groceries_designation(),
-                proposal.get_quantity(),
-                proposal.get_unit()
-            )
-            return fe, 200
-        else:
-            return '', 500
+            if proposal is not None:
+                fe = adm.create_Fridge_entry(
+                    proposal.get_fridge(),
+                    proposal.get_designation(),
+                    proposal.get_quantity(),
+                    proposal.get_unit()
+                )
+                return fe, 200
+            else:
+                return {'message': 'Invalid input'}, 400
+        except KeyError as e:
+            return {'message': f'Missing field in input: {e}'}, 400
+        except Exception as e:
+            return {'message': str(e)}, 500
 
 
 @fridge_ns.route('/FridgeEntry/<string:groceries_designation>')
