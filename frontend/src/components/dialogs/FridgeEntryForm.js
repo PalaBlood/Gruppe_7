@@ -23,11 +23,12 @@ class FridgeEntryForm extends Component {
   constructor(props) {
     super(props);
 
-    let designation = '', quantity = '', unit = '';
+    let designation = '', quantity = '', unit = '', fridge_id = '';
     if (props.fridgeentry) {
       designation = props.fridgeentry.getDesignation();
       quantity = props.fridgeentry.getQuantity();
       unit = props.fridgeentry.getUnit();
+      fridge_id = props.fridgeentry.getFridgeId();
     }
 
     // Init the state
@@ -41,6 +42,9 @@ class FridgeEntryForm extends Component {
       unit: unit,
       unitValidationFailed: false,
       unitEdited: false,
+      fridge_id: fridge_id,
+      fridge_idValidationFailed: false,
+      fridge_idEdited: false,
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
@@ -52,7 +56,7 @@ class FridgeEntryForm extends Component {
 
   /** Adds the fridge entry */
   addFridgeEntry = () => {
-    let newFridgeEntry = new FridgeEntryBO(this.state.designation, this.state.quantity, this.state.unit);
+    let newFridgeEntry = new FridgeEntryBO(this.state.designation, this.state.quantity, this.state.unit, this.state.fridge_id);
     SmartFridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
       this.setState(this.baseState);
       this.props.onClose(fridgeentry);
@@ -75,6 +79,7 @@ class FridgeEntryForm extends Component {
     updatedFridgeEntry.setDesignation(this.state.designation);
     updatedFridgeEntry.setQuantity(this.state.quantity);
     updatedFridgeEntry.setUnit(this.state.unit);
+    updatedFridgeEntry.setFridgeId(this.state.fridge_id);
     SmartFridgeAPI.getAPI().updateFridgeEntry(updatedFridgeEntry).then(fridgeentry => {
       this.setState({
         updatingInProgress: false,
@@ -83,6 +88,7 @@ class FridgeEntryForm extends Component {
       this.baseState.designation = this.state.designation;
       this.baseState.quantity = this.state.quantity;
       this.baseState.unit = this.state.unit;
+      this.baseState.fridge_id = this.state.fridge_id;
       this.props.onClose(updatedFridgeEntry);
     }).catch(e =>
       this.setState({
@@ -118,7 +124,7 @@ class FridgeEntryForm extends Component {
   /** Renders the component */
   render() {
     const { fridgeentry, show } = this.props;
-    const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
+    const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, fridge_id, fridge_idValidationFailed, fridge_idEdited, addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
 
     let title = fridgeentry ? 'Update a fridge entry' : 'Create a new fridge entry';
     let header = fridgeentry ? `Fridge Entry ID: ${fridgeentry.getID()}` : 'Enter fridge entry data';
@@ -143,6 +149,9 @@ class FridgeEntryForm extends Component {
               <TextField type='text' required fullWidth margin='normal' id='unit' label='Unit:' value={unit}
                 onChange={this.textFieldValueChange} error={unitValidationFailed}
                 helperText={unitValidationFailed ? 'The unit must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='fridge_id' label='Fridge ID:' value={fridge_id}
+                onChange={this.textFieldValueChange} error={fridge_idValidationFailed}
+                helperText={fridge_idValidationFailed ? 'The fridge ID must contain at least one character' : ' '} />
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
@@ -156,9 +165,9 @@ class FridgeEntryForm extends Component {
             <Button onClick={this.handleClose} color='secondary'>Cancel</Button>
             {
               fridgeentry ?
-                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
+                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed || fridge_idValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
                 :
-                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
+                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited || fridge_idValidationFailed || !fridge_idEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
             }
           </DialogActions>
         </Dialog>
@@ -181,4 +190,3 @@ FridgeEntryForm.propTypes = {
 }
 
 export default FridgeEntryForm;
-

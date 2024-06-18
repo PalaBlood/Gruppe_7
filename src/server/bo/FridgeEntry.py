@@ -29,13 +29,13 @@ class FridgeEntry(FoodEntry):
         return obj
 
     @staticmethod
-    def from_tuple(data_tuple):
-        entry = FridgeEntry()
-        entry.set_id(data_tuple[0])
-        entry.set_groceries_designation(data_tuple[1])
-        entry.set_quantity(data_tuple[2])
-        entry.set_unit(data_tuple[3])
-        return entry
+    def form_dict(dictionary):
+        obj = FridgeEntry()
+        obj.set_fridge_id(dictionary["fridge_id"])
+        obj.set_designation(dictionary["designation"])
+        obj.set_quantity(dictionary["quantity"])
+        obj.set_unit(dictionary["unit"])
+        return obj
 
 
 if __name__ == "__main__":
