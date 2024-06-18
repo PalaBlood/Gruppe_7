@@ -14,8 +14,6 @@ import FridgeAPI from './API/SmartFridgeAPI.js';
 import CheckforexistingHousehold from './components/dialogs/HouseholdCheck.js';
 import UserList from './components/UserList.js';
 import UserBO from './API/UserBO.js';
-import Fridge from './components/pages/Fridge'; // Fridge Komponente importieren
-
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -37,11 +35,9 @@ class App extends React.Component {
             App.firebaseInitialized = true;
         }
     }
-
     static getDerivedStateFromError(error) {
         return { appError: error };
     }
-
     handleSignIn = () => {
         this.setState({ authLoading: true });
         signInWithRedirect(App.auth, App.provider);
@@ -53,13 +49,12 @@ class App extends React.Component {
             if (user) {
                 console.log("Auth state changed: User is present.");
                 this.setState({ authLoading: true });
-
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
                 if (!userBO[0].google_user_id) {
                     console.log("No corresponding user object found in the database, creating new user.");
                     let newUser = new UserBO
-                    newUser = {
-                        id: 0,
+                     newUser = {
+                        id:0,
                         first_name: user.displayName?.split(" ")[0] || "",
                         last_name: user.displayName?.split(" ")[1] || "",
                         nick_name: user.displayName?.split(" ")[0] || "User",
@@ -70,7 +65,7 @@ class App extends React.Component {
                 } else {
                     console.log("User object found in the database, skipping creation.");
                 }
-
+        
                 this.setState({
                     currentUser: user,
                     authError: null,
@@ -79,17 +74,17 @@ class App extends React.Component {
             } else {
                 console.log("Auth state changed: No user logged in.");
                 this.setState({ currentUser: null, authLoading: false });
+                
             }
         });
-    }
-
-    //function die dafür sorgt das componentdidmount nur einmal getriggert wird
+        
+    } //function die dafür sorgt das componentdidmount nur einmal getriggert wird
     componentWillUnmount() {
         if (this.unsubscribeFromAuth) {
             this.unsubscribeFromAuth();
         }
     }
-
+    //haushalt bestätigt
     onHouseholdConfirmed = async (householdId) => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -130,11 +125,10 @@ class App extends React.Component {
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
                             <Routes>
                                 <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={this.handleSignIn} />} />
-                                <Route path="/home" element={
-                                    <Secured user={currentUser}>
-                                        <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
-                                    </Secured>
-                                } />
+                                <Route path="/home" element={<Secured user={currentUser}>
+                                    <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
+                                </Secured>} />
+
                                 <Route path="/users" element={
                                     <Secured user={currentUser}>
                                         <UserList />
@@ -150,7 +144,7 @@ class App extends React.Component {
                             <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
                             <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
                         </div>
-                    </Container>
+                    </Container>        
                 </Router>
             </ThemeProvider>
         );

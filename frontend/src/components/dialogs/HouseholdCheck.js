@@ -47,7 +47,6 @@ class CheckforexistingHousehold extends Component {
     fetchHouseholds = async () => {
         try {
             const households = await FridgeAPI.getAPI().getHouseholds();
-            console.log(households)
             this.setState({
                 households: households,
                 loading: false
@@ -100,6 +99,12 @@ class CheckforexistingHousehold extends Component {
 
         } catch (error) {
             this.setState({ error: error.message, loading: false });
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeFromAuth) {
+            this.unsubscribeFromAuth();
         }
     }
 
