@@ -287,7 +287,7 @@ class FridgeListOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntryListOperations(Resource):
 
-    #@secured
+    # @secured
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self):
         adm = HalilsTaverneAdministration()
@@ -296,17 +296,19 @@ class FridgeEntryListOperations(Resource):
 
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_list_with(fridge_entry)
-    #@secured
+    # @secured
     def post(self):
         adm = HalilsTaverneAdministration()
         try:
+            print('Received payload:', api.payload)  # Debugging: Empfange Payload drucken
+
             proposal = FridgeEntry.form_dict(api.payload)
-            print(proposal)
+            print('Parsed proposal:', proposal)  # Debugging: Geparstes Proposal drucken
 
             if proposal is not None:
                 fe = adm.create_Fridge_entry(
-                    proposal.get_fridge(),
-                    proposal.get_designation(),
+                    proposal.get_fridge_id(),
+                    proposal.get_groceries_designation(),
                     proposal.get_quantity(),
                     proposal.get_unit()
                 )
@@ -314,8 +316,14 @@ class FridgeEntryListOperations(Resource):
             else:
                 return {'message': 'Invalid input'}, 400
         except KeyError as e:
+            print('Missing field in input:', e)
             return {'message': f'Missing field in input: {e}'}, 400
+        except ValueError as e:
+            print('Invalid value:', e)
+            return {'message': f'Invalid value: {e}'}, 400
         except Exception as e:
+            print('Unexpected error:', e)
+            print(traceback.format_exc())  # Stack trace für detailliertere Fehlerbehebung drucken
             return {'message': str(e)}, 500
 
 

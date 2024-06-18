@@ -1,76 +1,42 @@
 import BusinessObject from "./BusinessObject.js";
 
-
 export default class FoodEntry extends BusinessObject {
-
-     /** Konstruktion eines neuen Lebensmittels 
-   * @param {String} designation - der Name des Lebensmittels.
-   * @param {String} quantity - die Menge der Lebensmittel.
-   * @param {String} unit - die Einheit der Lebensmittel.
-   */
-    constructor (adesignation, aquantity, aunit) {
+    constructor(designation, quantity, unit) {
         super();
-        this.designation = adesignation;
-        this.quantity = aquantity;
-        this.unit = aunit;
+        this.designation = designation;
+        this.quantity = quantity;
+        this.unit = unit;
     }
 
-     /**
-   * Setzen eines neuen Namen der Lebensmittel.
-   * 
-   * @param {String} adesignation -  Name von Lebenmittel.
-   */
-    setdesignation (adesignation) {
-        this.designation = adesignation;
+    setDesignation(designation) {
+        this.designation = designation;
     }
 
-    getdesignation () {
+    getDesignation() {
         return this.designation;
     }
 
-
-    /**
-   * Setzen einer Mengenangabe der Lebensmittel.
-   * 
-   * @param {String} aquantity -   Mengenangabe für ein Lebensmittel.
-   */
-    setquantity(aquantity) {
-        this.quantity = aquantity
+    setQuantity(quantity) {
+        this.quantity = quantity;
     }
 
-    getquantity () {
-        return this.quantity
+    getQuantity() {
+        return this.quantity;
     }
 
-
-    /**
-   * Setzen einer neuen Maßeinheit für Lebensmittel.
-   * 
-   * @param {String} adesignation -  neue Maßeinheit für Lebenmittel.
-   */
-    setunit (aunit) {
-        this.unit = aunit
+    setUnit(unit) {
+        this.unit = unit;
     }
 
-    getunit () {
-        return this.unit
+    getUnit() {
+        return this.unit;
     }
 
-    static fromJSON(foodentries) {
-        let result = [];
-    
-        if (Array.isArray(foodentries)) {
-          foodentries.forEach((f) => {
-            Object.setPrototypeOf(f, FoodEntry.prototype);
-            result.push(f);
-          })
-        } else {
-          // Es handelt sich offenbar um ein singuläres Objekt
-          let f = foodentries;
-          Object.setPrototypeOf(f, FoodEntry.prototype);
-          result.push(f);
-        }
-    
-        return result;
-      }
+    static fromJSON(foodEntries) {
+        return foodEntries.map(f => {
+            let foodEntry = new FoodEntry(f.designation, f.quantity, f.unit);
+            foodEntry.id = f.id;  // Angenommen, es gibt eine ID vom Typ BusinessObject
+            return foodEntry;
+        });
+    }
 }

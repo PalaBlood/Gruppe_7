@@ -227,19 +227,30 @@ class FridgeAPI {
         })
     }
 
-    
+
     addFridgeEntry(fridgeEntryBO) {
-        return this.#fetchAdvanced(this.#addFridgeEntryURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(fridgeEntryBO)
-        }).then(responseJSON => {
-            return FridgeEntryBO.fromJSON(responseJSON)[0];
-        });
-    }
+    return this.#fetchAdvanced(this.#addFridgeEntryURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: fridgeEntryBO.id,
+            groceries_designation: fridgeEntryBO.getDesignation(),
+            quantity: fridgeEntryBO.getQuantity(),
+            unit: fridgeEntryBO.getUnit(),
+            fridge_id: fridgeEntryBO.getFridgeId()
+        })
+    }).then(response => response.json())
+    .then(responseJSON => {
+        // Annahme: Das Backend gibt das hinzugefügte Objekt im JSON-Format zurück
+        return FridgeEntryBO.fromJSON([responseJSON])[0];
+    }).catch(error => {
+        console.error('Failed to add fridge entry:', error);
+        throw new Error('Error adding fridge entry');
+    });
+}
 
 
     addRecipeEntry(recipeEntryBO) {

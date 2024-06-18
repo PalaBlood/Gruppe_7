@@ -55,10 +55,12 @@ class UserProfile extends Component {
         this.setState({ editDialogOpen: false });
     };
 
+
     updateUser = async () => {
         const { user } = this.state;
         if (!user.nick_name || !user.first_name || !user.last_name) {
             this.setState({ error: 'Please fill out all fields.' });
+
             return;
         }
         this.setState({ loading: true });
