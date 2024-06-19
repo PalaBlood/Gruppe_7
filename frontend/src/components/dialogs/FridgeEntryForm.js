@@ -8,6 +8,13 @@ import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 import { getAuth } from 'firebase/auth';
 
+
+/*
+*Wichtig!!!
+*Aktuell wird bei der Erstellung eines Haulhalts in der GUI ein Haushalt vorgegeben.
+*Dieses besitzt in der DB jedoch keinen Eintrag in "fridge_entry", weshalb dort eine Einträge funktionieren.
+*/
+
 class FridgeEntryForm extends Component {
 
   constructor(props) {

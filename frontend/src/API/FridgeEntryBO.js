@@ -1,8 +1,8 @@
 import FoodEntry from "./FoodEntry";
 
 export default class FridgeEntryBO extends FoodEntry {
-    constructor(groceriesDesignation, quantity, unit, fridgeId) {
-        super(groceriesDesignation, quantity, unit);
+    constructor(designation, quantity, unit, fridgeId) {
+        super(designation, quantity, unit);
         this.fridgeId = fridgeId;
     }
 
@@ -16,8 +16,8 @@ export default class FridgeEntryBO extends FoodEntry {
 
     static fromJSON(fridgeEntries) {
         return fridgeEntries.map(f => {
-            let fridgeEntry = new FridgeEntryBO(f.groceriesDesignation, f.quantity, f.unit, f.fridgeId);
-            fridgeEntry.id = f.id; // Angenommen, es gibt eine ID vom Typ BusinessObject
+            let fridgeEntry = new FridgeEntryBO(f.designation, f.quantity, f.unit, f.fridgeId);
+            fridgeEntry.id = f.id;
             return fridgeEntry;
         });
     }

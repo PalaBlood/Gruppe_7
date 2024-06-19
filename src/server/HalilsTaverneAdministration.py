@@ -261,11 +261,7 @@ class HalilsTaverneAdministration(object):
 
 
 
-#admintest = HalilsTaverneAdministration()
 
-
-
-#admintest.create_household("Haus")
 
 
 

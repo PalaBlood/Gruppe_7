@@ -16,14 +16,14 @@ export default class BusinessObject {
      * 
      * @param {*} aId - the new ID of this BusinessObject
      */
-    setID(aId) {
+    setId(aId) {
       this.id = aId;
     }
   
     /**
      * Returns the ID of this BusinessObject.
      */
-    getID() {
+    getId() {
       return this.id;
     }
   

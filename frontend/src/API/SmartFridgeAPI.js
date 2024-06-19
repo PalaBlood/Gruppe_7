@@ -7,6 +7,8 @@ import HouseholdBO from "./HouseholdBO";
 import FridgeBO from "./FridgeBO";
 
 
+
+
 class FridgeAPI {
 
     static #api = null

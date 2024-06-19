@@ -14,14 +14,14 @@ import FridgeAPI from './API/SmartFridgeAPI.js';
 import CheckforexistingHousehold from './components/dialogs/HouseholdCheck.js';
 import UserList from './components/UserList.js';
 import UserBO from './API/UserBO.js';
-import Fridge from './components/pages/Fridge.js'
+import FridgeEntriesComponent from './components/FridgeItemList';
 import { Link as RouterLink } from 'react-router-dom';
 import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import KitchenIcon from '@mui/icons-material/Kitchen'
-import SettingsIcon from '@mui/icons-material/Settings'
-import backgroundImage from './components/pages/smartfridge.jpg'
-import Home from './components/pages/Home.js'
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import SettingsIcon from '@mui/icons-material/Settings';
+import backgroundImage from './components/pages/smartfridge.jpg';
+import Home from './components/pages/Home.js';
 import About from './components/pages/About.js';
 
 class App extends React.Component {
@@ -37,7 +37,7 @@ class App extends React.Component {
 
         this.onHouseholdConfirmed = this.onHouseholdConfirmed.bind(this);
 
-        //initialisiere firebase, davor checken ob bereits initialisiert
+        // Initialisiere Firebase, davor checken ob bereits initialisiert
         if (!App.firebaseInitialized) {
             App.app = initializeApp(firebaseConfig);
             App.auth = getAuth(App.app);
@@ -45,15 +45,17 @@ class App extends React.Component {
             App.firebaseInitialized = true;
         }
     }
+
     static getDerivedStateFromError(error) {
         return { appError: error };
     }
+
     handleSignIn = () => {
         this.setState({ authLoading: true });
         signInWithRedirect(App.auth, App.provider);
     };
 
-    //lifecycle methode
+    // Lifecycle Methode
     componentDidMount() {
         this.unsubscribeFromAuth = onAuthStateChanged(App.auth, async (user) => {
             if (user) {
@@ -62,9 +64,8 @@ class App extends React.Component {
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
                 if (!userBO[0].google_user_id) {
                     console.log("No corresponding user object found in the database, creating new user.");
-                    let newUser = new UserBO
-                     newUser = {
-                        id:0,
+                    let newUser = {
+                        id: 0,
                         first_name: user.displayName?.split(" ")[0] || "",
                         last_name: user.displayName?.split(" ")[1] || "",
                         nick_name: user.displayName?.split(" ")[0] || "User",
@@ -75,7 +76,7 @@ class App extends React.Component {
                 } else {
                     console.log("User object found in the database, skipping creation.");
                 }
-        
+
                 this.setState({
                     currentUser: user,
                     authError: null,
@@ -84,17 +85,18 @@ class App extends React.Component {
             } else {
                 console.log("Auth state changed: No user logged in.");
                 this.setState({ currentUser: null, authLoading: false });
-                
             }
         });
-        
-    } //function die dafür sorgt das componentdidmount nur einmal getriggert wird
+    }
+
+    // Funktion, die dafür sorgt, dass componentDidMount nur einmal getriggert wird
     componentWillUnmount() {
         if (this.unsubscribeFromAuth) {
             this.unsubscribeFromAuth();
         }
     }
-    //haushalt bestätigt
+
+    // Haushalt bestätigt
     onHouseholdConfirmed = async (householdId) => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -130,9 +132,9 @@ class App extends React.Component {
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='md' style={{ display: 'flex', flexDirection: 'column'}}>
+                    <Container maxWidth='md' style={{ display: 'flex', flexDirection: 'column' }}>
                         <Header user={currentUser} />
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column'}}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <Routes>
                                 <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={this.handleSignIn} />} />
                                 <Route path="/home" element={<Secured user={currentUser}>
@@ -146,7 +148,7 @@ class App extends React.Component {
                                 } />
                                 <Route path="/fridge" element={
                                     <Secured user={currentUser}>
-                                        <Fridge />
+                                        <FridgeEntriesComponent />
                                     </Secured>
                                 } />
                                 <Route path="/about" element={<About />} />
@@ -155,7 +157,7 @@ class App extends React.Component {
                             <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
                             <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
                         </div>
-                    </Container>        
+                    </Container>
                 </Router>
             </ThemeProvider>
         );
