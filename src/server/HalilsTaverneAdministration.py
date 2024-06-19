@@ -111,6 +111,10 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper() as mapper:
             mapper.delete(fridge)
 
+    def get_fridge_id_by_google_user_id(self, google_user_id):
+        with FridgeMapper() as mapper:
+            return mapper.get_fridge_id_by_google_user_id(google_user_id)
+
     # FridgeEntry spezifische Methoden
 
     def create_Fridge_entry(self, fridge_id, groceries_designation, quantity, unit):

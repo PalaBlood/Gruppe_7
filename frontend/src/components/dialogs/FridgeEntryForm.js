@@ -6,19 +6,8 @@ import FridgeAPI from '../../API/SmartFridgeAPI';
 import FridgeEntryBO from '../../API/FridgeEntryBO';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
+import { getAuth } from 'firebase/auth';
 
-
-/**
- * Shows a modal form dialog for a FridgeEntry in prop fridgeentry. If the fridgeentry is set, the dialog is configured
- * as an edit dialog and the text fields of the form are filled from the given FridgeEntry object.
- * If the fridgeentry is null, the dialog is configured as a new fridge entry dialog and the textfields are empty.
- * In dependency of the edit/new state, the respective backend calls are made to update or create a fridge entry.
- * After that, the function of the onClose prop is called with the created/update FridgeEntry object as parameter.
- * When the dialog is canceled, onClose is called with null.
- *
- * @see See Material-UIs [Dialog](https://mui.com/material-ui/react-dialog/)
- * @see See Material-UIs [TextField](https://mui.com/material-ui/react-text-field/)
- */
 class FridgeEntryForm extends Component {
 
   constructor(props) {
@@ -44,19 +33,40 @@ class FridgeEntryForm extends Component {
       unitValidationFailed: false,
       unitEdited: false,
       fridge_id: fridge_id,
-      fridge_idValidationFailed: false,
-      fridge_idEdited: false,
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
-      updatingError: null
+      updatingError: null,
+      loadingFridgeId: true,
+      fridgeIdError: null
     };
     // save this state for canceling
     this.baseState = {...this.state};
   }
 
-/** Adds the fridge entry */
-addFridgeEntry = async () => {
+  async componentDidMount() {
+    await this.handleFetchGoogleUserId();
+  }
+
+  handleFetchGoogleUserId = async () => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        console.log('Google User ID:', user.uid);
+        const response = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid);
+        this.setState({ fridge_id: response.fridge_id, loadingFridgeId: false });
+      } else {
+        console.log('Kein Benutzer ist angemeldet.');
+        this.setState({ loadingFridgeId: false });
+      }
+    } catch (error) {
+      console.error('Error while fetching fridge ID:', error);
+      this.setState({ fridgeIdError: error.message, loadingFridgeId: false });
+    }
+  };
+
+  addFridgeEntry = async () => {
     const { designation, quantity, unit, fridge_id } = this.state;
 
     this.setState({ addingInProgress: true, addingError: null });
@@ -64,43 +74,36 @@ addFridgeEntry = async () => {
     const newFridgeEntry = new FridgeEntryBO(designation, quantity, unit, fridge_id);
 
     FridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
-        this.setState({ ...this.baseState });
-        this.props.onClose(fridgeentry);
+      this.setState({ ...this.baseState });
+      this.props.onClose(fridgeentry);
     }).catch(e => {
-        console.error('Error while adding fridge entry:', e);
-        this.setState({ addingInProgress: false, addingError: e.message });
+      console.error('Error while adding fridge entry:', e);
+      this.setState({ addingInProgress: false, addingError: e.message });
     });
-}
+  }
 
-
-
-/** Updates the fridge entry */
-updateFridgeEntry = () => {
+  updateFridgeEntry = () => {
     const { designation, quantity, unit, fridge_id } = this.state;
 
     this.setState({ updatingInProgress: true, updatingError: null });
 
     let updatedFridgeEntry = new FridgeEntryBO({
-        id: this.props.fridgeentry.id,
-        groceries_designation: designation,
-        quantity: quantity,
-        unit: unit,
-        fridge_id: fridge_id
+      id: this.props.fridgeentry.id,
+      groceries_designation: designation,
+      quantity: quantity,
+      unit: unit,
+      fridge_id: fridge_id
     });
 
     FridgeAPI.getAPI().updateFridgeEntry(updatedFridgeEntry).then(fridgeentry => {
-        this.setState({ ...this.baseState });
-        this.props.onClose(fridgeentry);
+      this.setState({ ...this.baseState });
+      this.props.onClose(fridgeentry);
     }).catch(e => {
-        console.error('Error while updating fridge entry:', e);
-        this.setState({ updatingInProgress: false, updatingError: e.message });
+      console.error('Error while updating fridge entry:', e);
+      this.setState({ updatingInProgress: false, updatingError: e.message });
     });
-}
+  }
 
-
-
-
-  /** Handles value changes of the forms textfields and validates them */
   textFieldValueChange = (event) => {
     const value = event.target.value;
     let error = value.trim().length === 0;
@@ -112,19 +115,25 @@ updateFridgeEntry = () => {
     });
   }
 
-  /** Handles the close / cancel button click event */
   handleClose = () => {
     this.setState(this.baseState);
     this.props.onClose(null);
   }
 
-  /** Renders the component */
   render() {
     const { fridgeentry, show } = this.props;
-    const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, fridge_id, fridge_idValidationFailed, fridge_idEdited, addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
+    const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, addingInProgress, addingError, updatingInProgress, updatingError, loadingFridgeId, fridgeIdError } = this.state;
 
     let title = fridgeentry ? 'Update a fridge entry' : 'Create a new fridge entry';
     let header = fridgeentry ? `Fridge Entry ID: ${fridgeentry.getID()}` : 'Enter fridge entry data';
+
+    if (loadingFridgeId) {
+      return <LoadingProgress show />;
+    }
+
+    if (fridgeIdError) {
+      return <ContextErrorMessage error={fridgeIdError} contextErrorMsg={`Error fetching fridge ID`} />;
+    }
 
     return (
       show ? (
@@ -146,14 +155,13 @@ updateFridgeEntry = () => {
               <TextField type='text' required fullWidth margin='normal' id='unit' label='Unit:' value={unit}
                 onChange={this.textFieldValueChange} error={unitValidationFailed}
                 helperText={unitValidationFailed ? 'The unit must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='fridge_id' label='Fridge ID:' value={fridge_id}
-                onChange={this.textFieldValueChange} error={fridge_idValidationFailed}
-                helperText={fridge_idValidationFailed ? 'The fridge ID must contain at least one character' : ' '} />
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
               fridgeentry ?
-                <ContextErrorMessage error={updatingError} contextErrorMsg={`The fridge entry ${fridgeentry.getID()} could not be updated.`} onReload={this.updateFridgeEntry} />
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The fridge entry ${fr
+
+idgeentry.getID()} could not be updated.`} onReload={this.updateFridgeEntry} />
                 :
                 <ContextErrorMessage error={addingError} contextErrorMsg={`The fridge entry could not be added.`} onReload={this.addFridgeEntry} />
             }
@@ -162,9 +170,9 @@ updateFridgeEntry = () => {
             <Button onClick={this.handleClose} color='secondary'>Cancel</Button>
             {
               fridgeentry ?
-                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed || fridge_idValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
+                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
                 :
-                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited || fridge_idValidationFailed || !fridge_idEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
+                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
             }
           </DialogActions>
         </Dialog>
@@ -173,16 +181,9 @@ updateFridgeEntry = () => {
   }
 }
 
-/** PropTypes */
 FridgeEntryForm.propTypes = {
-  /** The FridgeEntry to be edited */
   fridgeentry: PropTypes.object,
-  /** If true, the form is rendered */
   show: PropTypes.bool.isRequired,
-  /**
-   * Handler function which is called when the dialog is closed.
-   * Sends the edited or created FridgeEntry as parameter or null if cancel was pressed.
-   */
   onClose: PropTypes.func.isRequired,
 }
 

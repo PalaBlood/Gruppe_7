@@ -215,3 +215,17 @@ class FridgeMapper(Mapper):
         cursor.execute(command, (fridge.get_id(),))
         self._cnx.commit()
         cursor.close()
+
+    def get_fridge_id_by_google_user_id(self, google_user_id):
+        with self._cnx.cursor() as cursor:
+            cursor.execute("""
+                SELECT f.id
+                FROM users u
+                JOIN household h ON u.household_id = h.id
+                JOIN fridge f ON h.fridge_id = f.id
+                WHERE u.google_user_id = %s
+            """, (google_user_id,))
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+            return None
