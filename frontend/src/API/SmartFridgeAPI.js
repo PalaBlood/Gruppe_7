@@ -44,6 +44,7 @@ class FridgeAPI {
     // Fridge related
     #getFridgesURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
     #addFridgeURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
+    #getFridgeIdByGoogleUserIdURL = (google_user_id) => ${this.#fridgeserverbaseurl}/fridge-id-by-google-id/${google_user_id};
     
 
     //user related
@@ -207,7 +208,24 @@ class FridgeAPI {
             });
         });
     }
-    
+
+
+    class FridgeAPI {
+    // ... existing methods
+
+
+    getFridgeIdByGoogleUserId(google_user_id) {
+        return this.#fetchAdvanced(this.#getFridgeIdByGoogleUserIdURL(google_user_id)).then((responseJSON) => {
+            if (responseJSON.fridge_id !== undefined) {
+                return { fridge_id: responseJSON.fridge_id };
+            } else {
+                throw new Error('Fridge ID not found');
+            }
+        });
+    }
+
+    // ... existing methods
+}
     
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
