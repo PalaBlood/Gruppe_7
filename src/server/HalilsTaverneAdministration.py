@@ -201,9 +201,9 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.find_all_entries()
 
-    def update_recipe_entry(self, recipe_entry):
+    """def update_recipe_entry(self, recipe_entry):
         with RecipeMapper as mapper:
-            return mapper.update_recipe_entry(recipe_entry)
+            return mapper.update_recipe_entry(recipe_entry)"""
 
     def delete_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
@@ -225,8 +225,8 @@ class HalilsTaverneAdministration(object):
         household = Household()
         household.set_name(Name)
 
-        fridge = self.create_Fridge()  # Objekt von fridge wird erzeugt
-        household.set_fridge_id(fridge.get_id())  # ID der Fridge wird Household zugewiesen
+        fridge = self.create_Fridge()  #Objekt von fridge wird erzeugt
+        household.set_fridge_id(fridge.get_id())  #ID der Fridge wird Household zugewiesen
 
         with HouseholdMapper() as mapper:
             return mapper.insert(household)
@@ -258,57 +258,14 @@ class HalilsTaverneAdministration(object):
     # unitconversions mit UnitConverter()
 
 
-"""admintest = HalilsTaverneAdministration()
 
 
-##########Recipe Test
-admintest.create_recipe("Spaghetti", 7,"Michel","aaaa")
-print(admintest.get_all_recipes()) #geht
-print(admintest.get_recipe_by_id(2)) #geht
-
-recipe = admintest.create_recipe("Lasagne", 4, 1, "Leckere Lasagne")
-print(f"Erstelltes Rezept: {recipe}")
-
-#löschen
-admintest.delete_recipe(recipe) #Geht
-
-
-
-
-############Household Test
-admintest.create_household("Neuer Haushalt")
-print(admintest.get_all_households()) #
-"""
-
-"""admintest.create_Fridge_entry('Gramm',500,'Kartoffel', 1)
-list2 = admintest.get_all_fridge_entries()
-for fridge_entry in list2:
-    print("Designation:", fridge_entry.get_groceries_designation())
-    print("Unit:", fridge_entry.get_unit())
-    print(fridge_entry.get_quantity())
-    print(fridge_entry.get_fridge())
-"""
-
-"""list = admintest.get_all_users()
-for user in list:
-    print("User ID:", user.get_id())
-    print("Nickname:", user.get_nick_name())
-    print("First Name:", user.get_first_name())
-    print("Last Name:", user.get_last_name())
-    print("household_id:", user.get_household_id())
-    print("google_user_id",user.get_google_user_id())
-    print()
-
-
-
-
-admintest.create_user("Lisa","Müller","jo",12)"""
 
 #admintest = HalilsTaverneAdministration()
 
+
+
 #admintest.create_household("Haus")
 
-# admintest.create_user("michel_f", "Michel", "Finger", 2)
 
-#admintest.create_Fridge_entry(2, "Birne", 200, "Kilogramm")
 

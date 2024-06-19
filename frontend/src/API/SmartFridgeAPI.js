@@ -44,8 +44,8 @@ class FridgeAPI {
     // Fridge related
     #getFridgesURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
     #addFridgeURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
-    #getFridgeIdByGoogleUserIdURL = (google_user_id) => ${this.#fridgeserverbaseurl}/fridge-id-by-google-id/${google_user_id};
-    
+    #getFridgeIdByGoogleUserIdURL = (google_user_id) => `${this.#fridgeserverbaseurl}/fridge-id-by-google-id/${google_user_id}`;
+
 
     //user related
     #getUsersURL = () => `${this.#fridgeserverbaseurl}/users`;
@@ -210,22 +210,18 @@ class FridgeAPI {
     }
 
 
-    class FridgeAPI {
-    // ... existing methods
-
 
     getFridgeIdByGoogleUserId(google_user_id) {
-        return this.#fetchAdvanced(this.#getFridgeIdByGoogleUserIdURL(google_user_id)).then((responseJSON) => {
-            if (responseJSON.fridge_id !== undefined) {
-                return { fridge_id: responseJSON.fridge_id };
-            } else {
-                throw new Error('Fridge ID not found');
-            }
+        return this.#fetchAdvanced(this.#getFridgeIdByGoogleUserIdURL(google_user_id)).then(responseJSON => {
+            return responseJSON;
+        }).catch(error => {
+            console.error('Failed to fetch fridge ID:', error);
+            throw new Error('Error fetching fridge ID by Google User ID');
         });
     }
 
-    // ... existing methods
-}
+
+
     
     addUser(userBO) {
         return this.#fetchAdvanced(this.#addUserURL(), {
