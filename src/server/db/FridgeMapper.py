@@ -149,7 +149,6 @@ class FridgeMapper(Mapper):
         return result
 
     def find_all_entries(self):
-
         result = []
         cursor = self._cnx.cursor()
 
@@ -157,8 +156,8 @@ class FridgeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (fridge_id, groceries_designation, quantity, unit) in tuples:
-            fridge_entry = FridgeEntry(fridge_id, groceries_designation, quantity, unit)
-            fridge_entry.set_fridge_id(fridge_id),
+            fridge_entry = FridgeEntry()  # Annahme: FridgeEntry hat einen Standardkonstruktor
+            fridge_entry.set_fridge_id(fridge_id)
             fridge_entry.set_groceries_designation(groceries_designation)
             fridge_entry.set_quantity(quantity)
             fridge_entry.set_unit(unit)
