@@ -159,9 +159,7 @@ class FridgeEntryForm extends Component {
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
               fridgeentry ?
-                <ContextErrorMessage error={updatingError} contextErrorMsg={`The fridge entry ${fr
-
-idgeentry.getID()} could not be updated.`} onReload={this.updateFridgeEntry} />
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The fridge entry ${fridgeentry.getID()} could not be updated.`} onReload={this.updateFridgeEntry} />
                 :
                 <ContextErrorMessage error={addingError} contextErrorMsg={`The fridge entry could not be added.`} onReload={this.addFridgeEntry} />
             }
@@ -188,3 +186,7 @@ FridgeEntryForm.propTypes = {
 }
 
 export default FridgeEntryForm;
+
+
+///Joaaaa
+

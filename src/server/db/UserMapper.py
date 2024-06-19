@@ -209,6 +209,20 @@ class UserMapper(Mapper):
 
         return result
 
+    def find_household_id_by_google_user_id(self, google_user_id):
+        cursor = self._cnx.cursor()
+        query = """
+               SELECT household_id 
+               FROM users 
+               WHERE google_user_id = %s
+           """
+        cursor.execute(query, (google_user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            return result[0]
+        return None
+
 
 
 

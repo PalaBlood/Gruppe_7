@@ -1,17 +1,7 @@
-
-from Mapper import Mapper
-from server.bo.Fridge import Fridge
+from server.db.Mapper import Mapper
 from server.bo.FridgeEntry import FridgeEntry
-from server.db.UserMapper import UserMapper
+from server.bo.Fridge import Fridge
 
-
-"""from Mapper import Mapper
-from src.server.bo.FridgeEntry import FridgeEntry
-from src.server.bo.Fridge import Fridge
-from src.server.bo.Groceries import Groceries"""
-print()
-
-##############################################################
 class FridgeMapper(Mapper):
     """Mapper-Klasse, die Fridge-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
@@ -84,7 +74,6 @@ class FridgeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""
         cursor = self._cnx.cursor()
@@ -101,7 +90,7 @@ class FridgeMapper(Mapper):
         command = """UPDATE fridge_groceries
                      SET quantity = %s, unit = %s
                      WHERE fridge_id = %s AND groceries_designation = %s"""
-       
+
         data = (fridge_entry.quantity, fridge_entry.unit, fridge_entry.fridge_id, fridge_entry.groceries_designation)
         cursor.execute(command, data)
         self._cnx.commit()
@@ -128,7 +117,6 @@ class FridgeMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
 
     def find_fridge_by_id(self, id):
         """Find a Fridge by its ID."""
@@ -180,6 +168,7 @@ class FridgeMapper(Mapper):
         cursor.close()
 
         return result
+
     def find_all_fridges(self):
         """Auslesen aller Fridges.
 
@@ -204,7 +193,7 @@ class FridgeMapper(Mapper):
         """Delete a FridgeEntry object from the database."""
         cursor = self._cnx.cursor()
         command = "DELETE FROM fridge_groceries WHERE groceries_designation = %s"
-        cursor.execute(command, (fridge_entry.get_groceries_designation()))
+        cursor.execute(command, (fridge_entry.get_groceries_designation(),))
         self._cnx.commit()
         cursor.close()
 
@@ -219,7 +208,7 @@ class FridgeMapper(Mapper):
     def get_fridge_id_by_google_user_id(self, google_user_id):
         with self._cnx.cursor() as cursor:
             cursor.execute("""
-                SELECT f.id
+                SELECT f.id 
                 FROM users u
                 JOIN household h ON u.household_id = h.id
                 JOIN fridge f ON h.fridge_id = f.id
