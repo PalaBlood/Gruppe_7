@@ -1,8 +1,8 @@
 import FoodEntry from "./FoodEntry";
 
 export default class FridgeEntryBO extends FoodEntry {
-    constructor(designation, quantity, unit, fridgeId) {
-        super(designation, quantity, unit);
+    constructor(groceries_designation, quantity, unit, fridgeId) {
+        super(groceries_designation, quantity, unit);
         this.fridgeId = fridgeId;
     }
 
@@ -16,8 +16,8 @@ export default class FridgeEntryBO extends FoodEntry {
 
     static fromJSON(fridgeEntries) {
         return fridgeEntries.map(f => {
-            let fridgeEntry = new FridgeEntryBO(f.designation, f.quantity, f.unit, f.fridgeId);
-            fridgeEntry.id = f.id;
+            let fridgeEntry = new FridgeEntryBO(f.groceries_designation, f.quantity, f.unit, f.fridge_id);
+            fridgeEntry.setId(f.id); // Verwenden Sie die setId-Methode
             return fridgeEntry;
         });
     }

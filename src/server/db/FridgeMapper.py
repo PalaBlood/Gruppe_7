@@ -104,7 +104,7 @@ class FridgeMapper(Mapper):
 
         if result:
             existing_quantity = float(result[0])
-            new_quantity = existing_quantity + float(fridge_entry.get_quantity())  # Konvertiere in Float
+            new_quantity = existing_quantity + float(fridge_entry.get_quantity())
             cursor.execute(
                 "UPDATE fridge_groceries SET quantity = %s WHERE groceries_designation = %s AND fridge_id = %s",
                 (new_quantity, fridge_entry.get_groceries_designation(), fridge_entry.get_fridge_id()))
