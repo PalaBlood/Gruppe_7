@@ -5,7 +5,8 @@ import FridgeAPI from '../API/SmartFridgeAPI';
 import FridgeEntryForm from './dialogs/FridgeEntryForm';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import FridgeEntryBO from '../API/FridgeEntryBO'
+import FridgeEntryBO from '../API/FridgeEntryBO';
+
 class FridgeEntriesComponent extends Component {
     constructor(props) {
         super(props);
@@ -72,8 +73,8 @@ class FridgeEntriesComponent extends Component {
                     Add Fridge Entry
                 </Button>
                 <div>
-                    {fridgeEntries.map((entry) => (
-                        <div key={entry.getId()} style={styles.entryBlock}>
+                    {fridgeEntries.map((entry, index) => (
+                        <div key={entry.getId() || index} style={styles.entryBlock}>
                             <h2>{entry.getDesignation()}</h2>
                             <p>Quantity: {entry.getQuantity()} {entry.getUnit()}</p>
                         </div>
