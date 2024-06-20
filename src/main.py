@@ -11,6 +11,7 @@ from server.bo.FoodEntry import FoodEntry
 from server.bo.Household import Household
 import traceback
 
+
 from SecurityDecorator import secured
 
 app = Flask(__name__)

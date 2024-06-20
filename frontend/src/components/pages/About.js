@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Card, CardContent, Typography, CardMedia } from '@mui/material';
 import image from './smartfridge.jpg'
 
+
+//about Komponente @author: Tom Schönfeld
 const About = () => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#e0f7fa', padding: 2 }}>

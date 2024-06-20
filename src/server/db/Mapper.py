@@ -2,6 +2,10 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
+from dbcredentials import host, user, password, database
+
+
+
 
 """
 Die Mapper dienen dazu, dass wir aus den Tupeln (Relationen) der Datenbank Intanzen erzeugen können
@@ -23,6 +27,7 @@ class Mapper(AbstractContextManager, ABC):
 
     def __enter__(self):
 
+
         """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
         if os.getenv('GAE_ENV', '').startswith('standard'):
             self._cnx = connector.connect(user='root', password='test',
@@ -31,9 +36,9 @@ class Mapper(AbstractContextManager, ABC):
 
         else:
             """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
-            self._cnx = connector.connect(user="root", password="test",
-                              host="localhost",
-                              database="sopra")
+            self._cnx = connector.connect(user=user, password=password,
+                              host=host,
+                              database=database)
 
 
         return self

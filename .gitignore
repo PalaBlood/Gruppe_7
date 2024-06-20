@@ -30,6 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 frontend/package-lock.json
 
-/db/Mapper
+
+/src/server/db/dbcredentials.py
+
 
 *.pyc
