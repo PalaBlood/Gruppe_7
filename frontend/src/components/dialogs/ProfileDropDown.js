@@ -12,13 +12,13 @@ class ProfileDropDown extends Component {
   constructor(props) {
     super(props);
 
-    // Init the state
+  
     this.state = {
       open: false,
     }
   }
 
-  /** Handles click events on the avatar button and toggles visibility */
+  
   handleAvatarButtonClick = () => {
     this.setState({
       open: !this.state.open
