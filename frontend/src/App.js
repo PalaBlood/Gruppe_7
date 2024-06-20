@@ -23,6 +23,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import backgroundImage from './components/pages/smartfridge.jpg';
 import Home from './components/pages/Home.js';
 import About from './components/pages/About.js';
+import Household from './components/HouseholdList.js';
+import UserProfile from './components/UserList.js';
 
 class App extends React.Component {
     constructor(props) {
@@ -141,9 +143,9 @@ class App extends React.Component {
                                     <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
                                     <Home />
                                 </Secured>} />
-                                <Route path="/users" element={
+                                <Route path="/user" element={
                                     <Secured user={currentUser}>
-                                        <UserList />
+                                        <UserProfile />
                                     </Secured>
                                 } />
                                 <Route path="/fridge" element={
@@ -151,6 +153,7 @@ class App extends React.Component {
                                         <FridgeEntriesComponent />
                                     </Secured>
                                 } />
+                                <Route path="/household" element={<Household/>} />
                                 <Route path="/about" element={<About />} />
                             </Routes>
                             <LoadingProgress show={authLoading} />

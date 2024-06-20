@@ -1,23 +1,12 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Popover, IconButton, Avatar, ClickAwayListener, Typography, Paper, Button, Grid, Divider } from '@mui/material';
+import { Popover, IconButton, Avatar, ClickAwayListener, Typography, Paper, Button, Grid, Divider, Box } from '@mui/material';
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
-/**
- * Shows a drop down list for the account infos and a possibility to log out. For closing the pop up menu if
- * the mouse is clicked outside the menu, the ClickAwayListener component is used.For logging out,
- * firebase.auth().signOut() method is used.
- *
- * @see See Material-UIs [Popover](https://mui.com/material-ui/react-popover/)
- * @see See Material-UIs [ClickAwayListener](https://mui.com/material-ui/react-click-away-listener/)
- * @see See Googles [firebase authentication](https://firebase.google.com/docs/web/setup)
- * @see See Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
- *
- * @author [](https://github.com/christophkunz)
- */
 class ProfileDropDown extends Component {
 
-  // a refernce to the avatar button
+  
   #avatarButtonRef = createRef();
 
   constructor(props) {
@@ -29,72 +18,85 @@ class ProfileDropDown extends Component {
     }
   }
 
-  /** Handles click events on the avatar button and toggels visibility */
+  /** Handles click events on the avatar button and toggles visibility */
   handleAvatarButtonClick = () => {
     this.setState({
       open: !this.state.open
     });
   }
 
-  /**
-   * Handles click events from the ClickAwayListener.
-   *
-   * @see See Material-UIs [ClickAwayListener](https://mui.com/material-ui/react-click-away-listener/)
-   */
+ 
   handleClose = () => {
     this.setState({
       open: false
     });
   }
 
-  /**
-   * Handles the click event of the sign in button and uses the firebase.auth() component to sign in.
-   *
-   * @see See Google [firebase.auth](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
-   * @see See Google [firebase.auth().signOut](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signout)
-   */
+  
   handleSignOutButtonClicked = () => {
     const auth = getAuth();
-    signOut(auth);
+    signOut(auth).then(() => {
+      this.props.navigate('/');
+    });
   }
 
-  /** Renders the profile drop down if a loggin user is given as a prop */
   render() {
     const { user } = this.props;
     const { open } = this.state;
 
     return (
       user ?
-        <div>
+        <Box>
           <IconButton sx={{ float: 'right' }} ref={this.#avatarButtonRef} onClick={this.handleAvatarButtonClick}>
             <Avatar src={user.photoURL} />
           </IconButton>
 
-          <Popover open={open} anchorEl={this.#avatarButtonRef.current} onClose={this.handleClose}
+          <Popover 
+            open={open} 
+            anchorEl={this.#avatarButtonRef.current} 
+            onClose={this.handleClose}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: 'bottom',
+              horizontal: 'right',
             }}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'right',
-            }}>
+            }}
+            PaperProps={{
+              sx: { 
+                mt: 1, 
+                boxShadow: 3,
+                borderRadius: 2,
+                width: 260
+              }
+            }}
+          >
             <ClickAwayListener onClickAway={this.handleClose}>
-              <Paper sx={{ padding: 1, bgcolor: 'background.default' }}>
-                <Typography align='center'>Hello</Typography>
+              <Paper sx={{ padding: 2, bgcolor: 'background.default' }}>
+                <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                  Hello
+                </Typography>
                 <Divider sx={{ margin: 1 }} />
-                <Typography align='center' variant='body2'>{user.displayName}</Typography>
-                <Typography align='center' variant='body2'>{user.email}</Typography>
+                <Typography align='center' variant='body1' sx={{ fontWeight: 'medium' }}>{user.displayName}</Typography>
+                <Typography align='center' variant='body2' sx={{ color: 'text.secondary' }}>{user.email}</Typography>
                 <Divider sx={{ margin: 1 }} />
                 <Grid container justifyContent='center'>
                   <Grid item>
-                    <Button color='primary' onClick={this.handleSignOutButtonClicked}>Logout</Button>
+                    <Button 
+                      color='primary' 
+                      variant="contained"
+                      onClick={this.handleSignOutButtonClicked} 
+                      sx={{ mt: 1 }}
+                    >
+                      Logout
+                    </Button>
                   </Grid>
                 </Grid>
               </Paper>
             </ClickAwayListener>
           </Popover>
-        </div>
+        </Box>
         : null
     )
   }
@@ -102,8 +104,16 @@ class ProfileDropDown extends Component {
 
 /** PropTypes */
 ProfileDropDown.propTypes = {
-  /** The logged in firesbase user */
+  /** The logged in firebase user */
   user: PropTypes.object,
 }
 
-export default ProfileDropDown;
+
+const ProfileDropDownWithRouter = (props) => {
+  const navigate = useNavigate();
+  return <ProfileDropDown {...props} navigate={navigate} />;
+};
+
+export default ProfileDropDownWithRouter;
+
+

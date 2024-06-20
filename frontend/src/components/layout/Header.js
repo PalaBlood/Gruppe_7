@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
+import { Paper, Typography, Tabs, Tab, Tooltip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import ProfileDropDown from '../dialogs/ProfileDropDown';
-import UserList from '../UserList';
+import ProfileDropDownWithRouter from '../dialogs/ProfileDropDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import KitchenIcon from '@mui/icons-material/Kitchen';
+import LivingIcon from '@mui/icons-material/Living';
 
+
+//Benutzen von mui tooltip zur anzeige einer Beschreibung der Tabs
 class Header extends Component {
   state = {
     tabindex: 0,
-    openUserList: false 
   };
 
   handleTabChange = (event, newValue) => {
     this.setState({ tabindex: newValue });
   };
 
-  toggleUserListModal = () => {
-    this.setState(prevState => ({
-      openUserList: !prevState.openUserList
-    }));
-  };
-
   render() {
     const { user } = this.props;
-    const { openUserList, tabindex } = this.state;
+    const { tabindex } = this.state;
 
     return (
       <Paper variant='outlined' style={{
@@ -36,7 +31,7 @@ class Header extends Component {
         overflow: 'hidden', 
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
       }}>
-        <ProfileDropDown user={user} />
+        <ProfileDropDownWithRouter user={user} />
         <Typography variant='h3' component='h1' align='center' style={{
           marginTop: '20px', 
           marginBottom: '10px', 
@@ -55,33 +50,26 @@ class Header extends Component {
               marginBottom: '20px'
             }}
           >
-            <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
-            <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipes' />
-            <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
-            <Tab icon={<SettingsIcon />} label='User' onClick={() => this.toggleUserListModal()} />
-            <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
+            <Tooltip title="Here is our Homepage">
+              <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
+            </Tooltip>
+            <Tooltip title="Here you can find your saved Recipes">
+              <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipes' />
+            </Tooltip>
+            <Tooltip title="Here you can find your Groceries">
+              <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
+            </Tooltip>
+            <Tooltip title="Here you can see whos in your Household">
+              <Tab icon={<LivingIcon />} label='Household' component={RouterLink} to='/household' />
+            </Tooltip>
+            <Tooltip title="Here you can edit your User Profile">
+              <Tab icon={<SettingsIcon />} label='User' component={RouterLink} to='/user'/>
+            </Tooltip>
+            <Tooltip title="About our App">
+              <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
+            </Tooltip>
           </Tabs>
         )}
-        <Modal
-          open={openUserList}
-          onClose={this.toggleUserListModal}
-          style={{
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center'
-          }}
-        >
-          <Box style={{
-            backgroundColor: 'white', 
-            boxShadow: '24px', 
-            padding: '20px', 
-            borderRadius: '10px',
-            width: 400,  // Ensure modal is centered and sized appropriately
-            outline: 'none'  // Remove default focus outline
-          }}>
-            <UserList /> 
-          </Box>
-        </Modal>
       </Paper>
     );
   }
@@ -92,3 +80,4 @@ Header.propTypes = {
 };
 
 export default Header;
+

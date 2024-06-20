@@ -6,7 +6,7 @@ import image from './smartfridge.jpg'
 //about Komponente @author: Tom Schönfeld
 const About = () => {
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#e0f7fa', padding: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#e0f7fa', padding: 2, }}>
             <Card sx={{ maxWidth: 800, padding: 2, borderRadius: '12px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)' }}>
                 <CardMedia
                     component="img"

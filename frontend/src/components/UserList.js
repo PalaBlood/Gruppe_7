@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card, CardContent, Typography, Box, CardActions, IconButton } from '@mui/material';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card, CardContent, Typography, Box, CardActions, IconButton, CircularProgress } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import FridgeAPI from '../API/SmartFridgeAPI.js';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress.js';
 import { getAuth } from "firebase/auth";
 
 class UserProfile extends Component {
@@ -22,7 +21,7 @@ class UserProfile extends Component {
 
     loadCurrentUser = async () => {
         this.setState({ loading: true });
-        const auth = getAuth(); //Ab hier => Läd den aktuellen User, kann dann seine ID verwenden
+        const auth = getAuth();
         const currentUser = auth.currentUser;
         if (!currentUser) {
             this.setState({ error: "No user logged in", loading: false });
@@ -75,12 +74,13 @@ class UserProfile extends Component {
 
     render() {
         const { user, loading, error, editDialogOpen } = this.state;
-        if (loading) return <LoadingProgress show={loading} />;
+
+        if (loading) return <CircularProgress />;
         if (error) return <ContextErrorMessage error={error} />;
         if (!user) return null;
 
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor:'lightblue' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: 'lightblue', p: 2 }}>
                 <Card raised sx={{ minWidth: 300, bgcolor: 'background.paper', p: 2 }}>
                     <CardContent>
                         <Typography variant="h5" component="div" sx={{ fontWeight: 'medium', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
