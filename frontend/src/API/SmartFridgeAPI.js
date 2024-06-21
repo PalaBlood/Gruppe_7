@@ -364,7 +364,8 @@ class FridgeAPI {
     }
 
     updateFridgeEntry(fridgeEntryBO) {
-        return this.#fetchAdvanced(this.#updateFridgeEntryURL(fridgeEntryBO.getGroceriesDesignation()), {
+        console.log(fridgeEntryBO)
+        return this.#fetchAdvanced(this.#updateFridgeEntryURL(fridgeEntryBO.designation), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',

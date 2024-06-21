@@ -54,14 +54,11 @@ class FridgeMapper(Mapper):
     def get_full_existing_entry(self, groceries_designation):
         """Der gesamte Eintrag wird aus der Realtion geladen"""
         cursor = self._cnx.cursor()
-        query = "SELECT * FROM Fridge_Groceries WHERE  groceries_designation = %s"
+        query = "SELECT * FROM Fridge_Groceries WHERE groceries_designation = %s"
         cursor.execute(query, (groceries_designation,))
         result = cursor.fetchone()
         cursor.close()
-        if result:
-            return FridgeEntry.from_tuple(result)
-        else:
-            return None
+        return result
 
     def update_fridge(self, fridge_id):
         """Wahrscheinlich benötigen wir diese Methode nie, da
@@ -192,7 +189,7 @@ class FridgeMapper(Mapper):
         """Delete a FridgeEntry object from the database."""
         cursor = self._cnx.cursor()
         command = "DELETE FROM fridge_groceries WHERE groceries_designation = %s"
-        cursor.execute(command, (fridge_entry.get_groceries_designation(),))
+        cursor.execute(command, (fridge_entry[1],))
         self._cnx.commit()
         cursor.close()
 

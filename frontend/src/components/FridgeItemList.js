@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from '@mui/material';
+import { Button, Card, CardContent, CardActions, Typography, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FridgeAPI from '../API/SmartFridgeAPI';
 import FridgeEntryForm from './dialogs/FridgeEntryForm';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -14,7 +16,8 @@ class FridgeEntriesComponent extends Component {
             fridgeEntries: [],
             showAddForm: false,
             loading: false,
-            error: null
+            error: null,
+            editEntry: null // To store the entry being edited
         };
     }
 
@@ -25,13 +28,8 @@ class FridgeEntriesComponent extends Component {
     fetchFridgeEntries = async () => {
         this.setState({ loading: true });
         try {
-            const api = FridgeAPI.getAPI();
-            const entries = await api.getFridgeEntries();
-            console.log("Fetched entries:", entries); // Debugging
+            const entries = await FridgeAPI.getAPI().getFridgeEntries();
             const fridgeEntryBOs = FridgeEntryBO.fromJSON(entries);
-            fridgeEntryBOs.forEach(entry => {
-                console.log("Entry designation:", entry.getDesignation()); // Debugging
-            });
             this.setState({ fridgeEntries: fridgeEntryBOs, loading: false });
         } catch (error) {
             console.error("Failed to fetch fridge entries:", error);
@@ -40,18 +38,32 @@ class FridgeEntriesComponent extends Component {
     };
 
     handleAddButtonClick = () => {
-        this.setState({ showAddForm: true });
+        this.setState({ showAddForm: true, editEntry: null });
     };
 
     handleFormClose = (newEntry) => {
         if (newEntry) {
-            this.fetchFridgeEntries(); // Refresh entries after adding or updating
+            this.fetchFridgeEntries();
         }
         this.setState({ showAddForm: false });
     };
 
+    handleEditButtonClick = (entry) => {
+        this.setState({ showAddForm: true, editEntry: entry });
+    };
+
+    handleDeleteButtonClick = async (designation) => {
+        try {
+            await FridgeAPI.getAPI().deleteFridgeEntry(designation);
+            this.fetchFridgeEntries();  // Refresh the list after deletion
+        } catch (error) {
+            console.error("Failed to delete fridge entry:", error);
+            this.setState({ error: `Failed to delete entry: ${designation}` });
+        }
+    };
+
     render() {
-        const { fridgeEntries, showAddForm, loading, error } = this.state;
+        const { fridgeEntries, showAddForm, loading, error, editEntry } = this.state;
 
         if (loading) {
             return <LoadingProgress show={true} />;
@@ -62,41 +74,43 @@ class FridgeEntriesComponent extends Component {
         }
 
         return (
-            <div>
-                <h1>Fridge Entries</h1>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                    onClick={this.handleAddButtonClick}
-                >
-                    Add Fridge Entry
-                </Button>
-                <div>
-                    {fridgeEntries.map((entry, index) => (
-                        <div key={entry.getId() || index} style={styles.entryBlock}>
-                            <h2>{entry.getDesignation()}</h2>
-                            <p>Quantity: {entry.getQuantity()} {entry.getUnit()}</p>
-                        </div>
-                    ))}
-                </div>
-                <FridgeEntryForm
-                    show={showAddForm}
-                    onClose={this.handleFormClose}
-                />
-            </div>
+            <Grid container spacing={2} style={{ padding: 20 }}>
+                <Grid item xs={12}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                        onClick={this.handleAddButtonClick}
+                    >
+                        Add a Grocery
+                    </Button>
+                </Grid>
+                {fridgeEntries.map((entry) => (
+                    <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h5">{entry.getDesignation()}</Typography>
+                                <Typography color="textSecondary">
+                                    Quantity: {entry.getQuantity()} {entry.getUnit()}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" startIcon={<EditIcon />} onClick={() => this.handleEditButtonClick(entry)}>Edit</Button>
+                                <Button size="small" startIcon={<DeleteIcon />} onClick={() => this.handleDeleteButtonClick(entry.getDesignation())}>Delete</Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+                {showAddForm && (
+                    <FridgeEntryForm
+                        show={showAddForm}
+                        entry={editEntry}
+                        onClose={this.handleFormClose}
+                    />
+                )}
+            </Grid>
         );
     }
 }
-
-const styles = {
-    entryBlock: {
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '16px',
-        margin: '8px 0',
-        backgroundColor: '#f9f9f9'
-    }
-};
 
 export default FridgeEntriesComponent;

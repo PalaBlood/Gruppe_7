@@ -123,8 +123,8 @@ class FridgeEntryForm extends Component {
         const { fridgeentry, show } = this.props;
         const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, addingInProgress, addingError, updatingInProgress, updatingError, loadingFridgeId, fridgeIdError } = this.state;
 
-        let title = fridgeentry ? 'Update a fridge entry' : 'Create a new fridge entry';
-        let header = fridgeentry ? `Fridge Entry ID: ${fridgeentry.getId()}` : 'Enter fridge entry data';
+        let title = fridgeentry ? 'Update a Grocery' : 'Create or update one of your Groceries';
+        let header = fridgeentry ? `Fridge Entry ID: ${fridgeentry.getId()}` : 'Enter Grocery Data';
 
         if (loadingFridgeId) {
             return <LoadingProgress show />;
