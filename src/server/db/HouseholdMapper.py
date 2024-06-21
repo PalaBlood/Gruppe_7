@@ -75,6 +75,7 @@ class HouseholdMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, name, Fridge_ID FROM household WHERE id=%s", (id,))
         tuple = cursor.fetchone()
+        print(tuple)
 
         if tuple:
             # Create a Household object
@@ -93,15 +94,9 @@ class HouseholdMapper(Mapper):
         cursor = self._cnx.cursor()
         try:
 
-            command = "UPDATE households SET name = %s WHERE id = %s"
+            command = "UPDATE household SET name = %s WHERE id = %s"
             cursor.execute(command, (household.get_name(), household.get_id()))
 
-            for user_id in household.get_users():
-                command = "INSERT INTO household_users (household_id, user_id) VALUES (%s, %s)"
-                data = (household.get_id(), user_id)
-                cursor.execute(command, data)
-
-            self._cnx.commit()
         except Exception as e:
             print(f"An error occurred while updating the household: {e}")
             self._cnx.rollback()

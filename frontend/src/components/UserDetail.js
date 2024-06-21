@@ -1,1 +1,0 @@
-//Detailierte Beschreibung eines Users

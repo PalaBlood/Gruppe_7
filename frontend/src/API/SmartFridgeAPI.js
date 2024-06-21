@@ -9,6 +9,7 @@ import FridgeBO from "./FridgeBO";
 
 
 
+
 class FridgeAPI {
 
     static #api = null
@@ -70,7 +71,8 @@ class FridgeAPI {
     // Household related
     #getHouseholdsURL = () => `${this.#fridgeserverbaseurl}/Household`;
     #addHouseholdURL = () => `${this.#fridgeserverbaseurl}/Household`;
-    #getHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
+    #getHouseholdUsersbyIDURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
+    #getHouseholdbyIDURl = (id) => `${this.#fridgeserverbaseurl}/HouseholdbyID/${id}`
     #updateHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
     #deleteHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
 
@@ -176,12 +178,21 @@ class FridgeAPI {
     }
     //fetched alle user eines bestimmten haushaltes
     getUsersbyHouseholdID(id) {
-        return this.#fetchAdvanced(this.#getHouseholdURL(id)).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getHouseholdUsersbyIDURL(id)).then((responseJSON) => {
             let householdBO = HouseholdBO.fromJSON(responseJSON);
             return new Promise(function(resolve) {
                 resolve(householdBO);
             });
         });
+    }
+
+    getHouseholdbyID(id) {
+        return this.#fetchAdvanced(this.#getHouseholdbyIDURl(id)).then((responseJSON) =>{
+            let householdBO = HouseholdBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(householdBO)
+            })
+        })
     }
 
     getRecipeByID(id) {
@@ -387,7 +398,7 @@ class FridgeAPI {
     }
     
     updateHousehold(householdBO) {
-        return this.#fetchAdvanced(this.#updateHouseholdURL(householdBO.getId()), {
+        return this.#fetchAdvanced(this.#updateHouseholdURL(householdBO.id), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',

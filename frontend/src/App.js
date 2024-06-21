@@ -153,7 +153,11 @@ class App extends React.Component {
                                         <FridgeEntriesComponent />
                                     </Secured>
                                 } />
-                                <Route path="/household" element={<Household/>} />
+                                <Route path="/household" element={
+                                    <Secured user={currentUser}>
+                                        <Household/>
+                                    </Secured>
+                                }/>
                                 <Route path="/about" element={<About />} />
                             </Routes>
                             <LoadingProgress show={authLoading} />

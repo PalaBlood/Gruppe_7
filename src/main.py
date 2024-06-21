@@ -94,7 +94,6 @@ class UserListOperations(Resource):
         """Neuen User anlegen"""
 
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         proposal = User.from_dict(api.payload)
 
         if proposal is not None:
@@ -138,7 +137,6 @@ class UserOperations(Resource):
     def put(self, id):
         """User Objekt updaten"""
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         u = User.from_dict(api.payload)
 
 
@@ -194,7 +192,6 @@ class HouseholdListOperation(Resource):
     @fridge_ns.marshal_list_with(household)
     def post(self):
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         proposal = Household.form_dict(api.payload)
 
         if proposal is not None:
@@ -229,14 +226,28 @@ class HouseholdOperations(Resource):
         """update eines household-objekts nach id"""
 
         adm = HalilsTaverneAdministration()
-        h = adm.find_household_by_id(id)
+        h1 = Household.form_dict(api.payload)
 
-        if h is not None:
-            h.set_id(id)
-            adm.save_household(h)
+        if h1 is not None:
+            h1.set_id(id)
+            adm.save_household(h1)
             return '', 200
         else:
             return '', 500
+
+
+
+@fridge_ns.route('/HouseholdbyID/<int:id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class HouseholdbyIDOperations(Resource):
+
+    @fridge_ns.marshal_list_with(household)
+    def get(self, id):
+        adm = HalilsTaverneAdministration()
+        h = adm.find_household_by_id(id)
+        return h
+
+
 
 
 @fridge_ns.route('/Fridge')
@@ -255,7 +266,6 @@ class FridgeListOperations(Resource):
     @fridge_ns.marshal_list_with(fridge)
     def post(self):
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         proposal = Fridge.form_dict(api.payload)
 
         if proposal is not None:
@@ -282,10 +292,8 @@ class FridgeEntryListOperations(Resource):
     def post(self):
         adm = HalilsTaverneAdministration()
         try:
-            print('Received payload:', api.payload)  # Debugging: Empfange Payload drucken
 
             proposal = FridgeEntry.form_dict(api.payload)
-            print('Parsed proposal:', proposal)  # Debugging: Geparstes Proposal drucken
 
             if proposal is not None:
                 fe = adm.create_Fridge_entry(
