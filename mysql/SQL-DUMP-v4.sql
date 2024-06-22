@@ -42,13 +42,15 @@ CREATE TABLE Recipe (
     recipe_title VARCHAR(255),
     number_of_persons INT,
     creator VARCHAR(255),
-    description VARCHAR(255)
+    recipe_description VARCHAR(255),
+    household_id INT,
+    FOREIGN KEY (household_id) REFERENCES Household (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Recipe (id, recipe_title, number_of_persons, creator) VALUES
-(1, 'Apple Pie', 8, 'Tom'),
-(2, 'Pancakes', 4, 'Michel'),
-(3, 'Omelette', 2, 'Michel');
+INSERT INTO Recipe (id, recipe_title, number_of_persons, creator, recipe_description, household_id) VALUES
+(1, 'Apple Pie', 8, 'Tom', "Apfelkuchen nach Omas Rezept", 2),
+(2, 'Pancakes', 4, 'Michel', "Pfannkuchen ala Michel", 2),
+(3, 'Omelette', 2, 'Michel', "Geile Eier", 2);
 
 DROP TABLE IF EXISTS Recipe_Groceries;
 CREATE TABLE Recipe_Groceries (

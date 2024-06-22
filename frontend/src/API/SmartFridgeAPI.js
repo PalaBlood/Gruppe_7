@@ -125,7 +125,7 @@ class FridgeAPI {
     }
 
     getRecipeEntries() {
-        return this.#fetchAdvanced(this.#getRecipeEntriesURL()).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getRecipesURL()).then((responseJSON) => {
             let recipeentryBOs = RecipeEntryBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(recipeentryBOs);
@@ -134,7 +134,7 @@ class FridgeAPI {
     }
 
     getRecipes() {
-        return this.#fetchAdvanced(this.#getRecipesURL()).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#fridgeserverbaseurl + '/RecipeList').then((responseJSON) => {
             let recipeBOs = RecipeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(recipeBOs);
@@ -143,7 +143,7 @@ class FridgeAPI {
     }
 
     getFridges() {
-        return this.#fetchAdvanced(this.#getFridgesURL()).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#fridgeserverbaseurl()).then((responseJSON) => {
             let fridgesBOs = FridgeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(fridgesBOs);
