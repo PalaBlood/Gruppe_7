@@ -66,6 +66,7 @@ class FridgeAPI {
     #getRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #deleteRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
+    #getHouseholdIdByGoogleUserIdURL = (google_user_id) => `${this.#fridgeserverbaseurl}/household-id-by-google-id/${google_user_id}`;
 
 
     // Household related
@@ -233,6 +234,15 @@ class FridgeAPI {
         });
     }
 
+    getHouseholdIdByGoogleUserId(google_user_id) {
+        return this.#fetchAdvanced(this.#getHouseholdIdByGoogleUserIdURL(google_user_id)).then(responseJSON => {
+            return responseJSON;
+        }).catch(error => {
+            console.error('Failed to fetch household ID:', error);
+            throw new Error('Error fetching household ID by Google User ID');
+        });
+    }
+
 
 
     
@@ -278,32 +288,27 @@ class FridgeAPI {
 
 
 
-    addRecipeEntry(recipeEntryBO) {
-        return this.#fetchAdvanced(this.#addRecipeEntryURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(recipeEntryBO)
-        }).then(responseJSON => {
-            return RecipeEntryBO.fromJSON(responseJSON)[0];
-        });
-    }
-
-
     addRecipe(recipeBO) {
-        return this.#fetchAdvanced(this.#addRecipeURL(), {
+        return this.#fetchAdvanced(this.#fridgeserverbaseurl + '/RecipeList', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(recipeBO)
+            body: JSON.stringify({
+                id: recipeBO.getId(),
+                title: recipeBO.getTitle(),  
+                creator: recipeBO.getCreator(),
+                number_of_persons: recipeBO.getNumberOfPersons(),
+                description: recipeBO.getDescription(),  
+                household_id: recipeBO.getHouseholdId()
+            })
         }).then(responseJSON => {
             return RecipeBO.fromJSON(responseJSON)[0];
         });
     }
+    
+
 
 
     addHousehold(householdBO) {
@@ -316,8 +321,11 @@ class FridgeAPI {
             body: JSON.stringify(householdBO)
         }).then(responseJSON => {
             return HouseholdBO.fromJSON(responseJSON)[0];
-        });
-    }
+        }).catch(error => {
+        console.error('Failed to add a recipe:', error);
+        throw new Error('Error adding recipe: ${error.message}'); 
+    })
+}
 
 
     addFridge(fridgeBO) {

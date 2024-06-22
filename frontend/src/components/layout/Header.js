@@ -10,8 +10,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import LivingIcon from '@mui/icons-material/Living';
 
-
-//Benutzen von mui tooltip zur anzeige einer Beschreibung der Tabs
 class Header extends Component {
   state = {
     tabindex: 0,
@@ -54,7 +52,7 @@ class Header extends Component {
               <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
             </Tooltip>
             <Tooltip title="Here you can find your saved Recipes">
-              <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipes' />
+              <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipe' />
             </Tooltip>
             <Tooltip title="Here you can find your Groceries">
               <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
@@ -80,4 +78,3 @@ Header.propTypes = {
 };
 
 export default Header;
-

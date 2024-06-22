@@ -473,7 +473,8 @@ class RecipeListOperations(Resource):
                 proposal.get_title(),
                 proposal.get_number_of_persons(),
                 proposal.get_creator(),
-                proposal.get_description()
+                proposal.get_description(),
+                proposal.get_household_id(),
             )
             return r, 200
         else:
@@ -534,6 +535,20 @@ class FridgeIdByGoogleIdResource(Resource):
             return {'fridge_id': fridge_id}, 200
         else:
             return {'message': 'Fridge ID not found'}, 404
+        
+        
+@fridge_ns.route('/household-id-by-google-id/<string:google_user_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class HouseholdIdByGoogleUserId(Resource):
+    
+    def get(self, google_user_id):
+        adm = HalilsTaverneAdministration()
+        household_id = adm.get_household_id_by_google_user_id(google_user_id)
+        if household_id is not None: 
+            return {'household_id': household_id}, 200
+        else:
+            return {'message': 'Household ID not found'}, 404
+    
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -10,21 +10,17 @@ import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import FridgeAPI from './API/SmartFridgeAPI.js';
-import CheckforexistingHousehold from './components/dialogs/HouseholdCheck.js';
-import UserList from './components/UserList.js';
-import UserBO from './API/UserBO.js';
+import FridgeAPI from './API/SmartFridgeAPI';
+import CheckforexistingHousehold from './components/dialogs/HouseholdCheck';
+import UserList from './components/UserList';
+import UserBO from './API/UserBO';
 import FridgeEntriesComponent from './components/FridgeItemList';
 import { Link as RouterLink } from 'react-router-dom';
-import { Paper, Typography, Tabs, Tab, Modal, Box } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import SettingsIcon from '@mui/icons-material/Settings';
-import backgroundImage from './components/pages/smartfridge.jpg';
-import Home from './components/pages/Home.js';
-import About from './components/pages/About.js';
-import Household from './components/HouseholdList.js';
-import UserProfile from './components/UserList.js';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
+import Household from './components/HouseholdList';
+import UserProfile from './components/UserList';
+import RecipeList from './components/RecipeList'; // Import the RecipeList component
 
 class App extends React.Component {
     constructor(props) {
@@ -143,21 +139,32 @@ class App extends React.Component {
                                     <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
                                     <Home />
                                 </Secured>} />
+                                
                                 <Route path="/user" element={
                                     <Secured user={currentUser}>
                                         <UserProfile />
                                     </Secured>
                                 } />
+                                
                                 <Route path="/fridge" element={
                                     <Secured user={currentUser}>
                                         <FridgeEntriesComponent />
                                     </Secured>
                                 } />
+                               
                                 <Route path="/household" element={
                                     <Secured user={currentUser}>
                                         <Household/>
                                     </Secured>
                                 }/>
+
+                                <Route path= "/recipe" element={
+                                    <Secured user={currentUser}>
+                                        <RecipeList/>
+                                    </Secured>
+
+                                }/>
+                                
                                 <Route path="/about" element={<About />} />
                             </Routes>
                             <LoadingProgress show={authLoading} />

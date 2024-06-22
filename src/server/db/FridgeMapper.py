@@ -153,7 +153,7 @@ class FridgeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (fridge_id, groceries_designation, quantity, unit) in tuples:
-            fridge_entry = FridgeEntry()  # Annahme: FridgeEntry hat einen Standardkonstruktor
+            fridge_entry = FridgeEntry()  
             fridge_entry.set_fridge_id(fridge_id)
             fridge_entry.set_groceries_designation(groceries_designation)
             fridge_entry.set_quantity(quantity)
