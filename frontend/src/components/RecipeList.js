@@ -29,6 +29,7 @@ class RecipeList extends Component {
         this.setState({ loading: true });
         try {
             const recipes = await FridgeAPI.getAPI().getRecipes();
+            console.log('Fetched Recipes:', recipes); // Debugging
             const recipeBOs = RecipeBO.fromJSON(recipes);
             this.setState({ recipes: recipeBOs, loading: false });
         } catch (error) {
@@ -36,6 +37,7 @@ class RecipeList extends Component {
             this.setState({ error, loading: false });
         }
     };
+    
 
     handleAddButtonClick = () => {
         this.setState({ showAddForm: true, editRecipe: null });

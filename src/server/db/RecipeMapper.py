@@ -40,7 +40,7 @@ class RecipeMapper(Mapper):
         """Update an existing recipe in the database."""
         cursor = self._cnx.cursor()
         command = """UPDATE recipe
-                       SET recipe_title = %s, number_of_persons = %s, creator = %s, description = %s
+                       SET recipe_title = %s, number_of_persons = %s, creator = %s, recipe_description = %s
                        WHERE id = %s"""
         data = (recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator(), recipe.get_description(),
                 recipe.get_id())
@@ -157,9 +157,10 @@ class RecipeMapper(Mapper):
         cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe")
         tuples = cursor.fetchall()
 
-        for (recipe_id, title, number_of_persons, creator, description, household_id) in tuples:
+        for (id, title, number_of_persons, creator, description, household_id) in tuples:
+            print(f"Debug: {id}, {title}, {number_of_persons}, {creator}, {description}, {household_id}")  # Debug-Ausgabe
             recipe = Recipe()
-            recipe.set_id(recipe_id)
+            recipe.set_id(id)
             recipe.set_title(title)
             recipe.set_number_of_persons(number_of_persons)
             recipe.set_creator(creator)
@@ -167,9 +168,7 @@ class RecipeMapper(Mapper):
             recipe.set_household_id(household_id)
             result.append(recipe)
 
-        self._cnx.commit()
         cursor.close()
-
         return result
 
     def delete_recipe_entry(self, recipe_entry, recipe_id):

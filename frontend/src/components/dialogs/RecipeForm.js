@@ -104,6 +104,7 @@ class RecipeForm extends Component {
         });
     };
 
+
     textFieldValueChange = (event) => {
         const value = event.target.value;
         let error = value.trim().length === 0;
