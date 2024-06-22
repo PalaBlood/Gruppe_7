@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import SmartFridgeAPI from '../../API/SmartFridgeAPI';
 import FridgeEntryForm from '../dialogs/FridgeEntryForm';
 
@@ -9,12 +9,13 @@ class Fridge extends Component {
   };
 
   handleOpenForm = () => {
+    //ladet die Komponente FridgeEntryForm
     this.setState({ showForm: true });
   };
 
   handleCloseForm = (entry) => {
+    //schließt die Komponente FridgeEntry Form
     if (entry) {
-      // Process the entry
       console.log('Entry saved:', entry);
     }
     this.setState({ showForm: false, fridgeEntry: null });
@@ -25,7 +26,7 @@ class Fridge extends Component {
 
     return (
       <div>
-        <button onClick={this.handleOpenForm}>Add Fridge Entry</button>
+        <button onClick={this.handleOpenForm}>Füge ein Lebensmittel hinzu</button>
         {showForm && (
           <FridgeEntryForm
             show={showForm}
@@ -38,4 +39,4 @@ class Fridge extends Component {
   }
 }
 
-export default Fridge;
+export default Fridge;*/

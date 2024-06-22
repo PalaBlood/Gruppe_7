@@ -150,12 +150,13 @@ class HalilsTaverneAdministration(object):
 
     # recipe-spezifische methoden:
 
-    def create_recipe(self, title, number_of_persons, creator, description):
+    def create_recipe(self, title, number_of_persons, creator, description, household_id):
         recipe = Recipe()
         recipe.set_title(title)
         recipe.set_number_of_persons(number_of_persons)
         recipe.set_creator(creator)
         recipe.set_description(description)
+        recipe.set_household_id(household_id)
 
         with RecipeMapper() as mapper:
             return mapper.insert_recipe(recipe)
@@ -254,6 +255,12 @@ class HalilsTaverneAdministration(object):
     def get_user_ids_of_household(self, household):
         with HouseholdMapper() as mapper:
             mapper.find_user_ids_for_household(household)
+            
+    def get_household_id_by_google_user_id(self, google_user_id):
+        """Wir lesen die google_user_id vom jeweiligen User ein und holen 
+        uns anhand dieser seine household ID"""
+        with HouseholdMapper() as mapper:
+            return mapper.get_household_id_by_google_user_id(google_user_id)
 
     # unitconversions mit UnitConverter()
 

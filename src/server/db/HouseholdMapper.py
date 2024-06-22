@@ -121,6 +121,24 @@ class HouseholdMapper(Mapper):
             self._cnx.rollback()
         finally:
             cursor.close()
+    
+    def get_household_id_by_google_user_id(self, google_user_id):
+        cursor = self._cnx.cursor()
+        try:
+            command = "SELECT household_id FROM users WHERE google_user_id = %s"
+            cursor.execute(command, (google_user_id,))
+            result = cursor.fetchone()
+            if result:#Sollte ein Eintrag gefunden werden, wird die household_id ausgelesen
+                return result[0]
+            return None
+        
+        except Exception as e:
+            print(f"An error occurred while fetching the household ID: {e}")
+            self._cnx.rollback()
+            return None
+        
+        finally:
+            cursor.close()
 
 
 

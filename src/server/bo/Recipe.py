@@ -1,5 +1,4 @@
 from BusinessObject import BusinessObject
-from User import User
 
 class Recipe(BusinessObject):
     def __init__(self):
@@ -8,6 +7,7 @@ class Recipe(BusinessObject):
         self.__number_of_persons = 0
         self.__creator = ""  # Hinzugefügt
         self.__description = ""
+        self.__household_id = None
 
     def get_title(self):
         return self.__title
@@ -19,11 +19,9 @@ class Recipe(BusinessObject):
         return self.__number_of_persons
 
     def set_number_of_persons(self, number):
-
         self.__number_of_persons = number
 
     def set_creator(self, creator):
-
         self.__creator = creator
 
     def get_creator(self):
@@ -34,30 +32,28 @@ class Recipe(BusinessObject):
 
     def set_description(self, description):
         self.__description = description
-
-
+        
+    def get_household_id(self):
+        return self.__household_id
+    
+    def set_household_id(self, id):
+        self.__household_id = id
+    
     def __repr__(self):
-        """__repr__ und __str__ werdeb zum Auslesen auf der console verwendet"""
+        """__repr__ und __str__ werden zum Auslesen auf der Konsole verwendet"""
         return (f"Recipe(Title: {self.__title}, Number of Persons: {self.__number_of_persons}, "
-                f"Creator ID: {self.__creator}, Description: {self.__description})")
+                f"Creator ID: {self.__creator}, Description: {self.__description}, Household ID: {self.__household_id})")
 
     def __str__(self):
-        return f"Title: {self.__title}, Serves: {self.__number_of_persons}, Created by: {self.__creator}, Description: {self.__description}"
+        return f"Title: {self.__title}, Serves: {self.__number_of_persons}, Created by: {self.__creator}, Description: {self.__description}, Household ID: {self.__household_id}"
 
     @staticmethod
-    def form_dict(dictionary=dict()):
-
+    def form_dict(dictionary):
         obj = Recipe()
-        obj.set_id(dictionary["id"])
-        obj.set_title(dictionary["title"])
-        obj.set_number_of_persons(dictionary["number_of_persons"])
-        obj.set_creator(dictionary["creator"])
-        obj.set_description(dictionary["description"])
-
+        obj.set_id(dictionary.get('id'))
+        obj.set_title(dictionary.get('title'))  # Aktualisiert um konsistente Benennung sicherzustellen
+        obj.set_creator(dictionary.get('creator'))
+        obj.set_number_of_persons(dictionary.get('number_of_persons'))
+        obj.set_description(dictionary.get('description'))  # Aktualisiert um konsistente Benennung sicherzustellen
+        obj.set_household_id(dictionary.get('household_id'))
         return obj
-
-
-
-
-
-        

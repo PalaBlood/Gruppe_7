@@ -1,40 +1,37 @@
-/**
- * Ähnlich wie im Backend erstellen wir eine BusinessObject Klasse, von der alle anderen Klassen erben
- * Sie dient dazu jede Intanz mit einer ID zu belegen
- */
 export default class BusinessObject {
 
-    /**
-     * The null constructor.
-     */
-    constructor() {
+  /**
+   * Der Konstruktor.
+   */
+  constructor() {
       this.id = 0;
-    }
-  
-    /**
-     * Sets the ID of this BusinessObject.
-     * 
-     * @param {*} aId - the new ID of this BusinessObject
-     */
-    setId(aId) {
+  }
+
+  /**
+   * Setzt die ID dieses BusinessObjects.
+   * @param {Number} aId - die neue ID dieses BusinessObjects.
+   */
+  setId(aId) {
       this.id = aId;
-    }
-  
-    /**
-     * Returns the ID of this BusinessObject.
-     */
-    getId() {
+  }
+
+  /**
+   * Gibt die ID dieses BusinessObjects zurück.
+   * @return {Number} die ID dieses BusinessObjects.
+   */
+  getId() {
       return this.id;
-    }
-  
-    /**
-     * Java Objekte lassen sich in Strings konventierten, was z.B. bei Logfiles hilfreich sein kann
-     */
-    toString() {
+  }
+
+  /**
+   * Konvertiert JavaScript-Objekte in Strings, was z.B. bei Logfiles hilfreich sein kann.
+   * @return {String} die String-Repräsentation dieses Objekts.
+   */
+  toString() {
       let result = '';
-      for (var prop in this) {
-        result += prop + ': ' + this[prop] + ' ';
+      for (let prop in this) {
+          result += prop + ': ' + this[prop] + ' ';
       }
       return result;
-    }
   }
+}
