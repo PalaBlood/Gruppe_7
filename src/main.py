@@ -484,18 +484,18 @@ class RecipeListOperations(Resource):
             return '', 500
 
 
-@fridge_ns.route('/Recipe/<int:id>')
+@fridge_ns.route('/Recipe/<int:recipe_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeOperations(Resource):
 
-    #@secured
+    # @secured
     @fridge_ns.marshal_with(recipe)
     def get(self, recipe_id):
         adm = HalilsTaverneAdministration()
         reci = adm.get_recipe_by_id(recipe_id)
         return reci
 
-    #@secured
+    # @secured
     @fridge_ns.marshal_with(recipe)
     def put(self, recipe_id):
         adm = HalilsTaverneAdministration()
@@ -507,13 +507,12 @@ class RecipeOperations(Resource):
         else:
             return '', 500
 
-    #@secured
+    # @secured
     def delete(self, recipe_id):
         adm = HalilsTaverneAdministration()
-        Recipe = adm.get_recipe_by_id(recipe_id)
-        adm.delete_recipe(Recipe)
+        recipe = adm.get_recipe_by_id(recipe_id)
+        adm.delete_recipe(recipe)
         return '', 200
-
 
 """@fridge_ns.route('/fridge-id-by-google-id/<string:google_user_id>')
 @fridge_ns.response(500, 'Server-Fehler')
