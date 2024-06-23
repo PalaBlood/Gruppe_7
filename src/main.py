@@ -50,12 +50,15 @@ user = api.inherit('User', bo, {
 fridge = api.inherit('Fridge', bo, {})
 
 recipe = api.inherit('Recipe', bo, {
-    'title': fields.String(attribute='__title', required=True, description='Title of the recipe'),
-    'number_of_persons': fields.Integer(attribute='__number_of_persons', required=True,
-                                        description='Number of servings the recipe provides'),
-    'creator': fields.String(attribute='__creator', description='Creator of the recipe'),
-    'description': fields.String(attribute='__description', required=True, description='The Description of a recipe')
+    'title': fields.String(attribute='_title', required=True, description='Title of the recipe'),
+    'number_of_persons': fields.Integer(attribute='_number_of_persons', required=True, description='Number of servings the recipe provides'),
+    'creator': fields.String(attribute='_creator', description='Creator of the recipe'),
+    'description': fields.String(attribute='_description', required=True, description='The Description of a recipe'),
+    'household_id': fields.Integer(attribute='_household_id', required=True, description="The Reference for the Household")
 })
+
+
+
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
     'recipe_id': fields.Integer(attribute='_RecipeEntry__recipe_id', required=True,
@@ -407,7 +410,7 @@ class RecipeEntryListOperation(Resource):
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully updated')
 @fridge_ns.param('id', 'die id eines Rezepts')
-class RecipeEntryListOperation(Resource):
+class RecipeEntryListOperationByID(Resource):
 
     #@secured
     @fridge_ns.marshal_list_with(recipe_entry)
