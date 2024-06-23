@@ -96,7 +96,7 @@ class RecipeMapper(Mapper):
     def find_recipe_by_id(self, recipe_id):
         """Find a Recipe by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, recipe_title, number_of_persons, creator FROM recipe WHERE id = %s", (recipe_id,))
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe WHERE id = %s", (recipe_id,))
         result = cursor.fetchone()
         if result:
             recipe = Recipe()
@@ -104,6 +104,8 @@ class RecipeMapper(Mapper):
             recipe.set_title(result[1])
             recipe.set_number_of_persons(result[2])
             recipe.set_creator(result[3])
+            recipe.set_description(result[4])
+            recipe.set_household_id(result[5])
             cursor.close()
             return recipe
         cursor.close()

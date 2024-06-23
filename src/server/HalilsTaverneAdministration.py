@@ -267,10 +267,4 @@ class HalilsTaverneAdministration(object):
 
 
 
-adm = HalilsTaverneAdministration()
-
-adm.create_Fridge_entry(1, "Hackfleisch", 200, "Kilogramm")
-
-
-
 

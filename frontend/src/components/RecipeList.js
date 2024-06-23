@@ -17,7 +17,7 @@ class RecipeList extends Component {
             showAddForm: false,
             loading: false,
             error: null,
-            editRecipe: null // To store the recipe being edited
+            editRecipe: null
         };
     }
 
@@ -31,13 +31,13 @@ class RecipeList extends Component {
             const recipes = await FridgeAPI.getAPI().getRecipes();
             console.log('Fetched Recipes:', recipes); // Debugging
             const recipeBOs = RecipeBO.fromJSON(recipes);
+            console.log('Converted Recipes:', recipeBOs); // Debugging
             this.setState({ recipes: recipeBOs, loading: false });
         } catch (error) {
             console.error("Failed to fetch recipes:", error);
             this.setState({ error, loading: false });
         }
     };
-    
 
     handleAddButtonClick = () => {
         this.setState({ showAddForm: true, editRecipe: null });
@@ -57,12 +57,13 @@ class RecipeList extends Component {
     handleDeleteButtonClick = async (recipeId) => {
         try {
             await FridgeAPI.getAPI().deleteRecipe(recipeId);
-            this.fetchRecipes();  // Refresh the list after deletion
+            this.fetchRecipes();  //Ladet die Recipes nach dem Löschvorhang neu
         } catch (error) {
             console.error("Failed to delete recipe:", error);
-            this.setState({ error: `Failed to delete recipe: ${recipeId}` });
+            this.setState({ error });
         }
     };
+   
 
     render() {
         const { recipes, showAddForm, loading, error, editRecipe } = this.state;
@@ -74,6 +75,8 @@ class RecipeList extends Component {
         if (error) {
             return <ContextErrorMessage error={error} contextErrorMsg="Failed to load recipes." />;
         }
+
+        console.log('Recipes in render:', recipes); // Debugging
 
         return (
             <Grid container spacing={2} style={{ padding: 20 }}>
