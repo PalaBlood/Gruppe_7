@@ -54,16 +54,15 @@ class RecipeList extends Component {
         this.setState({ showAddForm: true, editRecipe: recipe });
     };
 
-    handleDeleteButtonClick = async (recipeId) => {
+    handleDeleteButtonClick = async (recipe) => {
         try {
-            await FridgeAPI.getAPI().deleteRecipe(recipeId);
-            this.fetchRecipes();  //Ladet die Recipes nach dem Löschvorhang neu
+            await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
+            this.fetchRecipes();  // Lädt die Recipes nach dem Löschvorgang neu
         } catch (error) {
             console.error("Failed to delete recipe:", error);
             this.setState({ error });
         }
     };
-   
 
     render() {
         const { recipes, showAddForm, loading, error, editRecipe } = this.state;
@@ -102,7 +101,7 @@ class RecipeList extends Component {
                             </CardContent>
                             <CardActions>
                                 <Button size="small" startIcon={<EditIcon />} onClick={() => this.handleEditButtonClick(recipe)}>Edit</Button>
-                                <Button size="small" startIcon={<DeleteIcon />} onClick={() => this.handleDeleteButtonClick(recipe.getId())}>Delete</Button>
+                                <Button size="small" startIcon={<DeleteIcon />} onClick={() => this.handleDeleteButtonClick(recipe)}>Delete</Button>
                             </CardActions>
                         </Card>
                     </Grid>

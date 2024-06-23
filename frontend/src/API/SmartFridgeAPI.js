@@ -406,6 +406,7 @@ class FridgeAPI {
         }).then(() => ({ message: "Recipe deleted successfully", id }));
     }
     
+    
     updateHousehold(householdBO) {
         return this.#fetchAdvanced(this.#updateHouseholdURL(householdBO.id), {
             method: 'PUT',

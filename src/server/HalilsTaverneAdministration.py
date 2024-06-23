@@ -174,8 +174,10 @@ class HalilsTaverneAdministration(object):
             mapper.update(recipe)
 
     def delete_recipe(self, recipe):
-        with RecipeMapper() as mapper:  # Erstellen einer Instanz von RecipeMapper
-            mapper.delete(recipe)
+        """Delete a Recipe object."""
+        with RecipeMapper() as mapper:
+            mapper.delete_recipe(recipe)
+
 
     def get_recipe_id_by_title(self, title):
         with RecipeMapper() as mapper:

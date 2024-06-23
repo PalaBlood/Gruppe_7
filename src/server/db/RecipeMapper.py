@@ -112,21 +112,22 @@ class RecipeMapper(Mapper):
         return None
 
     def find_entries_by_recipe_id(self, recipe_id):
-
+        """Find all entries by recipe ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id))
+        cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id,))
         rows = cursor.fetchall()
-
 
         entries = []
         for row in rows:
             # Initialize the RecipeEntry
             entry = RecipeEntry()
-            entry.set_groceries_designation(row[0])
-            entry.set_quantity(row[1])
-            entry.set_unit(row[2])
+            entry.set_recipe_id(row[0])
+            entry.set_groceries_designation(row[1])
+            entry.set_quantity(row[2])
+            entry.set_unit(row[3])
             entries.append(entry)
 
+        cursor.close()
         return entries
 
     def find_all_entries(self):
@@ -173,16 +174,22 @@ class RecipeMapper(Mapper):
         cursor.close()
         return result
 
-    def delete_recipe_entry(self, recipe_entry, recipe_id):
+    def delete_recipe_entry(self, entry):
         """Delete a RecipeEntry object from the database."""
         cursor = self._cnx.cursor()
         command = "DELETE FROM recipe_groceries WHERE recipe_id = %s AND groceries_designation = %s"
-        cursor.execute(command, (recipe_id, recipe_entry.get_groceries_designation()))
+        cursor.execute(command, (entry.get_recipe_id(), entry.get_groceries_designation()))
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, recipe):
-        """Delete a Recipe object from the database."""
+    def delete_recipe(self, recipe):
+        """Delete a Recipe object."""
+        # Zuerst alle zugehörigen RecipeEntries löschen
+        entries = self.find_entries_by_recipe_id(recipe.get_id())
+        for entry in entries:
+            self.delete_recipe_entry(entry)
+
+        # Dann das Rezept löschen
         cursor = self._cnx.cursor()
         command = "DELETE FROM recipe WHERE id = %s"
         cursor.execute(command, (recipe.get_id(),))
