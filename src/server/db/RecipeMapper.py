@@ -36,6 +36,9 @@ class RecipeMapper(Mapper):
 
             return recipe
 
+
+
+
     def update_recipe(self, recipe):
         """Update an existing recipe in the database."""
         cursor = self._cnx.cursor()
@@ -51,6 +54,7 @@ class RecipeMapper(Mapper):
 
 
 
+
     def get_existing_entry(self, recipe_id, groceries_designation):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet"""
 
@@ -60,6 +64,9 @@ class RecipeMapper(Mapper):
         result = cursor.fetchone()
         cursor.close()
         return result
+
+
+
 
     def update_recipe_entry(self, recipe_id, groceries_designation, quantity, unit):
         """Update an existing recipe entry in the database."""
@@ -71,27 +78,35 @@ class RecipeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+
+
+
+
     def insert_recipe_entry(self, recipe_entry):
-        """Insert or update a RecipeEntry object into the database."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id FROM recipe LIMIT 1")
+        cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND fridge_id = %s",
+                (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         result = cursor.fetchone()
-        recipe_id = result[0]
 
-        existing_entry = self.get_existing_entry(recipe_id, recipe_entry.get_groceries_designation())
-
-        if existing_entry:
+        if result:
             # Update the existing entry
-            new_quantity = existing_entry[0] + recipe_entry.get_quantity()
-            self.update_recipe_entry(recipe_id, recipe_entry.get_groceries_designation(), new_quantity, recipe_entry.get_unit())
+            existing_quantity = float(result[0])
+            new_quantity = existing_quantity + float(recipe_entry.get_quantity())
+            cursor.execute(
+                    "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND fridge_id = %s",
+                    (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_fridge_id()))
         else:
             # Insert the new entry
             command = """INSERT INTO recipe_groceries (recipe_id, groceries_designation, quantity, unit)
                          VALUES (%s, %s, %s, %s)"""
-            data = (recipe_id, recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
+            data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
             cursor.execute(command, data)
-            self._cnx.commit()
+            
+        self._cnx.commit()
         cursor.close()
+        
+
+
 
     def find_recipe_by_id(self, recipe_id):
         """Find a Recipe by its ID."""
@@ -111,11 +126,17 @@ class RecipeMapper(Mapper):
         cursor.close()
         return None
 
+
+
+
     def find_entries_by_recipe_id(self, recipe_id):
         """Find all entries by recipe ID."""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id,))
         rows = cursor.fetchall()
+
+
+
 
         entries = []
         for row in rows:
@@ -129,6 +150,9 @@ class RecipeMapper(Mapper):
 
         cursor.close()
         return entries
+
+
+
 
     def find_all_entries(self):
         """Find all entries in the database."""
@@ -149,6 +173,9 @@ class RecipeMapper(Mapper):
         cursor.close()
 
         return result
+
+
+
 
     def find_all_recipes(self):
         """Auslesen aller Rezepte.
@@ -174,6 +201,9 @@ class RecipeMapper(Mapper):
         cursor.close()
         return result
 
+
+
+
     def delete_recipe_entry(self, entry):
         """Delete a RecipeEntry object from the database."""
         cursor = self._cnx.cursor()
@@ -181,6 +211,9 @@ class RecipeMapper(Mapper):
         cursor.execute(command, (entry.get_recipe_id(), entry.get_groceries_designation()))
         self._cnx.commit()
         cursor.close()
+
+
+
 
     def delete_recipe(self, recipe):
         """Delete a Recipe object."""
@@ -195,6 +228,9 @@ class RecipeMapper(Mapper):
         cursor.execute(command, (recipe.get_id(),))
         self._cnx.commit()
         cursor.close()
+
+
+
 
     def find_recipe_id_by_title(self, title):
 
