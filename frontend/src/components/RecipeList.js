@@ -8,6 +8,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeBO from '../API/RecipeBO';
 import RecipeForm from './dialogs/RecipeForm';
+import RecipeEntries from './RecipeEntries'; // Import the new component
 
 class RecipeList extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class RecipeList extends Component {
             showAddForm: false,
             loading: false,
             error: null,
-            editRecipe: null
+            editRecipe: null,
+            selectedRecipeId: null  // New state to store the selected recipe ID
         };
     }
 
@@ -29,12 +31,9 @@ class RecipeList extends Component {
         this.setState({ loading: true });
         try {
             const recipes = await FridgeAPI.getAPI().getRecipes();
-            console.log('Fetched Recipes:', recipes); // Debugging
             const recipeBOs = RecipeBO.fromJSON(recipes);
-            console.log('Converted Recipes:', recipeBOs); // Debugging
             this.setState({ recipes: recipeBOs, loading: false });
         } catch (error) {
-            console.error("Failed to fetch recipes:", error);
             this.setState({ error, loading: false });
         }
     };
@@ -57,15 +56,18 @@ class RecipeList extends Component {
     handleDeleteButtonClick = async (recipe) => {
         try {
             await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
-            this.fetchRecipes();  // Lädt die Recipes nach dem Löschvorgang neu
+            this.fetchRecipes();
         } catch (error) {
-            console.error("Failed to delete recipe:", error);
             this.setState({ error });
         }
     };
 
+    handleViewGroceriesButtonClick = (recipeId) => {
+        this.setState({ selectedRecipeId: recipeId });  // Set the selected recipe ID
+    };
+
     render() {
-        const { recipes, showAddForm, loading, error, editRecipe } = this.state;
+        const { recipes, showAddForm, loading, error, editRecipe, selectedRecipeId } = this.state;
 
         if (loading) {
             return <LoadingProgress show={true} />;
@@ -75,7 +77,10 @@ class RecipeList extends Component {
             return <ContextErrorMessage error={error} contextErrorMsg="Failed to load recipes." />;
         }
 
-        console.log('Recipes in render:', recipes); // Debugging
+        // If a recipe is selected, render the RecipeEntriesComponent
+        if (selectedRecipeId) {
+            return <RecipeEntries recipeId={selectedRecipeId} />;
+        }
 
         return (
             <Grid container spacing={2} style={{ padding: 20 }}>
@@ -102,6 +107,7 @@ class RecipeList extends Component {
                             <CardActions>
                                 <Button size="small" startIcon={<EditIcon />} onClick={() => this.handleEditButtonClick(recipe)}>Edit</Button>
                                 <Button size="small" startIcon={<DeleteIcon />} onClick={() => this.handleDeleteButtonClick(recipe)}>Delete</Button>
+                                <Button size="small" onClick={() => this.handleViewGroceriesButtonClick(recipe.getId())}>View Groceries</Button>
                             </CardActions>
                         </Card>
                     </Grid>

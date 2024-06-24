@@ -286,6 +286,27 @@ class FridgeAPI {
         });
     }
 
+    addRecipeEntry(RecipeEntryBO) {
+        return this.#fetchAdvanced(this.#fridgeserverbaseurl + '/RecipeEntries', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                groceries_designation: RecipeEntryBO.getDesignation(),
+                quantity: RecipeEntryBO.getQuantity(),
+                unit: RecipeEntryBO.getUnit(),
+                recipe_id: RecipeEntryBO.getFridgeId()
+            })
+        }).then(responseJSON => {
+            return FridgeEntryBO.fromJSON([responseJSON])[0];
+        }).catch(error => {
+            console.error('Failed to add fridge entry:', error);
+            throw new Error(`Error adding fridge entry: ${error.message}`);
+        });
+    }
+
 
 
     addRecipe(recipeBO) {

@@ -66,11 +66,11 @@ class FridgeEntryForm extends Component {
 
     addFridgeEntry = async () => {
       const { designation, quantity, unit, fridge_id } = this.state;
-  
+
       this.setState({ addingInProgress: true, addingError: null });
-  
+
       const newFridgeEntry = new FridgeEntryBO(designation, quantity, unit, fridge_id);
-  
+
       FridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
           this.setState({ ...this.baseState });
           this.props.onClose(fridgeentry);
@@ -79,7 +79,7 @@ class FridgeEntryForm extends Component {
           this.setState({ addingInProgress: false, addingError: { message: e.message } });
       });
   }
-  
+
 
     updateFridgeEntry = () => {
         const { designation, quantity, unit, fridge_id } = this.state;
