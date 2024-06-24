@@ -47,11 +47,14 @@ class FridgeEntryForm extends Component {
     }
 
     handleFetchGoogleUserId = async () => {
+        /**Google ID wird ausgelesen und anhand dieser die FridgeId 
+         * ausgelesen
+         */
         try {
             const auth = getAuth();
             const user = auth.currentUser;
             if (user) {
-                console.log('Google User ID:', user.uid);
+                console.log('Google User ID:', user.uid);//Debugging
                 const response = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid);
                 this.setState({ fridge_id: response.fridge_id, loadingFridgeId: false });
             } else {

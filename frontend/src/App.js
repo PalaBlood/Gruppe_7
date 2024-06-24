@@ -20,7 +20,8 @@ import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Household from './components/HouseholdList';
 import UserProfile from './components/UserList';
-import RecipeList from './components/RecipeList'; // Import the RecipeList component
+import RecipeList from './components/RecipeList'; 
+import RecipeEntryList from './components/RecipeEntryList';
 
 class App extends React.Component {
     constructor(props) {
@@ -164,6 +165,9 @@ class App extends React.Component {
                                     </Secured>
 
                                 }/>
+
+                                <Route path="/recipes/:recipeId/entries" element={<RecipeEntryList/>} />
+                          
                                 
                                 <Route path="/about" element={<About />} />
                             </Routes>

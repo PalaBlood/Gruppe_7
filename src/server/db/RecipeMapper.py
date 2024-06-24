@@ -84,7 +84,7 @@ class RecipeMapper(Mapper):
 
     def insert_recipe_entry(self, recipe_entry):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND fridge_id = %s",
+        cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",
                 (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         result = cursor.fetchone()
 
@@ -93,7 +93,7 @@ class RecipeMapper(Mapper):
             existing_quantity = float(result[0])
             new_quantity = existing_quantity + float(recipe_entry.get_quantity())
             cursor.execute(
-                    "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND fridge_id = %s",
+                    "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND recipe_id = %s",
                     (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_fridge_id()))
         else:
             # Insert the new entry
