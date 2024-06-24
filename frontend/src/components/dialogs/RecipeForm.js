@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,176 +8,181 @@ import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 import { getAuth } from 'firebase/auth';
 
-class RecipeForm extends Component {
-    constructor(props) {
-        super(props);
+function RecipeForm({ recipeentry, show, onClose }) {
+    const [title, setTitle] = useState('');
+    const [titleValidationFailed, setTitleValidationFailed] = useState(false);
+    const [titleEdited, setTitleEdited] = useState(false);
+    const [numberOfPersons, setNumberOfPersons] = useState('');
+    const [numberOfPersonsValidationFailed, setNumberOfPersonsValidationFailed] = useState(false);
+    const [numberOfPersonsEdited, setNumberOfPersonsEdited] = useState(false);
+    const [creator, setCreator] = useState('');
+    const [description, setDescription] = useState('');
+    const [descriptionValidationFailed, setDescriptionValidationFailed] = useState(false);
+    const [descriptionEdited, setDescriptionEdited] = useState(false);
+    const [householdId, setHouseholdId] = useState('');
+    const [addingInProgress, setAddingInProgress] = useState(false);
+    const [updatingInProgress, setUpdatingInProgress] = useState(false);
+    const [addingError, setAddingError] = useState(null);
+    const [updatingError, setUpdatingError] = useState(null);
+    const [loadingHouseholdId, setLoadingHouseholdId] = useState(true);
+    const [householdIdError, setHouseholdIdError] = useState(null);
 
-        let title = '', numberOfPersons = '', creator = '', description = '', householdId = '';
-        
-        if (props.recipeentry) { // Wird aufgerufen, falls ein bestehender Eintrag editiert wird.
-            title = props.recipeentry.getTitle();
-            numberOfPersons = props.recipeentry.getNumberOfPersons();
-            creator = props.recipeentry.getCreator();
-            description = props.recipeentry.getDescription();
-            householdId = props.recipeentry.getHouseholdId();
+    
+    useEffect(() => {
+        if (recipeentry) {
+            setTitle(recipeentry.getTitle());
+            setNumberOfPersons(recipeentry.getNumberOfPersons());
+            setCreator(recipeentry.getCreator());
+            setDescription(recipeentry.getDescription());
+            setHouseholdId(recipeentry.getHouseholdId());
         }
+        handleFetchGoogleUserId();
+    }, [recipeentry]);
 
-        this.state = {
-            title: title,
-            titleValidationFailed: false,
-            titleEdited: false,
-            numberOfPersons: numberOfPersons,
-            numberOfPersonsValidationFailed: false,
-            numberOfPersonsEdited: false,
-            creator: creator,
-            description: description,
-            descriptionValidationFailed: false,
-            descriptionEdited: false,
-            householdId: householdId,
-            addingInProgress: false,
-            updatingInProgress: false,
-            addingError: null,
-            updatingError: null,
-            loadingHouseholdId: true,
-            householdIdError: null
-        };
 
-        this.baseState = { ...this.state };
-    }
 
-    async componentDidMount() {
-        await this.handleFetchGoogleUserId();
-    }
-
-    handleFetchGoogleUserId = async () => {
-        /*Google Id wird ausgelesen und anhand dieser wird die household_id ausgelesen
-        und in der DB als attribut in recipe_groceries gespeichert. Das Attribut 'creator' 
-        erhält die google_user_id*/
+    const handleFetchGoogleUserId = async () => {
         try {
-            const auth = getAuth(); 
-            const user = auth.currentUser; //beinhaltet informationen über den aktuellen User
+            const auth = getAuth();
+            const user = auth.currentUser;
             if (user) {
-                console.log('Google User ID:', user.uid);//debuggen
-                const response = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(user.uid); //übergibt dei google Id 
-                console.log(response)//debuggen
-                this.setState({ creator: user.uid, householdId: response.household_id, loadingHouseholdId: false });
+                const response = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(user.uid);
+                setCreator(user.uid);
+                setHouseholdId(response.household_id);
+                setLoadingHouseholdId(false);
             } else {
-                console.log('Kein Benutzer ist angemeldet.');
-                this.setState({ loadingHouseholdId: false });
+                setLoadingHouseholdId(false);
             }
         } catch (error) {
-            console.error('Error while fetching household ID:', error);
-            this.setState({ householdIdError: error.message, loadingHouseholdId: false });
+            setHouseholdIdError(error.message);
+            setLoadingHouseholdId(false);
         }
     };
 
-    addRecipe = async () => {
-        const { title,  creator, numberOfPersons, description, householdId } = this.state;
-
-        this.setState({ addingInProgress: true, addingError: null });
-
-        const newRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId); //RecipeBo umschreiben und hier dann Setter verwenden
-
-        FridgeAPI.getAPI().addRecipe(newRecipe).then(recipe => {
-            this.setState({ ...this.baseState });
-            this.props.onClose(recipe);
-        }).catch(e => {
-            console.error('Error while adding recipe:', e);
-            this.setState({ addingInProgress: false, addingError: { message: e.message } });
-        });
-    };
-
-    updateRecipe = async () => {
-        const { title, numberOfPersons, creator, description, householdId } = this.state;
-
-        this.setState({ updatingInProgress: true, updatingError: null });
-
-        const updatedRecipe = new RecipeBO(title, numberOfPersons, creator, description, householdId);
-        updatedRecipe.setId(this.props.recipeentry.getId());
-
-        FridgeAPI.getAPI().updateRecipe(updatedRecipe).then(recipe => {
-            this.setState({ ...this.baseState });
-            this.props.onClose(recipe);
-        }).catch(e => {
-            console.error('Error while updating recipe:', e);
-            this.setState({ updatingInProgress: false, updatingError: { message: e.message } });
-        });
-    };
 
 
-    textFieldValueChange = (event) => {
-        const value = event.target.value;
-        let error = value.trim().length === 0;
+    const addRecipe = async () => {
+        setAddingInProgress(true);
+        setAddingError(null);
+        const newRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId);
 
-        this.setState({
-            [event.target.id]: value,
-            [event.target.id + 'ValidationFailed']: error,
-            [event.target.id + 'Edited']: true
-        });
-    };
-
-    handleClose = () => {
-        this.setState(this.baseState);
-        this.props.onClose(null);
-    };
-
-    render() {
-        const { recipe, show } = this.props;
-        const { title, titleValidationFailed, titleEdited, numberOfPersons, numberOfPersonsValidationFailed, numberOfPersonsEdited, description, descriptionValidationFailed, descriptionEdited, addingInProgress, addingError, updatingInProgress, updatingError, loadingHouseholdId, householdIdError } = this.state;
-
-        let komponent_title = recipe ? 'Update a Recipe' : 'Create a new Recipe';
-        let header = recipe ? `Recipe ID: ${recipe.getId()}` : 'Enter Recipe Data';
-
-        if (loadingHouseholdId) {
-            return <LoadingProgress show />;
+        try {
+            const recipe = await FridgeAPI.getAPI().addRecipe(newRecipe);
+            onClose(recipe);
+        } catch (e) {
+            setAddingError({ message: e.message });
+        } finally {
+            setAddingInProgress(false);
         }
+    };
 
-        if (householdIdError) {
-            return <ContextErrorMessage error={householdIdError} contextErrorMsg={`Error fetching household ID`} />;
+
+
+    const updateRecipe = async () => {
+        setUpdatingInProgress(true);
+        setUpdatingError(null);
+        const updatedRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId);
+        updatedRecipe.setId(recipeentry.getId());
+
+        try {
+            const recipe = await FridgeAPI.getAPI().updateRecipe(updatedRecipe);
+            onClose(recipe);
+        } catch (e) {
+            setUpdatingError({ message: e.message });
+        } finally {
+            setUpdatingInProgress(false);
         }
+    };
 
-        return (
-            show ? (
-                <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
-                    <DialogTitle id='form-dialog-title'>{komponent_title}
-                        <IconButton sx={{ position: 'absolute', right: 1, top: 1, color: 'grey[500]' }} onClick={this.handleClose}>
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>{header}</DialogContentText>
-                        <form sx={{ width: '100%' }} noValidate autoComplete='off'>
-                            <TextField autoFocus type='text' required fullWidth margin='normal' id='title' label='Title:' value={title}
-                                onChange={this.textFieldValueChange} error={titleValidationFailed}
-                                helperText={titleValidationFailed ? 'The title must contain at least one character' : ' '} />
-                            <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Number of Persons:' value={numberOfPersons}
-                                onChange={this.textFieldValueChange} error={numberOfPersonsValidationFailed}
-                                helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '} />
-                            <TextField type='text' required fullWidth margin='normal' id='description' label='Description:' value={description}
-                                onChange={this.textFieldValueChange} error={descriptionValidationFailed}
-                                helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '} />
-                        </form>
-                        <LoadingProgress show={addingInProgress || updatingInProgress} />
-                        {
-                            recipe ?
-                                <ContextErrorMessage error={updatingError} contextErrorMsg={`The recipe ${recipe.getId()} could not be updated.`} onReload={this.updateRecipe} />
-                                :
-                                <ContextErrorMessage error={addingError} contextErrorMsg={`The recipe could not be added.`} onReload={this.addRecipe} />
-                        }
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color='secondary'>Cancel</Button>
-                        {
-                            recipe ?
-                                <Button disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed} variant='contained' onClick={this.updateRecipe} color='primary'>Update</Button>
-                                :
-                                <Button disabled={titleValidationFailed || !titleEdited || numberOfPersonsValidationFailed || !numberOfPersonsEdited || descriptionValidationFailed || !descriptionEdited} variant='contained' onClick={this.addRecipe} color='primary'>Add</Button>
-                        }
-                    </DialogActions>
-                </Dialog>
-            ) : null
-        );
+
+
+
+    const textFieldValueChange = (event) => {
+        const { id, value } = event.target;
+        const trimmedValue = value.trim();
+        const isEdited = trimmedValue.length > 0;
+
+        switch (id) {
+            case 'title':
+                setTitle(value);
+                setTitleValidationFailed(trimmedValue.length === 0);
+                setTitleEdited(isEdited);
+                break;
+            case 'numberOfPersons':
+                setNumberOfPersons(value);
+                setNumberOfPersonsValidationFailed(isNaN(value) || trimmedValue.length === 0);
+                setNumberOfPersonsEdited(isEdited);
+                break;
+            case 'description':
+                setDescription(value);
+                setDescriptionValidationFailed(trimmedValue.length === 0);
+                setDescriptionEdited(isEdited);
+                break;
+            default:
+                break;
+        }
+    };
+
+
+
+    const handleClose = () => {
+        onClose(null);
+    };
+
+
+
+    const komponent_title = recipeentry ? 'Update a Recipe' : 'Create a new Recipe';
+    const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter Recipe Data';
+
+    if (loadingHouseholdId) {
+        return <LoadingProgress show />;
     }
+
+    if (householdIdError) {
+        return <ContextErrorMessage error={householdIdError} contextErrorMsg={`Error fetching household ID`} />;
+    }
+
+    return (
+        show ? (
+            <Dialog open={show} onClose={handleClose} maxWidth='xs'>
+                <DialogTitle id='form-dialog-title'>{komponent_title}
+                    <IconButton sx={{ position: 'absolute', right: 1, top: 1, color: 'grey[500]' }} onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{header}</DialogContentText>
+                    <form sx={{ width: '100%' }} noValidate autoComplete='off'>
+                        <TextField autoFocus type='text' required fullWidth margin='normal' id='title' label='Title:' value={title}
+                            onChange={textFieldValueChange} error={titleValidationFailed}
+                            helperText={titleValidationFailed ? 'The title must contain at least one character' : ' '} />
+                        <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Number of Persons:' value={numberOfPersons}
+                            onChange={textFieldValueChange} error={numberOfPersonsValidationFailed}
+                            helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '} />
+                        <TextField type='text' required fullWidth margin='normal' id='description' label='Description:' value={description}
+                            onChange={textFieldValueChange} error={descriptionValidationFailed}
+                            helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '} />
+                    </form>
+                    <LoadingProgress show={addingInProgress || updatingInProgress} />
+                    {
+                        recipeentry ?
+                            <ContextErrorMessage error={updatingError} contextErrorMsg={`The recipe ${recipeentry.getId()} could not be updated.`} onReload={updateRecipe} />
+                            :
+                            <ContextErrorMessage error={addingError} contextErrorMsg={`The recipe could not be added.`} onReload={addRecipe} />
+                    }
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color='secondary'>Cancel</Button>
+                    {
+                        recipeentry ?
+                            <Button disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed} variant='contained' onClick={updateRecipe} color='primary'>Update</Button>
+                            :
+                            <Button disabled={titleValidationFailed || !titleEdited || numberOfPersonsValidationFailed || !numberOfPersonsEdited || descriptionValidationFailed || !descriptionEdited} variant='contained' onClick={addRecipe} color='primary'>Add</Button>
+                    }
+                </DialogActions>
+            </Dialog>
+        ) : null
+    );
 }
 
 RecipeForm.propTypes = {

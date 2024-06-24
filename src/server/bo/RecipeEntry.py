@@ -22,26 +22,17 @@ class RecipeEntry(FoodEntry):
         return f"<RecipeEntry(ID = {self.get_id()}, recipe_id={self.__recipe_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def form_dict(dictionary=dict()):
         obj = RecipeEntry()
-        obj.set_id(dictionary["id"])
-        obj.set_recipe_id(dictionary["recipe_id"])
-        obj.set_groceries_designation(dictionary["groceries_designation"])
-        obj.set_quantity(dictionary["quantity"])
-        obj.set_unit(dictionary["unit"])
+        try:
+            obj.set_recipe_id(dictionary["recipe_id"])
+            obj.set_groceries_designation(dictionary["groceries_designation"])
+            obj.set_quantity(dictionary["quantity"])
+            obj.set_unit(dictionary["unit"])
 
+        except KeyError as e:
+            raise ValueError(f'Missing field in dictionary: {e}')
         return obj
-
-    def form_dict(dictionary):
-        return RecipeEntry(
-            recipe_id=dictionary.get("recipe_id"),
-            groceries_designation=dictionary.get("groceries_designation"),
-            quantity=dictionary.get("quantity"),
-            unit=dictionary.get("unit")
-        )
-
-
-
 
 
 

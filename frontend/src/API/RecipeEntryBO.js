@@ -1,49 +1,31 @@
 import FoodEntry from './FoodEntry.js';
 
-export default class RecipeEntryBO extends FoodEntry{
-
-
-
+export default class RecipeEntryBO extends FoodEntry {
    /** Konstruktion der RezeptID.
-   * @param {String} arecipeid - Fügt einem Rezept eine ID hinzu.
+   * @param {String} recipeid - Fügt einem Rezept eine ID hinzu.
    */
-    constructor(arecipeid){
-        super();
-        this.recipeid = arecipeid
+    constructor(groceries_designation, quantity, unit, recipeid) {
+        super(groceries_designation, quantity, unit);
+        this.recipeid = recipeid;
     }
 
-
-    
     /**
    * Setzen einer ID für das Rezept.
-   * @param {String} atitle -  neuen ID des Rezeptes.
+   * @param {String} recipeid - neuen ID des Rezeptes.
    */
-    setrecipeid(arecipeid){
-        this.recipeid = arecipeid
+    setRecipeId(recipeid) {
+        this.recipeid = recipeid;
     }
 
-    getrecipeid() {
-        return this.recipeid
+    getRecipeId() {
+        return this.recipeid;
     }
 
-    static fromJSON(recipeentries) {
-        let result = [];
-    
-        if (Array.isArray(recipeentries)) {
-          recipeentries.forEach((r) => {
-            Object.setPrototypeOf(r, RecipeEntryBO.prototype);
-            result.push(r);
-          })
-        } else {
-          // Es handelt sich offenbar um ein singuläres Objekt
-          let r = recipeentries;
-          Object.setPrototypeOf(r, RecipeEntryBO.prototype);
-          result.push(r);
-        }
-    
-        return result;
-      }
+    static fromJSON(recipeEntries) {
+        return recipeEntries.map(r => {
+            let recipeEntry = new RecipeEntryBO(r.groceries_designation, r.quantity, r.unit, r.recipeid); // Verwenden Sie `recipeid`
+            recipeEntry.setId(r.id); 
+            return recipeEntry;
+        });
+    }
 }
-
-
-

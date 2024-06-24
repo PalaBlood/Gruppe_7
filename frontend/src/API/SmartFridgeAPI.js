@@ -40,8 +40,10 @@ class FridgeAPI {
     #getRecipeEntriesURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #getRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
+    #getRecipeEntriesByRecipeIdURL = (recipe_entry_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${recipe_entry_id}`
     #updateRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     #deleteRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
+    
     
 
     // Fridge related
@@ -105,7 +107,8 @@ class FridgeAPI {
             })
         })    
     }
-    
+
+
     getHouseholds() {
         return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
             let householdBOs = HouseholdBO.fromJSON(responseJSON);
@@ -114,6 +117,7 @@ class FridgeAPI {
             })
         })
     }
+
 
     getFridgeEntries() {
         return this.#fetchAdvanced(this.#getFridgeEntriesURL()).then((responseJSON) => {
@@ -214,6 +218,21 @@ class FridgeAPI {
         });
     }
 
+
+    getRecipeEntriesByRecipeId(recipe_id) {
+        return this.#fetchAdvanced(this.#getRecipeEntriesByRecipeIdURL(recipe_id))
+            .then(responseJSON => {
+                console.log('Response JSON:', responseJSON); // Konsolenausgabe zur Überprüfung des JSON-Antwortobjekts
+                let recipeEntryBO = RecipeEntryBO.fromJSON(responseJSON);
+                return recipeEntryBO;
+            })
+            .catch(error => {
+                console.error("Error fetching recipe entries:", error);
+                throw error;
+            });
+    }
+
+
     getFridgeEntriesByGroceriesDesignation(groceries_designation) {
         return this.#fetchAdvanced(this.#getFridgeEntryURL(groceries_designation)).then((responseJSON) => {
             let fridgeEntryBO = FridgeEntryBO.fromJSON(responseJSON);
@@ -233,6 +252,7 @@ class FridgeAPI {
             throw new Error('Error fetching fridge ID by Google User ID');
         });
     }
+
 
     getHouseholdIdByGoogleUserId(google_user_id) {
         return this.#fetchAdvanced(this.#getHouseholdIdByGoogleUserIdURL(google_user_id)).then(responseJSON => {
@@ -297,10 +317,10 @@ class FridgeAPI {
                 groceries_designation: RecipeEntryBO.getDesignation(),
                 quantity: RecipeEntryBO.getQuantity(),
                 unit: RecipeEntryBO.getUnit(),
-                recipe_id: RecipeEntryBO.getFridgeId()
+                recipe_id: RecipeEntryBO.getRecipeId()
             })
         }).then(responseJSON => {
-            return FridgeEntryBO.fromJSON([responseJSON])[0];
+            return RecipeEntryBO.fromJSON([responseJSON])[0];
         }).catch(error => {
             console.error('Failed to add fridge entry:', error);
             throw new Error(`Error adding fridge entry: ${error.message}`);

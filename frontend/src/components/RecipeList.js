@@ -3,125 +3,126 @@ import { Button, Card, CardContent, CardActions, Typography, Grid } from '@mui/m
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
 import FridgeAPI from '../API/SmartFridgeAPI';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeBO from '../API/RecipeBO';
 import RecipeForm from './dialogs/RecipeForm';
-import RecipeEntries from './RecipeEntries'; // Import the new component
+import RecipeCard from './RecipeCard.js';
 
-class RecipeList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            recipes: [],
-            showAddForm: false,
-            loading: false,
-            error: null,
-            editRecipe: null,
-            selectedRecipeId: null  // New state to store the selected recipe ID
-        };
-    }
+function RecipeList() {
+    /*
+    *Initialisierung des State: React.useState([]) initialisiert eine State-Variable namens recipes mit einem leeren Array als Startwert.
 
-    componentDidMount() {
-        this.fetchRecipes();
-    }
+    *State-Setter-Funktion: useState gibt auch eine Funktion zurück, die verwendet wird, um diesen State zu aktualisieren. Diese Funktion wird setRecipes genannt.
+    */
+    const [recipes, setRecipes] = React.useState([]); //wir sagen es handelt sich um ein Array. Sobald setRecipes daten empfängt, werden diese dort eingespeichert 
+    const [showAddForm, setShowAddForm] = React.useState(false); 
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState(null);
+    const [editRecipe, setEditRecipe] = React.useState(null);
+    const navigate = useNavigate();
 
-    fetchRecipes = async () => {
-        this.setState({ loading: true });
+    React.useEffect(() => {
+        fetchRecipes();
+    }, []);
+
+
+
+    const fetchRecipes = async () => {
+        setLoading(true);
         try {
-            const recipes = await FridgeAPI.getAPI().getRecipes();
+            const recipes = await FridgeAPI.getAPI().getRecipes(); 
             const recipeBOs = RecipeBO.fromJSON(recipes);
-            this.setState({ recipes: recipeBOs, loading: false });
+            setRecipes(recipeBOs); 
+            setLoading(false);
         } catch (error) {
-            this.setState({ error, loading: false });
+            setError(error);
+            setLoading(false);
         }
     };
 
-    handleAddButtonClick = () => {
-        this.setState({ showAddForm: true, editRecipe: null });
+
+
+    const handleAddButtonClick = () => {
+        setShowAddForm(true);
+        setEditRecipe(null);
     };
 
-    handleFormClose = (newRecipe) => {
+
+
+    const handleFormClose = (newRecipe) => {
         if (newRecipe) {
-            this.fetchRecipes();
+            fetchRecipes();
         }
-        this.setState({ showAddForm: false });
+        setShowAddForm(false);
     };
 
-    handleEditButtonClick = (recipe) => {
-        this.setState({ showAddForm: true, editRecipe: recipe });
+
+
+    const handleEditButtonClick = (recipe) => {
+        setShowAddForm(true);
+        setEditRecipe(recipe);
     };
 
-    handleDeleteButtonClick = async (recipe) => {
+
+
+    const handleDeleteButtonClick = async (recipe) => {
         try {
             await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
-            this.fetchRecipes();
+            fetchRecipes();
         } catch (error) {
-            this.setState({ error });
+            setError(error);
         }
     };
 
-    handleViewGroceriesButtonClick = (recipeId) => {
-        this.setState({ selectedRecipeId: recipeId });  // Set the selected recipe ID
+
+    const handleViewEntriesButtonClick = (recipeId) => {
+        navigate(`/recipes/${recipeId}/entries`);
     };
 
-    render() {
-        const { recipes, showAddForm, loading, error, editRecipe, selectedRecipeId } = this.state;
-
-        if (loading) {
-            return <LoadingProgress show={true} />;
-        }
-
-        if (error) {
-            return <ContextErrorMessage error={error} contextErrorMsg="Failed to load recipes." />;
-        }
-
-        // If a recipe is selected, render the RecipeEntriesComponent
-        if (selectedRecipeId) {
-            return <RecipeEntries recipeId={selectedRecipeId} />;
-        }
-
-        return (
-            <Grid container spacing={2} style={{ padding: 20 }}>
-                <Grid item xs={12}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<AddIcon />}
-                        onClick={this.handleAddButtonClick}
-                    >
-                        Add a Recipe
-                    </Button>
-                </Grid>
-                {recipes.map((recipe) => (
-                    <Grid item xs={12} sm={6} md={4} key={recipe.getId()}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h5">{recipe.getTitle()}</Typography>
-                                <Typography color="textSecondary">
-                                    Number of Persons: {recipe.getNumberOfPersons()} <br/>
-                                    Description: {recipe.getDescription()}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" startIcon={<EditIcon />} onClick={() => this.handleEditButtonClick(recipe)}>Edit</Button>
-                                <Button size="small" startIcon={<DeleteIcon />} onClick={() => this.handleDeleteButtonClick(recipe)}>Delete</Button>
-                                <Button size="small" onClick={() => this.handleViewGroceriesButtonClick(recipe.getId())}>View Groceries</Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))}
-                {showAddForm && (
-                    <RecipeForm
-                        show={showAddForm}
-                        recipeentry={editRecipe}
-                        onClose={this.handleFormClose}
-                    />
-                )}
-            </Grid>
-        );
+    
+    if (loading) {
+        return <LoadingProgress show={true} />;
     }
+
+    if (error) {
+        return <ContextErrorMessage error={error} contextErrorMsg="Failed to load recipes." />;
+    }
+
+    
+    return (
+        <Grid container spacing={2} style={{ padding: 20 }}>
+            <Grid item xs={12}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    onClick={handleAddButtonClick}
+                >
+                    Add a Recipe
+                </Button>
+            </Grid>
+            {recipes.map((recipe) => (
+                <Grid item xs={12} sm={6} md={4} key={recipe.getId()}>
+                    <RecipeCard
+                        recipe={recipe} //weitergabe des Objekts an RecipeCard.js
+                        onEdit={handleEditButtonClick}
+                        onDelete={handleDeleteButtonClick}
+                        onViewEntries={handleViewEntriesButtonClick}
+                    />
+                </Grid>
+            ))}
+            {showAddForm && (
+                <RecipeForm
+                    show={showAddForm}
+                    recipeentry={editRecipe}
+                    onClose={handleFormClose}
+                />
+            )}
+        </Grid>
+    );
 }
 
 export default RecipeList;

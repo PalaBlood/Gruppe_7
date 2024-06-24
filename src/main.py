@@ -394,30 +394,33 @@ class RecipeEntryListOperation(Resource):
         adm = HalilsTaverneAdministration()
         proposal = RecipeEntry.form_dict(api.payload)
         if proposal is not None:
-            fe = adm.create_recipe_entry(
-                proposal.get_unit(),
-                proposal.get_quantity(),
+            re = adm.create_recipe_entry(
+                proposal.get_recipe_id(),
                 proposal.get_groceries_designation(),
-                proposal.get_recipe_id()
+                proposal.get_quantity(),
+                proposal.get_unit()
             )
-            return fe, 200
+            return re, 200
         else:
             return '', 500
 
 
-@fridge_ns.route('/RecipeEntry/<int:id>')
+@fridge_ns.route('/recipes/<int:recipe_id>/entries')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
-@fridge_ns.response(200, 'RecipeEntry successfully updated')
-@fridge_ns.param('id', 'die id eines Rezepts')
+@fridge_ns.response(200, 'RecipeEntry successfully retrieved')
+@fridge_ns.param('recipe_id', 'Die ID eines Rezepts')
 class RecipeEntryListOperationByID(Resource):
-
     #@secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self, recipe_id):
         adm = HalilsTaverneAdministration()
         reci = adm.find_recipe_entries_by_recipe_id(recipe_id)
-        return reci
+        if reci:
+            return reci, 200
+        else:
+            api.abort(404, "RecipeEntry not found")
+
 
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>')
@@ -470,7 +473,12 @@ class RecipeListOperations(Resource):
     @fridge_ns.marshal_list_with(recipe)
     def post(self):
         adm = HalilsTaverneAdministration()
+        
+        payload = api.payload #Debugging
+        print("Received payload:", payload)  # Debugging information
+
         proposal = Recipe.form_dict(api.payload)
+        
         if proposal is not None:
             r = adm.create_recipe(
                 proposal.get_title(),
