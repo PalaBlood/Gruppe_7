@@ -211,13 +211,18 @@ class FridgeAPI {
         });
     }
 
-    getRecipeEntriesByGroceriesDesignation(groceries_designation) {
-        return this.#fetchAdvanced(this.#getRecipeEntryURL(groceries_designation)).then((responseJSON) => {
-            let recipeEntryBO = RecipeEntryBO.fromJSON(responseJSON);
-            return new Promise(function(resolve) {
-                resolve(recipeEntryBO);
+    getRecipeEntriesByRecipeId(recipe_id) {
+        return this.#fetchAdvanced(this.#getRecipeEntriesByRecipeIdURL(recipe_id))
+            .then(responseJSON => {
+                if (responseJSON.length === 0) {
+                    return []; // Leere Liste zurückgeben, wenn keine Einträge gefunden werden
+                }
+                return RecipeEntryBO.fromJSON(responseJSON);
+            })
+            .catch(error => {
+                console.error("Error fetching recipe entries:", error);
+                throw error;
             });
-        });
     }
 
 

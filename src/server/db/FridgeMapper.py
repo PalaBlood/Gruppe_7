@@ -40,6 +40,9 @@ class FridgeMapper(Mapper):
         cursor.close()
 
         return fridge
+    
+    
+    
 
     def get_existing_entry(self, fridge_id, groceries_designation):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet
@@ -50,6 +53,9 @@ class FridgeMapper(Mapper):
         result = cursor.fetchone()
         cursor.close()
         return result
+    
+    
+    
 
     def get_full_existing_entry(self, groceries_designation):
         """Der gesamte Eintrag wird aus der Realtion geladen"""
@@ -59,6 +65,9 @@ class FridgeMapper(Mapper):
         result = cursor.fetchone()
         cursor.close()
         return result
+    
+    
+    
 
     def update_fridge(self, fridge_id):
         """Wahrscheinlich benötigen wir diese Methode nie, da
@@ -70,6 +79,9 @@ class FridgeMapper(Mapper):
         cursor.execute(query, (fridge_id,))
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         """Update an existing fridge entry in the database."""
@@ -80,6 +92,9 @@ class FridgeMapper(Mapper):
         cursor.execute(command, (quantity, unit, fridge_id, groceries_designation))
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def update_fridge_entry2(self, fridge_entry):
         """Update an existing fridge entry in the database."""
@@ -92,6 +107,9 @@ class FridgeMapper(Mapper):
         cursor.execute(command, data)
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def insert_fridge_entry(self, fridge_entry):
         cursor = self._cnx.cursor()
@@ -114,6 +132,9 @@ class FridgeMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def find_fridge_by_id(self, id):
         """Find a Fridge by its ID."""
@@ -127,6 +148,9 @@ class FridgeMapper(Mapper):
             return fridge
         cursor.close()
         return None
+    
+    
+    
 
     def find_entries_by_fridge_id(self, fridge_id):
         """Find all entries associated with a specific fridge ID."""
@@ -144,6 +168,9 @@ class FridgeMapper(Mapper):
             result.append(entry)
         cursor.close()
         return result
+    
+    
+    
 
     def find_all_entries(self):
         result = []
@@ -164,6 +191,9 @@ class FridgeMapper(Mapper):
         cursor.close()
 
         return result
+    
+    
+    
 
     def find_all_fridges(self):
         """Auslesen aller Fridges.
@@ -184,6 +214,9 @@ class FridgeMapper(Mapper):
         cursor.close()
 
         return result
+    
+    
+    
 
     def delete_fridge_entry(self, fridge_entry):
         """Delete a FridgeEntry object from the database."""
@@ -192,6 +225,9 @@ class FridgeMapper(Mapper):
         cursor.execute(command, (fridge_entry[1],))
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def delete(self, fridge):
         """Delete a Fridge object from the database."""
@@ -200,6 +236,9 @@ class FridgeMapper(Mapper):
         cursor.execute(command, (fridge.get_id(),))
         self._cnx.commit()
         cursor.close()
+        
+        
+        
 
     def get_fridge_id_by_google_user_id(self, google_user_id):
         with self._cnx.cursor() as cursor:

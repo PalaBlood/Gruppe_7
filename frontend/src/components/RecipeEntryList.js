@@ -10,7 +10,7 @@ import RecipeEntryForm from './dialogs/RecipeEntryForm';
 import RecipeEntryCard from './RecipeEntryCard';
 
 function RecipeEntryList() {
-    const { recipeId } = useParams(); // Rezept-ID wird hier abgerufen
+    const { recipeId } = useParams();
     const [recipeEntries, setRecipeEntries] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -44,10 +44,10 @@ function RecipeEntryList() {
     };
 
     const handleFormClose = (newEntry) => {
-        if (newEntry) {
-            fetchRecipeEntries();
-        }
         setShowAddForm(false);
+        if (newEntry) {
+            fetchRecipeEntries(); // State neu laden
+        }
     };
 
     const handleEditButtonClick = (entry) => {
@@ -84,21 +84,27 @@ function RecipeEntryList() {
                     Add Ingredient
                 </Button>
             </Grid>
-            {recipeEntries.map((entry) => (
-                <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
-                    <RecipeEntryCard
-                        RecipeEntry={entry}
-                        onEdit={handleEditButtonClick}
-                        onDelete={handleDeleteButtonClick}
-                    />
+            {recipeEntries.length === 0 ? (
+                <Grid item xs={12}>
+                    <p>No ingredients found. Add a new ingredient to get started.</p>
                 </Grid>
-            ))}
+            ) : (
+                recipeEntries.map((entry) => (
+                    <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
+                        <RecipeEntryCard
+                            RecipeEntry={entry}
+                            onEdit={handleEditButtonClick}
+                            onDelete={handleDeleteButtonClick}
+                        />
+                    </Grid>
+                ))
+            )}
             {showAddForm && (
                 <RecipeEntryForm
                     show={showAddForm}
                     entry={editEntry}
                     onClose={handleFormClose}
-                    recipeId={parseInt(recipeId)} // Weitergabe der Rezept-ID
+                    recipeId={parseInt(recipeId)}
                 />
             )}
         </Grid>

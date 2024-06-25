@@ -28,7 +28,7 @@ class FridgeEntry(FoodEntry):
         obj.set_unit(dictionary["unit"])
         return obj
 
-    @staticmethod
+    """@staticmethod
     def form_dict(dictionary):
         obj = FridgeEntry()
         try:
@@ -38,17 +38,9 @@ class FridgeEntry(FoodEntry):
             obj.set_unit(dictionary["unit"])
         except KeyError as e:
             raise ValueError(f'Missing field in dictionary: {e}')
-        return obj
+        return obj"""
 
 
-if __name__ == "__main__":
-
-    entry = FridgeEntry()
-    entry.set_id(1)
-    entry.set_unit("kilo")
-    entry.set_quantity(200)
-    entry.set_fridge_id(1)
-    entry.set_groceries_designation("Salat")
 
 
 

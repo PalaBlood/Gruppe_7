@@ -103,10 +103,6 @@ class RecipeMapper(Mapper):
             data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
             cursor.execute(command, data)
             
-            # Fetch the newly inserted ID
-            recipe_entry_id = cursor.lastrowid
-            recipe_entry.set_id(recipe_entry_id)
-
         self._cnx.commit()
         cursor.close()
 
