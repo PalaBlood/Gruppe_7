@@ -34,6 +34,8 @@ class FridgeAPI {
     #getFridgeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/FridgeEntry/${groceries_designation}`;
     #updateFridgeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/FridgeEntry/${groceries_designation}`;
     #deleteFridgeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/FridgeEntry/${groceries_designation}`;
+    #getFridgeEntriesbyFridgeID = (fridge_id) => `${this.#fridgeserverbaseurl}/FridgeEntries/${fridge_id}`;
+
 
 
     // RecipeEntry related
@@ -108,7 +110,7 @@ class FridgeAPI {
         })    
     }
 
-
+    
     getHouseholds() {
         return this.#fetchAdvanced(this.#getHouseholdsURL()).then((responseJSON) => {
             let householdBOs = HouseholdBO.fromJSON(responseJSON);
@@ -241,6 +243,15 @@ class FridgeAPI {
         });
     }
 
+    getFridgeEntriesbyFridgeId(fridge_id) {
+        return this.#fetchAdvanced(this.#getFridgeEntriesbyFridgeID(fridge_id)).then((responseJSON) => {
+            let entries = FridgeBO.fromJSON(responseJSON);
+            return new Promise(function(resolve) {
+                resolve(entries);
+            });
+        });
+    }
+
 
 
     getFridgeIdByGoogleUserId(google_user_id) {
@@ -365,7 +376,7 @@ class FridgeAPI {
         console.error('Failed to add a recipe:', error);
         throw new Error('Error adding recipe: ${error.message}'); 
     })
-}
+    }
 
 
     addFridge(fridgeBO) {

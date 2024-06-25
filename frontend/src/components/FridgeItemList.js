@@ -8,6 +8,8 @@ import FridgeEntryForm from './dialogs/FridgeEntryForm';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import FridgeEntryBO from '../API/FridgeEntryBO';
+import { getAuth } from 'firebase/auth';
+
 
 class FridgeEntriesComponent extends Component {
     constructor(props) {
@@ -26,9 +28,13 @@ class FridgeEntriesComponent extends Component {
     }
 
     fetchFridgeEntries = async () => {
+        const auth = getAuth()
+        const user = auth.currentUser
+        const fridge_id = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid)
+        console.log(fridge_id)
         this.setState({ loading: true });
         try {
-            const entries = await FridgeAPI.getAPI().getFridgeEntries();
+            const entries = await FridgeAPI.getAPI().getFridgeEntriesbyFridgeId(fridge_id.fridge_id);
             const fridgeEntryBOs = FridgeEntryBO.fromJSON(entries);
             this.setState({ fridgeEntries: fridgeEntryBOs, loading: false });
         } catch (error) {

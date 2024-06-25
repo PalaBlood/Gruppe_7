@@ -319,6 +319,20 @@ class FridgeEntryListOperations(Resource):
             print(traceback.format_exc())  # Stack trace für detailliertere Fehlerbehebung drucken
             return {'message': str(e)}, 500
 
+@fridge_ns.route('/FridgeEntries/<int:fridge_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class FridgeEntrybyFridgeIdOperations(Resource):
+
+    @fridge_ns.marshal_list_with(fridge_entry)
+    def get(self, fridge_id):
+
+        adm = HalilsTaverneAdministration()
+        ent = adm.get_fridge_entries_by_fridge_id(fridge_id)
+        return ent
+
+
+
+
 
 @fridge_ns.route('/FridgeEntry/<string:groceries_designation>')
 @fridge_ns.response(500, 'Server-Fehler')

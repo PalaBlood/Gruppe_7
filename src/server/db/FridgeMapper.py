@@ -132,11 +132,11 @@ class FridgeMapper(Mapper):
         """Find all entries associated with a specific fridge ID."""
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT groceries_designation, quantity, unit FROM fridge_groceries WHERE fridge_id = %s",
+        cursor.execute("SELECT fridge_id, groceries_designation, quantity, unit FROM fridge_groceries WHERE fridge_id = %s",
                        (fridge_id,))
         entries = cursor.fetchall()
-        for groceries_designation, quantity, unit in entries:
-            entry = FridgeEntry(fridge_id, groceries_designation, quantity, unit)
+        for (fridge_id, groceries_designation, quantity, unit) in entries:
+            entry = FridgeEntry()
             entry.set_fridge_id(fridge_id)
             entry.set_groceries_designation(groceries_designation)
             entry.set_quantity(quantity)

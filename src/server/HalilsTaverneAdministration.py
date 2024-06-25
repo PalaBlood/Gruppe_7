@@ -132,6 +132,10 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper() as mapper:
             return mapper.find_all_entries()
 
+    def get_fridge_entries_by_fridge_id(self, fridge_id):
+        with FridgeMapper() as mapper:
+            return mapper.find_entries_by_fridge_id(fridge_id)
+
     def save_fridge_entry(self, fridge_entry):
         with FridgeMapper() as mapper:
             return mapper.update_fridge_entry2(fridge_entry)
