@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { List, ListItem, ListItemText, CircularProgress, Typography, Box, Card, CardContent, Avatar, Divider, TextField, Button } from '@mui/material';
+import { List, ListItem, ListItemText, CircularProgress, Typography, Box, Card, CardContent, Avatar, Divider, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, ListItemIcon } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 import FridgeAPI from '../API/SmartFridgeAPI.js';
 import HouseholdBO from '../API/HouseholdBO.js';
+import HomeIcon from '@mui/icons-material/Home';
+
+
+//Momentanen Haushalt laden, der User bekommt dabei die Option, den Haushalt zu wechseln oder den Namen des aktuellen Haushalts anzupassen
 
 class Household extends Component {
+
+    //State initialisieren
     state = {
         users: [],
         householdName: '',
@@ -13,12 +19,15 @@ class Household extends Component {
         fridgeId: null,
         loading: true,
         error: null,
+        households: [],
+        selectedHouseholdId: null,
+        dialogOpen: false,
     };
-
+    //lifecycle Method
     componentDidMount() {
         this.loadHouseholdUsers();
     }
-
+    //User des assoziierten Haushaltes laden
     loadHouseholdUsers = async () => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -48,7 +57,7 @@ class Household extends Component {
             this.setState({ error: error.message, loading: false });
         }
     };
-
+    //name des Haushalts updaten
     updateHouseholdName = async () => {
         const { newHouseholdName, householdId, fridgeId } = this.state;
         const auth = getAuth();
@@ -71,9 +80,137 @@ class Household extends Component {
     handleInputChange = (event) => {
         this.setState({ newHouseholdName: event.target.value });
     };
+    //alle Haushalte fetchen
+    fetchHouseholds = async () => {
+        try {
+            const households = await FridgeAPI.getAPI().getHouseholds();
+            this.setState({ households: households });
+        } catch (error) {
+            this.setState({ error: error.message });
+        }
+    };
+    //Selektion eines Haushalts verarbeiten über den API Call updateUser household_id setzen
+    handleSelectHousehold = async (id) => {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            this.setState({ error: "No user logged in" });
+            return;
+        }
+
+        try {
+            let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
+            if (userBOArray && userBOArray.length > 0) {
+                let userBO = userBOArray[0];
+                userBO.household_id = id;
+
+                await FridgeAPI.getAPI().updateUser(userBO);
+                this.setState({ 
+                    householdId: id, 
+                    dialogOpen: false 
+                });
+                this.loadHouseholdUsers();
+            } else {
+                throw new Error("User profile not found.");
+            }
+        } catch (error) {
+            this.setState({ error: error.message });
+        }
+    };
+    //neuen Haushalt erstellen, dabei hat der User die Option, den neuen Namen zu setzen
+    addHousehold = async () => {
+        const { newHouseholdName } = this.state;
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            this.setState({ error: "No user logged in" });
+            return;
+        }
+
+        if (!newHouseholdName.trim()) {
+            this.setState({ error: "Household name cannot be empty." });
+            return;
+        }
+
+        try {
+            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null });
+            const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
+
+            let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
+            if (userBOArray && userBOArray.length > 0) {
+                let userBO = userBOArray[0];
+                userBO.household_id = addedHousehold.id;
+                await FridgeAPI.getAPI().updateUser(userBO);
+
+                this.setState({ 
+                    householdId: addedHousehold.id, 
+                    householdName: newHouseholdName, 
+                    newHouseholdName: '',
+                    dialogOpen: false 
+                });
+                this.loadHouseholdUsers();
+            } else {
+                throw new Error("Failed to fetch user data for updating.");
+            }
+        } catch (error) {
+            this.setState({ error: error.message });
+        }
+    };
+    
+    renderDialogs = () => {
+        const { dialogOpen, households, newHouseholdName, error } = this.state;
+
+        return (
+            <Dialog 
+                open={dialogOpen} 
+                onClose={() => this.setState({ dialogOpen: false })}
+            >
+                <DialogTitle>{households.length ? "Select or Create a Household" : "Create a Household"}</DialogTitle>
+                <DialogContent>
+                    {error && <Typography color="error" variant="body2" gutterBottom>{error}</Typography>}
+                    <List>
+                        {households.map(h => (
+                            <ListItem 
+                                button 
+                                key={h.id} 
+                                onClick={() => this.handleSelectHousehold(h.id)}
+                                sx={{ 
+                                    margin: '10px 0', 
+                                    border: '1px solid #ccc', 
+                                    borderRadius: '8px', 
+                                    padding: '10px 20px', 
+                                    '&:hover': { 
+                                        backgroundColor: '#f0f0f0' 
+                                    } 
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <HomeIcon color="primary" />
+                                </ListItemIcon>
+                                <ListItemText primary={h.name} />
+                            </ListItem>
+                        ))}
+                        <ListItem>
+                            <TextField
+                                label="New Household Name"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={newHouseholdName}
+                                onChange={this.handleInputChange}
+                            />
+                        </ListItem>
+                    </List>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.addHousehold} color="primary">Add New Household</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
 
     render() {
-        const { users, householdName, newHouseholdName, loading, error } = this.state;
+        const { users, householdName, newHouseholdName, loading, error, dialogOpen } = this.state;
 
         if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}><CircularProgress /></Box>;
         if (error) return <Typography color="error">{error}</Typography>;
@@ -101,6 +238,17 @@ class Household extends Component {
                             >
                                 Save
                             </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={() => {
+                                    this.setState({ dialogOpen: true });
+                                    this.fetchHouseholds();
+                                }} 
+                                sx={{ mt: 1, width: '100%' }}
+                            >
+                                Switch Households or Create a new Household
+                            </Button>
                         </Box>
                         <Divider sx={{ marginBottom: 2 }} />
                         <Typography variant="h5" component="h3" gutterBottom align="center">
@@ -122,6 +270,7 @@ class Household extends Component {
                         </List>
                     </CardContent>
                 </Card>
+                {dialogOpen && this.renderDialogs()}
             </Box>
         );
     }
