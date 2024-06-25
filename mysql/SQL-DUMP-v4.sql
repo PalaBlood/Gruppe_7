@@ -66,7 +66,11 @@ INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) 
 (1, 'Gurke', 2.5, 'grams'),
 (1, 'Tomate', 1, 'milliliters'),
 (1, 'lachs', 0.5, 'kilos'),
-(1, 'Pasta', 500, 'grams');
+(1, 'Pasta', 500, 'grams'),
+(2, 'Gurke', 2.5, 'grams'),
+(2, 'Tomate', 1, 'milliliters'),
+(2, 'lachs', 0.5, 'kilos'),
+(2, 'Pasta', 500, 'grams');
 
 DROP TABLE IF EXISTS Fridge_Groceries;
 CREATE TABLE Fridge_Groceries (

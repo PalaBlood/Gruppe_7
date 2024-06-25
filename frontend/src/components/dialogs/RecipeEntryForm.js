@@ -23,7 +23,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         const newRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId); // Rezept-ID wird hier verwendet
         console.log('New Recipe Entry:', newRecipeEntry);  // Debugging
         try {
-            const recipeEntry = await FridgeAPI.getAPI().addRecipeEntry(newRecipeEntry);
+            const recipeEntry = await FridgeAPI.addRecipeEntry(newRecipeEntry);
             onClose(recipeEntry);
         } catch (e) {
             setAddingInProgress(false);
@@ -40,7 +40,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         updatedRecipeEntry.setRecipeId(recipeId);
 
         try {
-            const recipeEntry = await FridgeAPI.getAPI().updateRecipeEntry(updatedRecipeEntry);
+            const recipeEntry = await FridgeAPI.updateRecipeEntry(updatedRecipeEntry);
             onClose(recipeEntry);
         } catch (e) {
             setUpdatingInProgress(false);

@@ -432,7 +432,7 @@ class RecipeEntryListOperationByID(Resource):
         if reci:
             return reci, 200
         else:
-            api.abort(404, "RecipeEntry not found")
+            return [], 200 #Sollte es noch keine Einträge geben, wird kein Fehler erzeugt
 
 
 
