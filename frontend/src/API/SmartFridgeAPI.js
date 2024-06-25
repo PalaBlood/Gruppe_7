@@ -40,7 +40,7 @@ class FridgeAPI {
     #getRecipeEntriesURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #getRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
-    #getRecipeEntriesByRecipeIdURL = (recipe_entry_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${recipe_entry_id}`
+    #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/recipes/${recipe_id}/entries`;
     #updateRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     #deleteRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     
@@ -222,7 +222,6 @@ class FridgeAPI {
     getRecipeEntriesByRecipeId(recipe_id) {
         return this.#fetchAdvanced(this.#getRecipeEntriesByRecipeIdURL(recipe_id))
             .then(responseJSON => {
-                console.log('Response JSON:', responseJSON); // Konsolenausgabe zur Überprüfung des JSON-Antwortobjekts
                 let recipeEntryBO = RecipeEntryBO.fromJSON(responseJSON);
                 return recipeEntryBO;
             })

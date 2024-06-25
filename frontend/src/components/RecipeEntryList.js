@@ -18,24 +18,25 @@ function RecipeEntryList() {
     const [editEntry, setEditEntry] = useState(null);
 
     useEffect(() => {
+        console.log(`Fetching recipe entries for recipeId: ${recipeId}`);
         fetchRecipeEntries();
     }, [recipeId]);
 
     const fetchRecipeEntries = async () => {
         setLoading(true);
         try {
-            console.log('FridgeAPI:', FridgeAPI); // Konsolenausgabe des FridgeAPI-Objekts
-            const entries = await FridgeAPI.getRecipeEntriesByRecipeId(recipeId); // Aufruf der Methode
-            console.log('Entries:', entries); // Konsolenausgabe der erhaltenen Einträge
+            console.log('Calling FridgeAPI.getRecipeEntriesByRecipeId');
+            const entries = await FridgeAPI.getAPI().getRecipeEntriesByRecipeId(recipeId);
+            console.log('Entries fetched:', entries);
             const recipeEntryBOs = RecipeEntryBO.fromJSON(entries);
             setRecipeEntries(recipeEntryBOs);
             setLoading(false);
         } catch (error) {
+            console.error('Error fetching recipe entries:', error);
             setError(error);
             setLoading(false);
         }
     };
-    
 
     const handleAddButtonClick = () => {
         setShowAddForm(true);
@@ -86,7 +87,7 @@ function RecipeEntryList() {
             {recipeEntries.map((entry) => (
                 <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
                     <RecipeEntryCard
-                        recipeEntry={entry}
+                        RecipeEntry={entry}
                         onEdit={handleEditButtonClick}
                         onDelete={handleDeleteButtonClick}
                     />
