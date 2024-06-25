@@ -275,4 +275,6 @@ class HalilsTaverneAdministration(object):
 
 
 
+adm = HalilsTaverneAdministration()
 
+adm.create_recipe_entry("Kilogramm", 2, "Salat", 1)

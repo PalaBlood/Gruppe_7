@@ -94,7 +94,7 @@ class RecipeMapper(Mapper):
             new_quantity = existing_quantity + float(recipe_entry.get_quantity())
             cursor.execute(
                     "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND recipe_id = %s",
-                    (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_fridge_id()))
+                    (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         else:
             # Insert the new entry
             command = """INSERT INTO recipe_groceries (recipe_id, groceries_designation, quantity, unit)

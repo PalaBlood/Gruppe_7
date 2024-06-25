@@ -21,11 +21,18 @@ export default class RecipeEntryBO extends FoodEntry {
         return this.recipeid;
     }
 
-    static fromJSON(recipeEntries) {
-        return recipeEntries.map(r => {
-            let recipeEntry = new RecipeEntryBO(r.groceries_designation, r.quantity, r.unit, r.recipeid); // Verwenden Sie `recipeid`
-            recipeEntry.setId(r.id); 
-            return recipeEntry;
-        });
+    static fromJSON(entries) {
+        let result = [];
+        if (Array.isArray(entries)) {
+            entries.forEach((entry) => {
+                Object.setPrototypeOf(entry, RecipeEntryBO.prototype);
+                result.push(entry);
+            })
+        } else {
+            let entry = entries;
+            Object.setPrototypeOf(entry, RecipeEntryBO.prototype);
+            result.push(entry);
+        }
+        return result;
     }
 }
