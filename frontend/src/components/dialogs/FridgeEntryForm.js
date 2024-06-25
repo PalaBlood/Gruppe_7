@@ -73,7 +73,7 @@ class FridgeEntryForm extends Component {
       this.setState({ addingInProgress: true, addingError: null });
 
       const newFridgeEntry = new FridgeEntryBO(designation, quantity, unit, fridge_id);
-
+      console.log("Fridge Entry:", newFridgeEntry) //Debugging
       FridgeAPI.getAPI().addFridgeEntry(newFridgeEntry).then(fridgeentry => {
           this.setState({ ...this.baseState });
           this.props.onClose(fridgeentry);

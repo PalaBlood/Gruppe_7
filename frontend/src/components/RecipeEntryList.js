@@ -10,7 +10,7 @@ import RecipeEntryForm from './dialogs/RecipeEntryForm';
 import RecipeEntryCard from './RecipeEntryCard';
 
 function RecipeEntryList() {
-    const { recipeId } = useParams();
+    const { recipeId } = useParams(); // Rezept-ID wird hier abgerufen
     const [recipeEntries, setRecipeEntries] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -98,7 +98,7 @@ function RecipeEntryList() {
                     show={showAddForm}
                     entry={editEntry}
                     onClose={handleFormClose}
-                    recipeId={parseInt(recipeId)}
+                    recipeId={parseInt(recipeId)} // Weitergabe der Rezept-ID
                 />
             )}
         </Grid>

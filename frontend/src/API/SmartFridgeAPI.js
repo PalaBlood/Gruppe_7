@@ -317,17 +317,17 @@ class FridgeAPI {
     }
 
     addRecipeEntry(RecipeEntryBO) {
-        return this.#fetchAdvanced(this.#fridgeserverbaseurl + '/RecipeEntries', {
+        return this.#fetchAdvanced(this.#addRecipeEntryURL(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                recipe_id: RecipeEntryBO.getRecipeId(),
                 groceries_designation: RecipeEntryBO.getDesignation(),
                 quantity: RecipeEntryBO.getQuantity(),
-                unit: RecipeEntryBO.getUnit(),
-                recipe_id: RecipeEntryBO.getRecipeId()
+                unit: RecipeEntryBO.getUnit()
             })
         }).then(responseJSON => {
             return RecipeEntryBO.fromJSON([responseJSON])[0];

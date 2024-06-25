@@ -4,9 +4,9 @@ export default class RecipeEntryBO extends FoodEntry {
    /** Konstruktion der RezeptID.
    * @param {String} recipeid - Fügt einem Rezept eine ID hinzu.
    */
-    constructor(groceries_designation, quantity, unit, recipeid) {
+    constructor(groceries_designation, quantity, unit, recipeId) {
         super(groceries_designation, quantity, unit);
-        this.recipeid = recipeid;
+        this.recipeId = recipeId;
     }
 
     /**
@@ -14,25 +14,18 @@ export default class RecipeEntryBO extends FoodEntry {
    * @param {String} recipeid - neuen ID des Rezeptes.
    */
     setRecipeId(recipeid) {
-        this.recipeid = recipeid;
+        this.recipeId = recipeid;
     }
 
     getRecipeId() {
-        return this.recipeid;
+        return this.recipeId;
     }
 
-    static fromJSON(entries) {
-        let result = [];
-        if (Array.isArray(entries)) {
-            entries.forEach((entry) => {
-                Object.setPrototypeOf(entry, RecipeEntryBO.prototype);
-                result.push(entry);
-            })
-        } else {
-            let entry = entries;
-            Object.setPrototypeOf(entry, RecipeEntryBO.prototype);
-            result.push(entry);
-        }
-        return result;
+    static fromJSON(recipeEntries) {
+        return recipeEntries.map(r => {
+            let recipeEntry = new RecipeEntryBO(r.groceries_designation, r.quantity, r.unit, r.recipe_id);
+            recipeEntry.setId(r.id); 
+            return recipeEntry;
+        });
     }
 }

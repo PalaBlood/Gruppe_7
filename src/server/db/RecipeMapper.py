@@ -83,9 +83,10 @@ class RecipeMapper(Mapper):
 
 
     def insert_recipe_entry(self, recipe_entry):
+        print(recipe_entry)  # debugging
         cursor = self._cnx.cursor()
         cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",
-                (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
+                    (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         result = cursor.fetchone()
 
         if result:
@@ -93,17 +94,22 @@ class RecipeMapper(Mapper):
             existing_quantity = float(result[0])
             new_quantity = existing_quantity + float(recipe_entry.get_quantity())
             cursor.execute(
-                    "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND recipe_id = %s",
-                    (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
+                "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND recipe_id = %s",
+                (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         else:
             # Insert the new entry
             command = """INSERT INTO recipe_groceries (recipe_id, groceries_designation, quantity, unit)
-                         VALUES (%s, %s, %s, %s)"""
+                        VALUES (%s, %s, %s, %s)"""
             data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
             cursor.execute(command, data)
             
+            # Fetch the newly inserted ID
+            recipe_entry_id = cursor.lastrowid
+            recipe_entry.set_id(recipe_entry_id)
+
         self._cnx.commit()
         cursor.close()
+
         
 
 
