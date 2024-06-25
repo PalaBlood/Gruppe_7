@@ -7,7 +7,6 @@ from server.bo.Recipe import Recipe
 from server.bo.FridgeEntry import FridgeEntry
 from server.bo.RecipeEntry import RecipeEntry
 from server.bo.User import User
-from server.bo.FoodEntry import FoodEntry
 from server.bo.Household import Household
 import traceback
 
@@ -392,7 +391,7 @@ class RecipeEntryListOperation(Resource):
     @fridge_ns.marshal_list_with(recipe_entry)
     def post(self):
         adm = HalilsTaverneAdministration()
-        proposal = RecipeEntry.form_dict(api.payload)
+        proposal = RecipeEntry.from_dict(api.payload)
         if proposal is not None:
             re = adm.create_recipe_entry(
                 proposal.get_recipe_id(),
