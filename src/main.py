@@ -418,7 +418,7 @@ class RecipeEntryListOperation(Resource):
             return '', 500
 
 
-@fridge_ns.route('/recipes/<int:recipe_id>/entries')
+@fridge_ns.route('/RecipeEntries/<int:recipe_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully retrieved')
@@ -432,7 +432,7 @@ class RecipeEntryListOperationByID(Resource):
         if reci:
             return reci, 200
         else:
-            return [], 200 #Sollte es noch keine Einträge geben, wird kein Fehler erzeugt
+            return [], 200 #Sollte es noch keine Einträge geben, so wird kein Fehler erzeugt
 
 
 

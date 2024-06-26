@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,18 +16,22 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
     const [addingError, setAddingError] = useState(null);
     const [updatingError, setUpdatingError] = useState(null);
 
+    
     const addRecipeEntry = async () => {
         setAddingInProgress(true);
         setAddingError(null);
 
-        const newRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId); // Rezept-ID wird hier verwendet
-        console.log('New Recipe Entry:', newRecipeEntry);  // Debugging
+        const newRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId); //Rezept-ID wird hier verwendet
+        console.log('New Recipe Entry:', newRecipeEntry);  //Debugging
+
         try {
-            const recipeEntry = await FridgeAPI.addRecipeEntry(newRecipeEntry);
+        
+            const recipeEntry = await FridgeAPI.getAPI().addRecipeEntry(newRecipeEntry);
             onClose(recipeEntry);
         } catch (e) {
-            setAddingInProgress(false);
             setAddingError({ message: e.message });
+        } finally {
+            setAddingInProgress(false)
         }
     };
 
@@ -35,7 +39,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         setUpdatingInProgress(true);
         setUpdatingError(null);
 
-        const updatedRecipeEntry = new RecipeEntryBO(designation, quantity, unit);
+        const updatedRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId);
         updatedRecipeEntry.setId(entry.getId());
         updatedRecipeEntry.setRecipeId(recipeId);
 
@@ -49,14 +53,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
     };
 
     const handleClose = () => {
-        setDesignation(entry ? entry.getDesignation() : '');
-        setQuantity(entry ? entry.getQuantity() : '');
-        setUnit(entry ? entry.getUnit() : '');
-        setAddingInProgress(false);
-        setUpdatingInProgress(false);
-        setAddingError(null);
-        setUpdatingError(null);
-        onClose(null);
+        onClose(null)
     };
 
     return (

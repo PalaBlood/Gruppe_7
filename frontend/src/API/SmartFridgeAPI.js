@@ -42,7 +42,7 @@ class FridgeAPI {
     #getRecipeEntriesURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #getRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
-    #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/recipes/${recipe_id}/entries`;
+    #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntries/${recipe_id}`;
     #updateRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     #deleteRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     
@@ -321,7 +321,7 @@ class FridgeAPI {
         });
     }
 
-    addRecipeEntry(RecipeEntryBO) {
+    addRecipeEntry(recipeEntryBO) {
         return this.#fetchAdvanced(this.#addRecipeEntryURL(), {
             method: 'POST',
             headers: {
@@ -329,10 +329,10 @@ class FridgeAPI {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                recipe_id: RecipeEntryBO.getRecipeId(),
-                groceries_designation: RecipeEntryBO.getDesignation(),
-                quantity: RecipeEntryBO.getQuantity(),
-                unit: RecipeEntryBO.getUnit()
+                recipe_id: recipeEntryBO.getRecipeId(),
+                groceries_designation: recipeEntryBO.getDesignation(),
+                quantity: recipeEntryBO.getQuantity(),
+                unit: recipeEntryBO.getUnit()
             })
         }).then(responseJSON => {
             return RecipeEntryBO.fromJSON([responseJSON])[0];

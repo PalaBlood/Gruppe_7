@@ -166,7 +166,7 @@ class App extends React.Component {
 
                                 }/>
 
-                                <Route path="/recipes/:recipeId/entries" element={<RecipeEntryList/>} />
+                                <Route path="/recipes/entries/:recipeId" element={<RecipeEntryList/>} />
                           
                                 
                                 <Route path="/about" element={<About />} />
