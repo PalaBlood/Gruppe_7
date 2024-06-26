@@ -98,6 +98,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
 
 
     const textFieldValueChange = (event) => {
+        //Sorgt dafür, dass falsche Eingaben vom User erkannt werden
         const { id, value } = event.target;
         const trimmedValue = value.trim();
         const isEdited = trimmedValue.length > 0;
@@ -105,17 +106,17 @@ function RecipeForm({ recipeentry, show, onClose }) {
         switch (id) {
             case 'title':
                 setTitle(value);
-                setTitleValidationFailed(trimmedValue.length === 0);
+                setTitleValidationFailed(trimmedValue.length === 0);//False wenn keine Eingabe gemacht wurde
                 setTitleEdited(isEdited);
                 break;
             case 'numberOfPersons':
                 setNumberOfPersons(value);
-                setNumberOfPersonsValidationFailed(isNaN(value) || trimmedValue.length === 0);
+                setNumberOfPersonsValidationFailed(isNaN(value) || trimmedValue.length === 0); //Falsch, wenn es nicht um keinen numierschen Wert oder kein Eintrag gemacht wurde
                 setNumberOfPersonsEdited(isEdited);
                 break;
             case 'description':
                 setDescription(value);
-                setDescriptionValidationFailed(trimmedValue.length === 0);
+                setDescriptionValidationFailed(trimmedValue.length === 0); //usw. 
                 setDescriptionEdited(isEdited);
                 break;
             default:

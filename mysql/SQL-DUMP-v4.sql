@@ -54,23 +54,18 @@ INSERT INTO Recipe (id, recipe_title, number_of_persons, creator, recipe_descrip
 
 DROP TABLE IF EXISTS Recipe_Groceries;
 CREATE TABLE Recipe_Groceries (
+    id INT NOT NULL AUTO_INCREMENT,
     recipe_id INT NOT NULL,
     groceries_designation VARCHAR(255),
     quantity FLOAT,
     unit VARCHAR(255),
     PRIMARY KEY (recipe_id, groceries_designation),
+    UNIQUE KEY id_unique (id),
     FOREIGN KEY (recipe_id) REFERENCES Recipe(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Recipe_Groceries (recipe_id, groceries_designation, quantity, unit) VALUES
-(1, 'Gurke', 2.5, 'grams'),
-(1, 'Tomate', 1, 'milliliters'),
-(1, 'lachs', 0.5, 'kilos'),
-(1, 'Pasta', 500, 'grams'),
-(2, 'Gurke', 2.5, 'grams'),
-(2, 'Tomate', 1, 'milliliters'),
-(2, 'lachs', 0.5, 'kilos'),
-(2, 'Pasta', 500, 'grams');
+INSERT INTO Recipe_Groceries (id, recipe_id, groceries_designation, quantity, unit) VALUES
+(1, 1, 'Gurke', 2.5, 'grams');
 
 DROP TABLE IF EXISTS Fridge_Groceries;
 CREATE TABLE Fridge_Groceries (

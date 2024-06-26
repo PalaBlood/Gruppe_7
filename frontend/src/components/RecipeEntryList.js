@@ -43,10 +43,10 @@ function RecipeEntryList() {
         setEditEntry(null);
     };
 
-    const handleFormClose = (newEntry) => {
+    const handleFormClose = (newRecipe) => {
         setShowAddForm(false);
-        if (newEntry) {
-            fetchRecipeEntries(); // State neu laden
+        if (newRecipe) {
+            fetchRecipeEntries();
         }
     };
 
