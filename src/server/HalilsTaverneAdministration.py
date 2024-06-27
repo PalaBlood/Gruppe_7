@@ -281,6 +281,8 @@ class HalilsTaverneAdministration(object):
             return mapper.get_household_id_by_google_user_id(google_user_id)
 
     # unitconversions mit UnitConverter()
+    
+    
 
 
 
