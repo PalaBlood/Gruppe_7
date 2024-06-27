@@ -28,6 +28,7 @@ function RecipeEntryList() {
         setLoading(true);
         try {
             const recipeEntries = await FridgeAPI.getAPI().getRecipeEntriesByRecipeId(recipeId);
+            console.log(recipeId)
             const recipeEntryBOs = RecipeEntryBO.fromJSON(recipeEntries);
             setRecipeEntries(recipeEntryBOs);
 
@@ -65,12 +66,20 @@ function RecipeEntryList() {
 
     const handleDeleteButtonClick = async (entry) => {
         try {
-            await FridgeAPI.getAPI().deleteRecipeEntry(entry.getId());
+            let designation = entry.getDesignation();
+            console.log("Vor API-Aufruf - Bezeichnung: ", designation, "ID: ", recipeId); // Debugging
+            
+            // API-Aufruf und Antwort loggen
+            const response = await FridgeAPI.getAPI().deleteRecipeEntry(designation, recipeId);
+            console.log("API Antwort: ", response);
+            
             fetchRecipeAndFridgeEntries();
         } catch (error) {
+            console.error("Fehler bei API-Aufruf: ", error);
             setError(error);
         }
     };
+    
 
     const isEntryAvailableInFridge = (entry) => {
         return fridgeEntries.some(fridgeEntry =>

@@ -432,6 +432,25 @@ class RecipeEntryListOperationByID(Resource):
         else:
             return [], 200 #Sollte es noch keine Einträge geben, so wird kein Fehler erzeugt
 
+@fridge_ns.route('/RecipeEntry/<string:groceries_designation>/<int:recipe_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'RecipeEntry not found')
+@fridge_ns.response(200, 'RecipeEntry successfully deleted')
+@fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
+@fridge_ns.param('recipe_id', 'ID eines Rezepts')
+class RecipeEntryOperationsByDesignationAndID(Resource):
+    #@secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def delete(self, groceries_designation, recipe_id):
+        adm = HalilsTaverneAdministration()
+        re = adm.find_recipe_entries_by_recipe_id_and_designation(groceries_designation, recipe_id)
+        print(re)
+        if re and re.get_groceries_designation() == groceries_designation:
+            adm.delete_recipe_entry(re)
+            return '', 200
+        else:
+            return '', 404
+
 
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>')
@@ -459,12 +478,12 @@ class RecipeEntryListOperations2(Resource):
         else:
             return '', 500
 
-    #@secured
+    """#@secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def delete(self, groceries_designation):
         adm = HalilsTaverneAdministration()
         re = adm.get_recipe_entries_by_designation(groceries_designation)
-        adm.delete_recipe_entry(re)
+        adm.delete_recipe_entry(re)"""
 
 
 @fridge_ns.route('/RecipeList')

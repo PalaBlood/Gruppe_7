@@ -44,7 +44,8 @@ class FridgeAPI {
     #getRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntries/${recipe_id}`;
     #updateRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
-    #deleteRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
+    #deleteRecipeEntryURL = (groceries_designation, recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}/${recipe_id}`;
+    
     
     
     
@@ -508,8 +509,8 @@ class FridgeAPI {
         });
     }
 
-    deleteRecipeEntry(groceriesDesignation) {
-        return this.#fetchAdvanced(this.#deleteRecipeEntryURL(groceriesDesignation), {
+    deleteRecipeEntry(groceriesDesignation, recipeId) {
+        return this.#fetchAdvanced(this.#deleteRecipeEntryURL(groceriesDesignation, recipeId), {
             method: 'DELETE'
         }).then(() => ({ message: "Recipe entry deleted successfully", groceriesDesignation }))
         .catch(error => {
