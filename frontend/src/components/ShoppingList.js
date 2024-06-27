@@ -1,1 +1,0 @@
-//Renders a ShoppingList, a List of Items needed to cook a certain recipe

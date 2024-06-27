@@ -74,10 +74,9 @@ household = api.inherit('Household', bo, {
                                 description='fridge associated with the household'),
 })
 
-unit = api.model('Unit', {
-    'id': fields.Integer(attribute='_id', description='Unique identifier of the unit'),
-    'designation': fields.String(attribute='_designation', required=True, description='Designation of the unit'),
-    'household_id': fields.Integer(attribute='_household_id', required=True, description='The household_id of the unit')
+unit = api.inherit('Unit', bo, {
+    'designation': fields.String(attribute='_Unit__designation', required=True, description='Designation of the unit'),
+    'household_id': fields.Integer(attribute='_Unit__household_id', required=True, description='The household_id of the unit')
 })
 
 
@@ -662,13 +661,15 @@ class HouseholdIdByGoogleUserId(Resource):
 
 
 #Unit Operations
-@fridge_ns.route('/Unit/')
+@fridge_ns.route('/Unit')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully deleted')
 @fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
 @fridge_ns.param('recipe_id', 'ID eines Rezepts')
 class UnitOperations(Resource):
+
+
     @fridge_ns.expect(unit)
     @fridge_ns.marshal_list_with(unit)
     def post(self):
@@ -677,11 +678,11 @@ class UnitOperations(Resource):
         payload = api.payload  #Debugging
         print("Received payload:", payload)  #Debugging information
 
-        proposal = unit.from_dict(api.payload)
+        proposal = Unit.from_dict(api.payload)
+        print(proposal)
 
         if proposal is not None:
             u = adm.create_unit(
-                #proposal.get_id(),
                 proposal.get_designation(),
                 proposal.get_household_id()
             )
@@ -708,6 +709,31 @@ class UnitOperationsByDesignationAndID(Resource):
         adm = HalilsTaverneAdministration()
         re = adm.get_unit_by_designation_and_household_id(designation, household_id)
         return re
+
+
+
+
+@fridge_ns.route('/Unit/<int:id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class UnitsbyHouseholdIdOperations(Resource):
+
+    #@secured
+    @fridge_ns.marshal_list_with(unit)
+    def get(self, id):
+        adm = HalilsTaverneAdministration()
+        units = adm.get_all_units_by_household_id(id)
+        print(units)
+        if units:
+            return units, 200
+        else:
+            return {'message': 'Units not found'}, 404
+
+    def delete(self, id):
+
+        adm = HalilsTaverneAdministration()
+        adm.delete_unit_by_id(id)
+        return '', 200
+
 
 
 

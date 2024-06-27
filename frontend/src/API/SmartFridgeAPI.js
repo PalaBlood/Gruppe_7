@@ -5,6 +5,7 @@ import RecipeEntryBO from "./RecipeEntryBO";
 import FridgeEntryBO from "./FridgeEntryBO";
 import HouseholdBO from "./HouseholdBO";
 import FridgeBO from "./FridgeBO";
+import UnitBO from "./Unit";
 
 
 
@@ -84,6 +85,11 @@ class FridgeAPI {
     #updateHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
     #deleteHouseholdURL = (id) => `${this.#fridgeserverbaseurl}/Household/${id}`;
 
+    //Unit related
+    #getUnitsbyIdURL = (id) => `${this.#fridgeserverbaseurl}/Unit/${id}`;
+    #deleteUnitURL = (id) => `${this.#fridgeserverbaseurl}/Unit/${id}`;
+    #getUnitsbyIdandDesignationURL = (id, designation) => `${this.#fridgeserverbaseurl}/Unit}/${designation}/${id}`;
+    #addUnitURL = () => `${this.#fridgeserverbaseurl}/Unit`;
 
     //COOKING A RECIPE: subsctracts the associated ingredients from fridge entries
     #cookfunctionurl = (recipe_title) => `${this.#fridgeserverbaseurl}/COOK/${recipe_title}`;
@@ -111,6 +117,43 @@ class FridgeAPI {
                 resolve(userBOs);
             })
         })    
+    }
+
+    addUnit(unitBO) { 
+        return this.#fetchAdvanced(this.#addUnitURL(), { 
+            method: 'POST', 
+            headers: { 
+                'Accept': 'application/json, text/plain', 
+                'Content-Type': 'application/json', 
+            }, 
+            body: JSON.stringify(unitBO) 
+        }).then(responseJSON => { 
+            return responseJSON; 
+        }).catch(error => { 
+            console.error('Failed to add unit:', error); 
+            throw new Error('Error adding unit'); 
+        });
+    }
+
+    getUnitbyHouseholdId(id) {
+        return this.#fetchAdvanced(this.#getUnitsbyIdURL(id)).then((responseJSON) => {
+            // Check if the response is correctly parsed
+            console.log(responseJSON); // Debugging line
+            let unitBO = UnitBO.fromJSON(responseJSON);
+            console.log(unitBO); // Debugging line
+            return new Promise(function(resolve) {
+                resolve(unitBO);
+            });
+        }).catch(error => {
+            console.error('Error fetching unit by household ID:', error);
+        });
+    }
+    
+
+    deleteUnit(id) { 
+        return this.#fetchAdvanced(this.#deleteUnitURL(id), { 
+            method: 'DELETE' 
+        }).then(() => ({ message: "Unit deleted successfully", id }));
     }
 
     

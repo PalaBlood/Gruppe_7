@@ -32,11 +32,13 @@ export default class FoodEntry extends BusinessObject {
         return this.unit;
     }
 
-    /*static fromJSON(foodEntries) {
+    static fromJSON(foodEntries) {
         return foodEntries.map(f => {
             let foodEntry = new FoodEntry(f.groceries_designation, f.quantity, f.unit);
-            foodEntry.setId(f.id);  
+            foodEntry.setId(f.id);  // ID Direkt setzen
             return foodEntry;
         });
-    }*/
+    }
 }
+
+

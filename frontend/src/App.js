@@ -22,6 +22,7 @@ import Household from './components/HouseholdList';
 import UserProfile from './components/UserList';
 import RecipeList from './components/RecipeList'; 
 import RecipeEntryList from './components/RecipeEntryList';
+import UnitList from './components/UnitList';
 
 class App extends React.Component {
     constructor(props) {
@@ -167,6 +168,11 @@ class App extends React.Component {
                                 }/>
 
                                 <Route path="/recipes/entries/:recipeId" element={<RecipeEntryList/>} />
+                                <Route path = "/unit" element={
+                                    <Secured user={currentUser}>
+                                        <UnitList/>
+                                    </Secured>
+                                }/>
                           
                                 
                                 <Route path="/about" element={<About />} />

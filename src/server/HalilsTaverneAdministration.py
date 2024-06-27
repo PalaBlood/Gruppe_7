@@ -312,8 +312,7 @@ class HalilsTaverneAdministration(object):
 
         pass
 
-
-    def delete_unit(self, id):
+    def delete_unit_by_id(self, id):
         """Löscht Unit-Eintrag in der DB anhand der id"""
 
         with UnitMapper() as mapper:

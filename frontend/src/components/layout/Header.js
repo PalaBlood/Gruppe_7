@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import LivingIcon from '@mui/icons-material/Living';
+import StraightenIcon from '@mui/icons-material/Straighten';
 
 class Header extends Component {
   state = {
@@ -62,6 +63,9 @@ class Header extends Component {
             </Tooltip>
             <Tooltip title="Here you can edit your User Profile">
               <Tab icon={<SettingsIcon />} label='User' component={RouterLink} to='/user'/>
+            </Tooltip>
+            <Tooltip title="Here you can see the available the Units">
+              <Tab icon={<StraightenIcon />} label='Units' component={RouterLink} to='/unit' />
             </Tooltip>
             <Tooltip title="About our App">
               <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />

@@ -34,6 +34,8 @@ class Unit(BusinessObject):
         obj.set_designation(dictionary["designation"])
         obj.set_household_id(dictionary["household_id"])
 
+        return obj
+
 
 
 if __name__ == "__main__":
