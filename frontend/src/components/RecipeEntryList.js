@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography, Card, CardContent, CardActions } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
 import FridgeAPI from '../API/SmartFridgeAPI';
@@ -8,31 +8,39 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeEntryBO from '../API/RecipeEntryBO';
 import RecipeEntryForm from './dialogs/RecipeEntryForm';
 import RecipeEntryCard from './RecipeEntryCard';
+import FridgeEntryBO from '../API/FridgeEntryBO';
+import { getAuth } from 'firebase/auth';
 
 function RecipeEntryList() {
     const { recipeId } = useParams();
     const [recipeEntries, setRecipeEntries] = useState([]);
+    const [fridgeEntries, setFridgeEntries] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [editEntry, setEditEntry] = useState(null);
 
     useEffect(() => {
-        console.log(`Fetching recipe entries for recipeId: ${recipeId}`);
-        fetchRecipeEntries();
+        fetchRecipeAndFridgeEntries();
     }, [recipeId]);
 
-    const fetchRecipeEntries = async () => {
+    const fetchRecipeAndFridgeEntries = async () => {
         setLoading(true);
         try {
-            console.log('Calling FridgeAPI.getRecipeEntriesByRecipeId');
-            const entries = await FridgeAPI.getAPI().getRecipeEntriesByRecipeId(recipeId);
-            console.log('Entries fetched:', entries);
-            const recipeEntryBOs = RecipeEntryBO.fromJSON(entries);
+            const recipeEntries = await FridgeAPI.getAPI().getRecipeEntriesByRecipeId(recipeId);
+            const recipeEntryBOs = RecipeEntryBO.fromJSON(recipeEntries);
             setRecipeEntries(recipeEntryBOs);
+
+            const auth = getAuth();
+            const user = auth.currentUser;
+            const fridge_id = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid);
+            const fridgeEntries = await FridgeAPI.getAPI().getFridgeEntriesbyFridgeId(fridge_id.fridge_id);
+            const fridgeEntryBOs = FridgeEntryBO.fromJSON(fridgeEntries);
+            setFridgeEntries(fridgeEntryBOs);
+
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching recipe entries:', error);
+            console.error('Error fetching entries:', error);
             setError(error);
             setLoading(false);
         }
@@ -43,10 +51,10 @@ function RecipeEntryList() {
         setEditEntry(null);
     };
 
-    const handleFormClose = (newRecipe) => {
+    const handleFormClose = (newEntry) => {
         setShowAddForm(false);
-        if (newRecipe) {
-            fetchRecipeEntries();
+        if (newEntry) {
+            fetchRecipeAndFridgeEntries();
         }
     };
 
@@ -58,10 +66,18 @@ function RecipeEntryList() {
     const handleDeleteButtonClick = async (entry) => {
         try {
             await FridgeAPI.getAPI().deleteRecipeEntry(entry.getId());
-            fetchRecipeEntries();
+            fetchRecipeAndFridgeEntries();
         } catch (error) {
             setError(error);
         }
+    };
+
+    const isEntryAvailableInFridge = (entry) => {
+        return fridgeEntries.some(fridgeEntry =>
+            fridgeEntry.getDesignation() === entry.getDesignation() &&
+            fridgeEntry.getQuantity() >= entry.getQuantity() &&
+            fridgeEntry.getUnit() === entry.getUnit()
+        );
     };
 
     if (loading) {
@@ -91,11 +107,21 @@ function RecipeEntryList() {
             ) : (
                 recipeEntries.map((entry) => (
                     <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
-                        <RecipeEntryCard
-                            RecipeEntry={entry}
-                            onEdit={handleEditButtonClick}
-                            onDelete={handleDeleteButtonClick}
-                        />
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h5" style={{ color: isEntryAvailableInFridge(entry) ? 'black' : 'red' }}>
+                                    {entry.getDesignation()}
+                                </Typography>
+                                <Typography color="textSecondary" style={{ color: isEntryAvailableInFridge(entry) ? 'black' : 'red' }}>
+                                    Quantity: {entry.getQuantity()} {entry.getUnit()}
+                                    {!isEntryAvailableInFridge(entry) && ' (Not available in fridge)'}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => handleEditButtonClick(entry)}>Edit</Button>
+                                <Button size="small" onClick={() => handleDeleteButtonClick(entry)}>Delete</Button>
+                            </CardActions>
+                        </Card>
                     </Grid>
                 ))
             )}
