@@ -231,6 +231,10 @@ class HalilsTaverneAdministration(object):
         with RecipeMapper() as mapper:
             return mapper.find_entries_by_recipe_id(recipe_id)
 
+    def find_recipe_entries_by_recipe_id_and_designation(self, groceries_designation, recipe_id):
+        with RecipeMapper() as mapper:
+            return mapper.find_entries_by_recipe_id_and_groceries_designation(groceries_designation, recipe_id)
+
 
     # household-spezifische methoden:
 

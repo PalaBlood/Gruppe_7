@@ -262,4 +262,21 @@ class RecipeMapper(Mapper):
         result = cursor.fetchone()
         return result
 
+    def find_entries_by_recipe_id_and_groceries_designation(self, groceries_designation, recipe_id):
+        """Find all entries by recipe ID."""
+        cursor = self._cnx.cursor()
+        cursor.execute(
+            "SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",
+            (groceries_designation, recipe_id,))
+        result = cursor.fetchone()
+
+        if result:
+            recipe_entry = RecipeEntry()
+            recipe_entry.set_recipe_id(result[0])
+            recipe_entry.set_groceries_designation(result[1])
+            recipe_entry.set_quantity(result[2])
+            cursor.close()
+            return recipe_entry
+        cursor.close()
+        return None
 
