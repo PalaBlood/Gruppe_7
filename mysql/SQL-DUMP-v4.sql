@@ -20,6 +20,13 @@ CREATE TABLE Household (
 
 INSERT INTO Household(id, name) VALUES (2, 'der haushalt');
 
+CREATE TABLE IF NOT EXISTS unit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    designation VARCHAR(255) NOT NULL,
+    household_id INT,
+    FOREIGN KEY (household_id) REFERENCES Household(id)
+);
+
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -97,12 +104,7 @@ INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALU
 DROP TABLE IF EXISTS Unit;
 CREATE TABLE Unit (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    conversion_factor INT NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO Unit (id, name, conversion_factor) VALUES
-(1, 'gramm', 1),
-(2, 'kilogramm', 1000),
-(3, 'mililiter', 1),
-(4, 'liter', 1000);
+    designation VARCHAR(225),
+    household_id INT,
+    FOREIGN KEY (household_id) REFERENCES Household(id)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

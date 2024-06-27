@@ -19,7 +19,6 @@ class RecipeMapper(Mapper):
 
     def insert_recipe(self, recipe):
 
-
             cursor = self._cnx.cursor()
             cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
             tuples = cursor.fetchall()
@@ -84,7 +83,6 @@ class RecipeMapper(Mapper):
 
 
     def insert_recipe_entry(self, recipe_entry):
-        print(recipe_entry)  # debugging
         cursor = self._cnx.cursor()
         cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",
                     (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
@@ -126,8 +124,12 @@ class RecipeMapper(Mapper):
             recipe.set_household_id(result[5])
             cursor.close()
             return recipe
+
         cursor.close()
         return None
+
+
+
 
     def find_recipes_by_household_id(self, household_id):
         """Find all recipes by household ID."""
@@ -137,7 +139,6 @@ class RecipeMapper(Mapper):
 
         recipes = []
         for row in rows:
-            # Initialize the Recipe
             recipe = Recipe()
             recipe.set_id(row[0])
             recipe.set_title(row[1])
