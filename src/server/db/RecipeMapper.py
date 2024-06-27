@@ -42,6 +42,7 @@ class RecipeMapper(Mapper):
     def update_recipe(self, recipe):
         """Update an existing recipe in the database."""
         cursor = self._cnx.cursor()
+        print(recipe)
         command = """UPDATE recipe
                        SET recipe_title = %s, number_of_persons = %s, creator = %s, recipe_description = %s
                        WHERE id = %s"""
@@ -128,7 +129,26 @@ class RecipeMapper(Mapper):
         cursor.close()
         return None
 
+    def find_recipes_by_household_id(self, household_id):
+        """Find all recipes by household ID."""
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe WHERE household_id = %s", (household_id,))
+        rows = cursor.fetchall()
 
+        recipes = []
+        for row in rows:
+            # Initialize the Recipe
+            recipe = Recipe()
+            recipe.set_id(row[0])
+            recipe.set_title(row[1])
+            recipe.set_number_of_persons(row[2])
+            recipe.set_creator(row[3])
+            recipe.set_description(row[4])
+            recipe.set_household_id(row[5])
+            recipes.append(recipe)
+
+        cursor.close()
+        return recipes
 
 
     def find_entries_by_recipe_id(self, recipe_id):

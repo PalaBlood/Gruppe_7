@@ -174,8 +174,9 @@ class HalilsTaverneAdministration(object):
             return mapper.find_recipe_by_id(recipe_id)
 
     def update_recipe(self, recipe):
+
         with RecipeMapper() as mapper:
-            mapper.update(recipe)
+            mapper.update_recipe(recipe)
 
     def delete_recipe(self, recipe): 
         """Delete a Recipe object."""
@@ -186,6 +187,11 @@ class HalilsTaverneAdministration(object):
     def get_recipe_id_by_title(self, title):
         with RecipeMapper() as mapper:
             return mapper.find_recipe_id_by_title(title)
+        
+    def get_recipes_by_household_id(self, household_id):
+
+        with RecipeMapper() as mapper:
+            return mapper.find_recipes_by_household_id(household_id)
 
     # recipeEntry spezifische Methoden
 

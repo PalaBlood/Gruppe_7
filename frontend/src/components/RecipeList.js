@@ -8,6 +8,7 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeBO from '../API/RecipeBO';
 import RecipeForm from './dialogs/RecipeForm';
 import RecipeCard from './RecipeCard.js';
+import { getAuth } from 'firebase/auth';
 
 
 function RecipeList() {
@@ -24,9 +25,13 @@ function RecipeList() {
 
     const fetchRecipes = async () => {
         setLoading(true);
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
         try {
-            const recipes = await FridgeAPI.getAPI().getRecipes();
+            const household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
+            const recipes = await FridgeAPI.getAPI().getRecipesbyhouseholdId(household_id.household_id);
             const recipeBOs = RecipeBO.fromJSON(recipes);
+            console.log(recipeBOs)
             setRecipes(recipeBOs);
             setLoading(false);
         } catch (error) {

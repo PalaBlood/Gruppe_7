@@ -4,7 +4,7 @@ class Recipe(BusinessObject):
     def __init__(self):
         super().__init__()
         self._title = ""
-        self._number_of_persons = None
+        self._number_of_persons = ""
         self._creator = ""  
         self._description = ""
         self._household_id = None
@@ -48,6 +48,17 @@ class Recipe(BusinessObject):
 
     @staticmethod
     def form_dict(dictionary):
+        obj = Recipe()
+        obj.set_id(dictionary.get('id'))
+        obj.set_title(dictionary.get('title'))
+        obj.set_creator(dictionary.get('creator'))
+        obj.set_number_of_persons(dictionary.get('numberOfPersons'))
+        obj.set_description(dictionary.get('description'))
+        obj.set_household_id(dictionary.get('household_id'))
+        return obj
+
+    @staticmethod
+    def from_dict(dictionary):
         obj = Recipe()
         obj.set_id(dictionary.get('id'))
         obj.set_title(dictionary.get('title'))

@@ -36,7 +36,7 @@ class Mapper(AbstractContextManager, ABC):
 
         else:
             """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
-            self._cnx = connector.connect(user=user, password='test',
+            self._cnx = connector.connect(user=user, password=password,
                               host=host,
                               database=database)
 

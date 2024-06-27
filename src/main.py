@@ -50,13 +50,11 @@ fridge = api.inherit('Fridge', bo, {})
 
 recipe = api.inherit('Recipe', bo, {
     'title': fields.String(attribute='_title', required=True, description='Title of the recipe'),
-    'number_of_persons': fields.Integer(attribute='_number_of_persons', required=True, description='Number of servings the recipe provides'),
+    'numberOfPersons': fields.Integer(attribute='_number_of_persons', required=True, description='Number of servings the recipe provides'),
     'creator': fields.String(attribute='_creator', description='Creator of the recipe'),
     'description': fields.String(attribute='_description', required=True, description='The Description of a recipe'),
     'household_id': fields.Integer(attribute='_household_id', required=True, description="The Reference for the Household")
 })
-
-
 
 
 recipe_entry = api.inherit('RecipeEntry', food_entry, {
@@ -490,7 +488,7 @@ class RecipeListOperations(Resource):
         payload = api.payload #Debugging
         print("Received payload:", payload)  # Debugging information
 
-        proposal = Recipe.form_dict(api.payload)
+        proposal = Recipe.from_dict(api.payload)
         
         if proposal is not None:
             r = adm.create_recipe(
@@ -505,6 +503,18 @@ class RecipeListOperations(Resource):
             return '', 500
 
 
+@fridge_ns.route('/RecipeList/<int:household_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+class RecipebyHouseholdIdOperations(Resource):
+
+    #@secured
+    @fridge_ns.marshal_list_with(recipe)
+    def get(self, household_id):
+        adm = HalilsTaverneAdministration()
+        rec = adm.get_recipes_by_household_id(household_id)
+        return rec
+
+
 @fridge_ns.route('/Recipe/<int:recipe_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeOperations(Resource):
@@ -517,9 +527,10 @@ class RecipeOperations(Resource):
         return reci
 
     # @secured
-    @fridge_ns.marshal_with(recipe)
+    @fridge_ns.marshal_list_with(recipe)
     def put(self, recipe_id):
         adm = HalilsTaverneAdministration()
+        print(api.payload)
         re = Recipe.form_dict(api.payload)
         if re is not None:
             re.set_id(recipe_id)

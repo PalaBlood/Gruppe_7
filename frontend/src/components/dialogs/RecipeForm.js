@@ -83,6 +83,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
         setUpdatingError(null);
         const updatedRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId);
         updatedRecipe.setId(recipeentry.getId());
+        console.log(updatedRecipe);
 
         try {
             const recipe = await FridgeAPI.getAPI().updateRecipe(updatedRecipe);

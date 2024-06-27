@@ -47,6 +47,7 @@ class FridgeAPI {
     #deleteRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     
     
+    
 
     // Fridge related
     #getFridgesURL = () => `${this.#fridgeserverbaseurl}/Fridge`;
@@ -71,6 +72,7 @@ class FridgeAPI {
     #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #deleteRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #getHouseholdIdByGoogleUserIdURL = (google_user_id) => `${this.#fridgeserverbaseurl}/household-id-by-google-id/${google_user_id}`;
+    #getRecipesbyhouseholdIdURL = (household_id) => `${this.#fridgeserverbaseurl}/RecipeList/${household_id}`;
 
 
     // Household related
@@ -257,6 +259,14 @@ class FridgeAPI {
         });
     }
 
+    getRecipesbyhouseholdId(household_id) {
+        return this.#fetchAdvanced(this.#getRecipesbyhouseholdIdURL(household_id)).then((responseJSON) => {
+            let recipes = RecipeBO.fromJSON(responseJSON);  
+            return new Promise(function(resolve) {
+                resolve(recipes);
+            });
+        });
+    }
 
 
     getFridgeIdByGoogleUserId(google_user_id) {
@@ -446,6 +456,8 @@ class FridgeAPI {
     }
 
     updateRecipe(recipeBO) {
+        console.log(recipeBO)
+        console.log(JSON.stringify(recipeBO));
         return this.#fetchAdvanced(this.#updateRecipeURL(recipeBO.getId()), {
             method: 'PUT',
             headers: {
