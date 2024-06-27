@@ -3,40 +3,36 @@ from BusinessObject import BusinessObject
 class Unit(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__name = ""
-        self.__conversion_factor = 1
+        self.__designation = ""
+        self.__household_id = None
 
+    def get_designation(self):
+        return  self.__designation
 
-    def set_conversion_factor(self, conversion_factor):
-        self.__conversion_factor = conversion_factor
+    def set_designation(self, name):
+        self.__designation = name
 
-    def get_conversion_factor(self):
-        return self.__conversion_factor
+    def get_household_id(self):
+        return self.__household_id
 
+    def set_household_id(self, household_id):
+        self.__household_id = household_id
 
-    def convert_to_base(self, quantity):
-        return quantity * self.__conversion_factor
-
-    def set_name(self, name):
-        self.__name = name
-
-    def get_name(self):
-        return  self.__name
 
 
     def __repr__(self):
-        return f"{self.__name} (Factor: {self.__conversion_factor})"
+        return f"<Unit(id={self._id}, name={self.__designation}, household_id={self.__household_id})>"
 
     def __str__(self):
-        return f"Bezeichnung: {self.__name}, Verhältnis: {self.__conversion_factor}:1"
+        return f"ID: {self._id}, Designation: {self.__designation}, Household ID: {self.__household_id}"
 
 
     @staticmethod
     def from_dict(dictionary=dict()):
         obj = Unit()
         obj.set_id(dictionary["id"])
-        obj.set_name(dictionary["name"])
-        obj.set_conversion_factor(dictionary["conversion_factor"])
+        obj.set_designation(dictionary["designation"])
+        obj.set_household_id(dictionary["household_id"])
 
 
 

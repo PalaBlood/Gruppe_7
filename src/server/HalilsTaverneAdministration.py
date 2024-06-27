@@ -30,6 +30,8 @@ from server.bo.ShoppingList import Shoppinglist
 from server.bo.Recipe import Recipe
 from server.bo.RecipeEntry import RecipeEntry
 from server.bo.FridgeEntry import FridgeEntry
+from server.bo.Unit import Unit
+from server.db.UnitMapper import UnitMapper
 
 """Hier kommt alles bezüglich des Service Layers rein
 Es dient als 'Schnittstelle' zwischen dem Presentation Layer 
@@ -284,7 +286,59 @@ class HalilsTaverneAdministration(object):
         with HouseholdMapper() as mapper:
             return mapper.get_household_id_by_google_user_id(google_user_id)
 
-    # unitconversions mit UnitConverter()
+
+    # Unit spezifische Methoden
+
+    def create_unit(self, designation, household_id):
+        """Neuer Unit-Eintrag in der DB"""
+
+        unit = Unit()
+        unit.set_designation(designation)
+        unit.set_household_id(household_id)
+
+        with UnitMapper() as mapper:
+            return mapper.insert_unit(unit)
+
+
+    def get_all_units_by_household_id(self, household_id):
+        """Auslesen aller Units eines bestimmten Households"""
+
+        with UnitMapper() as mapper:
+            return mapper.find_unit_by_household_id(household_id)
+
+
+    def update_unit(self):
+        """Unit-Eintrag wird angepasst"""
+
+        pass
+
+
+    def delete_unit(self, id):
+        """Löscht Unit-Eintrag in der DB anhand der id"""
+
+        with UnitMapper() as mapper:
+            mapper.delete_unit(id)
+
+    def get_unit_by_designation_and_household_id(self, designation, household_id):
+        """Gibt Unit-Eintrag anhand der designation der Unit und
+        household_id des users zurück"""
+
+        with UnitMapper() as mapper:
+            return  mapper.find_unit_by_designation_and_household_id(designation, household_id)
+
+
+
+"""Unit Tests"""
+#adm = HalilsTaverneAdministration()
+
+
+#adm.create_unit("Kilogramm", 2)   #geht
+#print(adm.get_all_units_by_household_id(2))   #geht
+#adm.delete_unit(1)   #geht
+#print(adm.get_unit_by_designation_and_household_id("Kilogramm", 2))   #geht
+
+
+
     
     
 

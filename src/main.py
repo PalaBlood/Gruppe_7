@@ -8,6 +8,7 @@ from server.bo.FridgeEntry import FridgeEntry
 from server.bo.RecipeEntry import RecipeEntry
 from server.bo.User import User
 from server.bo.Household import Household
+from server.bo.Unit import Unit
 import traceback
 
 
@@ -71,6 +72,12 @@ household = api.inherit('Household', bo, {
     'name': fields.String(attribute='_name', description='Name of the household'),
     'fridge_id': fields.Integer(attribute='_fridge_id', required=True,
                                 description='fridge associated with the household'),
+})
+
+unit = api.model('Unit', {
+    'id': fields.Integer(attribute='_id', description='Unique identifier of the unit'),
+    'designation': fields.String(attribute='_designation', required=True, description='Designation of the unit'),
+    'household_id': fields.Integer(attribute='_household_id', required=True, description='The household_id of the unit')
 })
 
 
@@ -442,6 +449,9 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
     #@secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def delete(self, groceries_designation, recipe_id):
+        """Anhand der groceries_designation und der recipe_id wird zunächst der Eintrag geladen,
+            bei dem es zu einer Übereinstimmung kommt. Danach wird die Delete-Methode aufgerufen
+            und der jeweilige Eintrag entfernt."""
         adm = HalilsTaverneAdministration()
         re = adm.find_recipe_entries_by_recipe_id_and_designation(groceries_designation, recipe_id)
         print(re)
@@ -601,6 +611,12 @@ class HouseholdIdByGoogleUserId(Resource):
             return {'household_id': household_id}, 200
         else:
             return {'message': 'Household ID not found'}, 404
+
+
+
+
+
+
     
 
 if __name__ == '__main__':
