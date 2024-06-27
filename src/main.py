@@ -81,6 +81,7 @@ unit = api.model('Unit', {
 })
 
 
+#User Operations
 @fridge_ns.route('/users')
 @fridge_ns.response(500, 'Server-Fehler')
 class UserListOperations(Resource):
@@ -93,6 +94,7 @@ class UserListOperations(Resource):
         adm = HalilsTaverneAdministration()
         users = adm.get_all_users()
         return users
+
 
     #@secured
     @fridge_ns.marshal_with(user, code=200)
@@ -117,6 +119,7 @@ class UserListOperations(Resource):
         # 500: server-fehler
 
 
+
 @fridge_ns.route('/users/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.param('id', 'die Id eines Users')
@@ -131,6 +134,7 @@ class UserOperations(Resource):
         User = adm.get_user_by_id(id)
         return User
 
+
     #@secured
     def delete(self, id):
         """user löschen"""
@@ -139,6 +143,7 @@ class UserOperations(Resource):
         adm.delete_user(User)
         return '', 200
 
+
     @fridge_ns.marshal_with(user)
     @fridge_ns.expect(user, validate=True)
     def put(self, id):
@@ -146,13 +151,13 @@ class UserOperations(Resource):
         adm = HalilsTaverneAdministration()
         u = User.from_dict(api.payload)
 
-
         if u is not None:
             u.set_id(id)
             adm.save_user(u)
             return '', 200
         else:
             return '', 500
+
 
 
 @fridge_ns.route('/user-by-google-id/<string:google_user_id>')
@@ -183,6 +188,9 @@ class UsersByNameOperations(Resource):
         return User
 
 
+
+
+#Household Operations
 @fridge_ns.route('/Household')
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdListOperation(Resource):
@@ -208,6 +216,7 @@ class HouseholdListOperation(Resource):
             return '', 500
 
 
+
 @fridge_ns.route('/Household/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.param('id', 'die Id eines Haushalts')
@@ -220,12 +229,14 @@ class HouseholdOperations(Resource):
         hou = adm.get_users_by_household_id(id)
         return hou
 
+
     #@secured
     def delete(self, id):
         adm = HalilsTaverneAdministration()
         hou = adm.find_household_by_id(id)
         adm.delete_household(hou)
         return '', 200
+
 
     @fridge_ns.marshal_with(household)
     @fridge_ns.expect(household, validate=True)
@@ -243,7 +254,6 @@ class HouseholdOperations(Resource):
             return '', 500
 
 
-
 @fridge_ns.route('/HouseholdbyID/<int:id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdbyIDOperations(Resource):
@@ -257,6 +267,9 @@ class HouseholdbyIDOperations(Resource):
 
 
 
+
+
+#Fridge Operations
 @fridge_ns.route('/Fridge')
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeListOperations(Resource):
@@ -282,6 +295,10 @@ class FridgeListOperations(Resource):
             return '', 500
 
 
+
+
+
+#FridgeEnty Operations
 @fridge_ns.route('/FridgeEntries')
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntryListOperations(Resource):
@@ -323,6 +340,8 @@ class FridgeEntryListOperations(Resource):
             print(traceback.format_exc())  # Stack trace für detailliertere Fehlerbehebung drucken
             return {'message': str(e)}, 500
 
+
+
 @fridge_ns.route('/FridgeEntries/<int:fridge_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntrybyFridgeIdOperations(Resource):
@@ -333,7 +352,6 @@ class FridgeEntrybyFridgeIdOperations(Resource):
         adm = HalilsTaverneAdministration()
         ent = adm.get_fridge_entries_by_fridge_id(fridge_id)
         return ent
-
 
 
 
@@ -372,6 +390,7 @@ class FridgeEntryOperations(Resource):
         return fe
 
 
+
 @fridge_ns.route('/COOK/<string:recipe_title>', methods=['PUT'])
 @fridge_ns.response(500, 'Server_fehler')
 @fridge_ns.param('recipe_title', 'der name eines rezepts')
@@ -394,6 +413,11 @@ class UseRecipeIngredients(Resource):
         return {"message": "LET HIM COOK."}, 200
 
 
+
+
+
+
+#RecipeEntry Operations
 @fridge_ns.route('/RecipeEntries')
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeEntryListOperation(Resource):
@@ -423,6 +447,7 @@ class RecipeEntryListOperation(Resource):
             return '', 500
 
 
+
 @fridge_ns.route('/RecipeEntries/<int:recipe_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
@@ -438,6 +463,8 @@ class RecipeEntryListOperationByID(Resource):
             return reci, 200
         else:
             return [], 200 #Sollte es noch keine Einträge geben, so wird kein Fehler erzeugt
+
+
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>/<int:recipe_id>')
 @fridge_ns.response(500, 'Server-Fehler')
@@ -496,6 +523,11 @@ class RecipeEntryListOperations2(Resource):
         adm.delete_recipe_entry(re)"""
 
 
+
+
+
+
+#Recipe Operations
 @fridge_ns.route('/RecipeList')
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'Recipe not found')
@@ -532,6 +564,7 @@ class RecipeListOperations(Resource):
             return '', 500
 
 
+
 @fridge_ns.route('/RecipeList/<int:household_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipebyHouseholdIdOperations(Resource):
@@ -542,6 +575,8 @@ class RecipebyHouseholdIdOperations(Resource):
         adm = HalilsTaverneAdministration()
         rec = adm.get_recipes_by_household_id(household_id)
         return rec
+
+
 
 
 @fridge_ns.route('/Recipe/<int:recipe_id>')
@@ -586,7 +621,12 @@ class FridgeIdByGoogleIdOperations(Resource):
         if fridge_id:
             return {'fridge_id': fridge_id}, 200
         return {'message': 'Fridge ID not found'}, 404"""
-    
+
+
+
+
+
+#Fridge Operations
 @fridge_ns.route('/fridge-id-by-google-id/<string:google_user_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeIdByGoogleIdResource(Resource):
@@ -598,8 +638,12 @@ class FridgeIdByGoogleIdResource(Resource):
             return {'fridge_id': fridge_id}, 200
         else:
             return {'message': 'Fridge ID not found'}, 404
-        
-        
+
+
+
+
+
+#Household Operations
 @fridge_ns.route('/household-id-by-google-id/<string:google_user_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdIdByGoogleUserId(Resource):
@@ -617,7 +661,57 @@ class HouseholdIdByGoogleUserId(Resource):
 
 
 
-    
+#Unit Operations
+@fridge_ns.route('/Unit/')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'RecipeEntry not found')
+@fridge_ns.response(200, 'RecipeEntry successfully deleted')
+@fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
+@fridge_ns.param('recipe_id', 'ID eines Rezepts')
+class UnitOperations(Resource):
+    @fridge_ns.expect(unit)
+    @fridge_ns.marshal_list_with(unit)
+    def post(self):
+        adm = HalilsTaverneAdministration()
+
+        payload = api.payload  #Debugging
+        print("Received payload:", payload)  #Debugging information
+
+        proposal = unit.from_dict(api.payload)
+
+        if proposal is not None:
+            u = adm.create_unit(
+                #proposal.get_id(),
+                proposal.get_designation(),
+                proposal.get_household_id()
+            )
+            return u, 200
+        else:
+            return '', 500
+
+
+
+@fridge_ns.route('/Unit/<string:designation>/<int:household_id>')
+@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(404, 'RecipeEntry not found')
+@fridge_ns.response(200, 'RecipeEntry successfully deleted')
+@fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
+@fridge_ns.param('recipe_id', 'ID eines Rezepts')
+class UnitOperationsByDesignationAndID(Resource):
+    #@secured
+    @fridge_ns.marshal_list_with(unit)
+    def get(self, designation, household_id):
+        """Anhand der designation und der household_id werden zunächst die Einträge geladen,
+            bei dem es zu einer Übereinstimmung kommt. Danach wird die Get-Methode aufgerufen
+            und die jeweiligen Einträge geladen"""
+
+        adm = HalilsTaverneAdministration()
+        re = adm.get_unit_by_designation_and_household_id(designation, household_id)
+        return re
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
