@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import Theme from './theme';
 import SignIn from './components/pages/SignIn';
 import firebaseConfig from './firebaseconfig';
@@ -51,7 +51,7 @@ class App extends React.Component {
 
     handleSignIn = () => {
         this.setState({ authLoading: true });
-        signInWithRedirect(App.auth, App.provider);
+        signInWithPopup(App.auth, App.provider);
     };
 
     // Lifecycle Methode
@@ -59,7 +59,7 @@ class App extends React.Component {
         this.unsubscribeFromAuth = onAuthStateChanged(App.auth, async (user) => {
             if (user) {
                 console.log("Auth state changed: User is present.");
-                this.setState({ authLoading: true });
+                this.setState({ authLoading: true, currentUser: user});
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
                 if (!userBO[0].google_user_id) {
                     console.log("No corresponding user object found in the database, creating new user.");
