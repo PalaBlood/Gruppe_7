@@ -14,8 +14,7 @@ import {
   IconButton,
   Snackbar,
   Alert,
-  LinearProgress,
-  Card
+  LinearProgress
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -39,9 +38,10 @@ const UnitList = ({ householdId }) => {
     const household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
     try {
       const fetchedUnits = await FridgeAPI.getAPI().getUnitbyHouseholdId(household_id.household_id);
-      setUnits(fetchedUnits);
+      setUnits(fetchedUnits || []); //Es muss sichergestellt werden, dass es sich hier um ein Array handelt
     } catch (error) {
       console.error('Failed to fetch units:', error);
+      setUnits([]); //Im Fehlerfall "units" als leere Liste setzen
     }
     setLoading(false);
   };
@@ -85,11 +85,15 @@ const UnitList = ({ householdId }) => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom style={{textAlign:'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px'}}>
+      <Typography variant="h4" gutterBottom style={{ textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
         All available Units
       </Typography>
       {loading ? (
         <LinearProgress />
+      ) : units.length === 0 ? ( //Überprüfung, ob die Liste leer ist, um einen Fehler zu vermeiden, wenn keine Einheiten vorhanden sind
+        <Typography variant="body1" style={{ textAlign: 'center', marginTop: '20px' }}>
+          No units available.
+        </Typography>
       ) : (
         <List>
           {units.map((unit) => (
