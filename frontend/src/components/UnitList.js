@@ -90,7 +90,7 @@ const UnitList = ({ householdId }) => {
       </Typography>
       {loading ? (
         <LinearProgress />
-      ) : units.length === 0 ? ( //Überprüfung, ob die Liste leer ist, um einen Fehler zu vermeiden, wenn keine Einheiten vorhanden sind
+      ) : units.length === 0 ? ( //Überprüfung, ob die Liste leer ist, um einen Fehler zu vermeiden, sollten keine Einträge in der DB vorhanden sein. 
         <Typography variant="body1" style={{ textAlign: 'center', marginTop: '20px' }}>
           No units available.
         </Typography>
