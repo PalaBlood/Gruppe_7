@@ -11,6 +11,41 @@ import RecipeEntryCard from './RecipeEntryCard';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
 
+const conversionRates = {
+    liters: {
+        milliliters: 1000,
+        liters: 1
+    },
+    milliliters: {
+        liters: 1 / 1000,
+        milliliters: 1
+    },
+    kilograms: {
+        grams: 1000,
+        kilograms: 1
+    },
+    grams: {
+        kilograms: 1 / 1000,
+        grams: 1
+    },
+    pieces: {
+        pieces: 1
+    },
+    cups: {
+        cups: 1
+    },
+    pinch: {
+        pinch: 1
+    }
+};
+
+function convertQuantity(quantity, fromUnit, toUnit) {
+    if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {
+        return quantity * conversionRates[fromUnit][toUnit];
+    }
+    return null;
+}
+
 function RecipeEntryList() {
     const { recipeId } = useParams();
     const [recipeEntries, setRecipeEntries] = useState([]);
@@ -66,25 +101,25 @@ function RecipeEntryList() {
     const handleDeleteButtonClick = async (entry) => {
         try {
             let designation = entry.getDesignation();
-            
-            // API-Aufruf und Antwort loggen
+
+            // API call and response logging
             const response = await FridgeAPI.getAPI().deleteRecipeEntry(designation, recipeId);
-            
+
             fetchRecipeAndFridgeEntries();
         } catch (error) {
-            console.error("Fehler bei API-Aufruf: ", error);
+            console.error("Error during API call: ", error);
             setError(error);
         }
     };
-    
-    
 
     const isEntryAvailableInFridge = (entry) => {
-        return fridgeEntries.some(fridgeEntry =>
-            fridgeEntry.getDesignation() === entry.getDesignation() &&
-            fridgeEntry.getQuantity() >= entry.getQuantity() &&
-            fridgeEntry.getUnit() === entry.getUnit()
-        );
+        return fridgeEntries.some(fridgeEntry => {
+            if (fridgeEntry.getDesignation() === entry.getDesignation()) {
+                const convertedQuantity = convertQuantity(entry.getQuantity(), entry.getUnit(), fridgeEntry.getUnit());
+                return convertedQuantity !== null && fridgeEntry.getQuantity() >= convertedQuantity;
+            }
+            return false;
+        });
     };
 
     if (loading) {

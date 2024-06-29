@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const realUnits = ['liters', 'milliliters', 'kilogram', 'grams', 'pieces', 'cups', 'pinch'];
+const realUnits = ['liters', 'milliliters', 'kilograms', 'grams', 'pieces', 'cups', 'pinch'];
 
 const UnitList = ({ householdId }) => {
   const [units, setUnits] = useState([]);
@@ -57,7 +57,6 @@ const UnitList = ({ householdId }) => {
     try {
       const household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
       const unitBO = new UnitBO(newUnit, household_id.household_id);
-      console.log(unitBO);
 
       await FridgeAPI.getAPI().addUnit(unitBO);
       fetchUnits();

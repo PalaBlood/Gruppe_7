@@ -72,9 +72,9 @@ class RecipeMapper(Mapper):
         """Update an existing recipe entry in the database."""
         cursor = self._cnx.cursor()
         command = """UPDATE recipe_groceries
-                     SET quantity = %s, unit = %s
+                     SET quantity = %s, unit = %s, groceries_designation = %s
                      WHERE recipe_id = %s AND groceries_designation = %s"""
-        cursor.execute(command, (quantity, unit, recipe_id, groceries_designation))
+        cursor.execute(command, (quantity, unit, groceries_designation, recipe_id, groceries_designation))
         self._cnx.commit()
         cursor.close()
 
@@ -157,9 +157,6 @@ class RecipeMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id,))
         rows = cursor.fetchall()
-
-
-
 
         entries = []
         for row in rows:

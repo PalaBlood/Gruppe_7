@@ -10,7 +10,7 @@ from server.bo.User import User
 from server.bo.Household import Household
 from server.bo.Unit import Unit
 import traceback
-
+from server.db.conversion import convert_quantity
 
 from SecurityDecorator import secured
 
@@ -392,6 +392,7 @@ class FridgeEntryOperations(Resource):
 
 
 
+
 @fridge_ns.route('/COOK/<string:recipe_title>', methods=['PUT'])
 @fridge_ns.response(500, 'Server_fehler')
 @fridge_ns.param('recipe_title', 'der name eines rezepts')
@@ -401,13 +402,20 @@ class UseRecipeIngredients(Resource):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
         recipe_id = adm.get_recipe_id_by_title(recipe_title)
-        recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id)
+        print(recipe_id)
+        recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id[0])
+        print(recipe_entries)
         for recipe_entry in recipe_entries:
             fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.get_groceries_designation())
-            if fridge_entry and fridge_entry.get_quantity() >= recipe_entry.get_quantity():
-                new_quantity = fridge_entry.get_quantity() - recipe_entry.get_quantity()
-                adm.update_fridge_entry_quantity(fridge_entry.get_id(), fridge_entry.get_groceries_designation(),
-                                                 new_quantity, fridge_entry.get_unit())
+            print(fridge_entry)
+            if fridge_entry:
+                # Convert recipe entry quantity to the fridge entry unit
+                recipe_quantity_in_fridge_units = convert_quantity(recipe_entry.get_quantity(), recipe_entry.get_unit(), fridge_entry[3])
+                if recipe_quantity_in_fridge_units is not None and fridge_entry[2] >= recipe_quantity_in_fridge_units:
+                    new_quantity = fridge_entry[2] - recipe_quantity_in_fridge_units
+                    adm.update_fridge_entry_quantity(fridge_entry[0], fridge_entry[1], new_quantity, fridge_entry[3])
+                else:
+                    return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
             else:
                 return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
 
@@ -511,7 +519,6 @@ class RecipeEntryListOperations2(Resource):
         print(api.payload)
         re = RecipeEntry.from_dict2(api.payload)
         if re is not None:
-            re.set_groceries_designation(groceries_designation)
             adm.update_recipe_entry(re)
             return '', 200
         else:
