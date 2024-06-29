@@ -6,6 +6,7 @@ import FridgeEntryBO from "./FridgeEntryBO";
 import HouseholdBO from "./HouseholdBO";
 import FridgeBO from "./FridgeBO";
 import UnitBO from "./Unit";
+import { json } from "react-router-dom";
 
 
 
@@ -138,9 +139,7 @@ class FridgeAPI {
     getUnitbyHouseholdId(id) {
         return this.#fetchAdvanced(this.#getUnitsbyIdURL(id)).then((responseJSON) => {
             // Check if the response is correctly parsed
-            console.log(responseJSON); // Debugging line
             let unitBO = UnitBO.fromJSON(responseJSON);
-            console.log(unitBO); // Debugging line
             return new Promise(function(resolve) {
                 resolve(unitBO);
             });
@@ -362,10 +361,10 @@ class FridgeAPI {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                fridge_id: fridgeEntryBO.getFridgeId(),
                 groceries_designation: fridgeEntryBO.getDesignation(),
                 quantity: fridgeEntryBO.getQuantity(),
-                unit: fridgeEntryBO.getUnit(),
-                fridge_id: fridgeEntryBO.getFridgeId()
+                unit: fridgeEntryBO.getUnit()
             })
         }).then(responseJSON => {
             return FridgeEntryBO.fromJSON([responseJSON])[0];
@@ -482,7 +481,6 @@ class FridgeAPI {
     }
 
     updateFridgeEntry(fridgeEntryBO) {
-        console.log(fridgeEntryBO)
         return this.#fetchAdvanced(this.#updateFridgeEntryURL(fridgeEntryBO.designation), {
             method: 'PUT',
             headers: {
@@ -500,8 +498,6 @@ class FridgeAPI {
     }
 
     updateRecipe(recipeBO) {
-        console.log(recipeBO)
-        console.log(JSON.stringify(recipeBO));
         return this.#fetchAdvanced(this.#updateRecipeURL(recipeBO.getId()), {
             method: 'PUT',
             headers: {
@@ -537,7 +533,7 @@ class FridgeAPI {
     }
     
     updateRecipeEntry(recipeEntryBO) {
-        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getGroceriesDesignation()), {
+        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getDesignation()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',

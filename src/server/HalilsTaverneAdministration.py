@@ -122,10 +122,11 @@ class HalilsTaverneAdministration(object):
     def create_Fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         fridgeentry = FridgeEntry()
         fridgeentry.set_id(1)
+        fridgeentry.set_fridge_id(fridge_id)
         fridgeentry.set_groceries_designation(groceries_designation)
         fridgeentry.set_quantity(quantity)
         fridgeentry.set_unit(unit)
-        fridgeentry.set_fridge_id(fridge_id)
+
 
         with FridgeMapper() as mapper:
             return mapper.insert_fridge_entry(fridgeentry)
@@ -210,7 +211,8 @@ class HalilsTaverneAdministration(object):
 
     def update_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
-            return mapper.update_recipe_entry(recipe_entry)
+            return mapper.update_recipe_entry(recipe_entry.get_recipe_id(),recipe_entry.get_groceries_designation(),
+                                              recipe_entry.get_quantity(),recipe_entry.get_unit())
 
     def get_all_recipes_entries(self):
         with RecipeMapper() as mapper:

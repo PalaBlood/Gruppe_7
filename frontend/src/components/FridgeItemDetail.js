@@ -1,1 +1,0 @@
-// Komponente zum anzeigen eines lebensmittels

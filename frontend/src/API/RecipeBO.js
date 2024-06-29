@@ -54,7 +54,6 @@ export default class RecipeBO extends BusinessObject {
         let result = [];
         if (Array.isArray(recipes)) {
             recipes.forEach((r) => {
-                console.log('Processing recipe:', r);  // Debugging-Ausgabe
                 let recipe = new RecipeBO(
                     r.title,
                     r.creator,
@@ -67,7 +66,6 @@ export default class RecipeBO extends BusinessObject {
             });
         } else {
             let r = recipes;
-            console.log('Processing recipe:', r);  // Debugging-Ausgabe
             let recipe = new RecipeBO(
                 r.title,
                 r.creator,

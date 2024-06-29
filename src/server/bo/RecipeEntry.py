@@ -31,6 +31,15 @@ class RecipeEntry(FoodEntry):
         obj.set_unit(dictionary["unit"])
         return obj
 
+    @staticmethod
+    def from_dict2(dictionary):
+        obj = RecipeEntry()
+        obj.set_recipe_id(dictionary["recipeId"])
+        obj.set_groceries_designation(dictionary["groceries_designation"])
+        obj.set_quantity(dictionary["quantity"])
+        obj.set_unit(dictionary["unit"])
+        return obj
+
 
 
 

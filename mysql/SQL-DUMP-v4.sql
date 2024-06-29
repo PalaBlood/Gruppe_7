@@ -49,7 +49,7 @@ CREATE TABLE Recipe (
     recipe_title VARCHAR(255),
     number_of_persons INT,
     creator VARCHAR(255),
-    recipe_description VARCHAR(255),
+    recipe_description VARCHAR(1000),
     household_id INT,
     FOREIGN KEY (household_id) REFERENCES Household (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

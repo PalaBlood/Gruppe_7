@@ -315,7 +315,7 @@ class FridgeEntryListOperations(Resource):
     def post(self):
         adm = HalilsTaverneAdministration()
         try:
-
+            print(api.payload)
             proposal = FridgeEntry.form_dict(api.payload)
 
             if proposal is not None:
@@ -373,9 +373,11 @@ class FridgeEntryOperations(Resource):
     @fridge_ns.marshal_with(fridge_entry)
     def put(self, groceries_designation):
         adm = HalilsTaverneAdministration()
+        print(api.payload)
         fe = FridgeEntry.form_dict(api.payload)
+        print("Heres the fe:" , fe)
         if fe is not None:
-            fe.set_groceries_designation(groceries_designation)
+            fe.set_groceries_designation(fe.get_groceries_designation())
             adm.save_fridge_entry(fe)
             return '', 200
         else:
@@ -506,7 +508,8 @@ class RecipeEntryListOperations2(Resource):
     @fridge_ns.marshal_list_with(recipe_entry)
     def put(self, groceries_designation):
         adm = HalilsTaverneAdministration()
-        re = RecipeEntry.form_dict(api.payload)
+        print(api.payload)
+        re = RecipeEntry.from_dict2(api.payload)
         if re is not None:
             re.set_groceries_designation(groceries_designation)
             adm.update_recipe_entry(re)

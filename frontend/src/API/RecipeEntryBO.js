@@ -22,10 +22,14 @@ export default class RecipeEntryBO extends FoodEntry {
     }
 
     static fromJSON(recipeEntries) {
+        if (!Array.isArray(recipeEntries)) {
+          recipeEntries = [recipeEntries];
+        }
+        
         return recipeEntries.map(r => {
-            let recipeEntry = new RecipeEntryBO(r.groceries_designation, r.quantity, r.unit, r.recipe_id);
-            recipeEntry.setId(r.id); 
-            return recipeEntry;
+          let recipeEntry = new RecipeEntryBO(r.groceries_designation, r.quantity, r.unit, r.recipe_id);
+          recipeEntry.setId(r.id); 
+          return recipeEntry;
         });
+      }
     }
-}

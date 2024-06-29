@@ -31,7 +31,6 @@ function RecipeList() {
             const household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
             const recipes = await FridgeAPI.getAPI().getRecipesbyhouseholdId(household_id.household_id);
             const recipeBOs = RecipeBO.fromJSON(recipes);
-            console.log(recipeBOs)
             setRecipes(recipeBOs);
             setLoading(false);
         } catch (error) {
@@ -80,8 +79,8 @@ function RecipeList() {
 
     return (
         <Grid container spacing={2} style={{ padding: 20, justifyContent: "center", alignItems: "center"  }}>
-            <Grid item xs={12}>
-                <Button
+            <Grid item xs={12} style={{ textAlign: 'center'}}>
+                <Button 
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon />}

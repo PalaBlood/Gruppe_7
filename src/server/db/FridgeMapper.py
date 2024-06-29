@@ -99,11 +99,12 @@ class FridgeMapper(Mapper):
     def update_fridge_entry2(self, fridge_entry):
         """Update an existing fridge entry in the database."""
         cursor = self._cnx.cursor()
+        print("Hier:", fridge_entry)
         command = """UPDATE fridge_groceries
                      SET quantity = %s, unit = %s
                      WHERE fridge_id = %s AND groceries_designation = %s"""
 
-        data = (fridge_entry.quantity, fridge_entry.unit, fridge_entry.fridge_id, fridge_entry.groceries_designation)
+        data = (fridge_entry.get_quantity(), fridge_entry.get_unit(), fridge_entry.get_fridge_id(), fridge_entry.get_groceries_designation())
         cursor.execute(command, data)
         self._cnx.commit()
         cursor.close()

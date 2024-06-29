@@ -15,6 +15,9 @@ export default class FridgeEntryBO extends FoodEntry {
     }
 
     static fromJSON(fridgeEntries) {
+        if (!Array.isArray(fridgeEntries)) {
+            fridgeEntries = [fridgeEntries];
+        }
         return fridgeEntries.map(f => {
             let fridgeEntry = new FridgeEntryBO(f.groceries_designation, f.quantity, f.unit, f.fridge_id);
             fridgeEntry.setId(f.id); 

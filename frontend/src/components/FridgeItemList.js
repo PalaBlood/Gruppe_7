@@ -11,7 +11,10 @@ import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
 
 
+// FridgeEntriesComponent is a class component managing all fridge entries of the current user.
 class FridgeEntriesComponent extends Component {
+
+    // Init the state
     constructor(props) {
         super(props);
         this.state = {
@@ -19,19 +22,18 @@ class FridgeEntriesComponent extends Component {
             showAddForm: false,
             loading: false,
             error: null,
-            editEntry: null // To store the entry being edited
+            editEntry: null 
         };
     }
-
+    // Fetches all fridge entries of the current user
     componentDidMount() {
         this.fetchFridgeEntries();
     }
 
     fetchFridgeEntries = async () => {
-        const auth = getAuth()
-        const user = auth.currentUser
-        const fridge_id = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid)
-        console.log(fridge_id)
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const fridge_id = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid);
         this.setState({ loading: true });
         try {
             const entries = await FridgeAPI.getAPI().getFridgeEntriesbyFridgeId(fridge_id.fridge_id);
@@ -42,32 +44,32 @@ class FridgeEntriesComponent extends Component {
             this.setState({ error, loading: false });
         }
     };
-
+    // Handles the click on the add button
     handleAddButtonClick = () => {
         this.setState({ showAddForm: true, editEntry: null });
     };
-
+    // Handles the closing of the add/edit form
     handleFormClose = (newEntry) => {
         if (newEntry) {
             this.fetchFridgeEntries();
         }
         this.setState({ showAddForm: false });
     };
-
+    // Handles the click on the edit button
     handleEditButtonClick = (entry) => {
         this.setState({ showAddForm: true, editEntry: entry });
     };
-
+    // Handles the click on the delete button
     handleDeleteButtonClick = async (designation) => {
         try {
             await FridgeAPI.getAPI().deleteFridgeEntry(designation);
-            this.fetchFridgeEntries();  // Refresh the list after deletion
+            this.fetchFridgeEntries(); 
         } catch (error) {
             console.error("Failed to delete fridge entry:", error);
             this.setState({ error: `Failed to delete entry: ${designation}` });
         }
     };
-
+    // Renders the component
     render() {
         const { fridgeEntries, showAddForm, loading, error, editEntry } = this.state;
 
@@ -81,7 +83,7 @@ class FridgeEntriesComponent extends Component {
 
         return (
             <Grid container spacing={2} style={{ padding: 20 }}>
-                <Grid item xs={12}>
+                <Grid item xs={12} style={{ textAlign:'center'}}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -110,7 +112,7 @@ class FridgeEntriesComponent extends Component {
                 {showAddForm && (
                     <FridgeEntryForm
                         show={showAddForm}
-                        entry={editEntry}
+                        fridgeentry={editEntry}
                         onClose={this.handleFormClose}
                     />
                 )}

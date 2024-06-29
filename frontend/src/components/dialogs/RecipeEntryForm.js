@@ -1,59 +1,101 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@mui/material';
+import { Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FridgeAPI from '../../API/SmartFridgeAPI';
 import RecipeEntryBO from '../../API/RecipeEntryBO';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
+import { getAuth } from 'firebase/auth';
 
 function RecipeEntryForm({ entry, show, onClose, recipeId }) {
-    const [designation, setDesignation] = useState(entry ? entry.getDesignation() : '');
-    const [quantity, setQuantity] = useState(entry ? entry.getQuantity() : '');
-    const [unit, setUnit] = useState(entry ? entry.getUnit() : '');
+    const [designation, setDesignation] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [unit, setUnit] = useState('');
+    const [units, setUnits] = useState([]);
     const [addingInProgress, setAddingInProgress] = useState(false);
     const [updatingInProgress, setUpdatingInProgress] = useState(false);
-    const [addingError, setAddingError] = useState(null);
-    const [updatingError, setUpdatingError] = useState(null);
+    const [error, setError] = useState(null);
 
-    
+    useEffect(() => {
+        const fetchHouseholdUnits = async () => {
+            try {
+                const auth = getAuth();
+                const user = auth.currentUser;
+                if (user) {
+                    const householdResponse = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(user.uid);
+                    const unitsResponse = await FridgeAPI.getAPI().getUnitbyHouseholdId(householdResponse.household_id);
+                    setUnits(unitsResponse.map(unitBO => unitBO.designation));
+                }
+            } catch (e) {
+                handleError(e);
+            }
+        };
+
+        fetchHouseholdUnits();
+
+        if (entry) {
+            setDesignation(entry.getDesignation());
+            setQuantity(entry.getQuantity());
+            setUnit(entry.getUnit());
+        } else {
+            setDesignation('');
+            setQuantity('');
+            setUnit('');
+        }
+    }, [entry]);
+
+    const handleError = (e) => {
+        console.error(e);
+        setError({ message: e.message });
+    };
+
     const addRecipeEntry = async () => {
-        setAddingInProgress(true);
-        setAddingError(null);
+        if (!designation || !quantity || !unit) {
+            setError({ message: 'All fields are required' });
+            return;
+        }
 
-        const newRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId); //Rezept-ID wird hier verwendet
-        console.log('New Recipe Entry:', newRecipeEntry);  //Debugging
+        setAddingInProgress(true);
+        setError(null);
+
+        const newRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId);
 
         try {
-        
             const recipeEntry = await FridgeAPI.getAPI().addRecipeEntry(newRecipeEntry);
             onClose(recipeEntry);
         } catch (e) {
-            setAddingError({ message: e.message });
+            handleError(e);
         } finally {
-            setAddingInProgress(false)
+            setAddingInProgress(false);
         }
     };
 
     const updateRecipeEntry = async () => {
+        if (!designation || !quantity || !unit) {
+            setError({ message: 'All fields are required' });
+            return;
+        }
+
         setUpdatingInProgress(true);
-        setUpdatingError(null);
+        setError(null);
 
         const updatedRecipeEntry = new RecipeEntryBO(designation, quantity, unit, recipeId);
         updatedRecipeEntry.setId(entry.getId());
         updatedRecipeEntry.setRecipeId(recipeId);
 
         try {
-            const recipeEntry = await FridgeAPI.updateRecipeEntry(updatedRecipeEntry);
+            const recipeEntry = await FridgeAPI.getAPI().updateRecipeEntry(updatedRecipeEntry);
             onClose(recipeEntry);
         } catch (e) {
+            handleError(e);
+        } finally {
             setUpdatingInProgress(false);
-            setUpdatingError({ message: e.message });
         }
     };
 
     const handleClose = () => {
-        onClose(null)
+        onClose(null);
     };
 
     return (
@@ -67,7 +109,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {entry ? `Recipe Entry ID: ${entry.getId()}` : 'Enter Ingredient Data'}
+                        {'Enter Ingredient Data'}
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -88,43 +130,36 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
                     />
-                    <TextField
-                        margin="dense"
-                        id="unit"
-                        label="Unit"
-                        type="text"
-                        fullWidth
-                        value={unit}
-                        onChange={(e) => setUnit(e.target.value)}
-                    />
+                    <FormControl fullWidth margin="dense">
+                        <InputLabel id="unit-label">Unit</InputLabel>
+                        <Select
+                            labelId="unit-label"
+                            id="unit"
+                            value={unit}
+                            onChange={(e) => setUnit(e.target.value)}
+                            label="Unit"
+                        >
+                            {units.map((unit) => (
+                                <MenuItem key={unit} value={unit}>
+                                    {unit}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <LoadingProgress show={addingInProgress || updatingInProgress} />
-                    {entry ? (
-                        <ContextErrorMessage
-                            error={updatingError}
-                            contextErrorMsg={`The recipe entry ${entry.getId()} could not be updated.`}
-                            onReload={updateRecipeEntry}
-                        />
-                    ) : (
-                        <ContextErrorMessage
-                            error={addingError}
-                            contextErrorMsg={`The recipe entry could not be added.`}
-                            onReload={addRecipeEntry}
-                        />
-                    )}
+                    <ContextErrorMessage
+                        error={error}
+                        contextErrorMsg={entry ? `The recipe entry ${entry.getId()} could not be updated.` : 'The recipe entry could not be added.'}
+                        onReload={entry ? updateRecipeEntry : addRecipeEntry}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
-                    {entry ? (
-                        <Button onClick={updateRecipeEntry} color="primary">
-                            Update
-                        </Button>
-                    ) : (
-                        <Button onClick={addRecipeEntry} color="primary">
-                            Add
-                        </Button>
-                    )}
+                    <Button onClick={entry ? updateRecipeEntry : addRecipeEntry} color="primary">
+                        {entry ? 'Update' : 'Add'}
+                    </Button>
                 </DialogActions>
             </Dialog>
         )

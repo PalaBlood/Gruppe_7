@@ -167,7 +167,12 @@ class App extends React.Component {
 
                                 }/>
 
-                                <Route path="/recipes/entries/:recipeId" element={<RecipeEntryList/>} />
+                                <Route path="/recipes/entries/:recipeId" element={
+                                    <Secured user={currentUser}>
+                                        <RecipeEntryList/>
+                                        </Secured>} 
+                                        />
+                                        
                                 <Route path = "/unit" element={
                                     <Secured user={currentUser}>
                                         <UnitList/>
