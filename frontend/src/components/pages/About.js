@@ -16,24 +16,24 @@ const About = () => {
                 />
                 <CardContent>
                     <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-                        Über unsere Smartfridge:
+                        About our Application:
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
-                        Wilkommen in der Smart Fridge Applikation!
+                        Welcome to our SmartFridge application!
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
                         <strong>Key Features:</strong>
                     </Typography>
                     <Typography variant="body1" color="text.secondary" component="ul" paragraph>
-                        <li>Inventarverwaltung in Echtzeit</li>
-                        <li>Rezepte Kochen</li>
-                        <li>Rezepte verwalten</li>
+                        <li>Inventory management</li>
+                        <li>Cooking Recipes</li>
+                        <li>Recipe Management</li>
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
-                        Wir wollen Lebensmittelverschwendung minimieren!
+                        We want to minimize food waste and help you to cook delicious meals with the ingredients you have at home.
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
-                        Danke das sie HdMSmartFridge ausgwählt haben!
+                        Thank you for using our application!
                     </Typography>
                 </CardContent>
             </Card>

@@ -180,7 +180,10 @@ class App extends React.Component {
                                 }/>
                           
                                 
-                                <Route path="/about" element={<About />} />
+                                <Route path="/about" element={<Secured user={currentUser}>
+                                        <About/>
+                                    </Secured>
+                                }/>
                             </Routes>
                             <LoadingProgress show={authLoading} />
                             <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
