@@ -16,17 +16,25 @@ from SecurityDecorator import secured
 
 app = Flask(__name__)
 
-# Aktivieren Sie CORS für Ihre gesamte Flask-Anwendung
+# CORS aktivieren
+#CORS steht für Cross-Origin Resource Sharing und ist ein Mechanismus, der es Webseiten ermöglicht, Ressourcen von anderen Domains zu laden.
 """CORS(app, resources={r"/api/":{"origins":"*"}})"""
 CORS(app, supports_credentials=True, resources=r'/fridge/*')
 
+# API-Objekt erstellen
 api = Api(app, version='1.0', title='SmartFridgeDemo API',
           description='An API for managing a smart fridge system.')
 
 # Namespace
+#Der Namespace ist Container für die API-Endpunkte, die zu einem bestimmten Thema gehören.
 fridge_ns = api.namespace('fridge', description='Fridge-related functionalities')
 
-# Modelle für Flask-Restx
+# Modelle für Flask-Restx: Flast-Restx verwendet die Modelle, um die JSON-Objekte zu serialisieren und zu deserialisieren,
+#Restx ist eine Erweiterung von Flask, die es ermöglicht, RESTful APIs zu erstellen.
+#RESTful APIs sind APIs, die auf dem REST-Prinzip basieren, das besagt, dass jede Ressource über eine eindeutige URL angesprochen wird.
+
+
+#Im folgenden Abschnitt werden die Modelle für die verschiedenen Business-Objekte definiert.
 bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description='Unique identifier of a business object')
 })
@@ -80,6 +88,7 @@ unit = api.inherit('Unit', bo, {
 })
 
 
+#Alle Operationen für die verschiedenen Business-Objekte werden im folgenden Abschnitt definiert.
 #User Operations
 @fridge_ns.route('/users')
 @fridge_ns.response(500, 'Server-Fehler')
@@ -189,7 +198,7 @@ class UsersByNameOperations(Resource):
 
 
 
-#Household Operations
+#Household Operations, die Operationen für die Haushalte
 @fridge_ns.route('/Household')
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdListOperation(Resource):
@@ -401,15 +410,18 @@ class UseRecipeIngredients(Resource):
     def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
+        """Rezept ID auslesen"""
         recipe_id = adm.get_recipe_id_by_title(recipe_title)
         print(recipe_id)
+        """ Rezept Einträge auslesen"""
         recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id[0])
         print(recipe_entries)
         for recipe_entry in recipe_entries:
+            """Fridge Einträge auslesen"""
             fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.get_groceries_designation())
             print(fridge_entry)
             if fridge_entry:
-                # Convert recipe entry quantity to the fridge entry unit
+                # Umrechnung der Mengenangaben
                 recipe_quantity_in_fridge_units = convert_quantity(recipe_entry.get_quantity(), recipe_entry.get_unit(), fridge_entry[3])
                 if recipe_quantity_in_fridge_units is not None and fridge_entry[2] >= recipe_quantity_in_fridge_units:
                     new_quantity = fridge_entry[2] - recipe_quantity_in_fridge_units
