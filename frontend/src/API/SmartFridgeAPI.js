@@ -46,7 +46,7 @@ class FridgeAPI {
     #addRecipeEntryURL = () => `${this.#fridgeserverbaseurl}/RecipeEntries`;
     #getRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
     #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntries/${recipe_id}`;
-    #updateRecipeEntryURL = (groceries_designation) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}`;
+    #updateRecipeEntryURL = (groceries_designation, recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}/${recipe_id}`;
     #deleteRecipeEntryURL = (groceries_designation, recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}/${recipe_id}`;
     
     
@@ -73,7 +73,7 @@ class FridgeAPI {
     #getRecipesURL = () => `${this.#fridgeserverbaseurl}/RecipeList`;
     #addRecipeURL = () => `${this.#fridgeserverbaseurl}/RecipeList`;
     #getRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
-    #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
+    #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/$/${id}`;
     #deleteRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #getHouseholdIdByGoogleUserIdURL = (google_user_id) => `${this.#fridgeserverbaseurl}/household-id-by-google-id/${google_user_id}`;
     #getRecipesbyhouseholdIdURL = (household_id) => `${this.#fridgeserverbaseurl}/RecipeList/${household_id}`;
@@ -523,9 +523,9 @@ class FridgeAPI {
             method: 'DELETE'
         }).then(() => ({ message: "Household deleted successfully", id }));
     }
-    
+    //RecipeEntry updaten
     updateRecipeEntry(recipeEntryBO) {
-        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getDesignation()), {
+        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getDesignation(), recipeEntryBO.getRecipeId()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',

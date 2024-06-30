@@ -60,6 +60,8 @@ class HalilsTaverneAdministration(object):
         with UserMapper() as mapper:
             return mapper.insert(user)
 
+
+
     # müssen noch richtig implementiert werden
 
     def get_all_users(self):
@@ -85,6 +87,8 @@ class HalilsTaverneAdministration(object):
     def get_user_by_google_user_id(self, google_user_id):
         with UserMapper() as mapper:
             return mapper.find_by_google_user_id(google_user_id)
+
+
 
     # Fridge spezifische Methoden
     def create_Fridge(self):
@@ -117,9 +121,11 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper() as mapper:
             return mapper.get_fridge_id_by_google_user_id(google_user_id)
 
+
+
     # FridgeEntry spezifische Methoden
 
-    def create_Fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
+    def create_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
         fridgeentry = FridgeEntry()
         fridgeentry.set_id(1)
         fridgeentry.set_fridge_id(fridge_id)
@@ -155,6 +161,8 @@ class HalilsTaverneAdministration(object):
         with FridgeMapper() as mapper:
             return mapper.get_full_existing_entry(groceries_designation)
 
+
+
     # recipe-spezifische methoden:
 
     def create_recipe(self, title, number_of_persons, creator, description, household_id):
@@ -187,14 +195,19 @@ class HalilsTaverneAdministration(object):
             mapper.delete_recipe(recipe)
 
 
+
     def get_recipe_id_by_title(self, title):
         with RecipeMapper() as mapper:
             return mapper.find_recipe_id_by_title(title)
-        
+
+
+
     def get_recipes_by_household_id(self, household_id):
 
         with RecipeMapper() as mapper:
             return mapper.find_recipes_by_household_id(household_id)
+
+
 
     # recipeEntry spezifische Methoden
 
@@ -211,20 +224,12 @@ class HalilsTaverneAdministration(object):
 
     def update_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
-            return mapper.update_recipe_entry(recipe_entry.get_recipe_id(),recipe_entry.get_groceries_designation(),
-                                              recipe_entry.get_quantity(),recipe_entry.get_unit())
+            return mapper.update_recipe_entry(recipe_entry)
 
     def get_all_recipes_entries(self):
         with RecipeMapper() as mapper:
             return mapper.find_all_entries()
 
-    def get_recipe_entries_by_designation(self, groceries_designation):
-
-        pass
-
-    """def update_recipe_entry(self, recipe_entry):
-        with RecipeMapper as mapper:
-            return mapper.update_recipe_entry(recipe_entry)"""
 
     def delete_recipe_entry(self, recipe_entry):
         with RecipeMapper() as mapper:
@@ -238,6 +243,7 @@ class HalilsTaverneAdministration(object):
     def find_recipe_entries_by_recipe_id_and_designation(self, groceries_designation, recipe_id):
         with RecipeMapper() as mapper:
             return mapper.find_entries_by_recipe_id_and_groceries_designation(groceries_designation, recipe_id)
+
 
 
     # household-spezifische methoden:

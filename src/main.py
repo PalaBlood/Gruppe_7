@@ -328,7 +328,7 @@ class FridgeEntryListOperations(Resource):
             proposal = FridgeEntry.form_dict(api.payload)
 
             if proposal is not None:
-                fe = adm.create_Fridge_entry(
+                fe = adm.create_fridge_entry(
                     proposal.get_fridge_id(),
                     proposal.get_groceries_designation(),
                     proposal.get_quantity(),
@@ -502,12 +502,26 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
             und der jeweilige Eintrag entfernt."""
         adm = HalilsTaverneAdministration()
         re = adm.find_recipe_entries_by_recipe_id_and_designation(groceries_designation, recipe_id)
-        print(re)
+
         if re and re.get_groceries_designation() == groceries_designation:
             adm.delete_recipe_entry(re)
             return '', 200
         else:
             return '', 404
+
+        # @secured
+    @fridge_ns.marshal_list_with(recipe_entry)
+    def put(self, groceries_designation, recipe_id):
+        adm = HalilsTaverneAdministration()
+        print(groceries_designation, recipe_id)
+        print(api.payload)
+        re = adm.find_recipe_entries_by_recipe_id_and_designation(groceries_designation, recipe_id)
+        print(re)
+        if re is not None:
+            adm.update_recipe_entry(re)
+            return '', 200
+        else:
+            return '', 500
 
 
 
@@ -524,24 +538,7 @@ class RecipeEntryListOperations2(Resource):
         reci = adm.get_recipe_entries_by_designation(groceries_designation)
         return reci
 
-    #@secured
-    @fridge_ns.marshal_list_with(recipe_entry)
-    def put(self, groceries_designation):
-        adm = HalilsTaverneAdministration()
-        print(api.payload)
-        re = RecipeEntry.from_dict2(api.payload)
-        if re is not None:
-            adm.update_recipe_entry(re)
-            return '', 200
-        else:
-            return '', 500
 
-    """#@secured
-    @fridge_ns.marshal_list_with(recipe_entry)
-    def delete(self, groceries_designation):
-        adm = HalilsTaverneAdministration()
-        re = adm.get_recipe_entries_by_designation(groceries_designation)
-        adm.delete_recipe_entry(re)"""
 
 
 

@@ -22,19 +22,11 @@ class RecipeEntry(FoodEntry):
         return f"<RecipeEntry(recipe_id={self.__recipe_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
 
 
+
     @staticmethod
     def from_dict(dictionary):
         obj = RecipeEntry()
-        obj.set_recipe_id(dictionary["recipe_id"])  
-        obj.set_groceries_designation(dictionary["groceries_designation"])
-        obj.set_quantity(dictionary["quantity"])
-        obj.set_unit(dictionary["unit"])
-        return obj
-
-    @staticmethod
-    def from_dict2(dictionary):
-        obj = RecipeEntry()
-        obj.set_recipe_id(dictionary["recipeId"])
+        obj.set_recipe_id(dictionary["recipe_id"])
         obj.set_groceries_designation(dictionary["groceries_designation"])
         obj.set_quantity(dictionary["quantity"])
         obj.set_unit(dictionary["unit"])

@@ -23,10 +23,14 @@ class Household extends Component {
         selectedHouseholdId: null,
         dialogOpen: false,
     };
+
+
     //lifecycle Method
     componentDidMount() {
         this.loadHouseholdUsers();
     }
+
+
     //User des assoziierten Haushaltes laden
     loadHouseholdUsers = async () => {
         const auth = getAuth();
@@ -57,6 +61,7 @@ class Household extends Component {
             this.setState({ error: error.message, loading: false });
         }
     };
+    
     //name des Haushalts updaten
     updateHouseholdName = async () => {
         const { newHouseholdName, householdId, fridgeId } = this.state;

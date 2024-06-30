@@ -168,39 +168,3 @@ class HouseholdMapper(Mapper):
 
 
 
-if __name__ == "__main__":
-    household_mapper = HouseholdMapper()
-
-    # Einfügen eines neuen Haushalts
-    household = Household()
-    household.set_id(1)  # Setzen der ID für das Beispiel
-
-    # Hinzufügen von Usern
-    user1 = User()
-    user1.set_id(1)
-    household.add_user(user1)
-
-    user2 = User()
-    user2.set_id(2)
-    household.add_user(user2)
-
-    household_mapper.insert(household)
-
-    # Auslesen aller Haushalte
-    all_households = household_mapper.find_all()
-    for hsh in all_households:
-        print(f"Household ID: {hsh.get_id()}, Users: {hsh.get_users()}")
-
-    # Suchen eines Haushalts anhand der ID
-    found_household = household_mapper.find_by_key(household.get_id())
-    if found_household:
-        print(f"Gefundenes Household - ID: {found_household.get_id()}, Users: {found_household.get_users()}")
-
-    # Aktualisieren eines Haushalts
-    new_user = User()
-    new_user.set_id(3)
-    found_household.add_user(new_user)
-    household_mapper.update(found_household)
-
-    # Löschen eines Haushalts
-    household_mapper.delete(found_household)
