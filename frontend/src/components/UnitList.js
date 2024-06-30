@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+//Liste der realen Einheiten, die in der SmartFridge App verwendet werden dürfen
 const realUnits = ['liters', 'milliliters', 'kilograms', 'grams', 'pieces', 'cups', 'pinch'];
 
 const UnitList = ({ householdId }) => {
@@ -45,7 +46,7 @@ const UnitList = ({ householdId }) => {
     }
     setLoading(false);
   };
-
+// Funktion zum Hinzufügen einer neuen Einheit
   const handleAddUnit = async () => {
     if (!realUnits.includes(newUnit.toLowerCase())) {
       setError('Invalid unit. Please type in a real world Unit.');
@@ -68,7 +69,7 @@ const UnitList = ({ householdId }) => {
       setError('Failed to add unit');
     }
   };
-
+// Funktion zum Löschen einer Einheit
   const handleDeleteUnit = async (unitId) => {
     try {
       await FridgeAPI.getAPI().deleteUnit(unitId);
@@ -81,7 +82,7 @@ const UnitList = ({ householdId }) => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-
+// Darstellung der Einheitenliste
   return (
     <Container>
       <Typography variant="h4" gutterBottom style={{ textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
