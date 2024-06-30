@@ -104,14 +104,40 @@ class HouseholdMapper(Mapper):
             cursor.close()
 
     def delete(self, household):
-
+        print(household)
         cursor = self._cnx.cursor()
-        try:
 
-            command = "DELETE FROM users WHERE household_id = %s" ####Hierran orientieren was die Deleltevorgänge angeht
+        try:
+            # Fetch fridge_id from household
+            command = "SELECT fridge_id from household WHERE id = %s"
+            cursor.execute(command, (household.get_id(),))
+            fridge_id = cursor.fetchone()[0]
+
+            # Delete fridge_groceries entries related to the fridge
+            command = "DELETE FROM fridge_groceries WHERE fridge_id = %s"
+            cursor.execute(command, (fridge_id,))
+
+            # Delete unit entries related to the household
+            command = "DELETE FROM unit WHERE household_id = %s"
             cursor.execute(command, (household.get_id(),))
 
+            # Delete recipe_groceries entries related to recipes in this household
+            command = "DELETE FROM recipe_groceries WHERE recipe_id IN (SELECT id FROM recipe WHERE household_id = %s)"
+            cursor.execute(command, (household.get_id(),))
 
+            # Delete recipe entries related to the household
+            command = "DELETE FROM recipe WHERE household_id = %s"
+            cursor.execute(command, (household.get_id(),))
+
+            # Delete users entries related to the household
+            command = "DELETE FROM users WHERE household_id = %s"
+            cursor.execute(command, (household.get_id(),))
+
+            # Delete fridge entry
+            command = "DELETE FROM fridge WHERE id = %s"
+            cursor.execute(command, (fridge_id,))
+
+            # Finally, delete the household entry
             command = "DELETE FROM household WHERE id = %s"
             cursor.execute(command, (household.get_id(),))
 
@@ -121,7 +147,7 @@ class HouseholdMapper(Mapper):
             self._cnx.rollback()
         finally:
             cursor.close()
-    
+
     def get_household_id_by_google_user_id(self, google_user_id):
         cursor = self._cnx.cursor()
         try:

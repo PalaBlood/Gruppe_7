@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import FridgeAPI from '../API/SmartFridgeAPI.js';
 import HouseholdBO from '../API/HouseholdBO.js';
 import HomeIcon from '@mui/icons-material/Home';
-
+import { useNavigate } from 'react-router-dom';
 
 //Momentanen Haushalt laden, der User bekommt dabei die Option, den Haushalt zu wechseln oder den Namen des aktuellen Haushalts anzupassen
 
@@ -156,7 +156,26 @@ class Household extends Component {
             this.setState({ error: error.message });
         }
     };
-    
+
+    deletecurrentHousehold = async () => {
+        const { navigate } = this.props;
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            this.setState({ error: "No user logged in" });
+            return;
+        }
+        try {
+            let household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
+            await FridgeAPI.getAPI().deleteHousehold(household_id.household_id);
+            navigate('/home');
+            auth.signOut();
+        }
+        catch (error) {
+            this.setState({ error: error.message });
+        }
+    }
+
     renderDialogs = () => {
         const { dialogOpen, households, newHouseholdName, error } = this.state;
 
@@ -185,7 +204,7 @@ class Household extends Component {
                                 }}
                             >
                                 <ListItemIcon>
-                                    <HomeIcon color="primary" />
+                                    <HomeIcon color="red" />
                                 </ListItemIcon>
                                 <ListItemText primary={h.name} />
                             </ListItem>
@@ -249,6 +268,14 @@ class Household extends Component {
                             >
                                 Switch Households or Create a new Household
                             </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={this.deletecurrentHousehold} 
+                                sx={{ mt: 1, width: '100%' }}
+                            >
+                                Delete Current Household
+                            </Button>
                         </Box>
                         <Divider sx={{ marginBottom: 2 }} />
                         <Typography variant="h5" component="h3" gutterBottom align="center">
@@ -276,4 +303,9 @@ class Household extends Component {
     }
 }
 
-export default Household;
+const HouseholdWrapper = () => {
+    const navigate = useNavigate();
+    return <Household navigate={navigate} />;
+}
+
+export default HouseholdWrapper;

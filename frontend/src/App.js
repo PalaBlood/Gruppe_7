@@ -27,6 +27,7 @@ import UnitList from './components/UnitList';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        // Initialisierung des States mit einem leeren User-Objekt und null als Haushalts-ID
         this.state = {
             currentHouseholdId: null,
             currentUser: null,
@@ -205,3 +206,5 @@ function Secured({ user, children }) {
     }
     return children;
 }
+
+
