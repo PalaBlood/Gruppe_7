@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword, signInWithPhoneNumber } from 'firebase/auth';
 import Theme from './theme';
 import SignIn from './components/pages/SignIn';
 import firebaseConfig from './firebaseconfig';
@@ -60,11 +60,9 @@ class App extends React.Component {
     componentDidMount() {
         this.unsubscribeFromAuth = onAuthStateChanged(App.auth, async (user) => {
             if (user) {
-                console.log("Auth state changed: User is present.");
                 this.setState({ authLoading: true, currentUser: user});
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
                 if (!userBO[0].google_user_id) {
-                    console.log("No corresponding user object found in the database, creating new user.");
                     let newUser = {
                         id: 0,
                         first_name: user.displayName?.split(" ")[0] || "",
@@ -75,16 +73,13 @@ class App extends React.Component {
                     };
                     await FridgeAPI.getAPI().addUser(newUser);
                 } else {
-                    console.log("User object found in the database, skipping creation.");
                 }
-
                 this.setState({
                     currentUser: user,
                     authError: null,
                     authLoading: false
                 });
             } else {
-                console.log("Auth state changed: No user logged in.");
                 this.setState({ currentUser: null, authLoading: false });
             }
         });
@@ -117,7 +112,6 @@ class App extends React.Component {
 
                 await FridgeAPI.getAPI().updateUser(userBO);  // user per api updaten
                 this.setState({ loading: false, dialogOpen: false, selectedHouseholdId: householdId });
-                console.log("User's household updated:", userBO);
             } else {
                 throw new Error("User profile not found.");
             }

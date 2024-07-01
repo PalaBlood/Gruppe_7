@@ -85,9 +85,14 @@ class UserMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM users")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            user.set_id(maxid[0] + 1)
-
+        if tuples:
+            maxid = tuples[0][0]
+            if maxid is None:
+                user.set_id(1)
+            else:
+                user.set_id(maxid + 1)
+        else:
+            user.set_id(1)
 
 
         command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id, google_user_id) VALUES (%s, %s, %s, %s, %s, %s)"
