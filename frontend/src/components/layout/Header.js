@@ -81,4 +81,8 @@ Header.propTypes = {
   user: PropTypes.object,
 };
 
+//how is the user object passed to the Header component?
+//The user object is passed to the Header component as a prop from the parent component. The parent component is responsible for fetching the user data and passing it down to the Header component as a prop. This allows the Header component to access the user data and display it in the UI.
+//what is the parent component of the Header component?
+//The parent component of the Header component is the App component. The App component is the root component of the application and is responsible for managing the state of the user data. The App component fetches the user data from the backend and passes it down to the Header component as a prop.
 export default Header;

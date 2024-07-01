@@ -30,13 +30,13 @@ class Mapper(AbstractContextManager, ABC):
 
         """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
         if os.getenv('GAE_ENV', '').startswith('standard'):
-            self._cnx = connector.connect(user='root', password='1E6%X(oV+bT7i',
+            self._cnx = connector.connect(user='root', password='test',
                                           unix_socket='demo',
                                           database='fridge-app')
 
         else:
             """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
-            self._cnx = connector.connect(user=user, password="Tr5##C$ocF%6aV88&P$GrD6MPJ",
+            self._cnx = connector.connect(user=user, password="test",
                               host=host,
                               database=database)
 
