@@ -2,7 +2,7 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
-from server.db.dbcredentials import host, user, password, database
+#from server.db.dbcredentials import host, user, password, database
 
 
 
@@ -34,11 +34,11 @@ class Mapper(AbstractContextManager, ABC):
                                           unix_socket='demo',
                                           database='fridge-app')
 
-        else:
-            """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
-            self._cnx = connector.connect(user=user, password="test",
+        """else:
+            #Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt
+            self._cnx = connector.connect(user=user, password="Tr5##C$ocF%6aV88&P$GrD6MPJ",
                               host=host,
-                              database=database)
+                              database=database)"""
 
 
         return self

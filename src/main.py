@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 from server.HalilsTaverneAdministration import HalilsTaverneAdministration
@@ -14,7 +14,7 @@ from server.db.conversion import convert_quantity
 
 from SecurityDecorator import secured
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # CORS aktivieren
 #CORS steht für Cross-Origin Resource Sharing und ist ein Mechanismus, der es Webseiten ermöglicht, Ressourcen von anderen Domains zu laden.
@@ -87,6 +87,13 @@ unit = api.inherit('Unit', bo, {
     'household_id': fields.Integer(attribute='_Unit__household_id', required=True, description='The household_id of the unit')
 })
 
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
 
 #Alle Operationen für die verschiedenen Business-Objekte werden im folgenden Abschnitt definiert.
 #User Operations
@@ -770,7 +777,8 @@ class UnitsbyHouseholdIdOperations(Resource):
 
 
 
-
+"""if __name__ == '__main__':
+    app.run(debug=True)"""
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=8080)
