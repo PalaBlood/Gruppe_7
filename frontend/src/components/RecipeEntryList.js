@@ -7,7 +7,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeEntryBO from '../API/RecipeEntryBO';
 import RecipeEntryForm from './dialogs/RecipeEntryForm';
-import RecipeEntryCard from './RecipeEntryCard';
+import RecipeEntryCard from './layout/RecipeEntryCard'
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
 
@@ -38,13 +38,6 @@ const conversionRates = {
         pinch: 1
     }
 };
-
-function convertQuantity(quantity, fromUnit, toUnit) {
-    if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {
-        return quantity * conversionRates[fromUnit][toUnit];
-    }
-    return null;
-}
 
 function RecipeEntryList() {
     const { recipeId } = useParams();
@@ -122,6 +115,13 @@ function RecipeEntryList() {
         });
     };
 
+    function convertQuantity(quantity, fromUnit, toUnit) {
+        if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {
+            return quantity * conversionRates[fromUnit][toUnit];
+        }
+        return null;
+    }
+
     if (loading) {
         return <LoadingProgress show={true} />;
     }
@@ -149,21 +149,13 @@ function RecipeEntryList() {
             ) : (
                 recipeEntries.map((entry) => (
                     <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h5" style={{ color: isEntryAvailableInFridge(entry) ? 'black' : 'red' }}>
-                                    {entry.getDesignation()}
-                                </Typography>
-                                <Typography color="textSecondary" style={{ color: isEntryAvailableInFridge(entry) ? 'black' : 'red' }}>
-                                    Quantity: {entry.getQuantity()} {entry.getUnit()}
-                                    {!isEntryAvailableInFridge(entry) && ' (Not available in fridge)'}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" onClick={() => handleEditButtonClick(entry)}>Edit</Button>
-                                <Button size="small" onClick={() => handleDeleteButtonClick(entry)}>Delete</Button>
-                            </CardActions>
-                        </Card>
+                        <RecipeEntryCard 
+                            recipeEntry={entry}
+                            fridgeEntries={fridgeEntries}
+                            onEdit={handleEditButtonClick}
+                            onDelete={handleDeleteButtonClick}
+                            isEntryAvailableInFridge={isEntryAvailableInFridge}
+                        />
                     </Grid>
                 ))
             )}

@@ -86,6 +86,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
 
         try {
             const recipeEntry = await FridgeAPI.getAPI().updateRecipeEntry(updatedRecipeEntry);
+            console.log(recipeEntry)
             onClose(recipeEntry);
         } catch (e) {
             handleError(e);

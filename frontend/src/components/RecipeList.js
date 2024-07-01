@@ -7,7 +7,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeBO from '../API/RecipeBO';
 import RecipeForm from './dialogs/RecipeForm';
-import RecipeCard from './RecipeCard';
+import RecipeCard from './layout/RecipeCard';
 import { getAuth } from 'firebase/auth';
 import RecipeEntryBO from '../API/RecipeEntryBO';
 import FridgeEntryBO from '../API/FridgeEntryBO';
@@ -23,6 +23,7 @@ const conversionRates = {
 };
 
 function convertQuantity(quantity, fromUnit, toUnit) {
+    //Konvertiert verschiedene Maßeinheiten anhand von conversionRates
     if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {
         return quantity * conversionRates[fromUnit][toUnit];
     }
@@ -104,6 +105,8 @@ function RecipeList() {
     const handleViewEntriesButtonClick = (recipeId) => {
         navigate(`/recipes/entries/${recipeId}`);
     };
+
+
 
     const handleCookButtonClick = async (recipe) => {
         try {

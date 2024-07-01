@@ -15,8 +15,9 @@ CREATE TABLE Household (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     fridge_id INT,
-    FOREIGN KEY (fridge_id) REFERENCES Fridge (id)
+    FOREIGN KEY (fridge_id) REFERENCES Fridge (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 INSERT INTO Household(id, name) VALUES (2, 'der haushalt');
 
