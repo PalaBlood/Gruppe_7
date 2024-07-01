@@ -482,6 +482,22 @@ class FridgeAPI {
             body: JSON.stringify(fridgeEntryBO)
         }).then(responseJSON => FridgeEntryBO.fromJSON(responseJSON)[0]);
     }
+
+      //RecipeEntry updaten
+      updateRecipeEntry(recipeEntryBO) {
+        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getDesignation(), recipeEntryBO.getRecipeId()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(recipeEntryBO)
+        }).then(responseJSON => RecipeEntryBO.fromJSON(responseJSON)[0]); 
+        
+    }
+   
+    
+
     //FridgeEntry löschen
     deleteFridgeEntry(groceriesDesignation) {
         return this.#fetchAdvanced(this.#deleteFridgeEntryURL(groceriesDesignation), {
@@ -499,6 +515,12 @@ class FridgeAPI {
             body: JSON.stringify(recipeBO)
         }).then(responseJSON => RecipeBO.fromJSON(responseJSON)[0]);
     }
+
+
+      
+
+        
+
     //Rezept löschen
     deleteRecipe(id) {
         return this.#fetchAdvanced(this.#deleteRecipeURL(id), {
@@ -523,22 +545,7 @@ class FridgeAPI {
             method: 'DELETE'
         }).then(() => ({ message: "Household deleted successfully", id }));
     }
-    //RecipeEntry updaten
-    updateRecipeEntry(recipeEntryBO) {
-        return this.#fetchAdvanced(this.#updateRecipeEntryURL(recipeEntryBO.getDesignation(), recipeEntryBO.getRecipeId()), {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(recipeEntryBO)
-        }).then(responseJSON => {
-            return RecipeEntryBO.fromJSON(responseJSON)[0];
-        }).catch(error => {
-            console.error('Failed to update recipe entry:', recipeEntryBO, error);
-            throw new Error('Error updating recipe entry');
-        });
-    }
+
     //RezeptEntry löschen
     deleteRecipeEntry(groceriesDesignation, recipeId) {
         return this.#fetchAdvanced(this.#deleteRecipeEntryURL(groceriesDesignation, recipeId), {

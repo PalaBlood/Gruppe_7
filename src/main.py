@@ -514,14 +514,28 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
     def put(self, groceries_designation, recipe_id):
         adm = HalilsTaverneAdministration()
         print(groceries_designation, recipe_id)
-        print(api.payload)
-        re = adm.find_recipe_entries_by_recipe_id_and_designation(groceries_designation, recipe_id)
-        print(re)
+        print("API Payload: ", api.payload) #Debugging
+        re = RecipeEntry.from_dict(api.payload)
+        print("Find Recipe by id and designation: ", re)
         if re is not None:
             adm.update_recipe_entry(re)
             return '', 200
         else:
             return '', 500
+
+        """ @fridge_ns.expect(fridge_entry)
+        @fridge_ns.marshal_with(fridge_entry)
+        def put(self, groceries_designation):
+            adm = HalilsTaverneAdministration()
+            print(api.payload)
+            fe = FridgeEntry.form_dict(api.payload)
+            print("Heres the fe:", fe)
+            if fe is not None:
+                fe.set_groceries_designation(fe.get_groceries_designation())
+                adm.save_fridge_entry(fe)
+                return '', 200
+            else:
+                return '', 500"""
 
 
 
