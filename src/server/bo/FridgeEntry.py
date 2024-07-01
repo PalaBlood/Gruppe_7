@@ -1,4 +1,4 @@
-from FoodEntry import FoodEntry
+from server.bo.FoodEntry import FoodEntry
 
 
 class FridgeEntry(FoodEntry):

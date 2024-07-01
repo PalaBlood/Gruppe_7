@@ -2,7 +2,7 @@ from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
 
-from HalilsTaverneAdministration import HalilsTaverneAdministration
+from server.HalilsTaverneAdministration import HalilsTaverneAdministration
 
 def secured(function):
     firebase_request_adapter = requests.Request()

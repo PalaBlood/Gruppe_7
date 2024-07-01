@@ -2,7 +2,7 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
-from dbcredentials import host, user, password, database
+from server.db.dbcredentials import host, user, password, database
 
 
 
@@ -30,7 +30,7 @@ class Mapper(AbstractContextManager, ABC):
 
         """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
         if os.getenv('GAE_ENV', '').startswith('standard'):
-            self._cnx = connector.connect(user='root', password='test',
+            self._cnx = connector.connect(user='root', password='1E6%X(oV+bT7i',
                                           unix_socket='demo',
                                           database='fridge-app')
 

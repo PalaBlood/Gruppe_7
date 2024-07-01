@@ -1,5 +1,6 @@
-from BusinessObject import BusinessObject
-from Unit import Unit
+from server.bo.BusinessObject import BusinessObject
+
+from server.bo.Unit import Unit
 
 """Imports muss jeder für sich anpassen."""
 

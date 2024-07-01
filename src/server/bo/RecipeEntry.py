@@ -1,7 +1,7 @@
-from FoodEntry import FoodEntry
-from Recipe import Recipe
+#FoodEntry import FoodEntry
+from server.bo.Recipe import Recipe
 
-from FoodEntry import FoodEntry
+from server.bo.FoodEntry import FoodEntry
 
 class RecipeEntry(FoodEntry):
     def __init__(self):
