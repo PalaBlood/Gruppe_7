@@ -109,3 +109,7 @@ CREATE TABLE Unit (
     household_id INT,
     FOREIGN KEY (household_id) REFERENCES Household(id)
     )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    
+    
+
+
