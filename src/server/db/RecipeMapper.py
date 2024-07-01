@@ -67,21 +67,19 @@ class RecipeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-
-
     def update_recipe_entry(self, recipe_entry):
-        print(recipe_entry)
         """Update an existing recipe entry in the database."""
+
         cursor = self._cnx.cursor()
         command = """UPDATE recipe_groceries
                      SET recipe_id = %s, groceries_designation = %s, quantity = %s, unit = %s
                      WHERE recipe_id = %s AND groceries_designation = %s"""
-        data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity,
-                recipe_entry.get_unit)
+        data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(),
+                recipe_entry.get_unit(),  recipe_entry.get_recipe_id(),recipe_entry.get_groceries_designation())
+
+        cursor.execute(command, data)
         self._cnx.commit()
         cursor.close()
-
-
 
 
     def insert_recipe_entry(self, recipe_entry):
@@ -271,6 +269,7 @@ class RecipeMapper(Mapper):
             recipe_entry.set_recipe_id(result[0])
             recipe_entry.set_groceries_designation(result[1])
             recipe_entry.set_quantity(result[2])
+            recipe_entry.set_unit(result[3])
             cursor.close()
             return recipe_entry
         cursor.close()
