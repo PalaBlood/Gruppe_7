@@ -1,113 +1,69 @@
-from BusinessObject import BusinessObject
-from User import User 
-from Groceries import Groceries
+from server.bo.BusinessObject import BusinessObject
 
-"""Ein Rezept hat: 
--einen Titel
--eine für da Rezept vordefinierte Anzahl an Personen, für das das Rezept ausgelegt ist
--einen Ersteller. Jeder im Haushalt kann das Rezept sehen, jedoch nur der Ersteller kann es editieren/löschen
--Lebensmitteleinträge, die aus den Namen des Lebensmittels, dessen Menge und einer Maßeinheit besteht
-
-
-Noch zu erledigen:
-
--creator bestimmen
--"Schnittstelle" für den vergleich zu den Verfügbaren Lebensmitteln erzeugen (whs.über die Mapper?)
-- Rezept löschen
-
-
-Sonstitges: 
-Grundsätzlich funktioniert alles mit der Klasse "Lebensmitteleintrag", jedoch gibt es da noch ein paar Punkte, die wir ausprobieren müssen 
-(siehe src/server/bo/Lebensmitteleintrag)
-
-"""
-
-class Recipe(BusinessObject): 
+class Recipe(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__title = ""
-        self.__number_of_persons = int
-        self.__creator = None 
-        self.__content = []
-    
+        self._title = ""
+        self._number_of_persons = ""
+        self._creator = ""  
+        self._description = ""
+        self._household_id = None
+
     def get_title(self):
-        """Namen des Rezepts auslesen"""
-        return self.__title
-    
+        return self._title
+
     def set_title(self, title):
-        """Namen des Rezepts setzen"""
-        self.__title = title
-    
-    
+        self._title = title
+
     def get_number_of_persons(self):
-        """Anzahl der für das Rezept ausgelegten Personen auslesen"""
-        return self.__number_of_persons
-    
+        return self._number_of_persons
+
     def set_number_of_persons(self, number):
-        """Anzahl der für das Rezept ausgelegten Personen setzen"""
-        if isinstance(number, int):  
-            self.__number_of_persons = number
-            """Eventuell werden wir über das Backend einen Vordefinierten Schalter zur 
-            Verfügung stellen. Somit wäre eine beliebige Eingabe sowieso ausgeschlossen"""
-        else:
-            print("Fehler: Die Anzahl der Personen muss eine Ganzzahl sein.")
+        self._number_of_persons = number
 
-
-    def set_creator(self, creator=User()):
-        self.__creator = creator
+    def set_creator(self, creator):
+        self._creator = creator
 
     def get_creator(self):
-        return self.__creator
+        return self._creator
 
+    def get_description(self):
+        return self._description
 
-    def get_content(self):
-        """Auslesen der Lebensmitteleinträge"""
-        return self.__content
-    
-    def add_content(self, grocieries=Groceries()):
-        self.__content.append(grocieries.get_id()) #Anhand der ID könnte man das Lebensmittel aus der DB herausziehen
-    
+    def set_description(self, description):
+        self._description = description
 
-    
-    
+    def get_household_id(self):
+        return self._household_id
+
+    def set_household_id(self, id):
+        self._household_id = id
+
+    def __repr__(self):
+        return (f"Recipe(Title: {self._title}, Number of Persons: {self._number_of_persons}, "
+                f"Creator ID: {self._creator}, Description: {self._description}, Household ID: {self._household_id})")
+
+    def __str__(self):
+        return f"Title: {self._title}, Serves: {self._number_of_persons}, Created by: {self._creator}, Description: {self._description}, Household ID: {self._household_id}"
+
     @staticmethod
-    def form_dict(dictionary=dict()):
+    def form_dict(dictionary):
         obj = Recipe()
-        obj.set_id(dictionary["id"])
-        obj.set_title(dictionary["title"])
-        obj.set_number_of_persons(dictionary["number of persons"])
-        obj.add_entry(dictionary["food entry"])
+        obj.set_id(dictionary.get('id'))
+        obj.set_title(dictionary.get('title'))
+        obj.set_creator(dictionary.get('creator'))
+        obj.set_number_of_persons(dictionary.get('numberOfPersons'))
+        obj.set_description(dictionary.get('description'))
+        obj.set_household_id(dictionary.get('household_id'))
+        return obj
 
-    
-    
-
-
-if __name__ == "__main__":
-    
-    rezept = Recipe()
-    
-    salat = Groceries()
-    salat.set_designation("Salat")
-    salat.set_quantity(1)
-    salat.set_unit_of_measurement("grams")
-    salat.set_id(1)
-    
-    brot = Groceries()
-    brot.set_designation("brot")
-    brot.set_quantity(1)
-    brot.set_unit_of_measurement("kilogram")
-    brot.set_id(2)
-    
-    
-    #Hinzufügen eines Lebensmittels
-    rezept.add_content(salat)
- 
-    
-    rezept.add_content(brot)
-    print(rezept.get_content())
-    
-    
-    
-    
-   
-        
+    @staticmethod
+    def from_dict(dictionary):
+        obj = Recipe()
+        obj.set_id(dictionary.get('id'))
+        obj.set_title(dictionary.get('title'))
+        obj.set_creator(dictionary.get('creator'))
+        obj.set_number_of_persons(dictionary.get('number_of_persons'))
+        obj.set_description(dictionary.get('description'))
+        obj.set_household_id(dictionary.get('household_id'))
+        return obj

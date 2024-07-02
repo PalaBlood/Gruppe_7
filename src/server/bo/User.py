@@ -1,51 +1,63 @@
-from BusinessObject import BusinessObject 
+"""
+from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
+"""
 
-class User(BusinessObject): 
+from server.bo.BusinessObject import BusinessObject
+
+
+class User(BusinessObject):
     def __init__(self):
         super().__init__()
-        self.__nickname = "" #Der Nickname des Users
-        self.__google_id = None #Google ID zur Authentifizierung
-        self.__last_name = ""
-        self.__first_name = ""
-    
-    def get_google_id(self):
-        """Google ID Auslesen"""
-        return self.__google_id
-    
-    def set_google_id(self):
-        pass #Hier müssen wir herausfinden wie die Google ID verwiesen werden kann
-    
-    
-    def set_nickname(self, nickname): 
+        self._nickname = "" #Der Nickname des Users
+        self._last_name = ""
+        self._first_name = ""
+        self._Household_id = ""
+        self._google_user_id = ""
+
+
+    def set_nick_name(self, nickname):
         """nickname setzen"""
-        self.__nickname = nickname
+        self._nickname = nickname
     
-    def get_nickname(self):
+    def get_nick_name(self):
         """nickname auslesen"""
-        return self.__nickname
+        return self._nickname
 
     def set_last_name(self, value):
         """last name setzen"""
-        self.__last_name = value
+        self._last_name = value
 
     def get_last_name(self):
 
-        return self.__last_name
+        return self._last_name
     
     def set_first_name(self, value):
 
-        self.__first_name = value
+        self._first_name = value
 
     def get_first_name(self):
 
-        return self.__first_name
-    
-    def delete_user(self): 
-        """Hier müssen wir eine "Löschweitergabe implementieren (siehe Thies Videomitschnitt 20.05 min. 12.00)
-        Sobald ein User gelöscht wird, müssen wir auch dessen angelegte Rezepte löschen. Ansosonten hätten wir im System eine Referenz
-        die nicht mehr exsitiert. Dies werden wir in Adminklasse durchführen."""
-        pass
-    
+        return self._first_name
+
+    def get_household_id(self):
+
+        return self._Household_id
+
+    def set_household_id(self, value):
+
+        self._Household_id = value
+
+    def set_google_user_id(self, value):
+
+        self._google_user_id = value
+
+    def get_google_user_id(self):
+
+        return self._google_user_id
+
+    def __str__(self):
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
+        return "User: {}, {}, {}, {},{},{}".format(self.get_id(), self._first_name, self._last_name,self._Household_id, self._google_user_id, self._nickname)
     
     
     """Wir benötigen die Methode, damit wir das Objekt in ein dict umwandeln.
@@ -53,10 +65,16 @@ class User(BusinessObject):
     versenden (oder entgegennehmen)"""
     @staticmethod
     def from_dict(dictionary=dict()):
+
         obj = User()
         obj.set_id(dictionary["id"])
-        obj.__nickname(dictionary["nickname"])
-        obj.__google_id(dictionary["google_id"])
+        obj.set_nick_name(dictionary["nick_name"])
+        obj.set_first_name(dictionary["first_name"])
+        obj.set_household_id(dictionary["household_id"])
+        obj.set_last_name(dictionary["last_name"])
+        obj.set_google_user_id(dictionary["google_user_id"])
+        return obj
+
     
     
         

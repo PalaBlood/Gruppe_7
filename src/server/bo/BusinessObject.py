@@ -23,6 +23,3 @@ class BusinessObject(ABC):
         self._id = value
         
     
-    @staticmethod
-    def form_dict(dictionary=dict()):
-        pass 

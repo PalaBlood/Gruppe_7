@@ -1,9 +1,11 @@
-from src.server.bo.User import User
-from Mapper import Mapper
+"""
+from Gruppe_7.src.server.bo.User import User
+from Gruppe_7.src.server.db.Mapper import Mapper
+"""
 
-
-from server.db.Mapper import Mapper
 from server.bo.User import User
+from server.db.Mapper import Mapper
+
 
 class UserMapper(Mapper):
     """Mapper-Klasse, die User-Objekte auf eine relationale
@@ -15,31 +17,61 @@ class UserMapper(Mapper):
 
     def __init__(self):
         super().__init__()
-        
+
+    def find_existing_household_id(self):
+        cursor = self._cnx.cursor()
+        query = "SELECT id FROM household LIMIT 1"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            return result[0]
+        return None
+
+    def find_users_by_household_id(self, household_id):
+
+        cursor = self._cnx.cursor()
+        cursor.execute(
+            "SELECT id, nick_name, first_name, last_name, household_id, google_user_id  FROM users WHERE household_id=%s",
+            (household_id,))
+        users = cursor.fetchall()
+        user_list = []
+        # Create User objects for each retrieved user record and add to the Household
+        for user_data in users:
+            user = User()
+            user.set_id(user_data[0])
+            user.set_nick_name(user_data[1])
+            user.set_first_name(user_data[2])
+            user.set_last_name(user_data[3])
+            user.set_household_id(user_data[4])
+            user.set_google_user_id(user_data[5])
+            user_list.append(user)
+
+        return user_list
+
     def find_all(self):
         """Auslesen aller User. :return Eine Sammlung mit User-Objekten, die sämtliche User repräsentieren.
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT nick_name, first_name, last_name, id, household_id, google_user_id FROM users")
         tuples = cursor.fetchall()
 
-        for (id, nickname, google_id, first_name, last_name, user_id) in tuples:
+        for (nick_name, first_name, last_name, id, household_id, google_user_id) in tuples:
             user = User()
-            user.set_id(id)
-            user.set_nickname(nickname)
-            user.set_google_id(google_id)
-            user.set_first_name(first_name)
+            user.set_nick_name(nick_name)
             user.set_last_name(last_name)
-            user.set_User_id(user_id)
+            user.set_first_name(first_name)
+            user.set_id(id)
+            user.set_household_id(household_id)
+            user.set_google_user_id(google_user_id)
             result.append(user)
 
         self._cnx.commit()
         cursor.close()
 
-        return result  
-  
-        
+        return result
+
     def insert(self, user):
         """Einfügen eines User-Objekts in die Datenbank.
 
@@ -53,11 +85,20 @@ class UserMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM users")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            user.set_id(maxid[0] + 1)
+        if tuples:
+            maxid = tuples[0][0]
+            if maxid is None:
+                user.set_id(1)
+            else:
+                user.set_id(maxid + 1)
+        else:
+            user.set_id(1)
 
-        command = "INSERT INTO users (id, nickname, google_id, first_name, last_name, user_id) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (user.get_id(), user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name(), user.get_User_id())
+
+        command = "INSERT INTO users (id, nick_name, first_name, last_name, household_id, google_user_id) VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (
+        user.get_id(), user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_household_id(),
+        user.get_google_user_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -65,7 +106,34 @@ class UserMapper(Mapper):
 
         return user
 
- 
+    def find_by_nickname(self, nick_name):
+        """Auslesen aller Benutzer anhand des Benutzernamens.
+
+        :param nickname Name der zugehörigen Benutzer.
+        :return Eine Sammlung mit User-Objekten, die sämtliche Benutzer
+            mit dem gewünschten Namen enthält.
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(
+            nick_name)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, nick_name, first_name, last_name, household_id, google_user_id) in tuples:
+            user = User()
+            user.set_id(id)
+            user.set_nick_name(nick_name)
+            user.set_first_name(first_name)
+            user.set_last_name(last_name)
+            user.set_household_id(household_id)
+            user.set_google_user_id(google_user_id)
+            result.append(user)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
     def find_by_id(self, id):
         """Suchen eines Users mit vorgegebener ID. Da diese eindeutig ist,
@@ -73,41 +141,33 @@ class UserMapper(Mapper):
 
         :param key Primärschlüsselattribut (->DB)
         :return User-Objekt, das dem übergebenen Schlüssel entspricht, None bei
-            nicht vorhandenem DB-Tupel.
-        """
-        result = None
+            nicht vorhandenem DB-Tupel."""
+
         cursor = self._cnx.cursor()
-        command = "SELECT id, nickname, google_id, first_name, last_name, user_id FROM users WHERE id=%s"
-        cursor.execute(command, (id,))
-        tuples = cursor.fetchall()
-
-        try:
-            (id, nickname, google_id, first_name, last_name, user_id) = tuples[0]
+        cursor.execute(
+            "SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE id=%s", (id,))
+        tuple = cursor.fetchone()
+        if tuple:
             user = User()
-            user.set_id(id)
-            user.set_nickname(nickname)
-            user.set_google_id(google_id)
-            user.set_first_name(first_name)
-            user.set_last_name(last_name)
-            user.set_user_id(user_id) #Gibt es nicht? Wollte das noch jemand in der Klasse "User" implementieren? 
-            result = user
-            
-        except IndexError:
-            result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
+            user.set_id(tuple[0])
+            user.set_nick_name(tuple[1])
+            user.set_first_name(tuple[2])
+            user.set_last_name(tuple[3])
+            user.set_household_id(tuple[4])
+            user.set_google_user_id(tuple[5])
+            return user
+        return None
 
     def update(self, user):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
 
-        :param user das Objekt, das in die DB geschrieben werden soll
+        :param user welcher in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = "UPDATE users SET nickname=%s, google_id=%s, first_name=%s, last_name=%s, user_id=%s WHERE id=%s"
-        data = (user.get_nickname(), user.get_google_id(), user.get_first_name(), user.get_last_name(), user.get_User_id(), user.get_id())
+        print(user)
+        command = "UPDATE users SET nick_name=%s, first_name=%s, last_name=%s, id=%s, household_id=%s, google_user_id=%s WHERE id=%s"
+        data = (
+        user.get_nick_name(), user.get_first_name(), user.get_last_name(), user.get_id(),user.get_household_id(), user.get_google_user_id(), user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -125,8 +185,50 @@ class UserMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def find_by_google_user_id(self, google_user_id):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE google_user_id='{}'".format(
+            google_user_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, nick_name, first_name, last_name, household_id, google_user_id) = tuples[0]
+            u = User()
+            u.set_id(id)
+            u.set_nick_name(nick_name)
+            u.set_first_name(first_name)
+            u.set_last_name(last_name)
+            u.set_household_id(household_id)
+            u.set_google_user_id(google_user_id)
+            result = u
+        except IndexError:
+
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_household_id_by_google_user_id(self, google_user_id):
+        cursor = self._cnx.cursor()
+        query = """
+               SELECT household_id 
+               FROM users 
+               WHERE google_user_id = %s
+           """
+        cursor.execute(query, (google_user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            return result[0]
+        return None
 
 
-Users = UserMapper
 
-results = Users.find_all()
+
+

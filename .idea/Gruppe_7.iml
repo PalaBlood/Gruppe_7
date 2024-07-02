@@ -6,8 +6,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/server" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/server/bo" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/server/db" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.venv" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/frontend/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (Gruppe_7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

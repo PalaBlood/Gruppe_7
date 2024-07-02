@@ -1,0 +1,46 @@
+from server.bo.FoodEntry import FoodEntry
+
+
+class FridgeEntry(FoodEntry):
+    def __init__(self):
+        super().__init__()
+        self.fridge__id = None
+
+
+    def get_fridge_id(self):
+        return self.__fridge_id
+
+    def set_fridge_id(self, fridge_id):
+        self.__fridge_id = fridge_id
+
+    def __str__(self):
+        return f"FridgeEntry(Fridge_id: {self.get_fridge_id()}, groceries_designation: {self.get_groceries_designation()}, quantity: {self.get_quantity()}, unit: {self.get_unit()})"
+
+    def __repr__(self):
+        return f"<FridgeEntry(fridge_id={self.__fridge_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
+
+    def form_dict(dictionary=dict()):
+
+        obj = FridgeEntry()
+        obj.set_fridge_id(dictionary["fridge_id"])
+        obj.set_groceries_designation(dictionary["groceries_designation"])
+        obj.set_quantity(dictionary["quantity"])
+        obj.set_unit(dictionary["unit"])
+        return obj
+
+    """@staticmethod
+    def form_dict(dictionary):
+        obj = FridgeEntry()
+        try:
+            obj.set_fridge_id(dictionary["fridge_id"])
+            obj.set_groceries_designation(dictionary["groceries_designation"])
+            obj.set_quantity(dictionary["quantity"])
+            obj.set_unit(dictionary["unit"])
+        except KeyError as e:
+            raise ValueError(f'Missing field in dictionary: {e}')
+        return obj"""
+
+
+
+
+
