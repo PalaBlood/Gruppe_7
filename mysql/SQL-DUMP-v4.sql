@@ -21,12 +21,6 @@ CREATE TABLE Household (
 
 INSERT INTO Household(id, name) VALUES (2, 'der haushalt');
 
-CREATE TABLE IF NOT EXISTS unit (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    designation VARCHAR(255) NOT NULL,
-    household_id INT,
-    FOREIGN KEY (household_id) REFERENCES Household(id)
-);
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -91,16 +85,6 @@ INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) 
 (1, 'lachs', 0.5, 'kilos'),
 (1, 'Pasta', 500, 'grams');
 
-DROP TABLE IF EXISTS ShoppingList;
-CREATE TABLE ShoppingList (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    groceries_designation VARCHAR(255),
-    quantity_needed FLOAT,
-    unit VARCHAR(255)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO ShoppingList (id, groceries_designation, quantity_needed, unit) VALUES
-(1, 'Gurke', 0.5, 'kilos');
 
 DROP TABLE IF EXISTS Unit;
 CREATE TABLE Unit (
@@ -110,6 +94,7 @@ CREATE TABLE Unit (
     FOREIGN KEY (household_id) REFERENCES Household(id)
     )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     
-    
+INSERT INTO Unit (id, designation, household_id) VALUES
+(1, 'kilograms', 2)
 
 
