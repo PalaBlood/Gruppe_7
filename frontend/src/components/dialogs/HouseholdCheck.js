@@ -122,7 +122,7 @@ class CheckforexistingHousehold extends Component {
                 }}
                 disableEscapeKeyDown
             >
-                <DialogTitle>{households.length ? "Select or Create a Household" : "Create a Household"}</DialogTitle>
+                <DialogTitle>{households.length ? "Wähle oder erstelle einen Haushalt" : "Erstelle einen Haushalt"}</DialogTitle>
                 <DialogContent>
                     {error && <Typography color="error" variant="body2" gutterBottom>{error}</Typography>}
                     <List>
@@ -149,7 +149,7 @@ class CheckforexistingHousehold extends Component {
                         ))}
                         <ListItem>
                             <TextField
-                                label="New Household Name"
+                                label="Name des neuen Haushalts"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
@@ -160,7 +160,7 @@ class CheckforexistingHousehold extends Component {
                     </List>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.addHousehold} color="primary">Add New Household</Button>
+                    <Button onClick={this.addHousehold} color="primary">Neuen Haushalt hinzufügen</Button>
                 </DialogActions>
             </Dialog>
         );

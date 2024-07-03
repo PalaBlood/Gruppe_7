@@ -77,7 +77,7 @@ class ProfileDropDown extends Component {
             <ClickAwayListener onClickAway={this.handleClose}>
               <Paper sx={{ padding: 2, bgcolor: 'background.default' }}>
                 <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                  Hello
+                  Hallo
                 </Typography>
                 <Divider sx={{ margin: 1 }} />
                 <Typography align='center' variant='body1' sx={{ fontWeight: 'medium' }}>{user.displayName}</Typography>
@@ -91,7 +91,7 @@ class ProfileDropDown extends Component {
                       onClick={this.handleSignOutButtonClicked} 
                       sx={{ mt: 1 }}
                     >
-                      Logout
+                      Ausloggen
                     </Button>
                   </Grid>
                 </Grid>

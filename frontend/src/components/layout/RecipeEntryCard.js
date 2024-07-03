@@ -18,7 +18,7 @@ function RecipeEntryCard({ recipeEntry, onEdit, onDelete, isEntryAvailableInFrid
                 </Typography>
                 <Typography color="textSecondary" style={{ color: isEntryAvailableInFridge(recipeEntry) ? 'black' : 'red' }}>
                     Quantity: {recipeEntry.getQuantity()} {recipeEntry.getUnit()}
-                    {!isEntryAvailableInFridge(recipeEntry) && ' (Not available in fridge)'}
+                    {!isEntryAvailableInFridge(recipeEntry) && ' (Lebensmittel nicht verfügbar)'}
                 </Typography>
             </CardContent>
             <CardActions>

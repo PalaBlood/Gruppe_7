@@ -12,7 +12,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
  * @author [Robin Krauß](https://github.com/Roggo17)
  */
 class ContextErrorMessage extends Component {
-  #standardText = 'Definitiv Halis schuld';
+  #standardText = 'Fehler: Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
 
   /** Renders the ContextErrorMessage if error object is not null  */
   render() {

@@ -59,7 +59,7 @@ class UserProfile extends Component {
     updateUser = async () => {
         const { user } = this.state;
         if (!user.nick_name || !user.first_name || !user.last_name) {
-            this.setState({ error: 'Please fill out all fields.' });
+            this.setState({ error: 'Bitte fülle alle Felder aus.' });
             return;
         }
         this.setState({ loading: true });
@@ -84,24 +84,24 @@ class UserProfile extends Component {
                 <Card raised sx={{ minWidth: 300, bgcolor: 'background.paper', p: 2 }}>
                     <CardContent>
                         <Typography variant="h5" component="div" sx={{ fontWeight: 'medium', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <AccountCircleIcon color="primary" /> Your Profile
+                            <AccountCircleIcon color="primary" /> Dein Profil
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             Nickname: {user.nick_name}<br />
-                            First Name: {user.first_name}<br />
-                            Last Name: {user.last_name}
+                            Vorname: {user.first_name}<br />
+                            Nachname: {user.last_name}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button startIcon={<EditIcon />} onClick={this.openEditDialog} variant="contained" color="primary">
-                            Edit Profile
+                            Profil bearbeiten
                         </Button>
                     </CardActions>
                 </Card>
 
                 <Dialog open={editDialogOpen} onClose={this.closeEditDialog}>
                     <DialogTitle>
-                        Edit Your Profile
+                        Berbeite dein Profil
                         <IconButton
                             aria-label="close"
                             onClick={this.closeEditDialog}
@@ -116,14 +116,14 @@ class UserProfile extends Component {
                         </IconButton>
                     </DialogTitle>
                     <DialogContent>
-                        <DialogContentText>Update your profile details.</DialogContentText>
+                        <DialogContentText>gebe deine Daten ein.</DialogContentText>
                         <TextField autoFocus margin="dense" name="nick_name" label="Nickname" type="text" fullWidth variant="outlined" value={user.nick_name} onChange={this.handleInputChange} />
                         <TextField margin="dense" name="first_name" label="First Name" type="text" fullWidth variant="outlined" value={user.first_name} onChange={this.handleInputChange} />
                         <TextField margin="dense" name="last_name" label="Last Name" type="text" fullWidth variant="outlined" value={user.last_name} onChange={this.handleInputChange} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.closeEditDialog}>Cancel</Button>
-                        <Button onClick={this.updateUser} color="primary" variant="contained">Update</Button>
+                        <Button onClick={this.closeEditDialog}>Abbrechen</Button>
+                        <Button onClick={this.updateUser} color="primary" variant="contained">Aktualisieren</Button>
                     </DialogActions>
                 </Dialog>
             </Box>
