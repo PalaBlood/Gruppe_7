@@ -57,7 +57,7 @@ class FridgeEntryForm extends Component {
                 const response = await FridgeAPI.getAPI().getFridgeIdByGoogleUserId(user.uid);
                 this.setState({ fridge_id: response.fridge_id, loadingFridgeId: false });
             } else {
-                console.log('No user is signed in.');
+                console.log('Kein Eingeloggter Benutzer vorhanden.');
                 this.setState({ loadingFridgeId: false });
             }
         } catch (error) {
@@ -147,8 +147,8 @@ class FridgeEntryForm extends Component {
         const { fridgeentry, show } = this.props;
         const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, units, addingInProgress, addingError, updatingInProgress, updatingError, loadingFridgeId, fridgeIdError } = this.state;
 
-        let title = fridgeentry ? 'Update a Grocery' : 'Create or update one of your Groceries';
-        let header = 'Enter Grocery Data';
+        let title = fridgeentry ? 'Lebensmittel bearbeiten' : 'Erstellen oder bearbeiten eines Lebensmittels';
+        let header = 'Gebe deine Lebensmittel Daten ein';
 
         if (loadingFridgeId) {
             return <LoadingProgress show />;
@@ -169,12 +169,12 @@ class FridgeEntryForm extends Component {
                     <DialogContent>
                         <DialogContentText>{header}</DialogContentText>
                         <form sx={{ width: '100%' }} noValidate autoComplete='off'>
-                            <TextField autoFocus type='text' required fullWidth margin='normal' id='designation' label='Designation:' value={designation}
+                            <TextField autoFocus type='text' required fullWidth margin='normal' id='designation' label='Beschreibung:' value={designation}
                                 onChange={this.textFieldValueChange} error={designationValidationFailed}
                                 helperText={designationValidationFailed ? 'The designation must contain at least one character' : ' '} />
-                            <TextField type='text' required fullWidth margin='normal' id='quantity' label='Quantity:' value={quantity}
+                            <TextField type='text' required fullWidth margin='normal' id='quantity' label='Menge:' value={quantity}
                                 onChange={this.textFieldValueChange} error={quantityValidationFailed}
-                                helperText={quantityValidationFailed ? 'The quantity must contain at least one character' : ' '} />
+                                helperText={quantityValidationFailed ? 'Menge muss mindenstens eine Zahl enthalten' : ' '} />
                             <FormControl fullWidth margin="normal">
                                 <InputLabel id="unit-label">Unit</InputLabel>
                                 <Select
@@ -182,7 +182,7 @@ class FridgeEntryForm extends Component {
                                     id="unit"
                                     value={unit}
                                     onChange={(e) => this.setState({ unit: e.target.value, unitEdited: true })}
-                                    label="Unit"
+                                    label="Einheit"
                                 >
                                     {units.map((unit) => (
                                         <MenuItem key={unit} value={unit}>
@@ -195,18 +195,18 @@ class FridgeEntryForm extends Component {
                         <LoadingProgress show={addingInProgress || updatingInProgress} />
                         {
                             fridgeentry ?
-                                <ContextErrorMessage error={updatingError} contextErrorMsg={`The fridge entry ${fridgeentry.getId()} could not be updated.`} onReload={this.updateFridgeEntry} />
+                                <ContextErrorMessage error={updatingError} contextErrorMsg={`Fehler:  ${fridgeentry.getId()} konnte nicht aktualisiert werden.`} onReload={this.updateFridgeEntry} />
                                 :
-                                <ContextErrorMessage error={addingError} contextErrorMsg={`The fridge entry could not be added.`} onReload={this.addFridgeEntry} />
+                                <ContextErrorMessage error={addingError} contextErrorMsg={`LEbensmittel konnte nicht hinzugefügt werden.`} onReload={this.addFridgeEntry} />
                         }
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color='secondary'>Cancel</Button>
+                        <Button onClick={this.handleClose} color='secondary'>Abbrechen</Button>
                         {
                             fridgeentry ?
-                                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
+                                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Aktualisieren</Button>
                                 :
-                                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
+                                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Hinzufügen</Button>
                         }
                     </DialogActions>
                 </Dialog>

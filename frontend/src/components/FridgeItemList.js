@@ -90,7 +90,7 @@ class FridgeEntriesComponent extends Component {
                         startIcon={<AddIcon />}
                         onClick={this.handleAddButtonClick}
                     >
-                        Add a Grocery
+                        Lebensmittel hinzufügen
                     </Button>
                 </Grid>
                 {fridgeEntries.map((entry) => (

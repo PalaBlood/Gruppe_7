@@ -189,7 +189,7 @@ class Household extends Component {
                 open={dialogOpen} 
                 onClose={() => this.setState({ dialogOpen: false })}
             >
-                <DialogTitle>{households.length ? "Select or Create a Household" : "Create a Household"}</DialogTitle>
+                <DialogTitle>{households.length ? "Erstelle oder wechsele zu einem anderen Haushalt" : "Erstelle einen Haushalt"}</DialogTitle>
                 <DialogContent>
                     {error && <Typography color="error" variant="body2" gutterBottom>{error}</Typography>}
                     <List>
@@ -216,7 +216,7 @@ class Household extends Component {
                         ))}
                         <ListItem>
                             <TextField
-                                label="New Household Name"
+                                label="Neuer Haushalt Name"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
@@ -227,7 +227,7 @@ class Household extends Component {
                     </List>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.addHousehold} color="primary">Add New Household</Button>
+                    <Button onClick={this.addHousehold} color="primary">Neuen Haushalt hinzufügen</Button>
                 </DialogActions>
             </Dialog>
         );
@@ -244,7 +244,7 @@ class Household extends Component {
                 <Card raised sx={{ width: '100%', maxWidth: 600, p: 2 }}>
                     <CardContent>
                         <Typography variant="h4" component="h2" gutterBottom align="center">
-                            Household: {householdName}
+                            Haushalt: {householdName}
                         </Typography>
                         <Box sx={{ mb: 2 }}>
                             <TextField
@@ -260,7 +260,7 @@ class Household extends Component {
                                 onClick={this.updateHouseholdName} 
                                 sx={{ mt: 1, width: '100%' }}
                             >
-                                Save
+                                Speichern
                             </Button>
                             <Button 
                                 variant="contained" 
@@ -271,7 +271,7 @@ class Household extends Component {
                                 }} 
                                 sx={{ mt: 1, width: '100%' }}
                             >
-                                Switch Households or Create a new Household
+                                Wechsele oder erstelle einen neuen Haushalt
                             </Button>
                             <Button 
                                 variant="contained" 
@@ -279,12 +279,12 @@ class Household extends Component {
                                 onClick={this.deletecurrentHousehold} 
                                 sx={{ mt: 1, width: '100%' }}
                             >
-                                Delete Current Household
+                                Lösche aktuellen Haushalt
                             </Button>
                         </Box>
                         <Divider sx={{ marginBottom: 2 }} />
                         <Typography variant="h5" component="h3" gutterBottom align="center">
-                            Household Members
+                            Haushaltsmitglieder
                         </Typography>
                         <List>
                             {users.map(user => (

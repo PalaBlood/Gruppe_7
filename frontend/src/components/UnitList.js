@@ -86,13 +86,13 @@ const UnitList = ({ householdId }) => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom style={{ textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
-        All available Units
+        Verfügbare Maßeinheiten
       </Typography>
       {loading ? (
         <LinearProgress />
       ) : units.length === 0 ? ( //Überprüfung, ob die Liste leer ist, um einen Fehler zu vermeiden, sollten keine Einträge in der DB vorhanden sein. 
         <Typography variant="body1" style={{ textAlign: 'center', marginTop: '20px' }}>
-          No units available.
+          Keine Maßeinheiten verfügbar.
         </Typography>
       ) : (
         <List>
@@ -112,7 +112,7 @@ const UnitList = ({ householdId }) => {
       )}
       <Box mt={4}>
         <Typography variant="h5" gutterBottom>
-          Add Unit
+          Maßeinheit hinzufügen
         </Typography>
         <TextField
           label="New Unit"
@@ -123,7 +123,7 @@ const UnitList = ({ householdId }) => {
         />
         <Box mt={2}>
           <Button variant="contained" color="primary" onClick={handleAddUnit}>
-            Add
+            Hinzufügen
           </Button>
         </Box>
         {error && (
@@ -138,7 +138,7 @@ const UnitList = ({ householdId }) => {
         onClose={handleSnackbarClose}
       >
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-          Unit added successfully!
+          Maßeinheit erfolgreich hinzugefügt!
         </Alert>
       </Snackbar>
     </Container>

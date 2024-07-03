@@ -32,11 +32,12 @@ class Header extends Component {
       }}>
         <ProfileDropDownWithRouter user={user} />
         <Typography variant='h3' component='h1' align='center' style={{
-          marginTop: '20px', 
-          marginBottom: '10px', 
-          fontWeight: 'bold'
+          marginTop: '40px', 
+          marginBottom: '20px', 
+          fontWeight: 'medium',
+          fontFamily: 'Roboto Mono, sans-serif'
         }}>
-          HdMSmartFridge
+          Smart Fridge
         </Typography>
         {user && (
           <Tabs 
@@ -50,25 +51,25 @@ class Header extends Component {
             }}
           >
             <Tooltip title="Here is our Homepage">
-              <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
+              <Tab icon={<HomeIcon />} label='' component={RouterLink} to='/home'/>
             </Tooltip>
-            <Tooltip title="Here you can find your saved Recipes">
-              <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipe' />
+            <Tooltip title="Hier findest du deine Rezepte">
+              <Tab icon={<MicrowaveIcon />} label='' component={RouterLink} to='/recipe' />
             </Tooltip>
-            <Tooltip title="Here you can find your Groceries">
-              <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
+            <Tooltip title="Hier findest du deine eingelagerten Lebensmittel">
+              <Tab icon={<KitchenIcon />} label='' component={RouterLink} to='/fridge' />
             </Tooltip>
-            <Tooltip title="Here you can see whos in your Household">
-              <Tab icon={<LivingIcon />} label='Household' component={RouterLink} to='/household' />
+            <Tooltip title="Hier siehst du alle Infos zu den Haushalte">
+              <Tab icon={<LivingIcon />} label='' component={RouterLink} to='/household' />
             </Tooltip>
-            <Tooltip title="Here you can edit your User Profile">
-              <Tab icon={<SettingsIcon />} label='User' component={RouterLink} to='/user'/>
+            <Tooltip title="Hier kannst du deinen Benutzer anpassen">
+              <Tab icon={<SettingsIcon />} label='' component={RouterLink} to='/user'/>
             </Tooltip>
-            <Tooltip title="Here you can see the available the Units">
-              <Tab icon={<StraightenIcon />} label='Units' component={RouterLink} to='/unit' />
+            <Tooltip title="Hier kannst du die verschiedenen Maßeinheiten anpassen">
+              <Tab icon={<StraightenIcon />} label='' component={RouterLink} to='/unit' />
             </Tooltip>
-            <Tooltip title="About our App">
-              <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
+            <Tooltip title="Infos über unsere App">
+              <Tab icon={<InfoIcon />} label='' component={RouterLink} to='/about' />
             </Tooltip>
           </Tabs>
         )}
