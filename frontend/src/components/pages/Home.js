@@ -4,8 +4,16 @@ import backgroundImage from './smartfridge.jpg'
 class Home extends Component {
     render() {
         return (
-        <div style={{ textAlign:'center'}}>
-        <h1>Willkommen in unsere SmartFridge Anwendung!</h1>;
+        <div style={{ textAlign:'center',
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
+        <h1 style={{color: 'white'}}>Willkommen in unsere SmartFridge Anwendung!</h1>;
         </div>
     )}
 }

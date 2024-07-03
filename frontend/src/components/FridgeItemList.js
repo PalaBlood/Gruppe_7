@@ -9,6 +9,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
+import backgroundImage from './pages/smartfridge.jpg';
 
 
 // FridgeEntriesComponent is a class component managing all fridge entries of the current user.
@@ -82,7 +83,7 @@ class FridgeEntriesComponent extends Component {
         }
 
         return (
-            <Grid container spacing={2} style={{ padding: 20 }}>
+            <Grid container spacing={2} style={{ padding: 20, backgroundColor:'lightblue'}}>
                 <Grid item xs={12} style={{ textAlign:'center'}}>
                     <Button
                         variant="contained"

@@ -127,7 +127,7 @@ class App extends React.Component {
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='md' style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Container maxWidth='100%' style={{ display: 'flex', flexDirection: 'column' }}>
                         <Header user={currentUser} />
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <Routes>

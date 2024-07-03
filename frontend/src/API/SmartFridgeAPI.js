@@ -28,7 +28,7 @@ class FridgeAPI {
      * Ebenfalls müssen wir nicht jedes mal bei jeder FetchAdvanded-Methode die URl Übergeben, sondern
      * z.B. getFridgeEntriesURL
      */
-    #fridgeserverbaseurl = 'https://smartfridge-428113.ey.r.appspot.com/fridge';
+    #fridgeserverbaseurl = 'http://127.0.0.1:5000/fridge';
 
     //Hier werden die URL's für die verschiedenen Methoden definiert
     // FridgeEntry related

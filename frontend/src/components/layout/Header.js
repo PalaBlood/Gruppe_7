@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Typography, Tabs, Tab, Tooltip } from '@mui/material';
+import { Paper, Typography, Tabs, Tab, Tooltip, ThemeProvider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import ProfileDropDownWithRouter from '../dialogs/ProfileDropDown';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import LivingIcon from '@mui/icons-material/Living';
 import StraightenIcon from '@mui/icons-material/Straighten';
+import Theme from '../../theme.js';
 
 class Header extends Component {
   state = {
@@ -25,18 +26,23 @@ class Header extends Component {
     const { tabindex } = this.state;
 
     return (
+      <ThemeProvider theme={Theme}>
       <Paper variant='outlined' style={{
         borderRadius: '10px', 
         overflow: 'hidden', 
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        width : '100%',
+        display: 'flex',
+        flex: '1',
+        flexDirection: 'column'
       }}>
         <ProfileDropDownWithRouter user={user} />
-        <Typography variant='h3' component='h1' align='center' style={{
-          marginTop: '20px', 
+        <Typography variant='h3' component='h1' align='center'  style={{
+          marginTop: '0px', 
           marginBottom: '10px', 
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         }}>
-          HdMSmartFridge
+          FridgeSense
         </Typography>
         {user && (
           <Tabs 
@@ -73,6 +79,7 @@ class Header extends Component {
           </Tabs>
         )}
       </Paper>
+      </ThemeProvider>
     );
   }
 }
