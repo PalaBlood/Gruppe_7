@@ -3,23 +3,23 @@ CREATE DATABASE Sopra;
 
 USE Sopra;
 
-DROP TABLE IF EXISTS Fridge;
-CREATE TABLE Fridge (
+DROP TABLE IF EXISTS fridge;
+CREATE TABLE fridge (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Fridge (id) VALUES (1);
+INSERT INTO fridge (id) VALUES (1);
 
-DROP TABLE IF EXISTS Household;
-CREATE TABLE Household (
+DROP TABLE IF EXISTS household;
+CREATE TABLE household (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     fridge_id INT,
-    FOREIGN KEY (fridge_id) REFERENCES Fridge (id) ON DELETE CASCADE
+    FOREIGN KEY (fridge_id) REFERENCES fridge (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO Household(id, name) VALUES (2, 'der haushalt');
+INSERT INTO household(id, name, fridge_id) VALUES (2, 'der haushalt', 1);
 
 
 DROP TABLE IF EXISTS users;
@@ -30,7 +30,7 @@ CREATE TABLE users (
     last_name VARCHAR(255),
     household_id INT,
     google_user_id VARCHAR(255),
-    FOREIGN KEY (household_id) REFERENCES Household (id)
+    FOREIGN KEY (household_id) REFERENCES household (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO users (nick_name, first_name, last_name, household_id, google_user_id) VALUES
@@ -38,24 +38,24 @@ INSERT INTO users (nick_name, first_name, last_name, household_id, google_user_i
 ('Bob345', 'Bob', 'Schönfeld', 2, '23423423'),
 ('Michel223', 'Michel', 'Finger', 2, '9832342');
 
-DROP TABLE IF EXISTS Recipe;
-CREATE TABLE Recipe (
+DROP TABLE IF EXISTS recipe;
+CREATE TABLE recipe (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recipe_title VARCHAR(255),
     number_of_persons INT,
     creator VARCHAR(255),
     recipe_description VARCHAR(1000),
     household_id INT,
-    FOREIGN KEY (household_id) REFERENCES Household (id)
+    FOREIGN KEY (household_id) REFERENCES household (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Recipe (id, recipe_title, number_of_persons, creator, recipe_description, household_id) VALUES
+INSERT INTO recipe (id, recipe_title, number_of_persons, creator, recipe_description, household_id) VALUES
 (1, 'Apple Pie', 8, 'Tom', "Apfelkuchen nach Omas Rezept", 2),
 (2, 'Pancakes', 4, 'Michel', "Pfannkuchen ala Michel", 2),
 (3, 'Omelette', 2, 'Michel', "Geile Eier", 2);
 
-DROP TABLE IF EXISTS Recipe_Groceries;
-CREATE TABLE Recipe_Groceries (
+DROP TABLE IF EXISTS recipe_groceries;
+CREATE TABLE recipe_groceries (
     id INT NOT NULL AUTO_INCREMENT,
     recipe_id INT NOT NULL,
     groceries_designation VARCHAR(255),
@@ -63,23 +63,23 @@ CREATE TABLE Recipe_Groceries (
     unit VARCHAR(255),
     PRIMARY KEY (recipe_id, groceries_designation),
     UNIQUE KEY id_unique (id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipe(id)
+    FOREIGN KEY (recipe_id) REFERENCES recipe(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Recipe_Groceries (id, recipe_id, groceries_designation, quantity, unit) VALUES
+INSERT INTO recipe_groceries (id, recipe_id, groceries_designation, quantity, unit) VALUES
 (1, 1, 'Gurke', 2.5, 'grams');
 
-DROP TABLE IF EXISTS Fridge_Groceries;
-CREATE TABLE Fridge_Groceries (
+DROP TABLE IF EXISTS fridge_groceries;
+CREATE TABLE fridge_groceries (
     fridge_id INT NOT NULL,
     groceries_designation VARCHAR(255),
     quantity FLOAT,
     unit VARCHAR(255),
     PRIMARY KEY (fridge_id, groceries_designation),
-    FOREIGN KEY (fridge_id) REFERENCES Fridge(id)
+    FOREIGN KEY (fridge_id) REFERENCES fridge(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) VALUES
+INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit) VALUES
 (1, 'Gurke', 2.5, 'grams'),
 (1, 'Tomate', 1, 'milliliters'),
 (1, 'lachs', 0.5, 'kilos'),
@@ -87,14 +87,14 @@ INSERT INTO Fridge_Groceries (fridge_id, groceries_designation, quantity, unit) 
 
 
 DROP TABLE IF EXISTS Unit;
-CREATE TABLE Unit (
+CREATE TABLE unit (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designation VARCHAR(225),
     household_id INT,
-    FOREIGN KEY (household_id) REFERENCES Household(id)
+    FOREIGN KEY (household_id) REFERENCES household(id)
     )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     
-INSERT INTO Unit (id, designation, household_id) VALUES
+INSERT INTO unit (id, designation, household_id) VALUES
 (1, 'kilograms', 2)
 
 

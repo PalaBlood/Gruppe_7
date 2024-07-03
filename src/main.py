@@ -87,13 +87,6 @@ unit = api.inherit('Unit', bo, {
     'household_id': fields.Integer(attribute='_Unit__household_id', required=True, description='The household_id of the unit')
 })
 
-@app.route('/')
-def serve_index():
-    return send_from_directory(app.static_folder, 'index.html')
-
-@app.route('/<path:path>')
-def serve_static(path):
-    return send_from_directory(app.static_folder, path)
 
 #Alle Operationen für die verschiedenen Business-Objekte werden im folgenden Abschnitt definiert.
 #User Operations

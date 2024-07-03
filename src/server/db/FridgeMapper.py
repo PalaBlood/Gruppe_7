@@ -48,7 +48,7 @@ class FridgeMapper(Mapper):
         """Sollte der Eintrag schon existieren, so wird dieser geupdatet
         Es wird nur quantity aus der Relation geladen"""
         cursor = self._cnx.cursor()
-        query = "SELECT quantity FROM Fridge_Groceries WHERE fridge_id = %s AND groceries_designation = %s"
+        query = "SELECT quantity FROM fridge_Groceries WHERE fridge_id = %s AND groceries_designation = %s"
         cursor.execute(query, (fridge_id, groceries_designation))
         result = cursor.fetchone()
         cursor.close()
@@ -60,7 +60,7 @@ class FridgeMapper(Mapper):
     def get_full_existing_entry(self, groceries_designation):
         """Der gesamte Eintrag wird aus der Realtion geladen"""
         cursor = self._cnx.cursor()
-        query = "SELECT * FROM Fridge_Groceries WHERE groceries_designation = %s"
+        query = "SELECT * FROM fridge_groceries WHERE groceries_designation = %s"
         cursor.execute(query, (groceries_designation,))
         result = cursor.fetchone()
         cursor.close()

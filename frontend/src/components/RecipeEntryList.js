@@ -36,6 +36,11 @@ const conversionRates = {
     },
     pinch: {
         pinch: 1
+    },
+    ml: {
+        ml: 1,
+        l: 1000
+    
     }
 };
 

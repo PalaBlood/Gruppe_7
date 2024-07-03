@@ -38,7 +38,7 @@ class Mapper(AbstractContextManager, ABC):
             #Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt
             self._cnx = connector.connect(user='root', password="9902",
                               host=host,
-                              database=database)
+                              database='sdkujfhw')
 
 
         return self

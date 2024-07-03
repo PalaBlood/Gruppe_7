@@ -2,14 +2,12 @@ Notiz an die Gruppe: Aufteilung von Komponenten, Achtung: Top Down, d.h. jeweils
 
 
 
-Tom: --> UserList --> UserListEntry --> UserListDetail 
+restliche Aufgaben:
 
-Michel: FridgeItemList --> FridgeItemListEntry --> FridgeItemListDetail
+Media Queries: responsive design
 
-Halil: RecipeList --> RecipeListEntry, RecipeListDetail Einbindung der Cook Funktion beachten
+Units erweitern
 
-Kartal: ShoppingList, About Page, evtl. noch Dialogs Komponenten Robin helfen
+Prompt für Delete Household
 
-Robin: HouseholdDetails (hier bitte Verbindung zu UserList Komponente beachten), Dialogs Komponenten --> bspw. beim löschen eines Users Dialog
-
-Kudi: Backend debuggen, d.h. API testen und bei Fehlermeldungen Mapper/BO korrigieren
+Prompt für Units anlegen nach Anmeldung
