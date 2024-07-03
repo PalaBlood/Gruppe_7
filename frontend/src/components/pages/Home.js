@@ -13,7 +13,7 @@ class Home extends Component {
             display: 'flex',
             flexDirection: 'column',
         }}>
-        <h1 style={{color: 'white'}}>Willkommen in unsere SmartFridge Anwendung!</h1>;
+        <h1 style={{color: 'white'}}>Welcome to our Smartfridge!</h1>;
         </div>
     )}
 }
