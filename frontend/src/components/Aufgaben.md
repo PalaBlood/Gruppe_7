@@ -11,3 +11,9 @@ Units erweitern
 Prompt für Delete Household
 
 Prompt für Units anlegen nach Anmeldung
+
+Wenn man Namen edited bei Recipe Ingredients wird es nicht übernommen!!!!
+
+Footer wird nicht angezeigt
+
+

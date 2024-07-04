@@ -172,7 +172,7 @@ class FridgeEntryForm extends Component {
                             <TextField autoFocus type='text' required fullWidth margin='normal' id='designation' label='Designation:' value={designation}
                                 onChange={this.textFieldValueChange} error={designationValidationFailed}
                                 helperText={designationValidationFailed ? 'The designation must contain at least one character' : ' '} />
-                            <TextField type='text' required fullWidth margin='normal' id='quantity' label='Menge:' value={quantity}
+                            <TextField type='text' required fullWidth margin='normal' id='quantity' label='Quantity:' value={quantity}
                                 onChange={this.textFieldValueChange} error={quantityValidationFailed}
                                 helperText={quantityValidationFailed ? 'The quantity must contain at least one character' : ' '} />
                             <FormControl fullWidth margin="normal">

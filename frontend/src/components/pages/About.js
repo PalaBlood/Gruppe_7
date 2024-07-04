@@ -19,15 +19,15 @@ const About = () => {
                         About our Application:
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
-                        Welcome to our SmartFridge application!
+                        Welcome to our FridgeFinder application!
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
                         <strong>Key Features:</strong>
                     </Typography>
                     <Typography variant="body1" color="text.secondary" component="ul" paragraph>
                         <li>Inventory management</li>
-                        <li>Cooking Recipes</li>
-                        <li>Recipe Management</li>
+                        <li>Cooking recipes</li>
+                        <li>Recipe management</li>
                     </Typography>
                     <Typography variant="body1" color="text.secondary" paragraph>
                         We want to minimize food waste and help you to cook delicious meals with the ingredients you have at home.
