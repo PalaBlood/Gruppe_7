@@ -37,8 +37,7 @@ def secured(function):
                         adm.save_user(user)
                     else:
                         
-                        household = adm.create_household(nick_name + "'s Household")
-                        user = adm.create_user(nick_name, first_name, last_name, google_user_id)
+                        print("User Created")
 
                     return function(*args, **kwargs)
                 else:
