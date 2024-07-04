@@ -167,7 +167,7 @@ function RecipeList() {
                     startIcon={<AddIcon />}
                     onClick={handleAddButtonClick}
                 >
-                    Neues Rezept anlegen
+                    Create new recipe
                 </Button>
             </Grid>
             {recipes.map((recipe) => (

@@ -11,8 +11,8 @@ function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
             <CardContent>
                 <Typography variant="h5">{recipe.getTitle()}</Typography>
                 <Typography color="textSecondary">
-                    Portionen: {recipe.getNumberOfPersons()} <br />
-                    Beschreibung: {recipe.getDescription()}
+                    Portions: {recipe.getNumberOfPersons()} <br />
+                    Description: {recipe.getDescription()}
                 </Typography>
             </CardContent>
             <CardActions>
