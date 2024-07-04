@@ -38,6 +38,9 @@ class Recipe(BusinessObject):
 
     def set_household_id(self, id):
         self._household_id = id
+    
+    
+
 
     def __repr__(self):
         return (f"Recipe(Title: {self._title}, Number of Persons: {self._number_of_persons}, "
@@ -45,6 +48,7 @@ class Recipe(BusinessObject):
 
     def __str__(self):
         return f"Title: {self._title}, Serves: {self._number_of_persons}, Created by: {self._creator}, Description: {self._description}, Household ID: {self._household_id}"
+
 
     @staticmethod
     def form_dict(dictionary):
@@ -56,6 +60,7 @@ class Recipe(BusinessObject):
         obj.set_description(dictionary.get('description'))
         obj.set_household_id(dictionary.get('household_id'))
         return obj
+
 
     @staticmethod
     def from_dict(dictionary):

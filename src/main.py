@@ -11,8 +11,8 @@ from server.bo.Household import Household
 from server.bo.Unit import Unit
 import traceback
 from server.db.conversion import convert_quantity
-
 from SecurityDecorator import secured
+
 
 app = Flask(__name__)
 
@@ -86,6 +86,7 @@ unit = api.inherit('Unit', bo, {
     'designation': fields.String(attribute='_Unit__designation', required=True, description='Designation of the unit'),
     'household_id': fields.Integer(attribute='_Unit__household_id', required=True, description='The household_id of the unit')
 })
+
 
 
 #Alle Operationen für die verschiedenen Business-Objekte werden im folgenden Abschnitt definiert.
@@ -628,6 +629,7 @@ class RecipeOperations(Resource):
         adm = HalilsTaverneAdministration()
         print(api.payload)
         re = Recipe.form_dict(api.payload)
+        print(re)
         if re is not None:
             re.set_id(recipe_id)
             adm.update_recipe(re)

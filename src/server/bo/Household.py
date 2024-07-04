@@ -44,14 +44,20 @@ class Household(BusinessObject):
 
     def set_fridge_id(self, fridge_id):
         self._fridge_id = fridge_id
+    
+    
+    
 
     def __str__(self):
 
         return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()})"
 
+
     def __repr__(self):
 
         return f"<Household(ID: {self._id}, Name: {self._name}, Fridge ID: {self.get_fridge_id()})>"
+
+
 
     @staticmethod
     def form_dict(dictionary=dict()):
@@ -69,19 +75,6 @@ class Household(BusinessObject):
 
         return obj
 
-
-if __name__ == "__main__":
-    user1 = User()  # Erstelle User
-    user2 = User()
-    user1.set_id(1)
-    user2.set_id(223)
-
-    haushalt = Household()  # Erstelle Haushalt
-    haushalt.add_user(user1)  # User hinzufügen
-    haushalt.add_user(user2)
-
-
-    haushalt.remove_user(user1)  # User entfernen
 
 
 

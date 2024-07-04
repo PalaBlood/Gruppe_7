@@ -13,11 +13,16 @@ class FridgeEntry(FoodEntry):
     def set_fridge_id(self, fridge_id):
         self.__fridge_id = fridge_id
 
+
+
+
     def __str__(self):
         return f"FridgeEntry(Fridge_id: {self.get_fridge_id()}, groceries_designation: {self.get_groceries_designation()}, quantity: {self.get_quantity()}, unit: {self.get_unit()})"
 
+
     def __repr__(self):
         return f"<FridgeEntry(fridge_id={self.__fridge_id}, groceries_designation={self._FoodEntry__groceries_designation}, quantity={self._FoodEntry__quantity}, unit={self._FoodEntry__unit})>"
+
 
     def form_dict(dictionary=dict()):
 
@@ -27,6 +32,7 @@ class FridgeEntry(FoodEntry):
         obj.set_quantity(dictionary["quantity"])
         obj.set_unit(dictionary["unit"])
         return obj
+
 
     """@staticmethod
     def form_dict(dictionary):

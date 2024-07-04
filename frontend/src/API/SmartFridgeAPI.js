@@ -28,6 +28,8 @@ class FridgeAPI {
      * Ebenfalls müssen wir nicht jedes mal bei jeder FetchAdvanded-Methode die URl Übergeben, sondern
      * z.B. getFridgeEntriesURL
      */
+
+    /**  */
     #fridgeserverbaseurl = 'http://127.0.0.1:5000/fridge';
 
     //Hier werden die URL's für die verschiedenen Methoden definiert
@@ -73,7 +75,7 @@ class FridgeAPI {
     #getRecipesURL = () => `${this.#fridgeserverbaseurl}/RecipeList`;
     #addRecipeURL = () => `${this.#fridgeserverbaseurl}/RecipeList`;
     #getRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
-    #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/$/${id}`;
+    #updateRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #deleteRecipeURL = (id) => `${this.#fridgeserverbaseurl}/Recipe/${id}`;
     #getHouseholdIdByGoogleUserIdURL = (google_user_id) => `${this.#fridgeserverbaseurl}/household-id-by-google-id/${google_user_id}`;
     #getRecipesbyhouseholdIdURL = (household_id) => `${this.#fridgeserverbaseurl}/RecipeList/${household_id}`;
@@ -504,6 +506,9 @@ class FridgeAPI {
             method: 'DELETE'
         }).then(() => ({ message: "Fridge entry deleted successfully", groceriesDesignation }));
     }
+
+
+
     //Rezept updaten
     updateRecipe(recipeBO) {
         return this.#fetchAdvanced(this.#updateRecipeURL(recipeBO.getId()), {
@@ -514,12 +519,10 @@ class FridgeAPI {
             },
             body: JSON.stringify(recipeBO)
         }).then(responseJSON => RecipeBO.fromJSON(responseJSON)[0]);
+        
     }
 
 
-      
-
-        
 
     //Rezept löschen
     deleteRecipe(id) {
