@@ -132,8 +132,8 @@ function RecipeForm({ recipeentry, show, onClose }) {
 
 
 
-    const komponent_title = recipeentry ? 'Bearbeite ein Rezept' : 'Füge ein neues Rezept hinzu';
-    const header = recipeentry ? `Reuept ID: ${recipeentry.getId()}` : 'Gebe deine Rezeptdaten ein ';
+    const komponent_title = recipeentry ? 'Update a recipe' : 'Create a new recipe';
+    const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data ';
 
     if (loadingHouseholdId) {
         return <LoadingProgress show />;
@@ -154,31 +154,31 @@ function RecipeForm({ recipeentry, show, onClose }) {
                 <DialogContent>
                     <DialogContentText>{header}</DialogContentText>
                     <form sx={{ width: '100%' }} noValidate autoComplete='off'>
-                        <TextField autoFocus type='text' required fullWidth margin='normal' id='title' label='Titel:' value={title}
+                        <TextField autoFocus type='text' required fullWidth margin='normal' id='title' label='Title:' value={title}
                             onChange={textFieldValueChange} error={titleValidationFailed}
-                            helperText={titleValidationFailed ? 'Der Titel muss mindestens einen Buchstaben enthalten' : ' '} />
-                        <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Anzahl der Personen:' value={numberOfPersons}
+                            helperText={titleValidationFailed ? 'The title must contain at least one character' : ' '} />
+                        <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Number of persons:' value={numberOfPersons}
                             onChange={textFieldValueChange} error={numberOfPersonsValidationFailed}
-                            helperText={numberOfPersonsValidationFailed ? 'Die Anzahl muss eine Zahl sein' : ' '} />
+                            helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '} />
                         <TextField type='text' required fullWidth margin='normal' id='description' label='Beschreibung:' value={description}
                             onChange={textFieldValueChange} error={descriptionValidationFailed}
-                            helperText={descriptionValidationFailed ? 'Die Beschreibung muss mindestens einen Buchstaben enthalten' : ' '} />
+                            helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '} />
                     </form>
                     <LoadingProgress show={addingInProgress || updatingInProgress} />
                     {
                         recipeentry ?
-                            <ContextErrorMessage error={updatingError} contextErrorMsg={`Das Rezept ${recipeentry.getId()} konnte nicht aktualisiert werden.`} onReload={updateRecipe} />
+                            <ContextErrorMessage error={updatingError} contextErrorMsg={`The recipe  ${recipeentry.getId()} could not be updated.`} onReload={updateRecipe} />
                             :
-                            <ContextErrorMessage error={addingError} contextErrorMsg={`Das Rezept konnte nicht hinzugefügt werden.`} onReload={addRecipe} />
+                            <ContextErrorMessage error={addingError} contextErrorMsg={`The recipe could not be added.`} onReload={addRecipe} />
                     }
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color='secondary'>Abbrechen</Button>
+                    <Button onClick={handleClose} color='secondary'>Cancle</Button>
                     {
                         recipeentry ?
-                            <Button disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed} variant='contained' onClick={updateRecipe} color='primary'>Aktualisieren</Button>
+                            <Button disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed} variant='contained' onClick={updateRecipe} color='primary'>Update</Button>
                             :
-                            <Button disabled={titleValidationFailed || !titleEdited || numberOfPersonsValidationFailed || !numberOfPersonsEdited || descriptionValidationFailed || !descriptionEdited} variant='contained' onClick={addRecipe} color='primary'>Hinzufügen</Button>
+                            <Button disabled={titleValidationFailed || !titleEdited || numberOfPersonsValidationFailed || !numberOfPersonsEdited || descriptionValidationFailed || !descriptionEdited} variant='contained' onClick={addRecipe} color='primary'>Add</Button>
                     }
                 </DialogActions>
             </Dialog>
