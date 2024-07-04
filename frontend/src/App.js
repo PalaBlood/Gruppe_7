@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword, signInWithPhoneNumber } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import Theme from './theme';
 import SignIn from './components/pages/SignIn';
 import firebaseConfig from './firebaseconfig';
@@ -12,10 +12,6 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import FridgeAPI from './API/SmartFridgeAPI';
 import CheckforexistingHousehold from './components/dialogs/HouseholdCheck';
-import UserList from './components/UserList';
-import UserBO from './API/UserBO';
-import FridgeEntriesComponent from './components/FridgeItemList';
-import { Link as RouterLink } from 'react-router-dom';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Household from './components/HouseholdList';
@@ -23,11 +19,12 @@ import UserProfile from './components/UserList';
 import RecipeList from './components/RecipeList'; 
 import RecipeEntryList from './components/RecipeEntryList';
 import UnitList from './components/UnitList';
+import FridgeEntriesComponent from './components/FridgeItemList';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        // Initialisierung des States mit einem leeren User-Objekt und null als Haushalts-ID
+        // Initialize state with an empty User object and null as Household ID
         this.state = {
             currentHouseholdId: null,
             currentUser: null,
@@ -38,7 +35,7 @@ class App extends React.Component {
 
         this.onHouseholdConfirmed = this.onHouseholdConfirmed.bind(this);
 
-        // Initialisiere Firebase, davor checken ob bereits initialisiert
+        // Initialize Firebase if not already initialized
         if (!App.firebaseInitialized) {
             App.app = initializeApp(firebaseConfig);
             App.auth = getAuth(App.app);
@@ -53,14 +50,23 @@ class App extends React.Component {
 
     handleSignIn = () => {
         this.setState({ authLoading: true });
-        signInWithPopup(App.auth, App.provider);
+        signInWithPopup(App.auth, App.provider).then(async (result) => {
+            const user = result.user;
+            const token = await user.getIdToken();
+            document.cookie = `token=${token};path=/;`;
+            this.setState({ authLoading: false, currentUser: user });
+        }).catch((error) => {
+            this.setState({ authLoading: false, authError: error.message });
+        });
     };
 
-    // Lifecycle Methode
+    // Lifecycle method
     componentDidMount() {
         this.unsubscribeFromAuth = onAuthStateChanged(App.auth, async (user) => {
             if (user) {
-                this.setState({ authLoading: true, currentUser: user});
+                this.setState({ authLoading: true, currentUser: user });
+                const token = await user.getIdToken();
+                document.cookie = `token=${token};path=/;`;
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
                 if (!userBO[0].google_user_id) {
                     let newUser = {
@@ -72,7 +78,6 @@ class App extends React.Component {
                         household_id: null
                     };
                     await FridgeAPI.getAPI().addUser(newUser);
-                } else {
                 }
                 this.setState({
                     currentUser: user,
@@ -85,14 +90,14 @@ class App extends React.Component {
         });
     }
 
-    // Funktion, die dafür sorgt, dass componentDidMount nur einmal getriggert wird
+    // Make sure componentDidMount is only triggered once
     componentWillUnmount() {
         if (this.unsubscribeFromAuth) {
             this.unsubscribeFromAuth();
         }
     }
 
-    // Haushalt bestätigt
+    // Household confirmed
     onHouseholdConfirmed = async (householdId) => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -108,9 +113,9 @@ class App extends React.Component {
             let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
             if (userBOArray && userBOArray.length > 0) {
                 let userBO = userBOArray[0];
-                userBO.household_id = householdId;  // householdid updaten
+                userBO.household_id = householdId;  // Update household ID
 
-                await FridgeAPI.getAPI().updateUser(userBO);  // user per api updaten
+                await FridgeAPI.getAPI().updateUser(userBO);  // Update user via API
                 this.setState({ loading: false, dialogOpen: false, selectedHouseholdId: householdId });
             } else {
                 throw new Error("User profile not found.");
@@ -151,32 +156,31 @@ class App extends React.Component {
                                
                                 <Route path="/household" element={
                                     <Secured user={currentUser}>
-                                        <Household/>
+                                        <Household />
                                     </Secured>
-                                }/>
+                                } />
 
-                                <Route path= "/recipe" element={
+                                <Route path="/recipe" element={
                                     <Secured user={currentUser}>
-                                        <RecipeList/>
+                                        <RecipeList />
                                     </Secured>
-
-                                }/>
+                                } />
 
                                 <Route path="/recipes/entries/:recipeId" element={
                                     <Secured user={currentUser}>
-                                        <RecipeEntryList/>
-                                        </Secured>} 
-                                        />
+                                        <RecipeEntryList />
+                                    </Secured>} 
+                                />
                                         
-                                <Route path = "/unit" element={
+                                <Route path="/unit" element={
                                     <Secured user={currentUser}>
-                                        <UnitList/>
+                                        <UnitList />
                                     </Secured>
                                 }/>
                           
                                 
                                 <Route path="/about" element={<Secured user={currentUser}>
-                                        <About/>
+                                        <About />
                                     </Secured>
                                 }/>
                             </Routes>
@@ -200,5 +204,3 @@ function Secured({ user, children }) {
     }
     return children;
 }
-
-

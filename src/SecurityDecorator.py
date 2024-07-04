@@ -36,7 +36,6 @@ def secured(function):
                         user.last_name = last_name
                         user.nick_name = nick_name
                         adm.save_user(user)
-                        household_id = user.household_id
                     else:
                         
                         household = adm.create_household(nick_name + "'s Household")

@@ -95,7 +95,7 @@ unit = api.inherit('Unit', bo, {
 @fridge_ns.response(500, 'Server-Fehler')
 class UserListOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(user)
     def get(self):
         """Auslesen aller User"""
@@ -105,7 +105,7 @@ class UserListOperations(Resource):
         return users
 
 
-    #@secured
+    @secured
     @fridge_ns.marshal_with(user, code=200)
     @fridge_ns.expect(user)
     def post(self):
@@ -134,7 +134,7 @@ class UserListOperations(Resource):
 @fridge_ns.param('id', 'die Id eines Users')
 class UserOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_with(user)
     def get(self, id):
         """User nach ID auslesen"""
@@ -144,7 +144,7 @@ class UserOperations(Resource):
         return User
 
 
-    #@secured
+    @secured
     def delete(self, id):
         """user löschen"""
         adm = HalilsTaverneAdministration()
@@ -152,7 +152,7 @@ class UserOperations(Resource):
         adm.delete_user(User)
         return '', 200
 
-
+    @secured
     @fridge_ns.marshal_with(user)
     @fridge_ns.expect(user, validate=True)
     def put(self, id):
@@ -174,7 +174,7 @@ class UserOperations(Resource):
 @fridge_ns.param('google_user_id', 'die google_user_id eines users')
 class UserByGoogleIdOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(user)
     def get(self, google_user_id):
         """user nach google_user_id auslesen"""
@@ -188,7 +188,7 @@ class UserByGoogleIdOperations(Resource):
 @fridge_ns.param('nick_name', 'Der nick_name eines Users')
 class UsersByNameOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_with(user)
     def get(self, nick_name):
         """User nach Nickname auslesen"""
@@ -204,14 +204,14 @@ class UsersByNameOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdListOperation(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(household)
     def get(self):
         adm = HalilsTaverneAdministration()
         households = adm.get_all_households()
         return households
 
-    #@secured
+    @secured
     @fridge_ns.expect(household)
     @fridge_ns.marshal_list_with(household)
     def post(self):
@@ -231,7 +231,7 @@ class HouseholdListOperation(Resource):
 @fridge_ns.param('id', 'die Id eines Haushalts')
 class HouseholdOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_with(user)
     def get(self, id):
         adm = HalilsTaverneAdministration()
@@ -239,14 +239,14 @@ class HouseholdOperations(Resource):
         return hou
 
 
-    #@secured
+    @secured
     def delete(self, id):
         adm = HalilsTaverneAdministration()
         hou = adm.find_household_by_id(id)
         adm.delete_household(hou)
         return '', 200
 
-
+    @secured
     @fridge_ns.marshal_with(household)
     @fridge_ns.expect(household, validate=True)
     def put(self, id):
@@ -267,6 +267,7 @@ class HouseholdOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdbyIDOperations(Resource):
 
+    @secured
     @fridge_ns.marshal_list_with(household)
     def get(self, id):
         adm = HalilsTaverneAdministration()
@@ -283,14 +284,14 @@ class HouseholdbyIDOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeListOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(fridge)
     def get(self):
         adm = HalilsTaverneAdministration()
         fridge = adm.get_all_fridges()
         return fridge
 
-    #@secured
+    @secured
     @fridge_ns.expect(fridge)
     @fridge_ns.marshal_list_with(fridge)
     def post(self):
@@ -312,13 +313,14 @@ class FridgeListOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntryListOperations(Resource):
 
-    # @secured
+    @secured
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self):
         adm = HalilsTaverneAdministration()
         fridge_entries = adm.get_all_fridge_entries()
         return fridge_entries
 
+    @secured
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_list_with(fridge_entry)
     # @secured
@@ -355,6 +357,7 @@ class FridgeEntryListOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeEntrybyFridgeIdOperations(Resource):
 
+    @secured
     @fridge_ns.marshal_list_with(fridge_entry)
     def get(self, fridge_id):
 
@@ -372,13 +375,14 @@ class FridgeEntrybyFridgeIdOperations(Resource):
 @fridge_ns.param('groceries_designation', 'der Name eines Lebensmittels')
 class FridgeEntryOperations(Resource):
 
-    #@secured
+    @secured
     def delete(self, groceries_designation):
         adm = HalilsTaverneAdministration()
         fridge_entry = adm.find_fridge_entry_by_designation(groceries_designation)
         adm.delete_fridge_entry(fridge_entry)
         return '', 200
 
+    @secured
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_with(fridge_entry)
     def put(self, groceries_designation):
@@ -393,6 +397,7 @@ class FridgeEntryOperations(Resource):
         else:
             return '', 500
 
+    @secured
     @fridge_ns.expect(fridge_entry)
     @fridge_ns.marshal_with(fridge_entry)
     def get(self, groceries_designation):
@@ -408,6 +413,7 @@ class FridgeEntryOperations(Resource):
 @fridge_ns.param('recipe_title', 'der name eines rezepts')
 class UseRecipeIngredients(Resource):
 
+    @secured
     def put(self, recipe_title):
         """Zutaten eines rezepts von entry abziehen"""
         adm = HalilsTaverneAdministration()
@@ -444,14 +450,14 @@ class UseRecipeIngredients(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeEntryListOperation(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self):
         adm = HalilsTaverneAdministration()
         recipe_entries = adm.get_all_recipes_entries()
         return recipe_entries
 
-    #@secured
+    @secured
     @fridge_ns.expect(recipe_entry)
     @fridge_ns.marshal_list_with(recipe_entry)
     def post(self):
@@ -476,7 +482,8 @@ class RecipeEntryListOperation(Resource):
 @fridge_ns.response(200, 'RecipeEntry successfully retrieved')
 @fridge_ns.param('recipe_id', 'Die ID eines Rezepts')
 class RecipeEntryListOperationByID(Resource):
-    #@secured
+
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self, recipe_id):
         adm = HalilsTaverneAdministration()
@@ -495,7 +502,8 @@ class RecipeEntryListOperationByID(Resource):
 @fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
 @fridge_ns.param('recipe_id', 'ID eines Rezepts')
 class RecipeEntryOperationsByDesignationAndID(Resource):
-    #@secured
+
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def delete(self, groceries_designation, recipe_id):
         """Anhand der groceries_designation und der recipe_id wird zunächst der Eintrag geladen,
@@ -510,7 +518,7 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
         else:
             return '', 404
 
-        # @secured
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def put(self, groceries_designation, recipe_id):
         adm = HalilsTaverneAdministration()
@@ -546,16 +554,13 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
 @fridge_ns.response(200, 'RecipeEntry successfully updated')
 @fridge_ns.param('groceries-designation', 'Bezeichnung eines Lebensmittels')
 class RecipeEntryListOperations2(Resource):
-    #@secured
+
+    @secured
     @fridge_ns.marshal_list_with(recipe_entry)
     def get(self, groceries_designation):
         adm = HalilsTaverneAdministration()
         reci = adm.get_recipe_entries_by_designation(groceries_designation)
         return reci
-
-
-
-
 
 
 
@@ -567,13 +572,14 @@ class RecipeEntryListOperations2(Resource):
 @fridge_ns.response(200, 'Recipe successfully updated')
 class RecipeListOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(recipe)
     def get(self):
         adm = HalilsTaverneAdministration()
         recipes = adm.get_all_recipes()
         return recipes
-
+    
+    @secured
     @fridge_ns.expect(recipe)
     @fridge_ns.marshal_list_with(recipe)
     def post(self):
@@ -602,7 +608,7 @@ class RecipeListOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipebyHouseholdIdOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(recipe)
     def get(self, household_id):
         adm = HalilsTaverneAdministration()
@@ -616,14 +622,14 @@ class RecipebyHouseholdIdOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class RecipeOperations(Resource):
 
-    # @secured
+    @secured
     @fridge_ns.marshal_with(recipe)
     def get(self, recipe_id):
         adm = HalilsTaverneAdministration()
         reci = adm.get_recipe_by_id(recipe_id)
         return reci
 
-    # @secured
+    @secured
     @fridge_ns.marshal_list_with(recipe)
     def put(self, recipe_id):
         adm = HalilsTaverneAdministration()
@@ -637,7 +643,7 @@ class RecipeOperations(Resource):
         else:
             return '', 500
 
-    # @secured
+    @secured
     def delete(self, recipe_id):
         adm = HalilsTaverneAdministration()
         recipe = adm.get_recipe_by_id(recipe_id)
@@ -665,6 +671,7 @@ class FridgeIdByGoogleIdOperations(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class FridgeIdByGoogleIdResource(Resource):
 
+    @secured
     def get(self, google_user_id):
         adm = HalilsTaverneAdministration()
         fridge_id = adm.get_fridge_id_by_google_user_id(google_user_id)
@@ -681,7 +688,8 @@ class FridgeIdByGoogleIdResource(Resource):
 @fridge_ns.route('/household-id-by-google-id/<string:google_user_id>')
 @fridge_ns.response(500, 'Server-Fehler')
 class HouseholdIdByGoogleUserId(Resource):
-    
+
+    @secured
     def get(self, google_user_id):
         adm = HalilsTaverneAdministration()
         household_id = adm.get_household_id_by_google_user_id(google_user_id)
@@ -704,7 +712,7 @@ class HouseholdIdByGoogleUserId(Resource):
 @fridge_ns.param('recipe_id', 'ID eines Rezepts')
 class UnitOperations(Resource):
 
-
+    @secured
     @fridge_ns.expect(unit)
     @fridge_ns.marshal_list_with(unit)
     def post(self):
@@ -734,7 +742,8 @@ class UnitOperations(Resource):
 @fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
 @fridge_ns.param('recipe_id', 'ID eines Rezepts')
 class UnitOperationsByDesignationAndID(Resource):
-    #@secured
+    
+    @secured
     @fridge_ns.marshal_list_with(unit)
     def get(self, designation, household_id):
         """Anhand der designation und der household_id werden zunächst die Einträge geladen,
@@ -752,7 +761,7 @@ class UnitOperationsByDesignationAndID(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 class UnitsbyHouseholdIdOperations(Resource):
 
-    #@secured
+    @secured
     @fridge_ns.marshal_list_with(unit)
     def get(self, id):
         adm = HalilsTaverneAdministration()

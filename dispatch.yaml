@@ -1,0 +1,6 @@
+dispatch:
+  - url: "*/fridge/*"
+    service: backend
+
+  - url: "smartfridge-app-428309.ey.r.appspot.com/*"
+    service: default

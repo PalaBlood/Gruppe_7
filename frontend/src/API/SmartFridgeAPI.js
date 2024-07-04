@@ -30,7 +30,7 @@ class FridgeAPI {
      */
 
     /**  */
-    #fridgeserverbaseurl = 'http://127.0.0.1:5000/fridge';
+    #fridgeserverbaseurl = '/fridge';
 
     //Hier werden die URL's für die verschiedenen Methoden definiert
     // FridgeEntry related
