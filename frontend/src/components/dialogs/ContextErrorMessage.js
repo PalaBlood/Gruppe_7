@@ -12,7 +12,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
  * @author [Robin Krauß](https://github.com/Roggo17)
  */
 class ContextErrorMessage extends Component {
-  #standardText = 'Fehler: Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
+  #standardText = 'Error: An unexpected error has occurred. Please try again later.';
 
   /** Renders the ContextErrorMessage if error object is not null  */
   render() {
