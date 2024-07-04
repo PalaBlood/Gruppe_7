@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, LinearProgress } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 
 // LoadingProgress Component
 // Shows a loading spinner while waiting for an API request
@@ -12,7 +12,7 @@ class LoadingProgress extends Component {
     return (
       show ?
         <div >
-          <CircularProgress sx={{width: '100%', marginTop: 2}} color='secondary' />
+          <LinearProgress sx={{width: '100%', marginTop: 2}} color='secondary' />
         </div>
         : null
     );
