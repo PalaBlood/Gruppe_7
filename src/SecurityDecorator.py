@@ -2,14 +2,13 @@ from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
 
-from server.HalilsTaverneAdministration import HalilsTaverneAdministration
+from server.Admin import HalilsTaverneAdministration
 
 def secured(function):
     firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
         id_token = request.cookies.get("token")
-        print(id_token)
         error_message = None
         claims = None
         objects = None
@@ -39,8 +38,7 @@ def secured(function):
                     else:
                         
                         household = adm.create_household(nick_name + "'s Household")
-                        user = adm.create_user(nick_name, first_name, last_name, household.get_id(), google_user_id)
-                        household_id = household.get_id()
+                        user = adm.create_user(nick_name, first_name, last_name, google_user_id)
 
                     return function(*args, **kwargs)
                 else:

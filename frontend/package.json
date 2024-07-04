@@ -2,7 +2,7 @@
   "name": "fridgeproject",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://backend-dot-smartfridge-app-428309.ey.r.appspot.com",
+  "proxy": "http://127.0.0.1:5000",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",

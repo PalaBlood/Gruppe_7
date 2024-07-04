@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-from server.HalilsTaverneAdministration import HalilsTaverneAdministration
+from server.Admin import HalilsTaverneAdministration
 from server.bo.Fridge import Fridge
 from server.bo.Recipe import Recipe
 from server.bo.FridgeEntry import FridgeEntry
@@ -327,7 +327,6 @@ class FridgeEntryListOperations(Resource):
     def post(self):
         adm = HalilsTaverneAdministration()
         try:
-            print(api.payload)
             proposal = FridgeEntry.form_dict(api.payload)
 
             if proposal is not None:
@@ -387,7 +386,6 @@ class FridgeEntryOperations(Resource):
     @fridge_ns.marshal_with(fridge_entry)
     def put(self, groceries_designation):
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         fe = FridgeEntry.form_dict(api.payload)
         print("Heres the fe:" , fe)
         if fe is not None:
@@ -419,14 +417,11 @@ class UseRecipeIngredients(Resource):
         adm = HalilsTaverneAdministration()
         """Rezept ID auslesen"""
         recipe_id = adm.get_recipe_id_by_title(recipe_title)
-        print(recipe_id)
         """ Rezept Einträge auslesen"""
         recipe_entries = adm.find_recipe_entries_by_recipe_id(recipe_id[0])
-        print(recipe_entries)
         for recipe_entry in recipe_entries:
             """Fridge Einträge auslesen"""
             fridge_entry = adm.find_fridge_entry_by_designation(recipe_entry.get_groceries_designation())
-            print(fridge_entry)
             if fridge_entry:
                 # Umrechnung der Mengenangaben
                 recipe_quantity_in_fridge_units = convert_quantity(recipe_entry.get_quantity(), recipe_entry.get_unit(), fridge_entry[3])
@@ -522,30 +517,12 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
     @fridge_ns.marshal_list_with(recipe_entry)
     def put(self, groceries_designation, recipe_id):
         adm = HalilsTaverneAdministration()
-        print(groceries_designation, recipe_id)
-        print("API Payload: ", api.payload) #Debugging
         re = RecipeEntry.from_dict(api.payload)
-        print("Find Recipe by id and designation: ", re)
         if re is not None:
             adm.update_recipe_entry(re)
             return '', 200
         else:
             return '', 500
-
-        """ @fridge_ns.expect(fridge_entry)
-        @fridge_ns.marshal_with(fridge_entry)
-        def put(self, groceries_designation):
-            adm = HalilsTaverneAdministration()
-            print(api.payload)
-            fe = FridgeEntry.form_dict(api.payload)
-            print("Heres the fe:", fe)
-            if fe is not None:
-                fe.set_groceries_designation(fe.get_groceries_designation())
-                adm.save_fridge_entry(fe)
-                return '', 200
-            else:
-                return '', 500"""
-
 
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>')
@@ -584,9 +561,6 @@ class RecipeListOperations(Resource):
     @fridge_ns.marshal_list_with(recipe)
     def post(self):
         adm = HalilsTaverneAdministration()
-        
-        payload = api.payload #Debugging
-        print("Received payload:", payload)  # Debugging information
 
         proposal = Recipe.from_dict(api.payload)
         
@@ -633,9 +607,7 @@ class RecipeOperations(Resource):
     @fridge_ns.marshal_list_with(recipe)
     def put(self, recipe_id):
         adm = HalilsTaverneAdministration()
-        print(api.payload)
         re = Recipe.form_dict(api.payload)
-        print(re)
         if re is not None:
             re.set_id(recipe_id)
             adm.update_recipe(re)

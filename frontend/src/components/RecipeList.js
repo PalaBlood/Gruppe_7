@@ -96,18 +96,33 @@ function RecipeList() {
     };
 
     const handleEditButtonClick = (recipe) => {
+        const auth = getAuth();
+        const currentUser = auth.currentUser
+        const creator = recipe.getCreator();
+        if (currentUser.uid !== creator) {
+            alert('You are not the creator of this recipe. You cannot edit it.');
+            return;
+        } else {
         setShowAddForm(true);
         setEditRecipe(recipe);
     };
+};
 
     const handleDeleteButtonClick = async (recipe) => {
+        const auth = getAuth();
+        const currentUser = auth.currentUser
+        const creator = recipe.getCreator();
+        if (currentUser.uid !== creator) {
+            alert('You are not the creator of this recipe. You cannot delete it.');
+            return;
+        } else {
         try {
             await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
             fetchRecipes();
         } catch (error) {
             setError(error);
         }
-    };
+    }};
 
     const handleViewEntriesButtonClick = (recipeId) => {
         navigate(`/recipes/entries/${recipeId}`);
