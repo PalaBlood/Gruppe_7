@@ -132,9 +132,9 @@ class App extends React.Component {
             <ThemeProvider theme={Theme}>
                 <CssBaseline />
                 <Router>
-                    <Container maxWidth='100%' style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={styles.app}>
                         <Header user={currentUser} />
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <Container component="main" style={styles.main}>
                             <Routes>
                                 <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={this.handleSignIn} />} />
                                 <Route path="/home" element={<Secured user={currentUser}>
@@ -184,11 +184,12 @@ class App extends React.Component {
                                     </Secured>
                                 }/>
                             </Routes>
-                            <LoadingProgress show={authLoading} />
-                            <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
-                            <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
-                        </div>
-                    </Container>
+                        </Container>
+                        <Footer />
+                    </div>
+                    <LoadingProgress show={authLoading} />
+                    <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
+                    <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
                 </Router>
             </ThemeProvider>
         );
@@ -204,3 +205,16 @@ function Secured({ user, children }) {
     }
     return children;
 }
+
+const styles = {
+  app: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  main: {
+    flex: 1,
+    padding: '20px 0',
+  },
+};
+
