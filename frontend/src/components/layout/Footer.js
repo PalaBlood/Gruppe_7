@@ -9,7 +9,7 @@ const Footer = () => {
         © 2024 FridgeFinder, Inc. all rights reserved.
       </Typography>
       <Typography variant="body2" color="textSecondary" align="center" style={styles.linkContainer}>
-        <Link component={RouterLink} to={process.env.PUBLIC_URL + '/privacy'}>Privacy policy</Link> | <Link component={RouterLink} to={process.env.PUBLIC_URL + '/terms'}>Terms of service</Link>
+        <Link component={RouterLink} to={process.env.PUBLIC_URL + '/about'}>About</Link>
       </Typography>
     </Paper>
   );
