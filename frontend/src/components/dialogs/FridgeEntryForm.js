@@ -133,7 +133,7 @@ class FridgeEntryForm extends Component {
 
         this.setState({
             [event.target.id]: value,
-            [event.target.id + 'ValidationFailed']: error,
+            [event.target.id + 'Validation Failed']: error,
             [event.target.id + 'Edited']: true
         });
     }
