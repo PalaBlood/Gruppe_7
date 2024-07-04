@@ -19,7 +19,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Liste der realen Einheiten, die in der SmartFridge App verwendet werden dürfen
-const realUnits = ['liters', 'milliliters', 'kilograms', 'grams', 'pieces', 'cups', 'pinch', 'ml', 'l','g', 'kg', 'cl'];
+const realUnits = ['liters', 'milliliters', 'kilograms', 'grams', 'pieces', 'cups', 'pinch', 'ml', 'l','g', 'kg', 'cl', 'centiliters', 'piece'];
 
 const UnitList = ({ householdId }) => {
   const [units, setUnits] = useState([]);
