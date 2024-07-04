@@ -27,7 +27,6 @@ function RecipeForm({ recipeentry, show, onClose }) {
     const [loadingHouseholdId, setLoadingHouseholdId] = useState(true);
     const [householdIdError, setHouseholdIdError] = useState(null);
 
-    
     useEffect(() => {
         if (recipeentry) {
             setTitle(recipeentry.getTitle());
@@ -35,11 +34,15 @@ function RecipeForm({ recipeentry, show, onClose }) {
             setCreator(recipeentry.getCreator());
             setDescription(recipeentry.getDescription());
             setHouseholdId(recipeentry.getHouseholdId());
+        } else {
+            setTitle('');
+            setNumberOfPersons('');
+            setCreator('');
+            setDescription('');
+            setHouseholdId('');
         }
         handleFetchGoogleUserId();
     }, [recipeentry]);
-
-
 
     const handleFetchGoogleUserId = async () => {
         try {
@@ -59,11 +62,15 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
-
-
     const addRecipe = async () => {
+        if (!title || !numberOfPersons || !description) {
+            setAddingError({ message: 'All fields are required' });
+            return;
+        }
+
         setAddingInProgress(true);
         setAddingError(null);
+
         const newRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId);
 
         try {
@@ -76,13 +83,18 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
-
-
     const updateRecipe = async () => {
+        if (!title || !numberOfPersons || !description) {
+            setUpdatingError({ message: 'All fields are required' });
+            return;
+        }
+
         setUpdatingInProgress(true);
         setUpdatingError(null);
+
         const updatedRecipe = new RecipeBO(title, creator, numberOfPersons, description, householdId);
         updatedRecipe.setId(recipeentry.getId());
+        updatedRecipe.setHouseholdId(householdId);
 
         try {
             const recipe = await FridgeAPI.getAPI().updateRecipe(updatedRecipe);
@@ -94,11 +106,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
-
-
-
     const textFieldValueChange = (event) => {
-        //Sorgt dafür, dass falsche Eingaben vom User erkannt werden
         const { id, value } = event.target;
         const trimmedValue = value.trim();
         const isEdited = trimmedValue.length > 0;
@@ -106,17 +114,17 @@ function RecipeForm({ recipeentry, show, onClose }) {
         switch (id) {
             case 'title':
                 setTitle(value);
-                setTitleValidationFailed(trimmedValue.length === 0);//False wenn keine Eingabe gemacht wurde
+                setTitleValidationFailed(trimmedValue.length === 0);
                 setTitleEdited(isEdited);
                 break;
             case 'numberOfPersons':
                 setNumberOfPersons(value);
-                setNumberOfPersonsValidationFailed(isNaN(value) || trimmedValue.length === 0); //Falsch, wenn es nicht um keinen numierschen Wert oder kein Eintrag gemacht wurde
+                setNumberOfPersonsValidationFailed(isNaN(value) || trimmedValue.length === 0);
                 setNumberOfPersonsEdited(isEdited);
                 break;
             case 'description':
                 setDescription(value);
-                setDescriptionValidationFailed(trimmedValue.length === 0); //usw. 
+                setDescriptionValidationFailed(trimmedValue.length === 0);
                 setDescriptionEdited(isEdited);
                 break;
             default:
@@ -124,16 +132,12 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
-
-
     const handleClose = () => {
         onClose(null);
     };
 
-
-
     const komponent_title = recipeentry ? 'Update a recipe' : 'Create a new recipe';
-    const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data ';
+    const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data';
 
     if (loadingHouseholdId) {
         return <LoadingProgress show />;
@@ -154,32 +158,84 @@ function RecipeForm({ recipeentry, show, onClose }) {
                 <DialogContent>
                     <DialogContentText>{header}</DialogContentText>
                     <form sx={{ width: '100%' }} noValidate autoComplete='off'>
-                        <TextField autoFocus type='text' required fullWidth margin='normal' id='title' label='Title:' value={title}
-                            onChange={textFieldValueChange} error={titleValidationFailed}
-                            helperText={titleValidationFailed ? 'The title must contain at least one character' : ' '} />
-                        <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Number of persons:' value={numberOfPersons}
-                            onChange={textFieldValueChange} error={numberOfPersonsValidationFailed}
-                            helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '} />
-                        <TextField type='text' required fullWidth margin='normal' id='description' label='Description:' value={description}
-                            onChange={textFieldValueChange} error={descriptionValidationFailed}
-                            helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '} />
+                        <TextField
+                            autoFocus
+                            type='text'
+                            required
+                            fullWidth
+                            margin='normal'
+                            id='title'
+                            label='Title:'
+                            value={title}
+                            onChange={textFieldValueChange}
+                            error={titleValidationFailed}
+                            helperText={titleValidationFailed ? 'The title must contain at least one character' : ' '}
+                        />
+                        <TextField
+                            type='number'
+                            required
+                            fullWidth
+                            margin='normal'
+                            id='numberOfPersons'
+                            label='Number of persons:'
+                            value={numberOfPersons}
+                            onChange={textFieldValueChange}
+                            error={numberOfPersonsValidationFailed}
+                            helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '}
+                        />
+                        <TextField
+                            type='text'
+                            required
+                            fullWidth
+                            margin='normal'
+                            id='description'
+                            label='Description:'
+                            value={description}
+                            onChange={textFieldValueChange}
+                            error={descriptionValidationFailed}
+                            helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '}
+                        />
                     </form>
                     <LoadingProgress show={addingInProgress || updatingInProgress} />
-                    {
-                        recipeentry ?
-                            <ContextErrorMessage error={updatingError} contextErrorMsg={`The recipe  ${recipeentry.getId()} could not be updated.`} onReload={updateRecipe} />
-                            :
-                            <ContextErrorMessage error={addingError} contextErrorMsg={`The recipe could not be added.`} onReload={addRecipe} />
-                    }
+                    {recipeentry ? (
+                        <ContextErrorMessage
+                            error={updatingError}
+                            contextErrorMsg={`The recipe ${recipeentry.getId()} could not be updated.`}
+                            onReload={updateRecipe}
+                        />
+                    ) : (
+                        <ContextErrorMessage
+                            error={addingError}
+                            contextErrorMsg={`The recipe could not be added.`}
+                            onReload={addRecipe}
+                        />
+                    )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color='secondary'>Cancle</Button>
-                    {
-                        recipeentry ?
-                            <Button disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed} variant='contained' onClick={updateRecipe} color='primary'>Update</Button>
-                            :
-                            <Button disabled={titleValidationFailed || !titleEdited || numberOfPersonsValidationFailed || !numberOfPersonsEdited || descriptionValidationFailed || !descriptionEdited} variant='contained' onClick={addRecipe} color='primary'>Add</Button>
-                    }
+                    <Button onClick={handleClose} color='secondary'>Cancel</Button>
+                    {recipeentry ? (
+                        <Button
+                            disabled={titleValidationFailed || numberOfPersonsValidationFailed || descriptionValidationFailed}
+                            variant='contained'
+                            onClick={updateRecipe}
+                            color='primary'
+                        >
+                            Update
+                        </Button>
+                    ) : (
+                        <Button
+                            disabled={
+                                titleValidationFailed || !titleEdited ||
+                                numberOfPersonsValidationFailed || !numberOfPersonsEdited ||
+                                descriptionValidationFailed || !descriptionEdited
+                            }
+                            variant='contained'
+                            onClick={addRecipe}
+                            color='primary'
+                        >
+                            Add
+                        </Button>
+                    )}
                 </DialogActions>
             </Dialog>
         ) : null

@@ -46,8 +46,12 @@ class FoodEntry(BusinessObject):
     def convert_to_base_unit(quantity, unit):
         return unit.convert_to_base(quantity)
 
+
+
     def __str__(self):
         return f"Lebensmittel: {self.get_groceries_designation()}, Menge: {self.get_quantity()} {self.get_unit()}"
+    
+    
     @staticmethod
     def from_dict(dictionary=dict()):
         obj = FoodEntry()

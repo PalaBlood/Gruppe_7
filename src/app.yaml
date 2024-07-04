@@ -1,6 +1,6 @@
 runtime: python310
+service: backend
 
 handlers:
-
 - url: /.*
   script: auto

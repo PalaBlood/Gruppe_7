@@ -18,7 +18,3 @@ class Fridge(BusinessObject):
         obj.set_id(dictionary["id"])
 
 
-if __name__ == "__main__":
-    f = Fridge()
-    f.set_id(22)
-    print(f)
