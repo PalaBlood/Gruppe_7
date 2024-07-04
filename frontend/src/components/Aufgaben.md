@@ -16,4 +16,7 @@ Wenn man Namen edited bei Recipe Ingredients wird es nicht übernommen!!!!
 
 Footer wird nicht angezeigt
 
+Vlt noch cards erstellen für die restlichen Sachen
+
+
 
