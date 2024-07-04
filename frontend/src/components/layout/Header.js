@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Typography, Tabs, Tab, Tooltip, ThemeProvider } from '@mui/material';
+import { Paper, Typography, Tabs, Tab, Tooltip, ThemeProvider, useMediaQuery, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
 import ProfileDropDownWithRouter from '../dialogs/ProfileDropDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MicrowaveIcon from '@mui/icons-material/Microwave';
@@ -12,86 +13,120 @@ import LivingIcon from '@mui/icons-material/Living';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import Theme from '../../theme.js';
 
-class Header extends Component {
-  state = {
-    tabindex: 0,
+const Header = ({ user }) => {
+  const [tabindex, setTabindex] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleTabChange = (event, newValue) => {
+    setTabindex(newValue);
   };
 
-  handleTabChange = (event, newValue) => {
-    this.setState({ tabindex: newValue });
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerOpen(open);
   };
 
-  render() {
-    const { user } = this.props;
-    const { tabindex } = this.state;
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const isTablet = useMediaQuery('(max-width:960px)');
 
-    return (
-      <ThemeProvider theme={Theme}>
-      <Paper variant='outlined' style={{
-        borderRadius: '10px', 
-        overflow: 'hidden', 
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-        width : '100%',
-        display: 'flex',
-        flex: '1',
-        flexDirection: 'column'
-      }}>
+  const menuItems = [
+    { icon: <HomeIcon />, label: 'Home', path: '/home' },
+    { icon: <MicrowaveIcon />, label: 'Recipes', path: '/recipe' },
+    { icon: <KitchenIcon />, label: 'Fridge', path: '/fridge' },
+    { icon: <LivingIcon />, label: 'Household', path: '/household' },
+    { icon: <SettingsIcon />, label: 'User', path: '/user' },
+    { icon: <StraightenIcon />, label: 'Unit', path: '/unit' },
+    { icon: <InfoIcon />, label: 'About', path: '/about' },
+  ];
+
+  const renderTabs = () => (
+    <Tabs
+      indicatorColor="primary"
+      textColor="primary"
+      centered={!isMobile}
+      value={tabindex}
+      onChange={handleTabChange}
+      variant={isMobile ? 'scrollable' : 'fullWidth'}
+      scrollButtons={isMobile ? 'on' : 'off'}
+      allowScrollButtonsMobile
+      style={styles.tabs}
+    >
+      {menuItems.map((item, index) => (
+        <Tooltip title={`Here is our ${item.label.toLowerCase()}`} key={item.label}>
+          <Tab icon={item.icon} label={isTablet ? '' : item.label} component={RouterLink} to={item.path} />
+        </Tooltip>
+      ))}
+    </Tabs>
+  );
+
+  const renderDrawer = () => (
+    <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+      <List>
+        {menuItems.map((item, index) => (
+          <ListItem button component={RouterLink} to={item.path} key={item.label} onClick={toggleDrawer(false)}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} />
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
+
+  return (
+    <ThemeProvider theme={Theme}>
+      <Paper variant="outlined" style={styles.paper}>
         <ProfileDropDownWithRouter user={user} />
-        <Typography variant='h3' component='h1' align='center' style={{
-          marginTop: '0px', 
-          marginBottom: '20px', 
-          fontWeight: 'bold',
-          fontFamily: 'Roboto Mono, sans-serif',
-          letterSpacing: '0.1em'
-        }}>
+        <Typography variant={isMobile ? 'h5' : 'h3'} component="h1" align="center" style={styles.typography}>
           FridgeFinder
         </Typography>
-        {user && (
-          <Tabs 
-            indicatorColor='primary' 
-            textColor='primary' 
-            centered 
-            value={tabindex} 
-            onChange={this.handleTabChange}
-            style={{
-              marginBottom: '20px'
-            }}
-          >
-            <Tooltip title="Here is our homepage">
-              <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
-            </Tooltip>
-            <Tooltip title="Here you'll find your recipes">
-              <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipe' />
-            </Tooltip>
-            <Tooltip title="Here you'll find your stored groceries">
-              <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
-            </Tooltip>
-            <Tooltip title="Here you can see all the information about the households">
-              <Tab icon={<LivingIcon />} label='Household' component={RouterLink} to='/household' />
-            </Tooltip>
-            <Tooltip title="Here you can customize your user profile">
-              <Tab icon={<SettingsIcon />} label='User' component={RouterLink} to='/user'/>
-            </Tooltip>
-            <Tooltip title="Here you can customize the different units of measurement">
-              <Tab icon={<StraightenIcon />} label='Unit' component={RouterLink} to='/unit' />
-            </Tooltip>
-            <Tooltip title="Information about our app">
-              <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
-            </Tooltip>
-          </Tabs>
+        {isMobile ? (
+          <>
+            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} style={styles.menuButton}>
+              <MenuIcon />
+            </IconButton>
+            {renderDrawer()}
+          </>
+        ) : (
+          user && renderTabs()
         )}
       </Paper>
-      </ThemeProvider>
-    );
-  }
-}
+    </ThemeProvider>
+  );
+};
 
 Header.propTypes = {
   user: PropTypes.object,
 };
 
-//how is the user object passed to the Header component?
-//The user object is passed to the Header component as a prop from the parent component. The parent component is responsible for fetching the user data and passing it down to the Header component as a prop. This allows the Header component to access the user data and display it in the UI.
-//what is the parent component of the Header component?
-//The parent component of the Header component is the App component. The App component is the root component of the application and is responsible for managing the state of the user data. The App component fetches the user data from the backend and passes it down to the Header component as a prop.
+const styles = {
+  paper: {
+    borderRadius: '10px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    width: '100%',
+    display: 'flex',
+    flex: '1',
+    flexDirection: 'column',
+    position: 'relative',
+  },
+  typography: {
+    marginTop: '0px',
+    marginBottom: '20px',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto Mono, sans-serif',
+    letterSpacing: '0.1em',
+  },
+  tabs: {
+    marginBottom: '20px',
+  },
+  menuButton: {
+    position: 'absolute',
+    left: '10px',
+    top: '10px',
+  },
+};
+
 export default Header;
+
