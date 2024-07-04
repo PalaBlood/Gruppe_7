@@ -61,8 +61,8 @@ recipe = api.inherit('Recipe', bo, {
     'title': fields.String(attribute='_title', required=True, description='Title of the recipe'),
     'numberOfPersons': fields.Integer(attribute='_number_of_persons', required=True, description='Number of servings the recipe provides'),
     'creator': fields.String(attribute='_creator', description='Creator of the recipe'),
-    'description': fields.String(attribute='_description', required=True, description='The Description of a recipe'),
-    'household_id': fields.Integer(attribute='_household_id', required=True, description="The Reference for the Household")
+    'description': fields.String(attribute='_description', required=True, description='The description of a recipe'),
+    'household_id': fields.Integer(attribute='_household_id', required=True, description="The reference for the household")
 })
 
 
@@ -92,7 +92,7 @@ unit = api.inherit('Unit', bo, {
 #Alle Operationen für die verschiedenen Business-Objekte werden im folgenden Abschnitt definiert.
 #User Operations
 @fridge_ns.route('/users')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class UserListOperations(Resource):
 
     @secured
@@ -130,8 +130,8 @@ class UserListOperations(Resource):
 
 
 @fridge_ns.route('/users/<int:id>')
-@fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('id', 'die Id eines Users')
+@fridge_ns.response(500, 'Server-Error')
+@fridge_ns.param('id', 'User ID')
 class UserOperations(Resource):
 
     @secured
@@ -170,8 +170,8 @@ class UserOperations(Resource):
 
 
 @fridge_ns.route('/user-by-google-id/<string:google_user_id>')
-@fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('google_user_id', 'die google_user_id eines users')
+@fridge_ns.response(500, 'Server-Error')
+@fridge_ns.param('google_user_id', 'Google_user_id of a user')
 class UserByGoogleIdOperations(Resource):
 
     @secured
@@ -184,8 +184,8 @@ class UserByGoogleIdOperations(Resource):
 
 
 @fridge_ns.route('/users-by-nick_name/<string:nick_name>')
-@fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('nick_name', 'Der nick_name eines Users')
+@fridge_ns.response(500, 'Server-Error')
+@fridge_ns.param('nick_name', 'Nickname of a user')
 class UsersByNameOperations(Resource):
 
     @secured
@@ -201,7 +201,7 @@ class UsersByNameOperations(Resource):
 
 #Household Operations, die Operationen für die Haushalte
 @fridge_ns.route('/Household')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class HouseholdListOperation(Resource):
 
     @secured
@@ -227,8 +227,8 @@ class HouseholdListOperation(Resource):
 
 
 @fridge_ns.route('/Household/<int:id>')
-@fridge_ns.response(500, 'Server-Fehler')
-@fridge_ns.param('id', 'die Id eines Haushalts')
+@fridge_ns.response(500, 'Server-Error')
+@fridge_ns.param('id', 'Houshold ID')
 class HouseholdOperations(Resource):
 
     @secured
@@ -264,7 +264,7 @@ class HouseholdOperations(Resource):
 
 
 @fridge_ns.route('/HouseholdbyID/<int:id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class HouseholdbyIDOperations(Resource):
 
     @secured
@@ -281,7 +281,7 @@ class HouseholdbyIDOperations(Resource):
 
 #Fridge Operations
 @fridge_ns.route('/Fridge')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class FridgeListOperations(Resource):
 
     @secured
@@ -310,7 +310,7 @@ class FridgeListOperations(Resource):
 
 #FridgeEnty Operations
 @fridge_ns.route('/FridgeEntries')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class FridgeEntryListOperations(Resource):
 
     @secured
@@ -353,7 +353,7 @@ class FridgeEntryListOperations(Resource):
 
 
 @fridge_ns.route('/FridgeEntries/<int:fridge_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class FridgeEntrybyFridgeIdOperations(Resource):
 
     @secured
@@ -368,10 +368,10 @@ class FridgeEntrybyFridgeIdOperations(Resource):
 
 
 @fridge_ns.route('/FridgeEntry/<string:groceries_designation>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 @fridge_ns.response(404, 'FridgeEntry not found')
 @fridge_ns.response(200, 'FridgeEntry successfully updated')
-@fridge_ns.param('groceries_designation', 'der Name eines Lebensmittels')
+@fridge_ns.param('groceries_designation', 'Name of a grocerie')
 class FridgeEntryOperations(Resource):
 
     @secured
@@ -407,8 +407,8 @@ class FridgeEntryOperations(Resource):
 
 
 @fridge_ns.route('/COOK/<string:recipe_title>', methods=['PUT'])
-@fridge_ns.response(500, 'Server_fehler')
-@fridge_ns.param('recipe_title', 'der name eines rezepts')
+@fridge_ns.response(500, 'Server-Error')
+@fridge_ns.param('recipe_title', 'Recipe name')
 class UseRecipeIngredients(Resource):
 
     @secured
@@ -429,11 +429,11 @@ class UseRecipeIngredients(Resource):
                     new_quantity = fridge_entry[2] - recipe_quantity_in_fridge_units
                     adm.update_fridge_entry_quantity(fridge_entry[0], fridge_entry[1], new_quantity, fridge_entry[3])
                 else:
-                    return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
+                    return {"error": f"Not enough in fridge."}, 400
             else:
-                return {"error": f"Nicht genug im Kühlschrank Bro."}, 400
+                return {"error": f"Not enough in fridge."}, 400
 
-        return {"message": "LET HIM COOK."}, 200
+        return {"message": "Lets cook."}, 200
 
 
 
@@ -442,7 +442,7 @@ class UseRecipeIngredients(Resource):
 
 #RecipeEntry Operations
 @fridge_ns.route('/RecipeEntries')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class RecipeEntryListOperation(Resource):
 
     @secured
@@ -472,10 +472,10 @@ class RecipeEntryListOperation(Resource):
 
 
 @fridge_ns.route('/RecipeEntries/<int:recipe_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully retrieved')
-@fridge_ns.param('recipe_id', 'Die ID eines Rezepts')
+@fridge_ns.param('recipe_id', 'Recipe ID')
 class RecipeEntryListOperationByID(Resource):
 
     @secured
@@ -491,11 +491,11 @@ class RecipeEntryListOperationByID(Resource):
 
 
 @fridge_ns.route('/RecipeEntry/<string:groceries_designation>/<int:recipe_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully deleted')
-@fridge_ns.param('groceries_designation', 'Bezeichnung eines Lebensmittels')
-@fridge_ns.param('recipe_id', 'ID eines Rezepts')
+@fridge_ns.param('groceries_designation', 'Designation of a grocerie')
+@fridge_ns.param('recipe_id', 'Recipe ID')
 class RecipeEntryOperationsByDesignationAndID(Resource):
 
     @secured
@@ -529,7 +529,7 @@ class RecipeEntryOperationsByDesignationAndID(Resource):
 @fridge_ns.response(500, 'Server-Fehler')
 @fridge_ns.response(404, 'RecipeEntry not found')
 @fridge_ns.response(200, 'RecipeEntry successfully updated')
-@fridge_ns.param('groceries-designation', 'Bezeichnung eines Lebensmittels')
+@fridge_ns.param('groceries-designation', 'Designation of a grocerie')
 class RecipeEntryListOperations2(Resource):
 
     @secured
@@ -544,7 +544,7 @@ class RecipeEntryListOperations2(Resource):
 
 #Recipe Operations
 @fridge_ns.route('/RecipeList')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 @fridge_ns.response(404, 'Recipe not found')
 @fridge_ns.response(200, 'Recipe successfully updated')
 class RecipeListOperations(Resource):
@@ -579,7 +579,7 @@ class RecipeListOperations(Resource):
 
 
 @fridge_ns.route('/RecipeList/<int:household_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class RecipebyHouseholdIdOperations(Resource):
 
     @secured
@@ -593,7 +593,7 @@ class RecipebyHouseholdIdOperations(Resource):
 
 
 @fridge_ns.route('/Recipe/<int:recipe_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class RecipeOperations(Resource):
 
     @secured
@@ -640,7 +640,7 @@ class FridgeIdByGoogleIdOperations(Resource):
 
 #Fridge Operations
 @fridge_ns.route('/fridge-id-by-google-id/<string:google_user_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class FridgeIdByGoogleIdResource(Resource):
 
     @secured
@@ -658,7 +658,7 @@ class FridgeIdByGoogleIdResource(Resource):
 
 #Household Operations
 @fridge_ns.route('/household-id-by-google-id/<string:google_user_id>')
-@fridge_ns.response(500, 'Server-Fehler')
+@fridge_ns.response(500, 'Server-Error')
 class HouseholdIdByGoogleUserId(Resource):
 
     @secured
