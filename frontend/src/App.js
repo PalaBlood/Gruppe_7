@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
@@ -21,50 +21,59 @@ import RecipeEntryList from './components/RecipeEntryList';
 import UnitList from './components/UnitList';
 import FridgeEntriesComponent from './components/FridgeItemList';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        // Initialize state with an empty User object and null as Household ID
-        this.state = {
-            currentHouseholdId: null,
-            currentUser: null,
-            appError: null,
-            authError: null,
-            authLoading: false
-        };
+initializeApp(firebaseConfig);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
 
-        this.onHouseholdConfirmed = this.onHouseholdConfirmed.bind(this);
+const App = () => {
+    const [currentHouseholdId, setCurrentHouseholdId] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [appError, setAppError] = useState(null);
+    const [authError, setAuthError] = useState(null);
+    const [authLoading, setAuthLoading] = useState(false);
 
-        // Initialize Firebase if not already initialized
-        if (!App.firebaseInitialized) {
-            App.app = initializeApp(firebaseConfig);
-            App.auth = getAuth(App.app);
-            App.provider = new GoogleAuthProvider();
-            App.firebaseInitialized = true;
-        }
-    }
-
-    static getDerivedStateFromError(error) {
-        return { appError: error };
-    }
-
-    handleSignIn = () => {
-        this.setState({ authLoading: true });
-        signInWithPopup(App.auth, App.provider).then(async (result) => {
+    const handleSignIn = () => {
+        setAuthLoading(true);
+        signInWithPopup(auth, provider).then(async (result) => {
             const user = result.user;
             const token = await user.getIdToken();
             document.cookie = `token=${token};path=/;`;
-            this.setState({ authLoading: false, currentUser: user });
+            setAuthLoading(false);
+            setCurrentUser(user);
         }).catch((error) => {
-            this.setState({ authLoading: false, authError: error.message });
+            setAuthLoading(false);
+            setAuthError(error.message);
         });
     };
 
-    // Lifecycle method
-    componentDidMount() {
-        this.unsubscribeFromAuth = onAuthStateChanged(App.auth, async (user) => {
+    const onHouseholdConfirmed = async (householdId) => {
+        if (!auth.currentUser) {
+            setAppError("No authenticated user found.");
+            return;
+        }
+
+        try {
+            let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(auth.currentUser.uid);
+            if (userBOArray && userBOArray.length > 0) {
+                let userBO = userBOArray[0];
+                userBO.household_id = householdId;
+
+                await FridgeAPI.getAPI().updateUser(userBO);
+                setCurrentHouseholdId(householdId);
+            } else {
+                throw new Error("User profile not found.");
+            }
+        } catch (error) {
+            setAppError(error.message);
+            console.error("Failed to update user's household:", error);
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                this.setState({ authLoading: true, currentUser: user });
+                setAuthLoading(true);
+                setCurrentUser(user);
                 const token = await user.getIdToken();
                 document.cookie = `token=${token};path=/;`;
                 const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(user.uid);
@@ -79,132 +88,90 @@ class App extends React.Component {
                     };
                     await FridgeAPI.getAPI().addUser(newUser);
                 }
-                this.setState({
-                    currentUser: user,
-                    authError: null,
-                    authLoading: false
-                });
+                setAuthLoading(false);
             } else {
-                this.setState({ currentUser: null, authLoading: false });
+                setCurrentUser(null);
+                setAuthLoading(false);
             }
         });
-    }
 
-    // Make sure componentDidMount is only triggered once
-    componentWillUnmount() {
-        if (this.unsubscribeFromAuth) {
-            this.unsubscribeFromAuth();
-        }
-    }
+        return () => unsubscribe();
+    }, []);
 
-    // Household confirmed
-    onHouseholdConfirmed = async (householdId) => {
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
+    return (
+        <ThemeProvider theme={Theme}>
+            <CssBaseline />
+            <Router>
+                <div style={styles.app}>
+                    <Header user={currentUser} />
+                    <Container component="main" style={styles.main}>
+                        <Routes>
+                            <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={handleSignIn} />} />
+                            <Route path="/home" element={<Secured user={currentUser}>
+                                <CheckforexistingHousehold onHouseholdConfirmed={onHouseholdConfirmed} />
+                                <Home />
+                            </Secured>} />
+                            
+                            <Route path="/user" element={
+                                <Secured user={currentUser}>
+                                    <UserProfile />
+                                </Secured>
+                            } />
+                            
+                            <Route path="/fridge" element={
+                                <Secured user={currentUser}>
+                                    <FridgeEntriesComponent />
+                                </Secured>
+                            } />
+                           
+                            <Route path="/household" element={
+                                <Secured user={currentUser}>
+                                    <Household />
+                                </Secured>
+                            } />
 
-        if (!currentUser) {
-            this.setState({ error: "No authenticated user found." });
-            return;
-        }
+                            <Route path="/recipe" element={
+                                <Secured user={currentUser}>
+                                    <RecipeList />
+                                </Secured>
+                            } />
 
-        this.setState({ loading: true });
+                            <Route path="/recipes/entries/:recipeId" element={
+                                <Secured user={currentUser}>
+                                    <RecipeEntryList />
+                                </Secured>} 
+                            />
+                                    
+                            <Route path="/unit" element={
+                                <Secured user={currentUser}>
+                                    <UnitList />
+                                </Secured>
+                            }/>
+                      
+                            
+                            <Route path="/about" element={<Secured user={currentUser}>
+                                    <About />
+                                </Secured>
+                            }/>
+                        </Routes>
+                    </Container>
+                    <Footer />
+                </div>
+                <LoadingProgress show={authLoading} />
+                <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={handleSignIn} />
+                <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
+            </Router>
+        </ThemeProvider>
+    );
+};
 
-        try {
-            let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
-            if (userBOArray && userBOArray.length > 0) {
-                let userBO = userBOArray[0];
-                userBO.household_id = householdId;  // Update household ID
-
-                await FridgeAPI.getAPI().updateUser(userBO);  // Update user via API
-                this.setState({ loading: false, dialogOpen: false, selectedHouseholdId: householdId });
-            } else {
-                throw new Error("User profile not found.");
-            }
-        } catch (error) {
-            this.setState({ error: error.message, loading: false });
-            console.error("Failed to update user's household:", error);
-        }
-    }
-
-    render() {
-        const { currentUser, appError, authError, authLoading } = this.state;
-        return (
-            <ThemeProvider theme={Theme}>
-                <CssBaseline />
-                <Router>
-                    <div style={styles.app}>
-                        <Header user={currentUser} />
-                        <Container component="main" style={styles.main}>
-                            <Routes>
-                                <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={this.handleSignIn} />} />
-                                <Route path="/home" element={<Secured user={currentUser}>
-                                    <CheckforexistingHousehold onHouseholdConfirmed={this.onHouseholdConfirmed} />
-                                    <Home />
-                                </Secured>} />
-                                
-                                <Route path="/user" element={
-                                    <Secured user={currentUser}>
-                                        <UserProfile />
-                                    </Secured>
-                                } />
-                                
-                                <Route path="/fridge" element={
-                                    <Secured user={currentUser}>
-                                        <FridgeEntriesComponent />
-                                    </Secured>
-                                } />
-                               
-                                <Route path="/household" element={
-                                    <Secured user={currentUser}>
-                                        <Household />
-                                    </Secured>
-                                } />
-
-                                <Route path="/recipe" element={
-                                    <Secured user={currentUser}>
-                                        <RecipeList />
-                                    </Secured>
-                                } />
-
-                                <Route path="/recipes/entries/:recipeId" element={
-                                    <Secured user={currentUser}>
-                                        <RecipeEntryList />
-                                    </Secured>} 
-                                />
-                                        
-                                <Route path="/unit" element={
-                                    <Secured user={currentUser}>
-                                        <UnitList />
-                                    </Secured>
-                                }/>
-                          
-                                
-                                <Route path="/about" element={<Secured user={currentUser}>
-                                        <About />
-                                    </Secured>
-                                }/>
-                            </Routes>
-                        </Container>
-                        <Footer />
-                    </div>
-                    <LoadingProgress show={authLoading} />
-                    <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={this.handleSignIn} />
-                    <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
-                </Router>
-            </ThemeProvider>
-        );
-    }
-}
-
-export default App;
-
-function Secured({ user, children }) {
+const Secured = ({ user, children }) => {
     let location = useLocation();
     if (!user) {
         return <Navigate to="/" state={{ from: location }} replace />;
     }
     return children;
-}
+};
 
 const styles = {
   app: {
@@ -214,7 +181,11 @@ const styles = {
   },
   main: {
     flex: 1,
-    padding: '20px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 };
+
+export default App;
 
