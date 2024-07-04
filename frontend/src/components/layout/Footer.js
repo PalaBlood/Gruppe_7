@@ -13,10 +13,10 @@ class Footer extends Component {
         boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)'
       }}>
         <Typography variant="body1" color="textSecondary" align="center">
-          © 2024 HdMSmartFridge, Inc. All rights reserved.
+          © 2024 FridgeFinder, Inc. all rights reserved.
         </Typography>
         <Typography variant="body2" color="textSecondary" align="center" style={{ marginTop: '5px' }}>
-          <Link component={RouterLink} to={process.env.PUBLIC_URL + '/privacy'}>Privacy Policy</Link> | <Link component={RouterLink} to={process.env.PUBLIC_URL + '/terms'}>Terms of Service</Link>
+          <Link component={RouterLink} to={process.env.PUBLIC_URL + '/privacy'}>Privacy policy</Link> | <Link component={RouterLink} to={process.env.PUBLIC_URL + '/terms'}>Terms of service</Link>
         </Typography>
       </Paper>
     );

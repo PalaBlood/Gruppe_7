@@ -40,10 +40,11 @@ class Header extends Component {
         <Typography variant='h3' component='h1' align='center' style={{
           marginTop: '0px', 
           marginBottom: '20px', 
-          fontWeight: 'medium',
-          fontFamily: 'Roboto Mono, sans-serif'
+          fontWeight: 'bold',
+          fontFamily: 'Roboto Mono, sans-serif',
+          letterSpacing: '0.1em'
         }}>
-          FridgeSense
+          FridgeFinder
         </Typography>
         {user && (
           <Tabs 
@@ -56,25 +57,25 @@ class Header extends Component {
               marginBottom: '20px'
             }}
           >
-            <Tooltip title="Here is our Homepage">
+            <Tooltip title="Here is our homepage">
               <Tab icon={<HomeIcon />} label='Home' component={RouterLink} to='/home'/>
             </Tooltip>
-            <Tooltip title="Hier findest du deine Rezepte">
+            <Tooltip title="Here you'll find your recipes">
               <Tab icon={<MicrowaveIcon />} label='Recipes' component={RouterLink} to='/recipe' />
             </Tooltip>
-            <Tooltip title="Hier findest du deine eingelagerten Lebensmittel">
+            <Tooltip title="Here you'll find your stored groceries">
               <Tab icon={<KitchenIcon />} label='Fridge' component={RouterLink} to='/fridge' />
             </Tooltip>
-            <Tooltip title="Hier siehst du alle Infos zu den Haushalte">
+            <Tooltip title="Here you can see all the information about the households">
               <Tab icon={<LivingIcon />} label='Household' component={RouterLink} to='/household' />
             </Tooltip>
-            <Tooltip title="Hier kannst du deinen Benutzer anpassen">
+            <Tooltip title="Here you can customize your user profile">
               <Tab icon={<SettingsIcon />} label='User' component={RouterLink} to='/user'/>
             </Tooltip>
-            <Tooltip title="Hier kannst du die verschiedenen Maßeinheiten anpassen">
+            <Tooltip title="Here you can customize the different units of measurement">
               <Tab icon={<StraightenIcon />} label='Unit' component={RouterLink} to='/unit' />
             </Tooltip>
-            <Tooltip title="Infos über unsere App">
+            <Tooltip title="Information about our app">
               <Tab icon={<InfoIcon />} label='About' component={RouterLink} to='/about' />
             </Tooltip>
           </Tabs>

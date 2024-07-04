@@ -2,7 +2,7 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
-from server.db.dbcredentials import host, user, password, database
+#from server.db.dbcredentials import host, user, password, database
 
 
 
@@ -36,9 +36,9 @@ class Mapper(AbstractContextManager, ABC):
 
         else:
             #Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt
-            self._cnx = connector.connect(user='root', password="9902",
-                              host=host,
-                              database='Sopra')
+            self._cnx = connector.connect(user='root', password='kartal1999',
+                              host= '127.0.0.1',
+                              database='sopra')
 
 
         return self

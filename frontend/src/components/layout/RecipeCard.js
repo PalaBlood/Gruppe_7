@@ -16,10 +16,10 @@ function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" startIcon={<EditIcon />} onClick={() => onEdit(recipe)}>Rezept bearbeiten</Button>
-                <Button size="small" startIcon={<DeleteIcon />} onClick={() => onDelete(recipe)}>Entfernen</Button>
-                <Button size="small" startIcon={<KitchenIcon />} onClick={() => onViewEntries(recipe.getId())}>Zeige Zutaten</Button>
-                <Button size="small" startIcon={<OutdoorGrillIcon />} onClick={() => onCook(recipe)}>Rezept kochen</Button>
+                <Button size="small" startIcon={<EditIcon />} onClick={() => onEdit(recipe)}>Customize recipe</Button>
+                <Button size="small" startIcon={<DeleteIcon />} onClick={() => onDelete(recipe)}>Delete</Button>
+                <Button size="small" startIcon={<KitchenIcon />} onClick={() => onViewEntries(recipe.getId())}>Show ingredients</Button>
+                <Button size="small" startIcon={<OutdoorGrillIcon />} onClick={() => onCook(recipe)}>Cook recipe</Button>
             </CardActions>
         </Card>
     );
