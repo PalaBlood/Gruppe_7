@@ -128,7 +128,7 @@ class Household extends Component {
         const auth = getAuth();
         const currentUser = auth.currentUser;
         if (!currentUser) {
-            this.setState({ error: "No user logged in" });
+            this.setState({ error: "No user logged in." });
             return;
         }
 
@@ -227,7 +227,7 @@ class Household extends Component {
                     </List>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.addHousehold} color="primary">Neuen Haushalt hinzufügen</Button>
+                    <Button onClick={this.addHousehold} color="primary">Add new household</Button>
                 </DialogActions>
             </Dialog>
         );
@@ -249,7 +249,7 @@ class Household extends Component {
                         <Box sx={{ mb: 2 }}>
                             <TextField
                                 fullWidth
-                                label="Edit Household Name"
+                                label="Edit household name"
                                 variant="outlined"
                                 value={newHouseholdName}
                                 onChange={this.handleInputChange}

@@ -20,6 +20,11 @@ const conversionRates = {
     pieces: { pieces: 1 },
     cups: { cups: 1 },
     pinch: { pinch: 1 },
+    l: { ml: 1000, l: 1 },
+    ml: { l: 1 / 1000, ml: 1 },
+    kg: { g: 1000, kg: 1 },
+    g: { kg: 1 / 1000, g: 1 },
+    cl: { l: 1 / 100, cl: 1 }
 };
 
 function convertQuantity(quantity, fromUnit, toUnit) {

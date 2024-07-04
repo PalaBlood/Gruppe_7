@@ -160,7 +160,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
                         <TextField type='number' required fullWidth margin='normal' id='numberOfPersons' label='Number of persons:' value={numberOfPersons}
                             onChange={textFieldValueChange} error={numberOfPersonsValidationFailed}
                             helperText={numberOfPersonsValidationFailed ? 'The number of persons must be a valid number' : ' '} />
-                        <TextField type='text' required fullWidth margin='normal' id='description' label='Beschreibung:' value={description}
+                        <TextField type='text' required fullWidth margin='normal' id='description' label='Description:' value={description}
                             onChange={textFieldValueChange} error={descriptionValidationFailed}
                             helperText={descriptionValidationFailed ? 'The description must contain at least one character' : ' '} />
                     </form>

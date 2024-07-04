@@ -103,14 +103,14 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         show && (
             <Dialog open={show} onClose={handleClose} maxWidth='xs'>
                 <DialogTitle>
-                    {entry ? 'Update an Ingredient' : 'Create an Ingredient'}
+                    {entry ? 'Update an ingredient' : 'Create an ingredient'}
                     <IconButton onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {'Enter Ingredient Data'}
+                        {'Enter ingredient data'}
                     </DialogContentText>
                     <TextField
                         autoFocus

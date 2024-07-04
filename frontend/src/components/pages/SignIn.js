@@ -40,13 +40,13 @@ class SignIn extends Component {
 						backgroundColor: 'background.paper'
 					}}>
 						<Typography sx={{ margin: 2 }} variant='h5' align='center' fontWeight="bold">
-							Welcome to SmartFridge
+							Welcome to FridgeFinder
 						</Typography>
 						<Typography sx={{ margin: 2 }} align='center'>
 							It appears that you are not signed in.
 						</Typography>
 						<Typography sx={{ margin: 2 }} align='center'>
-							Sign in to your SmartFridge
+							Sign in to your FridgeFinder
 						</Typography>
 						<Grid container justifyContent='center'>
 							<Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={this.handleSignInButtonClicked}>
