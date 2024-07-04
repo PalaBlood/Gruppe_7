@@ -1,11 +1,13 @@
 import React from 'react';
-import { Paper, Typography, Link } from '@mui/material';
+import { Paper, Typography, Link, useMediaQuery } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 const Footer = () => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   return (
-    <Paper variant="outlined" style={styles.paper}>
-      <Typography variant="body1" color="textSecondary" align="center">
+    <Paper variant="outlined" style={isMobile ? styles.paperMobile : styles.paper}>
+      <Typography variant="body2" color="textSecondary" align="center">
         © 2024 FridgeFinder, Inc. all rights reserved.
       </Typography>
       <Typography variant="body2" color="textSecondary" align="center" style={styles.linkContainer}>
@@ -20,7 +22,14 @@ const styles = {
     borderRadius: '10px',
     marginTop: 'auto',
     padding: '10px 20px',
-    backgroundColor: '#f3f3f3',
+    backgroundColor: '#c6d9e7',
+    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
+  },
+  paperMobile: {
+    borderRadius: '10px',
+    marginTop: 'auto',
+    padding: '3px 5px', // Kleineres Padding für Mobile
+    backgroundColor: '#c6d9e7',
     boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
   },
   linkContainer: {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Typography, Tabs, Tab, Tooltip, ThemeProvider, useMediaQuery, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Paper, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, ThemeProvider, useMediaQuery } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import ProfileDropDownWithRouter from '../dialogs/ProfileDropDown';
@@ -14,12 +14,8 @@ import StraightenIcon from '@mui/icons-material/Straighten';
 import Theme from '../../theme.js';
 
 const Header = ({ user }) => {
-  const [tabindex, setTabindex] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const handleTabChange = (event, newValue) => {
-    setTabindex(newValue);
-  };
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -28,69 +24,47 @@ const Header = ({ user }) => {
     setDrawerOpen(open);
   };
 
-  const isMobile = useMediaQuery('(max-width:600px)');
-  const isTablet = useMediaQuery('(max-width:960px)');
-
   const menuItems = [
-    { icon: <HomeIcon />, label: 'Home', path: '/home' },
-    { icon: <MicrowaveIcon />, label: 'Recipes', path: '/recipe' },
-    { icon: <KitchenIcon />, label: 'Fridge', path: '/fridge' },
-    { icon: <LivingIcon />, label: 'Household', path: '/household' },
-    { icon: <SettingsIcon />, label: 'User', path: '/user' },
-    { icon: <StraightenIcon />, label: 'Unit', path: '/unit' },
-    { icon: <InfoIcon />, label: 'About', path: '/about' },
+    { icon: <HomeIcon style={styles.icon} />, label: 'Home', path: '/home' },
+    { icon: <MicrowaveIcon style={styles.icon} />, label: 'Recipes', path: '/recipe' },
+    { icon: <KitchenIcon style={styles.icon} />, label: 'Fridge', path: '/fridge' },
+    { icon: <LivingIcon style={styles.icon} />, label: 'Household', path: '/household' },
+    { icon: <SettingsIcon style={styles.icon} />, label: 'User', path: '/user' },
+    { icon: <StraightenIcon style={styles.icon} />, label: 'Unit', path: '/unit' },
+    { icon: <InfoIcon style={styles.icon} />, label: 'About', path: '/about' },
   ];
 
-  const renderTabs = () => (
-    <Tabs
-      indicatorColor="primary"
-      textColor="primary"
-      centered={!isMobile}
-      value={tabindex}
-      onChange={handleTabChange}
-      variant={isMobile ? 'scrollable' : 'fullWidth'}
-      scrollButtons={isMobile ? 'on' : 'off'}
-      allowScrollButtonsMobile
-      style={styles.tabs}
-    >
-      {menuItems.map((item, index) => (
-        <Tooltip title={`Here is our ${item.label.toLowerCase()}`} key={item.label}>
-          <Tab icon={item.icon} label={isTablet ? '' : item.label} component={RouterLink} to={item.path} />
-        </Tooltip>
-      ))}
-    </Tabs>
-  );
-
   const renderDrawer = () => (
-    <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+    <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)} PaperProps={{ style: styles.drawer }}>
       <List>
-        {menuItems.map((item, index) => (
+        {menuItems.map((item) => (
           <ListItem button component={RouterLink} to={item.path} key={item.label} onClick={toggleDrawer(false)}>
             <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
+            <ListItemText primary={item.label} primaryTypographyProps={{ style: styles.listItemText }} />
           </ListItem>
         ))}
       </List>
     </Drawer>
   );
 
+  const logoContainerStyle = isMobile ? styles.logoContainerMobile : styles.logoContainerDesktop;
+  const logoStyle = isMobile ? styles.logoMobile : styles.logoDesktop;
+
   return (
     <ThemeProvider theme={Theme}>
       <Paper variant="outlined" style={styles.paper}>
-        <ProfileDropDownWithRouter user={user} />
-        <Typography variant={isMobile ? 'h5' : 'h3'} component="h1" align="center" style={styles.typography}>
-          FridgeFinder
-        </Typography>
-        {isMobile ? (
-          <>
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} style={styles.menuButton}>
-              <MenuIcon />
-            </IconButton>
-            {renderDrawer()}
-          </>
-        ) : (
-          user && renderTabs()
-        )}
+        <div style={styles.headerContent}>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} style={styles.menuButton}>
+            <MenuIcon style={styles.menuIcon} />
+          </IconButton>
+          <div style={logoContainerStyle}>
+            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="FridgeFinder Logo" style={logoStyle} />
+          </div>
+          <div style={styles.profileContainer}>
+            <ProfileDropDownWithRouter user={user} />
+          </div>
+        </div>
+        {renderDrawer()}
       </Paper>
     </ThemeProvider>
   );
@@ -106,27 +80,73 @@ const styles = {
     overflow: 'hidden',
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
     width: '100%',
-    display: 'flex',
-    flex: '1',
-    flexDirection: 'column',
+    backgroundColor: '#c6d9e7', 
     position: 'relative',
+    zIndex: 1,
   },
-  typography: {
-    marginTop: '0px',
-    marginBottom: '20px',
-    fontWeight: 'bold',
-    fontFamily: 'Roboto Mono, sans-serif',
-    letterSpacing: '0.1em',
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '10px',
+    height: '100px', // Feste Höhe des Headers
   },
-  tabs: {
-    marginBottom: '20px',
+  logoContainerDesktop: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff', // Weißer Hintergrund
+    borderRadius: '50%', // Runder Rahmen
+    padding: '5px',
+    boxShadow: '0 0 0 5px #fff', // Weißer Rahmen
+    height: '200px',
+    width: '400px',
+  },
+  logoContainerMobile: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff', // Weißer Hintergrund
+    borderRadius: '50%', // Runder Rahmen
+    padding: '3px',
+    boxShadow: '0 0 0 2px #fff', // Weißer Rahmen
+    height: '200px',
+    width: '200px',
+  },
+  logoDesktop: {
+    height: '400px', // Höhe des Logos für Desktop
+    width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
+  },
+  logoMobile: {
+    height: '220px', // Höhe des Logos für Mobilgeräte
+    width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
   },
   menuButton: {
-    position: 'absolute',
-    left: '10px',
-    top: '10px',
+    zIndex: 2,
+  },
+  menuIcon: {
+    fontSize: '2rem', // Größe des Menü-Icons
+  },
+  profileContainer: {
+    zIndex: 2,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  drawer: {
+    width: '250px', // Breite des Drawers
+  },
+  icon: {
+    fontSize: '1.5rem', // Größe der Icons im Drawer
+  },
+  listItemText: {
+    fontSize: '1.2rem', // Größe des Textes im Drawer
   },
 };
 
 export default Header;
-
