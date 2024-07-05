@@ -13,7 +13,7 @@ In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in
 class Household(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._name = ""
+        self._name = "" # Name des Haushalts
         self._fridge_id = None  # Als Referenz
 
     def get_users(self):
@@ -32,35 +32,38 @@ class Household(BusinessObject):
             raise ValueError("User not found in household")
 
     def set_name(self, name):
-
+        """Setzt den Namen des Haushalts."""
         self._name = name
 
     def get_name(self):
-
+        """Gibt den Namen des Haushalts zurück."""
         return self._name
 
     def get_fridge_id(self):
+        """Gibt die ID des Kühlschranks zurück."""
         return self._fridge_id
 
     def set_fridge_id(self, fridge_id):
+        """Setzt die ID des Kühlschranks."""
         self._fridge_id = fridge_id
     
     
     
 
     def __str__(self):
-
+        """Gibt eine textuelle Darstellung des Haushalts zurück."""
         return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()})"
 
 
     def __repr__(self):
-
+        """Gibt eine detaillierte repräsentative Darstellung des Haushalts zurück."""
         return f"<Household(ID: {self._id}, Name: {self._name}, Fridge ID: {self.get_fridge_id()})>"
 
 
 
     @staticmethod
     def form_dict(dictionary=dict()):
+        """Erzeugt ein Household-Objekt aus einem Dictionary."""
         obj = Household()
         print(obj)
         obj.set_id(dictionary.get("id", 0))
