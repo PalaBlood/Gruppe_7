@@ -258,8 +258,10 @@ class HalilsTaverneAdministration(object):
         household = Household()
         household.set_name(Name)
 
+
         fridge = self.create_Fridge()  #Objekt von fridge wird erzeugt
         household.set_fridge_id(fridge.get_id())  #ID der Fridge wird Household zugewiesen
+
 
         with HouseholdMapper() as mapper:
             return mapper.insert(household)

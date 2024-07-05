@@ -219,7 +219,10 @@ class HouseholdListOperation(Resource):
         proposal = Household.form_dict(api.payload)
 
         if proposal is not None:
+
             h = adm.create_household(proposal.get_name())
+
+
             return h, 200
         else:
             return '', 500
@@ -690,11 +693,7 @@ class UnitOperations(Resource):
     def post(self):
         adm = HalilsTaverneAdministration()
 
-        payload = api.payload  #Debugging
-        print("Received payload:", payload)  #Debugging information
-
         proposal = Unit.from_dict(api.payload)
-        print(proposal)
 
         if proposal is not None:
             u = adm.create_unit(

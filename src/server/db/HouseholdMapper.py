@@ -53,7 +53,6 @@ class HouseholdMapper(Mapper):
     def insert(self, household):
         """Insert a Household object into the database and set its ID."""
         cursor = self._cnx.cursor()
-        print(household)
         name = household.get_name()
         fridge_id = household.get_fridge_id()
 
@@ -63,6 +62,7 @@ class HouseholdMapper(Mapper):
 
             #Setzen der ID, die von der Datenbank generiert wurde
             household.set_id(cursor.lastrowid)
+            cursor.execute("INSERT INTO unit (designation, household_id) VALUES (%s, %s)", ("grams", household.get_id()))
             return household
         except Exception as e:
             print(f"Ein Fehler ist aufgetreten: {e}")
