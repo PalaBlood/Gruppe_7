@@ -216,7 +216,7 @@ const Household = ({ navigate }) => {
     if (error) return <Typography color="error">{error}</Typography>;
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: 'lightblue', padding: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 8, padding: 2, mt: 5 }}>
             <Card raised sx={{ width: '100%', maxWidth: 600, p: 2 }}>
                 <CardContent>
                     <Typography variant="h4" component="h2" gutterBottom align="center">
@@ -288,5 +288,5 @@ const HouseholdWrapper = () => {
     return <Household navigate={navigate} />;
 }
 
-export default HouseholdWrapper;
+export default HouseholdWrapper; 
 
