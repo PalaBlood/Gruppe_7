@@ -5,8 +5,12 @@ import { Link as RouterLink } from 'react-router-dom';
 const Footer = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
+  if (isMobile) {
+    return null; // Footer wird nicht angezeigt, wenn die Breite <= 600px ist
+  }
+
   return (
-    <Paper variant="outlined" style={isMobile ? styles.paperMobile : styles.paper}>
+    <Paper variant="outlined" style={styles.paper}>
       <Typography variant="body2" color="textSecondary" align="center">
         © 2024 FridgeFinder, Inc. all rights reserved.
       </Typography>
@@ -22,13 +26,6 @@ const styles = {
     borderRadius: '10px',
     marginTop: 'auto',
     padding: '10px 20px',
-    backgroundColor: '#c6d9e7',
-    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
-  },
-  paperMobile: {
-    borderRadius: '10px',
-    marginTop: 'auto',
-    padding: '3px 5px', // Kleineres Padding für Mobile
     backgroundColor: '#c6d9e7',
     boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
   },

@@ -116,15 +116,15 @@ const styles = {
     borderRadius: '50%', // Runder Rahmen
     padding: '3px',
     boxShadow: '0 0 0 2px #fff', // Weißer Rahmen
-    height: '200px',
-    width: '200px',
+    height: '70px',
+    width: '120px',
   },
   logoDesktop: {
     height: '400px', // Höhe des Logos für Desktop
     width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
   },
   logoMobile: {
-    height: '220px', // Höhe des Logos für Mobilgeräte
+    height: '120px', // Höhe des Logos für Mobilgeräte
     width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
   },
   menuButton: {

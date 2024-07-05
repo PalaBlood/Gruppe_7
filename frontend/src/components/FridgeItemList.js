@@ -74,7 +74,7 @@ const FridgeEntriesComponent = () => {
     }
 
     return (
-        <Grid container spacing={2} style={{ padding: 20, backgroundColor: 'lightblue' }}>
+        <Grid container spacing={2} style={{ padding: 20 }}>
             <Grid item xs={12} style={{ textAlign: 'center' }}>
                 <Button
                     variant="contained"
@@ -112,5 +112,5 @@ const FridgeEntriesComponent = () => {
     );
 };
 
-export default FridgeEntriesComponent;
+export default FridgeEntriesComponent; 
 

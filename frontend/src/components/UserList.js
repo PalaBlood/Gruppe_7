@@ -78,20 +78,20 @@ const UserProfile = () => {
     if (!user) return null;
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: 'lightblue', p: 2 }}>
-            <Card raised sx={{ minWidth: 300, bgcolor: 'background.paper', p: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 8, mt: 10, p: 2 }}>
+            <Card raised sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper', p: 2 }}>
                 <CardContent>
-                    <Typography variant="h5" component="div" sx={{ fontWeight: 'medium', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <AccountCircleIcon color="primary" /> Your profile
+                    <Typography variant="h5" component="div" sx={{ fontWeight: 'medium', mb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, fontSize: '2rem' }}>
+                        <AccountCircleIcon color="primary" sx={{ fontSize: '2.5rem'}} /> Your profile
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.2rem'}}>
                         Nickname: {user.nick_name}<br />
                         First name: {user.first_name}<br />
                         Last name: {user.last_name}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button startIcon={<EditIcon />} onClick={openEditDialog} variant="contained" color="primary">
+                    <Button startIcon={<EditIcon />} onClick={openEditDialog} variant="contained" color="primary" sx={{ display: 'flex', justifyContent:'center', width: '100%'}}>
                         Edit profile
                     </Button>
                 </CardActions>
