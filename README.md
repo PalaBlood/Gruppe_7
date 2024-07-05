@@ -69,19 +69,19 @@ Choose one of the following options to set up Gcloud:
       gcloud app browse
       ```
 15. copy your backend URL.
-16. Go to frontend/src/API/SmartFridgeAPI.js and replace "https://smartfridge-428113.ey.r.appspot.com" with your backend URL
-      ```sh
-      fridgeserverbaseurl = 'https://smartfridge-428113.ey.r.appspot.com/fridge';
-      ```
-17. Deploy your frontend:
+16. Deploy your frontend:
       ```sh
       gcloud app deploy
       ```
-18. Open your frontend in a browser:
+17. Open your frontend in a browser:
       ```sh
       gcloud app browse
       ```
-19. Verify that the application is running properly.
+18. Deploy dispatch.yaml:
+       ```sh
+      gcloud app deploy dispatch.yaml
+      ```
+20. Verify that the application is running properly.
 
 ### Authors
 Group 07 - Software Internship participants
