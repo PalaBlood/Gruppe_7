@@ -81,7 +81,7 @@ Choose one of the following options to set up Gcloud:
        ```sh
       gcloud app deploy dispatch.yaml
       ```
-20. Verify that the application is running properly.
+19. Verify that the application is running properly.
 
 ### Authors
 Group 07 - Software Internship participants

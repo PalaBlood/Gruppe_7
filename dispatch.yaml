@@ -1,6 +1,10 @@
-dispatch:
-  - url: "*/fridge/*"
-    service: backend
+# Dispatch-Konfiguration für verschiedene URL-Pfade
 
+dispatch:
+  # Regel für alle URLs, die mit "/fridge/" enden
+  - url: "*/fridge/*"
+    service: backend  # Leitet Anfragen zu "/fridge/" an den "backend" Service weiter
+
+  # Regel für alle URLs, die zum "smartfridge-app" auf Google App Engine gehören
   - url: "smartfridge-app-428309.ey.r.appspot.com/*"
-    service: default
+    service: default  # Leitet Anfragen an den "default" Service weiter

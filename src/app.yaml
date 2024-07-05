@@ -1,6 +1,11 @@
+# Spezifiziert die verwendete Laufzeitumgebung für die App
 runtime: python310
-service: backend
 
+# Definiert den Namen des Dienstes
+service: backend  # Dieser Service wird als "backend" bezeichnet
+
+# Handler für die URL-Pfade und die zugehörigen Skripte
 handlers:
-- url: /.*
-  script: auto
+  # Handler für alle URLs
+  - url: /.*
+    script: auto  # Automatisch das entsprechende Skript basierend auf der URL und der Anwendungskonfiguration auswählen
