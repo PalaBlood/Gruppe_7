@@ -72,8 +72,8 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
     };
 
     const updateRecipeEntry = async () => {
-        if (!designation || !quantity || !unit) {
-            setError({ message: 'All fields are required' });
+        if (!quantity || !unit) {
+            setError({ message: 'Both Quantity and Unit are required' });
             return;
         }
 
@@ -86,7 +86,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
 
         try {
             const recipeEntry = await FridgeAPI.getAPI().updateRecipeEntry(updatedRecipeEntry);
-            console.log(recipeEntry)
+            console.log(recipeEntry);
             onClose(recipeEntry);
         } catch (e) {
             handleError(e);
@@ -110,18 +110,20 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {'Enter ingredient data'}
+                        {entry ? 'Update quantity and unit' : 'Enter ingredient data'}
                     </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="designation"
-                        label="Designation"
-                        type="text"
-                        fullWidth
-                        value={designation}
-                        onChange={(e) => setDesignation(e.target.value)}
-                    />
+                    {!entry && (
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="designation"
+                            label="Designation"
+                            type="text"
+                            fullWidth
+                            value={designation}
+                            onChange={(e) => setDesignation(e.target.value)}
+                        />
+                    )}
                     <TextField
                         margin="dense"
                         id="quantity"
