@@ -78,7 +78,7 @@ const UserProfile = () => {
     if (!user) return null;
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 8, mt: 10, p: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 8, mt: 5, p: 2 }}>
             <Card raised sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper', p: 2 }}>
                 <CardContent>
                     <Typography variant="h5" component="div" sx={{ fontWeight: 'medium', mb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, fontSize: '2rem' }}>

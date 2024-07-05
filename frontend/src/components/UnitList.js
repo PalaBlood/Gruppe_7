@@ -85,7 +85,7 @@ const UnitList = ({ householdId }) => {
 // Darstellung der Einheitenliste
   return (
     <Container>
-      <Typography variant="h4" gutterBottom style={{ textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
+      <Typography variant="h4" gutterBottom style={{ display: 'flex', justifyContent: 'center', textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
         All available units
       </Typography>
       {loading ? (

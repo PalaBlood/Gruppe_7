@@ -43,7 +43,8 @@ SignIn.propTypes = {
 
 const styles = {
     container: {
-        flex: 1, // Nimmt den verbleibenden Platz zwischen Header und Footer ein
+        width: '100%',
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center', // Zentriert den Inhalt vertikal
@@ -76,7 +77,7 @@ const styles = {
         width: '40%',
         height: '40%',
         objectFit: 'cover', // Das Bild wird skalieren, um den Container auszufüllen
-        position: 'absolut',
+        position: 'center',
         top: 0,
         left: 0,
         zIndex: 0, // Hinter den Inhalt legen
