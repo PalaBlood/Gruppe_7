@@ -23,7 +23,7 @@ const styles = {
     },
     heading: {
         color: '#001b33',
-        margin: '20px 0', // Optional: Abstand um den Text herum
+        margin: '10px 0', // Optional: Abstand um den Text herum
     },
     logoContainer: {
         display: 'flex',
