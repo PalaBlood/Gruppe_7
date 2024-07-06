@@ -58,7 +58,7 @@ const Header = ({ user }) => {
             <MenuIcon style={styles.menuIcon} />
           </IconButton>
           <div style={logoContainerStyle}>
-            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="FridgeFinder Logo" style={logoStyle} />
+            <img src={`${process.env.PUBLIC_URL}/images/Logo.png`} alt="FridgeFinder Logo" style={logoStyle} />
           </div>
           <div style={styles.profileContainer}>
             <ProfileDropDownWithRouter user={user} />
