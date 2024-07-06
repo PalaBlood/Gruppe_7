@@ -22,8 +22,6 @@ class FridgeEntryForm extends Component {
 
         this.state = {
             designation: designation,
-            designationValidationFailed: false,
-            designationEdited: false,
             quantity: quantity,
             quantityValidationFailed: false,
             quantityEdited: false,
@@ -47,6 +45,7 @@ class FridgeEntryForm extends Component {
         await this.handleFetchGoogleUserId();
         await this.fetchHouseholdUnits();
     }
+
     // Fetches the fridge ID of the currently signed in user
     handleFetchGoogleUserId = async () => {
         try {
@@ -104,16 +103,15 @@ class FridgeEntryForm extends Component {
         });
     }
 
-    // Updates an existing fridge entry
     updateFridgeEntry = () => {
-        const { designation, quantity, unit, fridge_id } = this.state;
+        const { quantity, unit, fridge_id } = this.state;
 
         this.setState({ updatingInProgress: true, updatingError: null });
 
         const updatedFridgeEntry = {
             id: this.props.fridgeentry.id,
             fridge_id: fridge_id,
-            groceries_designation: designation,
+            groceries_designation: this.props.fridgeentry.getDesignation(),
             quantity: quantity,
             unit: unit
         };
@@ -126,29 +124,29 @@ class FridgeEntryForm extends Component {
             this.setState({ updatingInProgress: false, updatingError: e.message });
         });
     }
-    // Handles the change of a text field
+
     textFieldValueChange = (event) => {
         const value = event.target.value;
         let error = value.trim().length === 0;
 
         this.setState({
             [event.target.id]: value,
-            [event.target.id + 'Validation Failed']: error,
+            [event.target.id + 'ValidationFailed']: error,
             [event.target.id + 'Edited']: true
         });
     }
-    // Handles the closing of the dialog
+
     handleClose = () => {
         this.setState(this.baseState);
         this.props.onClose(null);
     }
-    // Renders the component
+
     render() {
         const { fridgeentry, show } = this.props;
-        const { designation, designationValidationFailed, designationEdited, quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, units, addingInProgress, addingError, updatingInProgress, updatingError, loadingFridgeId, fridgeIdError } = this.state;
+        const { quantity, quantityValidationFailed, quantityEdited, unit, unitValidationFailed, unitEdited, units, addingInProgress, addingError, updatingInProgress, updatingError, loadingFridgeId, fridgeIdError } = this.state;
 
         let title = fridgeentry ? 'Update a grocery' : 'Create or update one of your groceries';
-        let header = 'Enter grocery data';
+        let header = fridgeentry ? 'Update the quantity and unit of the grocery' : 'Enter grocery data';
 
         if (loadingFridgeId) {
             return <LoadingProgress show />;
@@ -169,9 +167,11 @@ class FridgeEntryForm extends Component {
                     <DialogContent>
                         <DialogContentText>{header}</DialogContentText>
                         <form sx={{ width: '100%' }} noValidate autoComplete='off'>
-                            <TextField autoFocus type='text' required fullWidth margin='normal' id='designation' label='Designation:' value={designation}
-                                onChange={this.textFieldValueChange} error={designationValidationFailed}
-                                helperText={designationValidationFailed ? 'The designation must contain at least one character' : ' '} />
+                            { !fridgeentry && (
+                                <TextField autoFocus type='text' required fullWidth margin='normal' id='designation' label='Designation:' value={this.state.designation}
+                                    onChange={this.textFieldValueChange} error={this.state.designationValidationFailed}
+                                    helperText={this.state.designationValidationFailed ? 'The designation must contain at least one character' : ' '} />
+                            )}
                             <TextField type='text' required fullWidth margin='normal' id='quantity' label='Quantity:' value={quantity}
                                 onChange={this.textFieldValueChange} error={quantityValidationFailed}
                                 helperText={quantityValidationFailed ? 'The quantity must contain at least one character' : ' '} />
@@ -201,12 +201,12 @@ class FridgeEntryForm extends Component {
                         }
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color='secondary'>Cancle</Button>
+                        <Button onClick={this.handleClose} color='secondary'>Cancel</Button>
                         {
                             fridgeentry ?
-                                <Button disabled={designationValidationFailed || quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
+                                <Button disabled={quantityValidationFailed || unitValidationFailed} variant='contained' onClick={this.updateFridgeEntry} color='primary'>Update</Button>
                                 :
-                                <Button disabled={designationValidationFailed || !designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
+                                <Button disabled={this.state.designationValidationFailed || !this.state.designationEdited || quantityValidationFailed || !quantityEdited || unitValidationFailed || !unitEdited} variant='contained' onClick={this.addFridgeEntry} color='primary'>Add</Button>
                         }
                     </DialogActions>
                 </Dialog>
