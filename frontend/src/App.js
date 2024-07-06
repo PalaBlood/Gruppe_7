@@ -19,7 +19,7 @@ import UserProfile from './components/UserList';
 import RecipeList from './components/RecipeList'; 
 import RecipeEntryList from './components/RecipeEntryList';
 import UnitList from './components/UnitList';
-import FridgeEntriesComponent from './components/FridgeItemList';
+import FridgeEntryList from './components/FridgeEntryList';
 
 initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -120,7 +120,7 @@ const App = () => {
                             
                             <Route path="/fridge" element={
                                 <Secured user={currentUser}>
-                                    <FridgeEntriesComponent />
+                                    <FridgeEntryList />
                                 </Secured>
                             } />
                            

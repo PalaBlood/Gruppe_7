@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, CardContent, CardActions, Typography, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FridgeAPI from '../API/SmartFridgeAPI';
 import FridgeEntryForm from './dialogs/FridgeEntryForm';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
+import FridgeEntryCard from './layout/FridgeEntryCard';
 
-const FridgeEntriesComponent = () => {
+const FridgeEntryList = () => {
     const [fridgeEntries, setFridgeEntries] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -87,18 +86,11 @@ const FridgeEntriesComponent = () => {
             </Grid>
             {fridgeEntries.map((entry) => (
                 <Grid item xs={12} sm={6} md={4} key={entry.getId()}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h5">{entry.getDesignation()}</Typography>
-                            <Typography color="textSecondary">
-                                Quantity: {entry.getQuantity()} {entry.getUnit()}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" startIcon={<EditIcon />} onClick={() => handleEditButtonClick(entry)}>Edit</Button>
-                            <Button size="small" startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(entry.getDesignation())}>Delete</Button>
-                        </CardActions>
-                    </Card>
+                    <FridgeEntryCard
+                        entry={entry}
+                        onEdit={handleEditButtonClick}
+                        onDelete={handleDeleteButtonClick}
+                    />
                 </Grid>
             ))}
             {showAddForm && (
@@ -112,5 +104,4 @@ const FridgeEntriesComponent = () => {
     );
 };
 
-export default FridgeEntriesComponent; 
-
+export default FridgeEntryList;
