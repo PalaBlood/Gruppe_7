@@ -13,7 +13,6 @@ import traceback
 from server.db.conversion import convert_quantity
 from SecurityDecorator import secured
 
-
 app = Flask(__name__)
 
 # CORS aktivieren
