@@ -24,6 +24,7 @@ CORS(app, supports_credentials=True, resources=r'/fridge/*')
 api = Api(app, version='1.0', title='SmartFridgeDemo API',
           description='An API for managing a smart fridge system.')
 
+
 # Namespace
 #Der Namespace ist Container für die API-Endpunkte, die zu einem bestimmten Thema gehören.
 fridge_ns = api.namespace('fridge', description='Fridge-related functionalities')
