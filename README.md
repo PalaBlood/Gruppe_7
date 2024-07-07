@@ -19,7 +19,6 @@ This project utilizes several robust technologies and programming languages:
 
 ### Prerequisites
 Ensure you have the following installed and set up:
-- **API Key:** You will need an API Key to access certain project features.
 - **Git:** Ensure [Git](https://git-scm.com/downloads) is installed on your machine for version control.
 - **Node.js and Python:** Both [Node.js](https://nodejs.org/en/) and [Python](https://www.python.org/downloads/) should be installed.
 
@@ -33,16 +32,15 @@ Ensure you have the following installed and set up:
       ```sh
       pip install -r requirements.txt
       npm install react-scripts
-      npm install @mui/material @emotion/react @emotion/styled
       ```
    
-### Set up Gcloud
+### Set up Gcloud & Firebase
 Choose one of the following options to set up Gcloud:
-#### 1. Option
+#### 1. Option for gcloud
 * **Set up your Gcloud account**: Follow the guidelines in the document ["Deployment on GCP WS 20-21"](URL-to-PDF) for detailed instructions.
 
-#### 2. Option
-1. **Set up a new project**: Initialize a new project by visiting [Google Cloud Console](https://console.cloud.google.com).
+#### 2. Option for gcloud and firebase
+1. **Set up a new gcloud project**: Initialize a new project by visiting [Google Cloud Console](https://console.cloud.google.com).
 2. **Install Gcloud SDK**: Follow the instructions on the [Gcloud SDK installation page](https://cloud.google.com/sdk/docs/install?hl=de) to install the SDK.
 3. Connect your Google Account
 4. Set up a database in Cloud SQL
@@ -69,6 +67,8 @@ Choose one of the following options to set up Gcloud:
       gcloud app browse
       ```
 15. copy your backend URL.
+16. **Set up a new firebase project**: Initialize a new project by visiting [Google Firebase Console](https://console.firebase.google.com/).
+16. authorize your domain
 16. Deploy your frontend:
       ```sh
       gcloud app deploy
