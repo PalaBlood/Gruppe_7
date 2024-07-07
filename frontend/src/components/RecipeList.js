@@ -201,7 +201,7 @@ function RecipeList() {
 
             if (missingIngredients.length > 0) {
                 console.log('Missing ingredients:', missingIngredients);
-                alert('Not enough ingredients in fridge. Please check the console for missing ingredients.');
+                alert('Not enough ingredients in fridge.');
             } else {
                 await FridgeAPI.getAPI().cookRecipe(recipe.getTitle());
                 fetchFridgeEntries();

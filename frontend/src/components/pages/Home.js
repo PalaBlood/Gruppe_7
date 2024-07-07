@@ -32,7 +32,7 @@ const Home = () => {
         <div style={styles.container}>
             <h1 style={styles.heading}>Willkommen, <br></br> {user.nick_name} bei FridgeFinder!</h1>
             <div style={styles.logoContainer}>
-                <img src={`${process.env.PUBLIC_URL}/images/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
+                <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
             </div>
         </div>
     );
