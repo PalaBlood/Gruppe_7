@@ -1,4 +1,3 @@
-#FoodEntry import FoodEntry
 from server.bo.Recipe import Recipe
 
 from server.bo.FoodEntry import FoodEntry

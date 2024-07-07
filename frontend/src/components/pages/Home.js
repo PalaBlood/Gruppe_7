@@ -41,30 +41,30 @@ const Home = () => {
 const styles = {
     container: {
         textAlign: 'center',
-        flex: 1, // Nimmt den verbleibenden Platz zwischen Header und Footer ein
+        flex: 1, //Nimmt den verbleibenden Platz zwischen Header und Footer ein
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start', // Text bleibt oben
+        justifyContent: 'flex-start', //Text bleibt oben in der Mitte
         alignItems: 'center',
-        position: 'relative', // Wichtig für das platzierte Hintergrundbild
+        position: 'relative', 
     },
     heading: {
         color: '#001b33',
-        margin: '10px 0', // Optional: Abstand um den Text herum
+        margin: '10px 0', 
     },
     logoContainer: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        width: '100%', // Volle Breite des Containers
+        width: '100%',
     },
     logo: {
-        width: '50vw', // Relative Größe des Logos in Bezug auf die Bildschirmbreite
-        maxWidth: '350px', // Maximale Größe des Logos
-        height: 'auto', // Automatische Höhe, um das Seitenverhältnis beizubehalten
-        borderRadius: '50%', // Rundes Bild
-        opacity: 0.5, // Setzt die Transparenz auf 50%
+        width: '50vw', //Relative Größe des Logos in Bezug auf die Bildschirmbreite
+        maxWidth: '350px', //Maximale Größe des Logos
+        height: 'auto', //Automatische Höhe, um das Seitenverhältnis beizubehalten
+        borderRadius: '50%', //Rundes Bild
+        opacity: 0.5, //Setzt die Transparenz auf 50%
     },
 };
 

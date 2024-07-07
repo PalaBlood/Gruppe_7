@@ -49,10 +49,10 @@ const styles = {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center', // Zentriert den Inhalt vertikal
+        justifyContent: 'center', //Zentriert den Inhalt vertikal
         alignItems: 'center',
-        position: 'relative', // Wichtig für das platzierte Hintergrundbild
-        overflow: 'hidden', // Verhindert Überlauf
+        position: 'relative',
+        overflow: 'hidden', //Verhindert Überlauf
     },
     overlay: {
         width: '100%',
@@ -64,8 +64,8 @@ const styles = {
         position: 'absolute',
         top: 0,
         left: 0,
-        zIndex: 1, // Über das Bild legen
-        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Transparenter weißer Hintergrund
+        zIndex: 1, //Über das Bild legen
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', //Transparenter weißer Hintergrund
     },
     box: {
         width: 'auto',
@@ -78,12 +78,12 @@ const styles = {
     backgroundImage: {
         width: '40%',
         height: '40%',
-        objectFit: 'cover', // Das Bild wird skalieren, um den Container auszufüllen
+        objectFit: 'cover', //Das Bild wird skalieren, um Container auszufüllen
         position: 'center',
         top: 0,
         left: 0,
-        zIndex: 0, // Hinter den Inhalt legen
-        opacity: 0.5, // Transparenz
+        zIndex: 0, //Hinter den Inhalt legen
+        opacity: 0.5,
     },
 };
 
