@@ -17,7 +17,8 @@ class CheckforexistingHousehold extends Component {
         dialogOpen: false,
         error: null,
         loading: true,
-        householdConfirmed: false 
+        householdConfirmed: false,
+        newPassword: ''
     }
     //lifecycle methode
     componentDidMount() {
@@ -75,16 +76,21 @@ class CheckforexistingHousehold extends Component {
     handleInputChange = (event) => {
         this.setState({ newHouseholdName: event.target.value });
     }
+
+    handleInputChangePassword = (event) => {
+        this.setState({ newPassword: event.target.value });
+    }
     // Option statt auszuwählen einen neuen Haushalt zu erstellen
     addHousehold = async () => {
         const { newHouseholdName } = this.state;
+        const { newPassword } = this.state;
         if (!newHouseholdName.trim()) {
             this.setState({ error: "Household name cannot be empty." });
             return;
         }
         this.setState({ loading: true });
         try {
-            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null });
+            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null, password: newPassword});
             const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
             const auth = getAuth();
             const currentUser = auth.currentUser;
@@ -95,7 +101,7 @@ class CheckforexistingHousehold extends Component {
                     userBO.household_id = addedHousehold.id;
                     await FridgeAPI.getAPI().updateUser(userBO);
                     if (!this.state.householdConfirmed) {
-                        this.setState({ loading: false, dialogOpen: false, newHouseholdName: '', householdConfirmed: true });
+                        this.setState({ loading: false, dialogOpen: false, newHouseholdName: '', householdConfirmed: true, newPassword: ''});
                         this.props.onHouseholdConfirmed(addedHousehold.id);
                     }
                 } else {
@@ -110,7 +116,7 @@ class CheckforexistingHousehold extends Component {
     }
 
     renderDialogs = () => {
-        const { dialogOpen, households, newHouseholdName, error } = this.state;
+        const { dialogOpen, households, newPassword, newHouseholdName, error } = this.state;
 
         return (
             <Dialog 
@@ -155,6 +161,16 @@ class CheckforexistingHousehold extends Component {
                                 variant="outlined"
                                 value={newHouseholdName}
                                 onChange={this.handleInputChange}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <TextField
+                                label="Password"
+                                type="password"
+                                fullWidth
+                                variant="outlined"
+                                value={newPassword}
+                                onChange={this.handleInputChangePassword}
                             />
                         </ListItem>
                     </List>

@@ -6,10 +6,11 @@ export default class HouseholdBO extends BusinessObject {
     /** Konstruktion eines neuen Haushalts 
    * @param {String} aname - der Name des Haushalts.
    */ 
-    constructor(aname, afridgeid) {
+    constructor(aname, afridgeid, apassword) {
         super();
         this.name = aname
         this.fridge_id = afridgeid
+        this.password = apassword
     }
 
 
@@ -32,6 +33,14 @@ export default class HouseholdBO extends BusinessObject {
 
     getfridgeid() {
       return this.afridgeid
+    }
+
+    setpassword(apassword) {
+      this.apassword = apassword
+    }
+
+    getpassword() {
+      return this.apassword
     }
 
     static fromJSON(households) {

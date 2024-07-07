@@ -79,6 +79,7 @@ household = api.inherit('Household', bo, {
     'name': fields.String(attribute='_name', description='Name of the household'),
     'fridge_id': fields.Integer(attribute='_fridge_id', required=True,
                                 description='fridge associated with the household'),
+    'password': fields.String(attribute='_password', description='password of the Household')
 })
 
 unit = api.inherit('Unit', bo, {
@@ -219,7 +220,8 @@ class HouseholdListOperation(Resource):
 
         if proposal is not None:
 
-            h = adm.create_household(proposal.get_name())
+            h = adm.create_household(proposal.get_name(), proposal.get_password())
+
 
 
             return h, 200
@@ -275,8 +277,6 @@ class HouseholdbyIDOperations(Resource):
         adm = HalilsTaverneAdministration()
         h = adm.find_household_by_id(id)
         return h
-
-
 
 
 

@@ -17,7 +17,7 @@ def secured(function):
             try:
                 
                 claims = google.oauth2.id_token.verify_firebase_token(
-                    id_token, firebase_request_adapter, clock_skew_in_seconds=2)
+                    id_token, firebase_request_adapter)
 
                 if claims:
                     adm = HalilsTaverneAdministration()

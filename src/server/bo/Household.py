@@ -15,6 +15,7 @@ class Household(BusinessObject):
         super().__init__()
         self._name = "" # Name des Haushalts
         self._fridge_id = None  # Als Referenz
+        self._password = ""
 
     def get_users(self):
         """User im Haushalt auslesen"""
@@ -46,18 +47,23 @@ class Household(BusinessObject):
     def set_fridge_id(self, fridge_id):
         """Setzt die ID des Kühlschranks."""
         self._fridge_id = fridge_id
-    
-    
-    
 
+    def set_password(self, password):
+        """Setzt das Passwort des Haushalts."""
+        self._password = password
+
+    def get_password(self):
+        """Gibt das Passwort des Haushalts zurück."""
+        return self._password
+    
     def __str__(self):
         """Gibt eine textuelle Darstellung des Haushalts zurück."""
-        return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()})"
+        return f"Household(ID: {self.get_id()}, Name: {self.get_name()}, Fridge ID: {self.get_fridge_id()}, Password: {self.get_password()})"
 
 
     def __repr__(self):
         """Gibt eine detaillierte repräsentative Darstellung des Haushalts zurück."""
-        return f"<Household(ID: {self._id}, Name: {self._name}, Fridge ID: {self.get_fridge_id()})>"
+        return f"<Household(ID: {self._id}, Name: {self._name}, Fridge ID: {self.get_fridge_id()}, Password: {self.get_password()})>"
 
 
 
@@ -72,9 +78,11 @@ class Household(BusinessObject):
         if isinstance(name_field, dict):
             obj.set_name(name_field.get("name", ""))
             obj.set_fridge_id(name_field.get("fridge_id", None))
+            obj.set_password(name_field.get("password", ""))
         else:
             obj.set_name(name_field)
             obj.set_fridge_id(dictionary.get("fridge_id", None))
+            obj.set_password(dictionary.get("password", ""))
 
         return obj
 

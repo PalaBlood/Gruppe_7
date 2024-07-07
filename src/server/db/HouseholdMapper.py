@@ -27,14 +27,15 @@ class HouseholdMapper(Mapper):
         result = []
         cursor = self._cnx.cursor()
         try:
-            cursor.execute("SELECT id, name, fridge_id FROM household")
+            cursor.execute("SELECT id, name, fridge_id, password FROM household")
             tuples = cursor.fetchall()
 
-            for (id, name, fridge_id) in tuples:
+            for (id, name, fridge_id, password) in tuples:
                 household = Household()
                 household.set_id(id)
                 household.set_name(name)
                 household.set_fridge_id(fridge_id)
+                household.set_password(password)
                 result.append(household)
 
         except Exception as e:
@@ -55,9 +56,10 @@ class HouseholdMapper(Mapper):
         cursor = self._cnx.cursor()
         name = household.get_name()
         fridge_id = household.get_fridge_id()
+        password = household.get_password()
 
         try:
-            cursor.execute("INSERT INTO household (name, fridge_id) VALUES (%s, %s)", (name, fridge_id))
+            cursor.execute("INSERT INTO household (name, fridge_id, password) VALUES (%s, %s, %s)", (name, fridge_id, password))
             self._cnx.commit()
 
             #Setzen der ID, die von der Datenbank generiert wurde
@@ -73,7 +75,7 @@ class HouseholdMapper(Mapper):
     def find_by_id(self, id):
         """Find a Household by its ID."""
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, name, Fridge_ID FROM household WHERE id=%s", (id,))
+        cursor.execute("SELECT id, name, Fridge_ID, password FROM household WHERE id=%s", (id,))
         tuple = cursor.fetchone()
         print(tuple)
 
@@ -84,8 +86,9 @@ class HouseholdMapper(Mapper):
             household.set_id(tuple[0])
             household.set_name(tuple[1])
             household.set_fridge_id(tuple[2])
+            household.set_password(tuple[3])
 
-
+            print(household)
             return household
 
     def update(self, household):
