@@ -99,7 +99,7 @@ const Household = ({ navigate }) => {
     //methode zum auswählen eines Haushalts
     const handleSelectHousehold = (id) => {
         setSelectedHouseholdId(id);
-        setPasswordDialogOpen(true);
+        setPasswordDialogOpen(true); // Passwortdialog öffnen
     };
     //methode zum bestätigen des Passworts
     const confirmPassword = async () => {
@@ -176,7 +176,7 @@ const Household = ({ navigate }) => {
         }
 
         try {
-            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null , password: newPassword});
+            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null , password: newPassword });
             const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
             let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
             if (userBOArray && userBOArray.length > 0) {
@@ -244,7 +244,7 @@ const Household = ({ navigate }) => {
                                 }}
                             >
                                 <ListItemIcon>
-                                    <HomeIcon color="red" />
+                                    <HomeIcon color="primary" />
                                 </ListItemIcon>
                                 <ListItemText primary={h.name} />
                             </ListItem>

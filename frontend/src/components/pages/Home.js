@@ -4,34 +4,31 @@ import SmartFridgeAPI from '../../API/SmartFridgeAPI';
 
 const Home = () => {
     const [user, setUser] = useState(null);
-    const [household, setHousehold] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const auth = getAuth();
             const currentUser = auth.currentUser;
             if (currentUser) {
-                // Abruf der Benutzerdaten
+          
+
                 const userBO = await SmartFridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
                 setUser(userBO[0]);
 
-                // Abruf der Haushaltsdaten
-                const householdBO = await SmartFridgeAPI.getAPI().getHouseholdbyID(userBO[0].household_id);
-                setHousehold(householdBO[0]);
+            
             }
         };
 
         fetchData();
     }, []);
 
-    if (!user || !household) {
+    if (!user) {
         return <div>Loading...</div>;
     }
 
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>Willkommen, {user.nick_name} bei FridgeFinder!</h1>
-            <h2 style={styles.subheading}>Du bist im Haushalt: {household.name}</h2>
             <div style={styles.logoContainer}>
                 <img src={`${process.env.PUBLIC_URL}/images/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
             </div>

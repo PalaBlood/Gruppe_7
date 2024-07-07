@@ -36,7 +36,7 @@ class Mapper(AbstractContextManager, ABC):
 
         else:
             #Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt
-            self._cnx = connector.connect(user='root', password='9902',
+            self._cnx = connector.connect(user='root', password='test',
                               host='localhost',
                               database='sopra')
 

@@ -18,8 +18,11 @@ class CheckforexistingHousehold extends Component {
         error: null,
         loading: true,
         householdConfirmed: false,
-        newPassword: ''
+        newPassword: '',
+        passwordDialogOpen: false,
+        enteredPassword: ''
     }
+
     //lifecycle methode
     componentDidMount() {
         this.checkForHousehold();
@@ -63,14 +66,10 @@ class CheckforexistingHousehold extends Component {
     }
     //was soll passieren, wenn ein Haushalt aus der liste ausgewählt wird?
     handleSelectHousehold = (id) => {
-        if (!this.state.householdConfirmed) { 
-            this.setState({
-                selectedHouseholdId: id,
-                dialogOpen: false,
-                householdConfirmed: true 
-            });
-            this.props.onHouseholdConfirmed(id);
-        }
+        this.setState({
+            selectedHouseholdId: id,
+            passwordDialogOpen: true, // Passwortdialog anzeigen
+        });
     }
 
     handleInputChange = (event) => {
@@ -80,17 +79,51 @@ class CheckforexistingHousehold extends Component {
     handleInputChangePassword = (event) => {
         this.setState({ newPassword: event.target.value });
     }
+
+    handleEnteredPasswordChange = (event) => {
+        this.setState({ enteredPassword: event.target.value });
+    }
+
+    confirmPassword = async () => {
+        const { selectedHouseholdId, enteredPassword } = this.state;
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            this.setState({ error: "No user logged in" });
+            return;
+        }
+        try {
+            const householdArray = await FridgeAPI.getAPI().getHouseholdbyID(selectedHouseholdId);
+            const household = householdArray[0]; 
+            if (household.password === enteredPassword) {
+                let userBOArray = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
+                if (userBOArray && userBOArray.length > 0) {
+                    let userBO = userBOArray[0];
+                    userBO.household_id = selectedHouseholdId;
+                    await FridgeAPI.getAPI().updateUser(userBO);
+                    this.props.onHouseholdConfirmed(selectedHouseholdId);
+                    this.setState({ loading: false, dialogOpen: false, passwordDialogOpen: false, householdConfirmed: true, enteredPassword: '' });
+                } else {
+                    throw new Error("User profile not found.");
+                }
+            } else {
+                alert("Incorrect password.");
+            }
+        } catch (error) {
+            this.setState({ error: error.message });
+        }
+    }
+
     // Option statt auszuwählen einen neuen Haushalt zu erstellen
     addHousehold = async () => {
-        const { newHouseholdName } = this.state;
-        const { newPassword } = this.state;
+        const { newHouseholdName, newPassword } = this.state;
         if (!newHouseholdName.trim()) {
             this.setState({ error: "Household name cannot be empty." });
             return;
         }
         this.setState({ loading: true });
         try {
-            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null, password: newPassword});
+            let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null, password: newPassword });
             const addedHousehold = await FridgeAPI.getAPI().addHousehold(householdBO);
             const auth = getAuth();
             const currentUser = auth.currentUser;
@@ -100,10 +133,8 @@ class CheckforexistingHousehold extends Component {
                     let userBO = userBOArray[0];
                     userBO.household_id = addedHousehold.id;
                     await FridgeAPI.getAPI().updateUser(userBO);
-                    if (!this.state.householdConfirmed) {
-                        this.setState({ loading: false, dialogOpen: false, newHouseholdName: '', householdConfirmed: true, newPassword: ''});
-                        this.props.onHouseholdConfirmed(addedHousehold.id);
-                    }
+                    this.props.onHouseholdConfirmed(addedHousehold.id);
+                    this.setState({ loading: false, dialogOpen: false, newHouseholdName: '', householdConfirmed: true, newPassword: '' });
                 } else {
                     throw new Error("Failed to fetch user data for updating.");
                 }
@@ -182,11 +213,40 @@ class CheckforexistingHousehold extends Component {
         );
     }
 
+    renderPasswordDialog = () => {
+        const { passwordDialogOpen, enteredPassword } = this.state;
+
+        return (
+            <Dialog open={passwordDialogOpen} onClose={() => { this.setState({ passwordDialogOpen: false, enteredPassword: '' }); }}>
+                <DialogTitle>Enter Household Password</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        fullWidth
+                        variant="outlined"
+                        value={enteredPassword}
+                        onChange={this.handleEnteredPasswordChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.confirmPassword} color="primary">Confirm</Button>
+                    <Button onClick={() => this.setState({ passwordDialogOpen: false, enteredPassword: '' })} color="secondary">Cancel</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
     render() {
-        const { loading, error } = this.state;
+        const { loading, error, passwordDialogOpen } = this.state;
         if (loading) return <CircularProgress />;
         if (error && !this.state.dialogOpen) return <p>Error: {error}</p>; // Display global error only if dialog is not open
-        return this.renderDialogs();
+        return (
+            <>
+                {this.renderDialogs()}
+                {passwordDialogOpen && this.renderPasswordDialog()}
+            </>
+        );
     }
 }
 
