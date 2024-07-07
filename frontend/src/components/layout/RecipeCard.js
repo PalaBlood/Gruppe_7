@@ -6,8 +6,9 @@ import KitchenIcon from '@mui/icons-material/Kitchen';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import { styled } from '@mui/system';
 
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card)(({ theme, isAvailable }) => ({
   padding: theme.spacing(2),
+  border: isAvailable ? '3px solid green' : '1px solid gray', // Randfarbe basierend auf Verfügbarkeit
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(1),
   },
@@ -26,12 +27,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
     fontSize: 10,
   },
   display: 'flex',
-  justifyContent: 'flex-start', // Ensures the icon and text are aligned properly
+  justifyContent: 'center',
+  alignContent: "center" 
 }));
 
-function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
+function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook, isAvailable }) {
   return (
-    <StyledCard>
+    <StyledCard isAvailable={isAvailable}>
       <CardContent>
         <Typography variant="h5">{recipe.getTitle()}</Typography>
         <Typography color="textSecondary">
@@ -41,6 +43,18 @@ function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
       </CardContent>
       <CardActions>
         <Grid container spacing={1}>
+
+        <Grid item xs={12} sm={6} md={3}>
+            <StyledButton
+              size="small"
+              startIcon={<KitchenIcon className={StyledIcon} />}
+              onClick={() => onViewEntries(recipe.getId())}
+              fullWidth
+            >
+              Show <br></br> ingredients
+            </StyledButton>
+          </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <StyledButton
               size="small"
@@ -48,29 +62,10 @@ function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
               onClick={() => onEdit(recipe)}
               fullWidth
             >
-              Customize recipe
+              Customize <br></br> recipe
             </StyledButton>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StyledButton
-              size="small"
-              startIcon={<DeleteIcon className={StyledIcon} />}
-              onClick={() => onDelete(recipe)}
-              fullWidth
-            >
-              Delete
-            </StyledButton>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StyledButton
-              size="small"
-              startIcon={<KitchenIcon className={StyledIcon} />}
-              onClick={() => onViewEntries(recipe.getId())}
-              fullWidth
-            >
-              Show ingredients
-            </StyledButton>
-          </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <StyledButton
               size="small"
@@ -81,6 +76,20 @@ function RecipeCard({ recipe, onEdit, onDelete, onViewEntries, onCook }) {
               Cook recipe
             </StyledButton>
           </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <StyledButton
+              size="small"
+              startIcon={<DeleteIcon className={StyledIcon} />}
+              onClick={() => onDelete(recipe)}
+              fullWidth
+            >
+              Delete
+            </StyledButton>
+          </Grid>
+          
+         
+
         </Grid>
       </CardActions>
     </StyledCard>

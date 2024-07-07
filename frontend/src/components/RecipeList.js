@@ -26,7 +26,7 @@ const conversionRates = {
     g: { kg: 1 / 1000, g: 1, cups: 1 / 250, kilograms: 1 / 1000, grams: 1 },
     cl: { l: 1 / 100, ml: 10, cl: 1, liters: 1 / 100, milliliters: 10, centiliters: 1 },
     centiliters: { liters: 1 / 100, milliliters: 10, centiliters: 1, l: 1 / 100, ml: 10, cl: 1 },
-    piece: { piece: 1}
+    piece: { piece: 1 }
 };
 
 function convertQuantity(quantity, fromUnit, toUnit) {
@@ -44,12 +44,19 @@ function RecipeList() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [editRecipe, setEditRecipe] = useState(null);
+    const [recipeStatus, setRecipeStatus] = useState({});  // Neue State für Rezeptstatus hinzugefügt
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchRecipes();
         fetchFridgeEntries();
     }, []);
+
+    useEffect(() => {
+        if (recipes.length > 0 && fridgeEntries.length > 0) {
+            checkRecipeStatus();
+        }
+    }, [recipes, fridgeEntries]);  // Neue useEffect-Hook um Rezeptstatus zu überprüfen
 
     const fetchRecipes = async () => {
         setLoading(true);
@@ -83,6 +90,26 @@ function RecipeList() {
         }
     };
 
+    const checkRecipeStatus = async () => {
+        const status = {};
+        for (const recipe of recipes) {
+            const recipeEntries = await FridgeAPI.getAPI().getRecipeEntriesByRecipeId(recipe.getId());
+            const recipeEntryBOs = RecipeEntryBO.fromJSON(recipeEntries);
+            const allIngredientsAvailable = recipeEntryBOs.every(recipeEntry => {
+                const matchingFridgeEntry = fridgeEntries.find(fridgeEntry =>
+                    fridgeEntry.getDesignation() === recipeEntry.getDesignation()
+                );
+                if (matchingFridgeEntry) {
+                    const recipeQuantityInFridgeUnits = convertQuantity(recipeEntry.getQuantity(), recipeEntry.getUnit(), matchingFridgeEntry.getUnit());
+                    return recipeQuantityInFridgeUnits !== null && matchingFridgeEntry.getQuantity() >= recipeQuantityInFridgeUnits;
+                }
+                return false;
+            });
+            status[recipe.getId()] = allIngredientsAvailable;
+        }
+        setRecipeStatus(status);  // Rezeptstatus aktualisieren
+    };
+
     const handleAddButtonClick = () => {
         setShowAddForm(true);
         setEditRecipe(null);
@@ -97,38 +124,37 @@ function RecipeList() {
 
     const handleEditButtonClick = (recipe) => {
         const auth = getAuth();
-        const currentUser = auth.currentUser
+        const currentUser = auth.currentUser;
         const creator = recipe.getCreator();
         if (currentUser.uid !== creator) {
             alert('You are not the creator of this recipe. You cannot edit it.');
             return;
         } else {
-        setShowAddForm(true);
-        setEditRecipe(recipe);
+            setShowAddForm(true);
+            setEditRecipe(recipe);
+        }
     };
-};
 
     const handleDeleteButtonClick = async (recipe) => {
         const auth = getAuth();
-        const currentUser = auth.currentUser
+        const currentUser = auth.currentUser;
         const creator = recipe.getCreator();
         if (currentUser.uid !== creator) {
             alert('You are not the creator of this recipe. You cannot delete it.');
             return;
         } else {
-        try {
-            await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
-            fetchRecipes();
-        } catch (error) {
-            setError(error);
+            try {
+                await FridgeAPI.getAPI().deleteRecipe(recipe.getId());
+                fetchRecipes();
+            } catch (error) {
+                setError(error);
+            }
         }
-    }};
+    };
 
     const handleViewEntriesButtonClick = (recipeId) => {
         navigate(`/recipes/entries/${recipeId}`);
     };
-
-
 
     const handleCookButtonClick = async (recipe) => {
         try {
@@ -181,18 +207,26 @@ function RecipeList() {
                     color="primary"
                     startIcon={<AddIcon />}
                     onClick={handleAddButtonClick}
+                    sx={{ width: '250px', height: '50px', p:1 }}
                 >
                     Create new recipe
                 </Button>
             </Grid>
             {recipes.map((recipe) => (
-                <Grid item xs={12} sm={8} md={8} key={recipe.getId()}>
+                <Grid 
+                    item 
+                    xs={12} 
+                    sm={8} 
+                    md={8} 
+                    key={recipe.getId()}
+                >
                     <RecipeCard
                         recipe={recipe}
                         onEdit={handleEditButtonClick}
                         onDelete={handleDeleteButtonClick}
                         onViewEntries={handleViewEntriesButtonClick}
                         onCook={handleCookButtonClick}
+                        isAvailable={recipeStatus[recipe.getId()]}  // Verfügbarkeit als Prop weitergeben
                     />
                 </Grid>
             ))}

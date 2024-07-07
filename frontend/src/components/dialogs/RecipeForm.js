@@ -137,7 +137,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
     };
 
     const komponent_title = recipeentry ? 'Update a recipe' : 'Create a new recipe';
-    const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data';
+    //const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data';
 
     if (loadingHouseholdId) {
         return <LoadingProgress show />;
@@ -156,7 +156,6 @@ function RecipeForm({ recipeentry, show, onClose }) {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{header}</DialogContentText>
                     <form sx={{ width: '100%' }} noValidate autoComplete='off'>
                         <TextField
                             autoFocus
