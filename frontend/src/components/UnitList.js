@@ -111,9 +111,11 @@ const UnitList = ({ householdId }) => {
         </List>
       )}
       <Box mt={4}>
+
         <Typography variant="h5" gutterBottom>
           Add Unit
         </Typography>
+
         <TextField
           label="New Unit"
           value={newUnit}
@@ -122,16 +124,18 @@ const UnitList = ({ householdId }) => {
           variant="outlined"
         />
         <Box mt={2}>
-          <Button variant="contained" color="primary" onClick={handleAddUnit}>
+          <Button variant="contained" color="primary" onClick={handleAddUnit} sx={{ width: '150px', height: '40px' }}>
             Add
           </Button>
         </Box>
+
         {error && (
           <Box mt={2}>
             <Alert severity="error">{error}</Alert>
           </Box>
         )}
       </Box>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

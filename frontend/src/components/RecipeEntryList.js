@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Grid, Typography, Card, CardContent, CardActions } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useParams } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Pfeilsymbol importieren
+import { useNavigate, useParams } from 'react-router-dom';
 import FridgeAPI from '../API/SmartFridgeAPI';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import RecipeEntryBO from '../API/RecipeEntryBO';
 import RecipeEntryForm from './dialogs/RecipeEntryForm';
-import RecipeEntryCard from './layout/RecipeEntryCard'
+import RecipeEntryCard from './layout/RecipeEntryCard';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
 
@@ -108,6 +109,7 @@ const conversionRates = {
 
 function RecipeEntryList() {
     const { recipeId } = useParams();
+    const navigate = useNavigate(); // useNavigate Hook verwenden
     const [recipeEntries, setRecipeEntries] = useState([]);
     const [fridgeEntries, setFridgeEntries] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -198,17 +200,34 @@ function RecipeEntryList() {
     }
 
     return (
-        <Grid container spacing={2} style={{ padding: 20 , textAlign: 'center'}}>
+
+        <Grid container spacing={2} style={{ padding: 20, textAlign: 'center' }}>
+
+            <Grid item xs={12}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ArrowBackIcon />} // Pfeilsymbol hinzufügen
+                    onClick={() => navigate(-1)} // Zurück navigieren
+                    sx={{ width: '200px', height: '50px' }}
+                    
+                >
+                    Back to Recipes
+                </Button>
+            </Grid>
+
             <Grid item xs={12}>
                 <Button
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon />}
                     onClick={handleAddButtonClick}
+                    sx={{ width: '200px', height: '50px' }}
                 >
                     Add Ingredient
                 </Button>
             </Grid>
+
             {recipeEntries.length === 0 ? (
                 <Grid item xs={12}>
                     <p>No ingredients found. Add a new ingredient to get started.</p>

@@ -80,6 +80,7 @@ const FridgeEntryList = () => {
                     color="primary"
                     startIcon={<AddIcon />}
                     onClick={handleAddButtonClick}
+                    sx={{ width: '200px', height: '50px' }}
                 >
                     Add Grocery
                 </Button>

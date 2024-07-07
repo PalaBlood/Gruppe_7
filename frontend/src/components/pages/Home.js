@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getAuth } from 'firebase/auth';
+import SmartFridgeAPI from '../../API/SmartFridgeAPI';
 
 const Home = () => {
+    const [user, setUser] = useState(null);
+    const [household, setHousehold] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                // Abruf der Benutzerdaten
+                const userBO = await SmartFridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
+                setUser(userBO[0]);
+
+                // Abruf der Haushaltsdaten
+                const householdBO = await SmartFridgeAPI.getAPI().getHouseholdbyID(userBO[0].household_id);
+                setHousehold(householdBO[0]);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (!user || !household) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div style={styles.container}>
-            <h1 style={styles.heading}>Welcome to FridgeFinder!</h1>
+            <h1 style={styles.heading}>Willkommen, {user.nick_name} bei FridgeFinder!</h1>
+            <h2 style={styles.subheading}>Du bist im Haushalt: {household.name}</h2>
             <div style={styles.logoContainer}>
                 <img src={`${process.env.PUBLIC_URL}/images/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
             </div>
@@ -34,7 +62,7 @@ const styles = {
     },
     logo: {
         width: '50vw', // Relative Größe des Logos in Bezug auf die Bildschirmbreite
-        maxWidth: '450px', // Maximale Größe des Logos
+        maxWidth: '350px', // Maximale Größe des Logos
         height: 'auto', // Automatische Höhe, um das Seitenverhältnis beizubehalten
         borderRadius: '50%', // Rundes Bild
         opacity: 0.5, // Setzt die Transparenz auf 50%
