@@ -11,7 +11,9 @@ import RecipeCard from './layout/RecipeCard';
 import { getAuth } from 'firebase/auth';
 import RecipeEntryBO from '../API/RecipeEntryBO';
 import FridgeEntryBO from '../API/FridgeEntryBO';
+/**Übersicht aller Rezepte sowie die Erstellung neuer, das löschen und Editieren von Rezepten */
 
+//Sorgt dafür, dass verschiedene Maßeinheiten miteinander verglichen werden können
 const conversionRates = {
     liters: { milliliters: 1000, liters: 1, centiliters: 100, l: 1, ml: 1000, cl: 100 },
     milliliters: { liters: 1 / 1000, milliliters: 1, centiliters: 1 / 10, l: 1 / 1000, cl: 1 / 10, ml: 1, cups: 1 / 250 },
@@ -29,13 +31,16 @@ const conversionRates = {
     piece: { piece: 1 }
 };
 
+
 function convertQuantity(quantity, fromUnit, toUnit) {
-    //Konvertiert verschiedene Maßeinheiten anhand von conversionRates
+    
     if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {
         return quantity * conversionRates[fromUnit][toUnit];
     }
     return null;
 }
+
+
 
 function RecipeList() {
     const [recipes, setRecipes] = useState([]);
@@ -47,16 +52,22 @@ function RecipeList() {
     const [recipeStatus, setRecipeStatus] = useState({});  // Neue State für Rezeptstatus hinzugefügt
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         fetchRecipes();
         fetchFridgeEntries();
     }, []);
+
+
 
     useEffect(() => {
         if (recipes.length > 0 && fridgeEntries.length > 0) {
             checkRecipeStatus();
         }
     }, [recipes, fridgeEntries]);  // Neue useEffect-Hook um Rezeptstatus zu überprüfen
+
+
 
     const fetchRecipes = async () => {
         setLoading(true);
@@ -74,6 +85,8 @@ function RecipeList() {
         }
     };
 
+
+
     const fetchFridgeEntries = async () => {
         setLoading(true);
         const auth = getAuth();
@@ -89,6 +102,8 @@ function RecipeList() {
             setLoading(false);
         }
     };
+
+
 
     const checkRecipeStatus = async () => {
         const status = {};
@@ -110,10 +125,12 @@ function RecipeList() {
         setRecipeStatus(status);  // Rezeptstatus aktualisieren
     };
 
+
     const handleAddButtonClick = () => {
         setShowAddForm(true);
         setEditRecipe(null);
     };
+
 
     const handleFormClose = (newRecipe) => {
         if (newRecipe) {
@@ -121,6 +138,7 @@ function RecipeList() {
         }
         setShowAddForm(false);
     };
+
 
     const handleEditButtonClick = (recipe) => {
         const auth = getAuth();
@@ -134,6 +152,7 @@ function RecipeList() {
             setEditRecipe(recipe);
         }
     };
+
 
     const handleDeleteButtonClick = async (recipe) => {
         const auth = getAuth();
@@ -152,9 +171,11 @@ function RecipeList() {
         }
     };
 
+
     const handleViewEntriesButtonClick = (recipeId) => {
         navigate(`/recipes/entries/${recipeId}`);
     };
+
 
     const handleCookButtonClick = async (recipe) => {
         try {

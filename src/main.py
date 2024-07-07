@@ -625,18 +625,6 @@ class RecipeOperations(Resource):
         adm.delete_recipe(recipe)
         return '', 200
 
-"""@fridge_ns.route('/fridge-id-by-google-id/<string:google_user_id>')
-@fridge_ns.response(500, 'Server-Fehler')
-class FridgeIdByGoogleIdOperations(Resource):
-    # @secured
-    def get(self, google_user_id):
-        Fridge ID nach Google-User-ID auslesen
-        adm = HalilsTaverneAdministration()
-        fridge_id = adm.get_fridge_id_by_google_user_id(google_user_id)
-        if fridge_id:
-            return {'fridge_id': fridge_id}, 200
-        return {'message': 'Fridge ID not found'}, 404"""
-
 
 
 
@@ -654,6 +642,7 @@ class FridgeIdByGoogleIdResource(Resource):
             return {'fridge_id': fridge_id}, 200
         else:
             return {'message': 'Fridge ID not found'}, 404
+
 
 
 
@@ -755,5 +744,3 @@ class UnitsbyHouseholdIdOperations(Resource):
 if __name__ == '__main__':
     app.run(debug=True)
 
-"""if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)"""

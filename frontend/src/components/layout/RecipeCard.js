@@ -6,6 +6,8 @@ import KitchenIcon from '@mui/icons-material/Kitchen';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import { styled } from '@mui/system';
 
+/**Optische Anpassungen zu den Rezepten können hier verwirklicht werden */
+
 const StyledCard = styled(Card)(({ theme, isAvailable }) => ({
   padding: theme.spacing(2),
   border: isAvailable ? '3px solid green' : '1px solid gray', // Randfarbe basierend auf Verfügbarkeit

@@ -12,18 +12,12 @@ from server.db.Mapper import Mapper
 from server.db.UserMapper import UserMapper
 
 class HouseholdMapper(Mapper):
-    """Mapper-Klasse, die Household-Objekte auf eine relationale
-    Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
-    gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
-    gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
-    in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
-    """
 
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Retrieve all households with associated users."""
+        """Gibt alle Haushalte aus"""
         result = []
         cursor = self._cnx.cursor()
         try:
@@ -45,14 +39,20 @@ class HouseholdMapper(Mapper):
 
         return result
 
+
+
+
     def find_user_ids_for_household(self, household_id):
-        """Helper method to find user IDs for a specific household."""
+        """Gibt IDs aller User anhand der Haushalt ID aus"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id FROM users WHERE household_id=%s", (household_id,))
         return [user_id[0] for user_id in cursor.fetchall()]
 
+
+
+
     def insert(self, household):
-        """Insert a Household object into the database and set its ID."""
+        """Erstellt einen Haushalt"""
         cursor = self._cnx.cursor()
         name = household.get_name()
         fridge_id = household.get_fridge_id()
@@ -62,38 +62,40 @@ class HouseholdMapper(Mapper):
             cursor.execute("INSERT INTO household (name, fridge_id, password) VALUES (%s, %s, %s)", (name, fridge_id, password))
             self._cnx.commit()
 
-            #Setzen der ID, die von der Datenbank generiert wurde
             household.set_id(cursor.lastrowid)
             cursor.execute("INSERT INTO unit (designation, household_id) VALUES (%s, %s)", ("grams", household.get_id()))
             return household
+        
         except Exception as e:
             print(f"Ein Fehler ist aufgetreten: {e}")
             self._cnx.rollback()
+            
         finally:
             cursor.close()
 
+
+
     def find_by_id(self, id):
-        """Find a Household by its ID."""
+        """Gibt einen Haushalt anhand der ID aus"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, name, Fridge_ID, password FROM household WHERE id=%s", (id,))
         tuple = cursor.fetchone()
-        print(tuple)
 
         if tuple:
-            # Create a Household object
 
             household = Household()
             household.set_id(tuple[0])
             household.set_name(tuple[1])
             household.set_fridge_id(tuple[2])
             household.set_password(tuple[3])
-
-            print(household)
             return household
 
+
+
+
     def update(self, household):
-        """Update des Namens eines Households
-        param: Household-Object"""
+        """Update des Namens eines Households"""
+       
         cursor = self._cnx.cursor()
         try:
 
@@ -103,61 +105,69 @@ class HouseholdMapper(Mapper):
         except Exception as e:
             print(f"An error occurred while updating the household: {e}")
             self._cnx.rollback()
+            
         finally:
             cursor.close()
 
+
+
+
     def delete(self, household):
-        print(household)
+        """Löscht einen Haushalt. Ebenfalls findet eine Löschweitergabe statt, sodass alle
+        Rezepte, Maßeinheiten, sämtliche Einträge und die Fridge des jeweiligen Haushaltes entfernt werden"""
         cursor = self._cnx.cursor()
 
         try:
-            # Fetch fridge_id from household
+          
             command = "SELECT fridge_id from household WHERE id = %s"
             cursor.execute(command, (household.get_id(),))
             fridge_id = cursor.fetchone()[0]
 
-            # Delete fridge_groceries entries related to the fridge
+            
             command = "DELETE FROM fridge_groceries WHERE fridge_id = %s"
             cursor.execute(command, (fridge_id,))
 
-            # Delete unit entries related to the household
             command = "DELETE FROM unit WHERE household_id = %s"
             cursor.execute(command, (household.get_id(),))
 
-            # Delete recipe_groceries entries related to recipes in this household
             command = "DELETE FROM recipe_groceries WHERE recipe_id IN (SELECT id FROM recipe WHERE household_id = %s)"
             cursor.execute(command, (household.get_id(),))
 
-            # Delete recipe entries related to the household
             command = "DELETE FROM recipe WHERE household_id = %s"
             cursor.execute(command, (household.get_id(),))
 
-            # Delete users entries related to the household
+     
             command = "DELETE FROM users WHERE household_id = %s"
             cursor.execute(command, (household.get_id(),))
 
-            # Delete fridge entry
+       
             command = "DELETE FROM fridge WHERE id = %s"
             cursor.execute(command, (fridge_id,))
 
-            # Finally, delete the household entry
             command = "DELETE FROM household WHERE id = %s"
             cursor.execute(command, (household.get_id(),))
 
             self._cnx.commit()
+            
         except Exception as e:
             print(f"An error occurred while deleting the household: {e}")
             self._cnx.rollback()
+            
         finally:
             cursor.close()
 
+
+
+
     def get_household_id_by_google_user_id(self, google_user_id):
+        """Gibt einen Haushalt anhand der Google User ID zurück"""
         cursor = self._cnx.cursor()
         try:
             command = "SELECT household_id FROM users WHERE google_user_id = %s"
             cursor.execute(command, (google_user_id,))
             result = cursor.fetchone()
-            if result:#Sollte ein Eintrag gefunden werden, wird die household_id ausgelesen
+            
+            if result:
                 return result[0]
             return None
         

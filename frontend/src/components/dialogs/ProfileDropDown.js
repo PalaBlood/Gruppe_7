@@ -8,24 +8,24 @@ class ProfileDropDown extends Component {
 
   
   #avatarButtonRef = createRef();
-  // Konstruktor mit Initialisierung des States
+  //Konstruktor mit Initialisierung des States
   constructor(props) {
     super(props);
 
-  // Initialisierung des states
+  //Initialisierung des states
     this.state = {
       open: false,
     }
   }
 
-  // Funktion zum Öffnen des Popovers
+  //Funktion zum Öffnen des Popovers
   handleAvatarButtonClick = () => {
     this.setState({
       open: !this.state.open
     });
   }
 
- // Funktion zum Schließen des Popovers
+ //Funktion zum Schließen des Popovers
   handleClose = () => {
     this.setState({
       open: false
@@ -41,9 +41,9 @@ class ProfileDropDown extends Component {
   }
 
   render() {
-    // Extract the user attribute from the props
+
     const { user } = this.props;
-    // Extract the open attribute from the state
+    
     const { open } = this.state;
 
     return (
@@ -104,7 +104,7 @@ class ProfileDropDown extends Component {
   }
 }
 
-/** PropTypes */
+
 ProfileDropDown.propTypes = {
   user : PropTypes.object,
 }

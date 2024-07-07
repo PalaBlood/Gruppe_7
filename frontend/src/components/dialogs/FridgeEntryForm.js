@@ -11,7 +11,7 @@ import FridgeEntryBO from '../../API/FridgeEntryBO';
 class FridgeEntryForm extends Component {
     constructor(props) {
         super(props);
-        // Init the state
+
         let designation = '', quantity = '', unit = '', fridge_id = '';
         if (props.fridgeentry) {
             designation = props.fridgeentry.getDesignation();
@@ -46,7 +46,7 @@ class FridgeEntryForm extends Component {
         await this.fetchHouseholdUnits();
     }
 
-    // Fetches the fridge ID of the currently signed in user
+    //Laden der Google User ID
     handleFetchGoogleUserId = async () => {
         try {
             const auth = getAuth();
@@ -65,7 +65,7 @@ class FridgeEntryForm extends Component {
         }
     };
 
-    // Fetches the household units of the currently signed in user
+    //Laden der Units
     fetchHouseholdUnits = async () => {
         try {
             const auth = getAuth();
@@ -81,7 +81,7 @@ class FridgeEntryForm extends Component {
         }
     };
 
-    // Adds a new fridge entry
+    //Erstellung eines Kühlschrankeintrags
     addFridgeEntry = async () => {
         const { designation, quantity, unit, fridge_id } = this.state;
 

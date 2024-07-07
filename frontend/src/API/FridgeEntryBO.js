@@ -16,6 +16,8 @@ export default class FridgeEntryBO extends FoodEntry {
     setFridgeId(fridgeId) {
         this.fridgeId = fridgeId;
     }
+
+    
     // Statische Methode zum Erzeugen von FridgeEntryBO-Instanzen aus JSON-Daten.
     static fromJSON(fridgeEntries) {
         // Überprüft, ob fridgeEntries ein Array ist. Wenn nicht, wird es in ein Array umgewandelt.

@@ -6,7 +6,7 @@ const Footer = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
   if (isMobile) {
-    return null; // Footer wird nicht angezeigt, wenn die Breite <= 600px ist
+    return null; 
   }
 
   return (

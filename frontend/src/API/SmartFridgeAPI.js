@@ -9,9 +9,6 @@ import UnitBO from "./Unit";
 import { json } from "react-router-dom";
 
 
-
-
-
 class FridgeAPI {
 
     //Singleton pattern
@@ -50,8 +47,6 @@ class FridgeAPI {
     #getRecipeEntriesByRecipeIdURL = (recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntries/${recipe_id}`;
     #updateRecipeEntryURL = (groceries_designation, recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}/${recipe_id}`;
     #deleteRecipeEntryURL = (groceries_designation, recipe_id) => `${this.#fridgeserverbaseurl}/RecipeEntry/${groceries_designation}/${recipe_id}`;
-    
-    
     
     
 

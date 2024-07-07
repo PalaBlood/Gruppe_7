@@ -3,7 +3,7 @@ import { Card, CardContent, CardActions, Typography, Button } from '@mui/materia
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
-
+/**Optische Anpassungen zu den Rezepteinträgen können hier verwirklicht werden */
 
 function RecipeEntryCard({ recipeEntry, onEdit, onDelete, isEntryAvailableInFridge }) {
     if (!recipeEntry) {

@@ -9,7 +9,7 @@ import HomeIcon from '@mui/icons-material/Home';
 //falls nicht wird ein neues User Objekt angelegt und die Aufforderung angezeigt, einen Haushalt auszuwählen  @author: Tom Schönfeld
 class CheckforexistingHousehold extends Component {
 
-    //state initialisieren
+    
     state = {
         households: [],
         selectedHouseholdId: null,
@@ -23,7 +23,6 @@ class CheckforexistingHousehold extends Component {
         enteredPassword: ''
     }
 
-    //lifecycle methode
     componentDidMount() {
         this.checkForHousehold();
     }
@@ -114,7 +113,8 @@ class CheckforexistingHousehold extends Component {
         }
     }
 
-    // Option statt auszuwählen einen neuen Haushalt zu erstellen
+
+    //Option statt auszuwählen einen neuen Haushalt zu erstellen
     addHousehold = async () => {
         const { newHouseholdName, newPassword } = this.state;
         if (!newHouseholdName.trim()) {
@@ -149,6 +149,7 @@ class CheckforexistingHousehold extends Component {
             this.setState({ error: error.message, loading: false });
         }
     }
+
 
     renderDialogs = () => {
         const { dialogOpen, households, newPassword, newHouseholdName, error } = this.state;
@@ -244,7 +245,7 @@ class CheckforexistingHousehold extends Component {
     render() {
         const { loading, error, passwordDialogOpen } = this.state;
         if (loading) return <CircularProgress />;
-        if (error && !this.state.dialogOpen) return <p>Error: {error}</p>; // Display global error only if dialog is not open
+        if (error && !this.state.dialogOpen) return <p>Error: {error}</p>; 
         return (
             <>
                 {this.renderDialogs()}

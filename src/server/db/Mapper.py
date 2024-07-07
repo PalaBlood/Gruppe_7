@@ -2,21 +2,6 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
-#from server.db.dbcredentials import host, user, password, database
-
-
-
-
-"""
-Die Mapper dienen dazu, dass wir aus den Tupeln (Relationen) der Datenbank Intanzen erzeugen können
-und umgekehrt.
-
-Jede Mapper Klasse erbt von Mapper.py. Hier sind die Grundlegenden Methoden drin, die jede andere Mapper 
-Klasse mindestens benötigen wird. 
-
-Ebenfalls wird hier die Verbindung zum Server erstellt, an der sich alle anderen Mapper Klassen bedienen können
-(in unserem Fall grad nur Lokal)
-"""
 
 
 class Mapper(AbstractContextManager, ABC):
@@ -35,13 +20,15 @@ class Mapper(AbstractContextManager, ABC):
                                           database='Sopra')
 
         else:
-            #Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt
+            """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
             self._cnx = connector.connect(user='root', password='test',
                               host='localhost',
                               database='sopra')
 
 
         return self
+
+
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Verbindung mit der Datenbank trennen"""
@@ -51,8 +38,7 @@ class Mapper(AbstractContextManager, ABC):
             self._cnx.commit()
         self._cnx.close()
 
-    """Im folgenden Abschnitt finden sich alle abstrakten Methoden, diese Methoden werden erst in den Subklassen implementiert.
-    Hier dienen sie als gemeinsame Schnittstelle für alle Mapperklassen und geben gleichzeitig vor, dass alle Subklassen folgende Methoden bereitstellen müssen"""
+
 
 
 

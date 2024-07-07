@@ -1,11 +1,3 @@
-
-"""
-from Gruppe_7.src.server.db.Mapper import Mapper
-from Gruppe_7.src.server.bo.Recipe import Recipe
-from Gruppe_7.src.server.db.GroceriesMapper import GroceriesMapper
-from Gruppe_7.src.server.db.UserMapper import UserMapper
-"""
-
 from server.db.UserMapper import UserMapper
 from server.db.Mapper import Mapper
 from server.bo.Recipe import Recipe
@@ -18,25 +10,25 @@ class RecipeMapper(Mapper):
         super().__init__()
 
     def insert_recipe(self, recipe):
+        """Erstellt ein Rezept"""
 
-            cursor = self._cnx.cursor()
-            cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
-            tuples = cursor.fetchall()
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT MAX(id) AS maxid FROM recipe")
+        tuples = cursor.fetchall()
 
-            maxid = tuples[0][0] if tuples[0][0] is not None else 0
-            recipe.set_id(maxid + 1)
+        maxid = tuples[0][0] if tuples[0][0] is not None else 0
+        recipe.set_id(maxid + 1)
 
-            command = ("""INSERT INTO recipe (id, recipe_title, number_of_persons, creator, recipe_description, 
-                        household_id)
-                        VALUES (%s, %s, %s, %s, %s, %s)""")
-            data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator(),
-                    recipe.get_description(), recipe.get_household_id())
-            cursor.execute(command, data)
+        command = ("""INSERT INTO recipe (id, recipe_title, number_of_persons, creator, recipe_description, 
+                    household_id)
+                    VALUES (%s, %s, %s, %s, %s, %s)""")
+        data = (recipe.get_id(), recipe.get_title(), recipe.get_number_of_persons(), recipe.get_creator(),
+                recipe.get_description(), recipe.get_household_id())
+        cursor.execute(command, data)
+        self._cnx.commit()
+        cursor.close()
+        return recipe
 
-            self._cnx.commit()
-            cursor.close()
-
-            return recipe
 
 
 
@@ -52,8 +44,9 @@ class RecipeMapper(Mapper):
 
 
 
+
     def update_recipe(self, recipe):
-        """Update an existing recipe in the database."""
+        """Updatet ein Rezept"""
         print(recipe)
         cursor = self._cnx.cursor()
         print(recipe)
@@ -67,8 +60,11 @@ class RecipeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+
+
+
     def update_recipe_entry(self, recipe_entry):
-        """Update an existing recipe entry in the database."""
+        """Updatet ein Rezepteintrag"""
 
         cursor = self._cnx.cursor()
         command = """UPDATE recipe_groceries
@@ -82,21 +78,24 @@ class RecipeMapper(Mapper):
         cursor.close()
 
 
+
+
     def insert_recipe_entry(self, recipe_entry):
+        """Erstellt einen Rezepteintrag"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT quantity FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",
                     (recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         result = cursor.fetchone()
 
         if result:
-            # Update the existing entry
+            
             existing_quantity = float(result[0])
             new_quantity = existing_quantity + float(recipe_entry.get_quantity())
             cursor.execute(
                 "UPDATE recipe_groceries SET quantity = %s WHERE groceries_designation = %s AND recipe_id = %s",
                 (new_quantity, recipe_entry.get_groceries_designation(), recipe_entry.get_recipe_id()))
         else:
-            # Insert the new entry
+            
             command = """INSERT INTO recipe_groceries (recipe_id, groceries_designation, quantity, unit)
                         VALUES (%s, %s, %s, %s)"""
             data = (recipe_entry.get_recipe_id(), recipe_entry.get_groceries_designation(), recipe_entry.get_quantity(), recipe_entry.get_unit())
@@ -109,7 +108,7 @@ class RecipeMapper(Mapper):
 
 
     def find_recipe_by_id(self, recipe_id):
-        """Find a Recipe by its ID."""
+        """Gibt ein Rezept anhand der ID zurück"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe WHERE id = %s", (recipe_id,))
         result = cursor.fetchone()
@@ -129,8 +128,9 @@ class RecipeMapper(Mapper):
 
 
 
+
     def find_recipes_by_household_id(self, household_id):
-        """Find all recipes by household ID."""
+        """Gibt alle Rezepte anhand der Haushalt ID zurück"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe WHERE household_id = %s", (household_id,))
         rows = cursor.fetchall()
@@ -151,15 +151,15 @@ class RecipeMapper(Mapper):
 
 
 
+
     def find_entries_by_recipe_id(self, recipe_id):
-        """Find all entries by recipe ID."""
+        """Gibt alle Rezepteinträge anhand der Rezept ID zurück"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE recipe_id = %s", (recipe_id,))
         rows = cursor.fetchall()
 
         entries = []
         for row in rows:
-            # Initialize the RecipeEntry
             entry = RecipeEntry()
             entry.set_recipe_id(row[0])
             entry.set_groceries_designation(row[1])
@@ -172,8 +172,9 @@ class RecipeMapper(Mapper):
 
 
 
+
     def find_all_entries(self):
-        """Find all entries in the database."""
+        """Gibt alle Rezepteinträge zurück"""
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries")
@@ -194,11 +195,10 @@ class RecipeMapper(Mapper):
 
 
 
-    def find_all_recipes(self):
-        """Auslesen aller Rezepte.
 
-        :return Eine Sammlung mit Recipe-Objekten, die sämtliche Rezepte repräsentieren.
-        """
+    def find_all_recipes(self):
+        """Auslesen aller Rezepte"""
+
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, recipe_title, number_of_persons, creator, recipe_description, household_id FROM recipe")
@@ -221,7 +221,7 @@ class RecipeMapper(Mapper):
 
 
     def delete_recipe_entry(self, entry):
-        """Delete a RecipeEntry object from the database."""
+        """Löscht ein Rezepteintrag"""
         cursor = self._cnx.cursor()
         command = "DELETE FROM recipe_groceries WHERE recipe_id = %s AND groceries_designation = %s"
         cursor.execute(command, (entry.get_recipe_id(), entry.get_groceries_designation()))
@@ -231,13 +231,12 @@ class RecipeMapper(Mapper):
 
 
     def delete_recipe(self, recipe):
-        """Delete a Recipe object."""
-        # Zuerst alle zugehörigen RecipeEntries löschen
+        """Löscht ein Rezept und alle dazugehörigen Rezepteinträge"""
         entries = self.find_entries_by_recipe_id(recipe.get_id())
         for entry in entries:
             self.delete_recipe_entry(entry)
 
-        # Dann das Rezept löschen
+       
         cursor = self._cnx.cursor()
         command = "DELETE FROM recipe WHERE id = %s"
         cursor.execute(command, (recipe.get_id(),))
@@ -246,8 +245,9 @@ class RecipeMapper(Mapper):
 
 
 
-    def find_recipe_id_by_title(self, title):
 
+    def find_recipe_id_by_title(self, title):
+        """Gibt ein Rezept anhand des Titels zurück"""
         cursor = self._cnx.cursor()
         command = "SELECT id FROM recipe WHERE recipe_title = %s"
         cursor.execute(command, (title,))
@@ -256,8 +256,9 @@ class RecipeMapper(Mapper):
 
 
 
+
     def find_entries_by_recipe_id_and_groceries_designation(self, groceries_designation, recipe_id):
-        """Find all entries by recipe ID."""
+        """Gibt alle Rezepteinträge anhand der Lebensmittelbezeichnung und der Rezept ID zurück"""
         cursor = self._cnx.cursor()
         cursor.execute(
             "SELECT recipe_id, groceries_designation, quantity, unit FROM recipe_groceries WHERE groceries_designation = %s AND recipe_id = %s",

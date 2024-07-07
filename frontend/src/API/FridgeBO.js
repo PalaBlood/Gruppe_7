@@ -8,6 +8,7 @@ export default class FridgeBO extends BusinessObject {
         super();
     }
 
+    
     // Statische Methode zum Erzeugen von FridgeBO-Instanzen aus JSON-Daten.
     static fromJSON(fridges) {
         let result = [];

@@ -6,6 +6,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import FridgeAPI from '../API/SmartFridgeAPI.js';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import { getAuth } from "firebase/auth";
+//**Gibt das Profil des Users aus. Nickname und co können überarbeitet werden */
+
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);

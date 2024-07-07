@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from '@mui/material';
 
-// LoadingProgress Component
-// Shows a loading spinner while waiting for an API request
+//Erstellt einen Ladebalken. Kann aufgerufen werden, wenn irgendwas vom Backend geladen werden soll
 class LoadingProgress extends Component {
 
   render() {

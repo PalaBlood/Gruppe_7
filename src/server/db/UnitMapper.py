@@ -11,9 +11,8 @@ class UnitMapper(Mapper):
         """Eintrag einer neuen Unit
         ID wird automatisch gesetzt, die household_id ist ein Fremdschlüssel zur id in
         der Relation 'household'"""
-
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM unit")  # Der Tabellenname sollte 'unit' sein, nicht 'recipe'
+        cursor.execute("SELECT MAX(id) AS maxid FROM unit") 
         tuples = cursor.fetchall()
 
         maxid = tuples[0][0] if tuples[0][0] is not None else 0
@@ -31,10 +30,8 @@ class UnitMapper(Mapper):
 
 
     def update_unit(self, unit):
-        """Bereits vorhandene Unit wird angepasst
-        wird so nicht funktioniert, mach ich noch
-        """
-
+        """Bereits vorhandene Unit wird angepasst. 
+        Wird aktuell nicht benötigt"""
 
         cursor = self._cnx.cursor()
         command = ("""UPDATE unit

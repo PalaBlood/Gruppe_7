@@ -94,7 +94,7 @@ conversion_rates = {
     }
 }
 
-#convert quantity funktion als hilfsmittel
+#Sorgt dafür, dass verschiedene Maßeinheiten miteinander umgerechnet werden können
 def convert_quantity(quantity, from_unit, to_unit):
     if from_unit in conversion_rates and to_unit in conversion_rates[from_unit]:
         return quantity * conversion_rates[from_unit][to_unit]

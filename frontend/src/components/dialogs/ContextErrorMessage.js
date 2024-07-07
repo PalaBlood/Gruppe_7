@@ -3,18 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Alert, AlertTitle } from '@mui/material';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
-/**
- * Shows an in-line error message in a given component context,
- * if the error object is not null
- * 
- * @See See Material-UIs [Alert](https://mui.com/material-ui/react-alert/)
- * 
- * @author [Robin Krauß](https://github.com/Roggo17)
- */
+
 class ContextErrorMessage extends Component {
   #standardText = 'Error: An unexpected error has occurred. Please try again later.';
 
-  /** Renders the ContextErrorMessage if error object is not null  */
   render() {
     const { error, contextErrorMsg, onReload } = this.props;
 
@@ -48,19 +40,13 @@ class ContextErrorMessage extends Component {
   }
 }
 
-/** PropTypes */
+
 ContextErrorMessage.propTypes = {
-  /** 
-   * The error object, which drives the error message 
-   * If not null, the error message is shown 
-   */
+
   error: PropTypes.object,
-  /**  A contextual error message to be shown */
+
   contextErrorMsg: PropTypes.string,
-  /** 
-   * A reload handler for the onReload event, which occurs if the reload button is clicked. 
-   * If given a reload button is shown 
-   */
+
   onReload: PropTypes.func
 }
 

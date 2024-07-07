@@ -9,10 +9,10 @@ class User(BusinessObject):
     def __init__(self):
         super().__init__()
         self._nickname = "" #Der Nickname des Users
-        self._last_name = "" # Der Nachname des Users
-        self._first_name = "" # Der Vorname des Users
-        self._Household_id = "" # Die ID des zugehörigen Haushalts
-        self._google_user_id = "" # Die Google User ID des Users
+        self._last_name = "" #Der Nachname des Users
+        self._first_name = "" #Der Vorname des Users
+        self._Household_id = "" #Die ID des zugehörigen Haushalts
+        self._google_user_id = "" #Die Google User ID des Users
 
 
     def set_nick_name(self, nickname):
@@ -55,24 +55,24 @@ class User(BusinessObject):
         """Gibt die Google User ID des Users zurück"""
         return self._google_user_id
 
+
+
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz"""
         return "User: {}, {}, {}, {},{},{}".format(self.get_id(), self._first_name, self._last_name,self._Household_id, self._google_user_id, self._nickname)
     
     
-    """Wir benötigen die Methode, damit wir das Objekt in ein dict umwandeln.
-    Da JSONs und Pyhton dicts gleich aufgebaut sind, können wir so Objekte verpacken und 
-    versenden (oder entgegennehmen)"""
+   
     @staticmethod
     def from_dict(dictionary=dict()):
 
         obj = User()
-        obj.set_id(dictionary["id"]) # Setzt die ID des Users aus dem Dictionary
-        obj.set_nick_name(dictionary["nick_name"]) # Setzt den Nickname aus dem Dictionary
-        obj.set_first_name(dictionary["first_name"]) # Setzt den Vornamen aus dem Dictionary
-        obj.set_household_id(dictionary["household_id"]) # Setzt die Haushalt-ID aus dem Dictionary
-        obj.set_last_name(dictionary["last_name"]) # Setzt den Nachnamen aus dem Dictionary
-        obj.set_google_user_id(dictionary["google_user_id"]) # Setzt die Google User ID aus dem Dictionary
+        obj.set_id(dictionary["id"]) #Setzt die ID des Users aus dem Dictionary
+        obj.set_nick_name(dictionary["nick_name"]) #Setzt den Nickname aus dem Dictionary
+        obj.set_first_name(dictionary["first_name"]) #Setzt den Vornamen aus dem Dictionary
+        obj.set_household_id(dictionary["household_id"]) #Setzt die Haushalt-ID aus dem Dictionary
+        obj.set_last_name(dictionary["last_name"]) #Setzt den Nachnamen aus dem Dictionary
+        obj.set_google_user_id(dictionary["google_user_id"]) #Setzt die Google User ID aus dem Dictionary
         return obj
 
     

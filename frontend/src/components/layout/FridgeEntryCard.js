@@ -3,6 +3,8 @@ import { Button, Card, CardContent, CardActions, Typography } from '@mui/materia
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
+/**Optische Anpassungen zu den Kühlschrankeinträgen können hier verwirklicht werden */
+
 
 const FridgeEntryCard = ({ entry, onEdit, onDelete }) => (
     <Card>

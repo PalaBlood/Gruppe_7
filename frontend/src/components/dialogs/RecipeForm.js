@@ -27,6 +27,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
     const [loadingHouseholdId, setLoadingHouseholdId] = useState(true);
     const [householdIdError, setHouseholdIdError] = useState(null);
 
+    //Sollte der Eintrag Editiert werden, werden die bisherigen Eingaben geladen
     useEffect(() => {
         if (recipeentry) {
             setTitle(recipeentry.getTitle());
@@ -44,6 +45,8 @@ function RecipeForm({ recipeentry, show, onClose }) {
         handleFetchGoogleUserId();
     }, [recipeentry]);
 
+
+    //Läd Haushalt anhand der Google User id
     const handleFetchGoogleUserId = async () => {
         try {
             const auth = getAuth();
@@ -62,6 +65,8 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
+
+    //Erstellt ein Rezept
     const addRecipe = async () => {
         if (!title || !numberOfPersons || !description) {
             setAddingError({ message: 'All fields are required' });
@@ -106,6 +111,8 @@ function RecipeForm({ recipeentry, show, onClose }) {
         }
     };
 
+
+
     const textFieldValueChange = (event) => {
         const { id, value } = event.target;
         const trimmedValue = value.trim();
@@ -137,7 +144,6 @@ function RecipeForm({ recipeentry, show, onClose }) {
     };
 
     const komponent_title = recipeentry ? 'Update a recipe' : 'Create a new recipe';
-    //const header = recipeentry ? `Recipe ID: ${recipeentry.getId()}` : 'Enter recipe data';
 
     if (loadingHouseholdId) {
         return <LoadingProgress show />;
@@ -147,6 +153,7 @@ function RecipeForm({ recipeentry, show, onClose }) {
         return <ContextErrorMessage error={householdIdError} contextErrorMsg={`Error fetching household ID`} />;
     }
 
+    
     return (
         show ? (
             <Dialog open={show} onClose={handleClose} maxWidth='xs'>

@@ -92,6 +92,7 @@ export default class UserBO extends BusinessObject {
 
 
     
+    
     static fromJSON(users) {
         let result = [];
         /**

@@ -1,19 +1,7 @@
-"""
-from Gruppe_7.src.server.bo.User import User
-from Gruppe_7.src.server.db.Mapper import Mapper
-"""
-
 from server.bo.User import User
 from server.db.Mapper import Mapper
 
-
 class UserMapper(Mapper):
-    """Mapper-Klasse, die User-Objekte auf eine relationale
-    Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
-    gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
-    gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
-    in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
-    """
 
     def __init__(self):
         super().__init__()
@@ -28,15 +16,17 @@ class UserMapper(Mapper):
             return result[0]
         return None
 
-    def find_users_by_household_id(self, household_id):
 
+
+
+    def find_users_by_household_id(self, household_id):
+        """Gibt alle User eines Haushaltes zurück"""
         cursor = self._cnx.cursor()
         cursor.execute(
             "SELECT id, nick_name, first_name, last_name, household_id, google_user_id  FROM users WHERE household_id=%s",
             (household_id,))
         users = cursor.fetchall()
         user_list = []
-        # Create User objects for each retrieved user record and add to the Household
         for user_data in users:
             user = User()
             user.set_id(user_data[0])
@@ -49,9 +39,11 @@ class UserMapper(Mapper):
 
         return user_list
 
+
+
+
     def find_all(self):
-        """Auslesen aller User. :return Eine Sammlung mit User-Objekten, die sämtliche User repräsentieren.
-        """
+        """Gibt aller User zurück"""
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT nick_name, first_name, last_name, id, household_id, google_user_id FROM users")
@@ -72,15 +64,14 @@ class UserMapper(Mapper):
 
         return result
 
+
+
+
     def insert(self, user):
-        """Einfügen eines User-Objekts in die Datenbank.
+        """Einfügen eines User-Objekts in die Datenbank
 
         Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
-        berichtigt.
-
-        :param user das zu speichernde Objekt
-        :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
-        """
+        berichtigt."""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM users")
         tuples = cursor.fetchall()
@@ -106,13 +97,11 @@ class UserMapper(Mapper):
 
         return user
 
-    def find_by_nickname(self, nick_name):
-        """Auslesen aller Benutzer anhand des Benutzernamens.
 
-        :param nickname Name der zugehörigen Benutzer.
-        :return Eine Sammlung mit User-Objekten, die sämtliche Benutzer
-            mit dem gewünschten Namen enthält.
-        """
+
+
+    def find_by_nickname(self, nick_name):
+        """Auslesen aller Benutzer anhand des Benutzernamens"""
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT id, nick_name, first_name, last_name, household_id, google_user_id FROM users WHERE nick_name LIKE '{}' ORDER BY nick_name".format(
@@ -135,13 +124,12 @@ class UserMapper(Mapper):
 
         return result
 
+
+
+
     def find_by_id(self, id):
         """Suchen eines Users mit vorgegebener ID. Da diese eindeutig ist,
-        wird genau ein Objekt zurückgegeben.
-
-        :param key Primärschlüsselattribut (->DB)
-        :return User-Objekt, das dem übergebenen Schlüssel entspricht, None bei
-            nicht vorhandenem DB-Tupel."""
+        wird genau ein Objekt zurückgegeben"""
 
         cursor = self._cnx.cursor()
         cursor.execute(
@@ -158,11 +146,11 @@ class UserMapper(Mapper):
             return user
         return None
 
-    def update(self, user):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
 
-        :param user welcher in die DB geschrieben werden soll
-        """
+
+
+    def update(self, user):
+        """Wiederholtes Schreiben eines Objekts in die Datenbank"""
         cursor = self._cnx.cursor()
         print(user)
         command = "UPDATE users SET nick_name=%s, first_name=%s, last_name=%s, id=%s, household_id=%s, google_user_id=%s WHERE id=%s"
@@ -173,11 +161,11 @@ class UserMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, user):
-        """Löschen der Daten eines User-Objekts aus der Datenbank.
 
-        :param user das aus der DB zu löschende "Objekt"
-        """
+
+
+    def delete(self, user):
+        """Löschen der Daten eines User-Objekts aus der Datenbank"""
         cursor = self._cnx.cursor()
         command = "DELETE FROM users WHERE id=%s"
         cursor.execute(command, (user.get_id(),))
@@ -214,13 +202,16 @@ class UserMapper(Mapper):
 
         return result
 
+
+
     def find_household_id_by_google_user_id(self, google_user_id):
+        """Gibt einen Haushalt anhand der Google User ID zurück"""
         cursor = self._cnx.cursor()
         query = """
                SELECT household_id 
                FROM users 
                WHERE google_user_id = %s
-           """
+                """
         cursor.execute(query, (google_user_id,))
         result = cursor.fetchone()
         cursor.close()

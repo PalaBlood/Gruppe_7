@@ -24,10 +24,12 @@ const Household = ({ navigate }) => {
     const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false); // State for delete dialog
 
-    //lifecycle methode
+   
     useEffect(() => {
         loadHouseholdUsers();
     }, []);
+
+
     //methode zum laden der Haushaltsmitglieder
     const loadHouseholdUsers = async () => {
         const auth = getAuth();
@@ -37,6 +39,8 @@ const Household = ({ navigate }) => {
             setLoading(false);
             return;
         }
+
+
         //fetchen der user und haushaltsdaten
         try {
             const userBO = await FridgeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
@@ -59,6 +63,8 @@ const Household = ({ navigate }) => {
             setLoading(false);
         }
     };
+
+
     //methode zum aktualisieren des Haushaltsnamens
     const updateHouseholdName = async () => {
         const auth = getAuth();
@@ -79,14 +85,20 @@ const Household = ({ navigate }) => {
             setLoading(false);
         }
     };
+
+
     //Handler für die Eingabe des Haushaltsnamens
     const handleInputChangeHouseholdName = (event) => {
         setNewHouseholdName(event.target.value);
     };
+
+
     //Handler für die Eingabe des Passworts
     const handleInputChangePassword = (event) => {
         setNewPassword(event.target.value);
     };
+
+
     //methode zum fetchen der Haushalte
     const fetchHouseholds = async () => {
         try {
@@ -96,11 +108,15 @@ const Household = ({ navigate }) => {
             setError(error.message);
         }
     };
+
+
     //methode zum auswählen eines Haushalts
     const handleSelectHousehold = (id) => {
         setSelectedHouseholdId(id);
         setPasswordDialogOpen(true); // Passwortdialog öffnen
     };
+
+
     //methode zum bestätigen des Passworts
     const confirmPassword = async () => {
         const auth = getAuth();
@@ -133,6 +149,8 @@ const Household = ({ navigate }) => {
             setError(error.message);
         }
     };
+
+
     //Haushalt löschen bestätigen
     const confirmDeleteHousehold = async () => {
         const auth = getAuth();
@@ -156,6 +174,8 @@ const Household = ({ navigate }) => {
             setError(error.message);
         }
     };
+
+
     //Hinzufügen eines neuen Haushalts
     const addHousehold = async () => {
         const auth = getAuth();
@@ -208,7 +228,7 @@ const Household = ({ navigate }) => {
         try {
             const household_id = await FridgeAPI.getAPI().getHouseholdIdByGoogleUserId(currentUser.uid);
             const householdArray = await FridgeAPI.getAPI().getHouseholdbyID(household_id.household_id);
-            const household = householdArray[0]; // Access the first element of the array
+            const household = householdArray[0]; 
             if (household.password) {
                 setDeleteDialogOpen(true);
             } else {
@@ -221,6 +241,7 @@ const Household = ({ navigate }) => {
         }
     };
 
+    
     const renderDialogs = () => {
         return (
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
@@ -278,6 +299,7 @@ const Household = ({ navigate }) => {
         );
     }
 
+
     const renderPasswordDialog = () => {
         return (
             <Dialog open={passwordDialogOpen} onClose={() => { setPasswordDialogOpen(false); setEnteredPassword(''); }}>
@@ -299,6 +321,7 @@ const Household = ({ navigate }) => {
             </Dialog>
         );
     };
+
 
     const renderDeleteDialog = () => {
         return (

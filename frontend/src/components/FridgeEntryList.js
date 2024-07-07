@@ -8,6 +8,9 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
 import FridgeEntryCard from './layout/FridgeEntryCard';
+/**Übersicht aller Kühlschrankeinträge */
+
+
 
 const FridgeEntryList = () => {
     const [fridgeEntries, setFridgeEntries] = useState([]);
@@ -16,10 +19,13 @@ const FridgeEntryList = () => {
     const [error, setError] = useState(null);
     const [editEntry, setEditEntry] = useState(null);
 
+
+  
     useEffect(() => {
         fetchFridgeEntries();
     }, []);
 
+    //Läd alle Kühlschrankeintrage aus der DB
     const fetchFridgeEntries = async () => {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -37,10 +43,12 @@ const FridgeEntryList = () => {
         }
     };
 
+
     const handleAddButtonClick = () => {
         setShowAddForm(true);
         setEditEntry(null);
     };
+
 
     const handleFormClose = (newEntry) => {
         if (newEntry) {
@@ -49,11 +57,13 @@ const FridgeEntryList = () => {
         setShowAddForm(false);
     };
 
+
     const handleEditButtonClick = (entry) => {
         setShowAddForm(true);
         setEditEntry(entry);
     };
 
+    
     const handleDeleteButtonClick = async (designation) => {
         try {
             await FridgeAPI.getAPI().deleteFridgeEntry(designation);

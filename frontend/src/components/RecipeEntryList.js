@@ -11,7 +11,9 @@ import RecipeEntryForm from './dialogs/RecipeEntryForm';
 import RecipeEntryCard from './layout/RecipeEntryCard';
 import FridgeEntryBO from '../API/FridgeEntryBO';
 import { getAuth } from 'firebase/auth';
+/**Übersicht aller Zutaten eines Rezeptes */
 
+//Sorgt dafür, dass verschiedene Maßeinheiten miteinander verglichen werden können
 const conversionRates = {
     liters: {
         milliliters: 1000,
@@ -107,6 +109,8 @@ const conversionRates = {
     }
 };
 
+
+
 function RecipeEntryList() {
     const { recipeId } = useParams();
     const navigate = useNavigate(); // useNavigate Hook verwenden
@@ -117,9 +121,13 @@ function RecipeEntryList() {
     const [error, setError] = useState(null);
     const [editEntry, setEditEntry] = useState(null);
 
+
+
     useEffect(() => {
         fetchRecipeAndFridgeEntries();
     }, [recipeId]);
+
+
 
     const fetchRecipeAndFridgeEntries = async () => {
         setLoading(true);
@@ -143,10 +151,12 @@ function RecipeEntryList() {
         }
     };
 
+
     const handleAddButtonClick = () => {
         setShowAddForm(true);
         setEditEntry(null);
     };
+
 
     const handleFormClose = (newEntry) => {
         setShowAddForm(false);
@@ -155,10 +165,12 @@ function RecipeEntryList() {
         }
     };
 
+
     const handleEditButtonClick = (entry) => {
         setShowAddForm(true);
         setEditEntry(entry);
     };
+
 
     const handleDeleteButtonClick = async (entry) => {
         try {
@@ -174,6 +186,7 @@ function RecipeEntryList() {
         }
     };
 
+
     const isEntryAvailableInFridge = (entry) => {
         return fridgeEntries.some(fridgeEntry => {
             if (fridgeEntry.getDesignation() === entry.getDesignation()) {
@@ -183,6 +196,7 @@ function RecipeEntryList() {
             return false;
         });
     };
+
 
     function convertQuantity(quantity, fromUnit, toUnit) {
         if (conversionRates[fromUnit] && conversionRates[fromUnit][toUnit]) {

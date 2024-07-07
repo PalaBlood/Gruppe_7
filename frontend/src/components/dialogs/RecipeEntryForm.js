@@ -17,6 +17,8 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
     const [updatingInProgress, setUpdatingInProgress] = useState(false);
     const [error, setError] = useState(null);
 
+
+    //Ladet alle Units eines Haushaltes und beim Editieren die bisherigen Eingaben des Rezepteintrages
     useEffect(() => {
         const fetchHouseholdUnits = async () => {
             try {
@@ -45,11 +47,15 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         }
     }, [entry]);
 
+
+
     const handleError = (e) => {
         console.error(e);
         setError({ message: e.message });
     };
 
+
+    //Ersellt einen Rezepteintrag
     const addRecipeEntry = async () => {
         if (!designation || !quantity || !unit) {
             setError({ message: 'All fields are required' });
@@ -71,6 +77,7 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
         }
     };
 
+    //Updtatet einen Rezepteintrag
     const updateRecipeEntry = async () => {
         if (!quantity || !unit) {
             setError({ message: 'Both Quantity and Unit are required' });
@@ -98,6 +105,8 @@ function RecipeEntryForm({ entry, show, onClose, recipeId }) {
     const handleClose = () => {
         onClose(null);
     };
+
+
 
     return (
         show && (

@@ -41,6 +41,7 @@ export default class FoodEntry extends BusinessObject {
         return this.unit;
     }
 
+    
     // Statische Methode zum Erzeugen von FoodEntry-Instanzen aus einem JSON-Array.
     static fromJSON(foodEntries) {
         return foodEntries.map(f => {

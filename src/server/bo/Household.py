@@ -13,9 +13,9 @@ In dem Fall müssten der Kühlschrank, alle Rezepte und Lebensmitteleinträge in
 class Household(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._name = "" # Name des Haushalts
-        self._fridge_id = None  # Als Referenz
-        self._password = ""
+        self._name = "" 
+        self._fridge_id = None  #Referenz zur Fridge
+        self._password = "" #Wird für den Beitritt eines Households benötigt und beim erstellen eines Households eingegeben
 
     def get_users(self):
         """User im Haushalt auslesen"""
@@ -55,6 +55,8 @@ class Household(BusinessObject):
     def get_password(self):
         """Gibt das Passwort des Haushalts zurück."""
         return self._password
+    
+    
     
     def __str__(self):
         """Gibt eine textuelle Darstellung des Haushalts zurück."""

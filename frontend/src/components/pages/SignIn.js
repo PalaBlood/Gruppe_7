@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography, Box } from '@mui/material';
+/**Anmeldung über Google Firebase Authentifikator wird hier erstellt */
+
 
 const SignIn = ({ onSignIn }) => {
     const handleSignInButtonClicked = () => {

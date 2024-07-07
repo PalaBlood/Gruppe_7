@@ -30,6 +30,8 @@ export default class UnitBO extends BusinessObject {
     this.household_id = ahoushold_id;
   }
 
+
+  
   // Statische Methode zum Erzeugen von UnitBO-Instanzen aus JSON-Daten.
   static fromJSON(unit) {
     let result = [];

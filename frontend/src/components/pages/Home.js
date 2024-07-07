@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 import SmartFridgeAPI from '../../API/SmartFridgeAPI';
+/**Dient als Startseite der App */
+
 
 const Home = () => {
     const [user, setUser] = useState(null);

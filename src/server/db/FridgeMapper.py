@@ -71,7 +71,7 @@ class FridgeMapper(Mapper):
 
     def update_fridge(self, fridge_id):
         """Wahrscheinlich benötigen wir diese Methode nie, da
-        es keinen Grund gibt, die id einer Fridge zu ändern
+        es keinen Grund gibt, die id einer Fridge zu ändern.
 
         param: neue fridge ID """
         cursor = self._cnx.cursor()
@@ -84,7 +84,7 @@ class FridgeMapper(Mapper):
         
 
     def update_fridge_entry(self, fridge_id, groceries_designation, quantity, unit):
-        """Update an existing fridge entry in the database."""
+        """Updatet einen Eintrag im Kühlschrank"""
         cursor = self._cnx.cursor()
         command = """UPDATE fridge_groceries
                      SET quantity = %s, unit = %s
@@ -97,7 +97,7 @@ class FridgeMapper(Mapper):
         
 
     def update_fridge_entry2(self, fridge_entry):
-        """Update an existing fridge entry in the database."""
+        """Updatet einen Eintrag im Kühlschrank"""
         cursor = self._cnx.cursor()
         print("Hier:", fridge_entry)
         command = """UPDATE fridge_groceries
@@ -113,6 +113,7 @@ class FridgeMapper(Mapper):
         
 
     def insert_fridge_entry(self, fridge_entry):
+        """Erstellt einen Eintrag im Kühlschrank"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT quantity FROM fridge_groceries WHERE groceries_designation = %s AND fridge_id = %s",
                        (fridge_entry.get_groceries_designation(), fridge_entry.get_fridge_id()))
@@ -138,7 +139,7 @@ class FridgeMapper(Mapper):
         
 
     def find_fridge_by_id(self, id):
-        """Find a Fridge by its ID."""
+        """Gibt einen Kühlschrank anhand der eingegebenen ID aus"""
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id FROM fridge WHERE id = %s", (id,))
         result = cursor.fetchone()
@@ -154,7 +155,7 @@ class FridgeMapper(Mapper):
     
 
     def find_entries_by_fridge_id(self, fridge_id):
-        """Find all entries associated with a specific fridge ID."""
+        """Gibt die Kühlschrankeinträge anhand der Kühlschrank ID aus"""
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT fridge_id, groceries_designation, quantity, unit FROM fridge_groceries WHERE fridge_id = %s",
@@ -174,6 +175,7 @@ class FridgeMapper(Mapper):
     
 
     def find_all_entries(self):
+        """Gibt alle Kühlschrankeinträge aus"""
         result = []
         cursor = self._cnx.cursor()
 
@@ -197,10 +199,7 @@ class FridgeMapper(Mapper):
     
 
     def find_all_fridges(self):
-        """Auslesen aller Fridges.
-
-        :return Eine Sammlung mit Fridge-Objekten, die sämtliche Fridges repräsentieren.
-        """
+        """Gibt alle Kühlschränke aus"""
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id FROM fridge")
@@ -220,7 +219,7 @@ class FridgeMapper(Mapper):
     
 
     def delete_fridge_entry(self, fridge_entry):
-        """Delete a FridgeEntry object from the database."""
+        """Löscht einen Kühlschrankeintrag anhand der Lebensmittelbezeichnung"""
         cursor = self._cnx.cursor()
         command = "DELETE FROM fridge_groceries WHERE groceries_designation = %s"
         cursor.execute(command, (fridge_entry[1],))
@@ -231,7 +230,7 @@ class FridgeMapper(Mapper):
         
 
     def delete(self, fridge):
-        """Delete a Fridge object from the database."""
+        """Löscht einen Kühlschrank"""
         cursor = self._cnx.cursor()
         command = "DELETE FROM fridge WHERE id = %s"
         cursor.execute(command, (fridge.get_id(),))
@@ -242,6 +241,7 @@ class FridgeMapper(Mapper):
         
 
     def get_fridge_id_by_google_user_id(self, google_user_id):
+        """Kühlschrank ID wird anhand der Google User ID ausgegeben"""
         with self._cnx.cursor() as cursor:
             cursor.execute("""
                 SELECT f.id 
