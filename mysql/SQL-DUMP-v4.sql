@@ -20,7 +20,7 @@ CREATE TABLE household (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO household(id, name, fridge_id) VALUES (2, 'der haushalt', 1);
+INSERT INTO household(id, name, fridge_id, password) VALUES (2, 'Toms Household', 1, '9902');
 
 
 DROP TABLE IF EXISTS users;

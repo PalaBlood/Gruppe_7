@@ -121,6 +121,10 @@ class CheckforexistingHousehold extends Component {
             this.setState({ error: "Household name cannot be empty." });
             return;
         }
+        if (!newPassword.trim()) {
+            this.setState({ error: "Password cannot be empty." });
+            return;
+        }
         this.setState({ loading: true });
         try {
             let householdBO = new HouseholdBO({ name: newHouseholdName, id: 0, fridge_id: null, password: newPassword });
