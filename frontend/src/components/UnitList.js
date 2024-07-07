@@ -87,7 +87,7 @@ const UnitList = ({ householdId }) => {
 // Darstellung der Einheitenliste
   return (
     <Container>
-      <Typography variant="h4" gutterBottom style={{ display: 'flex', justifyContent: 'center', textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px', margin: '20px' }}>
+      <Typography variant="h4" gutterBottom style={{ display: 'flex', justifyContent: 'center', textAlign: 'center', border: '5px solid #lightblue', borderRadius: '5px', margin: '20px' }}>
         All available units
       </Typography>
       {loading ? (
@@ -99,7 +99,7 @@ const UnitList = ({ householdId }) => {
       ) : (
         <List>
           {units.map((unit) => (
-            <ListItem style={{ border: '1px solid #ccc', borderRadius: '5px', marginBottom: '5px' }}
+            <ListItem style={{ border: '5px outset lightblue', borderRadius: '5px', marginBottom: '5px', }}
               key={unit.id}
               secondaryAction={
                 <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteUnit(unit.id)}>
@@ -114,11 +114,11 @@ const UnitList = ({ householdId }) => {
       )}
       <Box mt={4}>
 
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom style={{border: '5px outset lightblue', padding:'5px'}}>
           Add Unit
         </Typography>
 
-        <TextField
+        <TextField style={{ border: '5px outset lightblue', borderRadius: '5px' }}
           label="New Unit"
           value={newUnit}
           onChange={(e) => setNewUnit(e.target.value)}
