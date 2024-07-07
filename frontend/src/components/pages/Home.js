@@ -28,7 +28,7 @@ const Home = () => {
 
     return (
         <div style={styles.container}>
-            <h1 style={styles.heading}>Willkommen, {user.nick_name} bei FridgeFinder!</h1>
+            <h1 style={styles.heading}>Willkommen, <br></br> {user.nick_name} bei FridgeFinder!</h1>
             <div style={styles.logoContainer}>
                 <img src={`${process.env.PUBLIC_URL}/images/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
             </div>
