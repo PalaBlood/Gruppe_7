@@ -1,6 +1,3 @@
-"""from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
-from Gruppe_7.src.server.bo.Groceries import Groceries"""
-
 from server.bo.BusinessObject import BusinessObject
 
 class Fridge(BusinessObject):

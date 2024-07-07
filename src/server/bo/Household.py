@@ -1,6 +1,3 @@
-"""from Gruppe_7.src.server.bo.BusinessObject import BusinessObject
-from Gruppe_7.src.server.bo.User import User"""
-
 from server.bo.BusinessObject import BusinessObject
 from server.bo.User import User
 

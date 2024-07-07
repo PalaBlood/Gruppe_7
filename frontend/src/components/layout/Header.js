@@ -89,7 +89,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px',
-    height: '100px', // Feste Höhe des Headers
+    height: '100px',
   },
   logoContainerDesktop: {
     display: 'flex',
@@ -98,10 +98,10 @@ const styles = {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: '#fff', // Weißer Hintergrund
-    borderRadius: '50%', // Runder Rahmen
+    backgroundColor: '#fff', //Weißer Hintergrund
+    borderRadius: '50%', //Runder Rahmen
     padding: '5px',
-    boxShadow: '0 0 0 5px #fff', // Weißer Rahmen
+    boxShadow: '0 0 0 5px #fff', //Weißer Rahmen
     height: '200px',
     width: '400px',
   },
@@ -112,26 +112,26 @@ const styles = {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: '#fff', // Weißer Hintergrund
-    borderRadius: '50%', // Runder Rahmen
+    backgroundColor: '#fff', //Weißer Hintergrund
+    borderRadius: '50%', //Runder Rahmen
     padding: '3px',
-    boxShadow: '0 0 0 2px #fff', // Weißer Rahmen
+    boxShadow: '0 0 0 2px #fff', //Weißer Rahmen
     height: '70px',
     width: '120px',
   },
   logoDesktop: {
-    height: '400px', // Höhe des Logos für Desktop
-    width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
+    height: '400px', //Höhe des Logos für Desktop
+    width: 'auto', 
   },
   logoMobile: {
-    height: '120px', // Höhe des Logos für Mobilgeräte
-    width: 'auto', // Automatische Breite, um das Seitenverhältnis beizubehalten
+    height: '120px', //Höhe des Logos für Handys
+    width: 'auto', 
   },
   menuButton: {
     zIndex: 2,
   },
   menuIcon: {
-    fontSize: '2rem', // Größe des Menü-Icons
+    fontSize: '2rem',
   },
   profileContainer: {
     zIndex: 2,
@@ -139,13 +139,13 @@ const styles = {
     alignItems: 'center',
   },
   drawer: {
-    width: '250px', // Breite des Drawers
+    width: '250px',
   },
   icon: {
-    fontSize: '1.5rem', // Größe der Icons im Drawer
+    fontSize: '1.5rem',
   },
   listItemText: {
-    fontSize: '1.2rem', // Größe des Textes im Drawer
+    fontSize: '1.2rem',
   },
 };
 
