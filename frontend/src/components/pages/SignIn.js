@@ -9,7 +9,7 @@ const SignIn = ({ onSignIn }) => {
 
     return (
         <Box sx={styles.container}>
-            <img src={`${process.env.PUBLIC_URL}/images/LogoIcon.png`} alt="Background" style={styles.backgroundImage} />
+            <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="Background" style={styles.backgroundImage} />
             <Box sx={styles.overlay}>
                 <Box sx={styles.box}>
                     <Typography sx={{ margin: 2 }} variant='h5' align='center' fontWeight="bold">

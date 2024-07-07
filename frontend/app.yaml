@@ -1,52 +1,63 @@
-# Spezifiziert die verwendete Laufzeitumgebung für die App
+# Specifies the runtime environment for the app
 runtime: python310
 
-# Definiert Umgebungsvariablen
+# Defines environment variables
 env_variables:
-  NODE_ENV: 'production'  # Setzt die Node-Umgebung auf Produktion
+  NODE_ENV: 'production'
+  PUBLIC_URL: '/'
 
-# Definiert die Instanzklasse, die für die Anwendung verwendet wird
+# Defines the instance class for the application
 instance_class: F2
 
-# Handler für die verschiedenen URL-Pfade und statischen Dateien
+# Handlers for various URL paths and static files
 handlers:
-  # Handler für den statischen Ordner
+  # Handler for the static folder
   - url: /static
-    static_dir: build/static  # Verweist auf das Verzeichnis build/static
+    static_dir: build/static
 
-  # Handler für statische JavaScript-Dateien
+  # Handler for static JavaScript files
   - url: /static/js
-    static_dir: build/static/js  # Verweist auf das Verzeichnis build/static/js
+    static_dir: build/static/js
 
-  # Handler für statische CSS-Dateien
+  # Handler for static CSS files
   - url: /static/css
-    static_dir: build/static/css  # Verweist auf das Verzeichnis build/static/css
+    static_dir: build/static/css
 
-  # Handler für statische Mediendateien
+  # Handler for static media files
   - url: /static/media
-    static_dir: build/static/media  # Verweist auf das Verzeichnis build/static/media
+    static_dir: build/static/media
 
-  # Handler für die favicon.ico Datei
+  # Handler for the favicon.ico file
   - url: /favicon.ico
-    static_files: build/favicon.ico  # Verweist auf die Datei build/favicon.ico
-    upload: build/favicon.ico  # Gibt die Datei an, die hochgeladen werden soll
+    static_files: build/favicon.ico
+    upload: build/favicon.ico
 
-  # Handler für das Logo in der Größe 192x192 Pixel
+  # Handler for the logo 192x192 file
   - url: /logo192.png
-    static_files: build/logo192.png  # Verweist auf die Datei build/logo192.png
-    upload: build/logo192.png  # Gibt die Datei an, die hochgeladen werden soll
+    static_files: build/logo192.png
+    upload: build/logo192.png
 
-  # Handler für das Logo in der Größe 512x512 Pixel
+  # Handler for the logo 512x512 file
   - url: /logo512.png
-    static_files: build/logo512.png  # Verweist auf die Datei build/logo512.png
-    upload: build/logo512.png  # Gibt die Datei an, die hochgeladen werden soll
+    static_files: build/logo512.png
+    upload: build/logo512.png
 
-  # Handler für die manifest.json Datei
+  # Handler for the manifest.json file
   - url: /manifest.json
-    static_files: build/manifest.json  # Verweist auf die Datei build/manifest.json
-    upload: build/manifest.json  # Gibt die Datei an, die hochgeladen werden soll
+    static_files: build/manifest.json
+    upload: build/manifest.json
 
-  # Handler für alle anderen URLs, um das Single Page Application (SPA) Routing zu unterstützen
+  # Handler for LogoIcon.png file
+  - url: /LogoIcon.png
+    static_files: build/LogoIcon.png
+    upload: build/LogoIcon.png
+
+  # Handler for Logo.png file
+  - url: /Logo.png
+    static_files: build/Logo.png
+    upload: build/Logo.png
+
+  # Handler for all other URLs to support Single Page Application (SPA) routing
   - url: /.*
-    static_files: build/index.html  # Verweist auf die Datei build/index.html
-    upload: build/index.html  # Gibt die Datei an, die hochgeladen werden soll
+    static_files: build/index.html
+    upload: build/index.html
