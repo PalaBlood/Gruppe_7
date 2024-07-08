@@ -35,8 +35,8 @@ CREATE TABLE users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO users (nick_name, first_name, last_name, household_id, google_user_id) VALUES
-('Tom_Schönfeld', 'Tom', 'Schönfeld', 2, '232424'),
-('Bob345', 'Bob', 'Schönfeld', 2, '23423423'),
+('Tom_Schoenfeld', 'Tom', 'Schoenfeld', 2, '232424'),
+('Bob345', 'Bob', 'Schoenfeld', 2, '23423423'),
 ('Michel223', 'Michel', 'Finger', 2, '9832342');
 
 DROP TABLE IF EXISTS recipe;
@@ -53,7 +53,7 @@ CREATE TABLE recipe (
 INSERT INTO recipe (id, recipe_title, number_of_persons, creator, recipe_description, household_id) VALUES
 (1, 'Apple Pie', 8, 'Tom', "Apfelkuchen nach Omas Rezept", 2),
 (2, 'Pancakes', 4, 'Michel', "Pfannkuchen ala Michel", 2),
-(3, 'Omelette', 2, 'Michel', "Geile Eier", 2);
+(3, 'Omelette', 2, 'Michel', "Eier verquirlen, dann anbraten", 2);
 
 DROP TABLE IF EXISTS recipe_groceries;
 CREATE TABLE recipe_groceries (
@@ -82,8 +82,8 @@ CREATE TABLE fridge_groceries (
 
 INSERT INTO fridge_groceries (fridge_id, groceries_designation, quantity, unit) VALUES
 (1, 'Gurke', 2.5, 'grams'),
-(1, 'Tomate', 1, 'milliliters'),
-(1, 'lachs', 0.5, 'kilos'),
+(1, 'Tomate', 1, 'grams'),
+(1, 'Lachs', 0.5, 'grams'),
 (1, 'Pasta', 500, 'grams');
 
 
@@ -97,5 +97,7 @@ CREATE TABLE unit (
     
 INSERT INTO unit (id, designation, household_id) VALUES
 (1, 'kilograms', 2)
+(1, 'grams', 2)
+
 
 
